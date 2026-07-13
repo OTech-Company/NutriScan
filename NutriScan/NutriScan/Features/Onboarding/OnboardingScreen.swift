@@ -12,6 +12,7 @@ struct OnboardingScreen: View {
     @State private var isAnimating = false
     
     @Environment(\.colorScheme) var colorScheme
+    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
     
     var body: some View {
         ZStack {
@@ -34,7 +35,7 @@ struct OnboardingScreen: View {
                     
                     if currentPage < OnboardingPage.allCases.count - 1 {
                         Button("SKIP") {
-                            print("Home Screen will appear")
+                            hasSeenOnboarding = true
                         }
                         .font(Font.AppFont.textPrimary)
                         .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .gray)
@@ -63,7 +64,7 @@ struct OnboardingScreen: View {
                                 if currentPage < OnboardingPage.allCases.count - 1 {
                                     currentPage += 1
                                 } else {
-                                    print("Home Screen will appear")
+                                    hasSeenOnboarding = true
                                 }
                             }
                         }
