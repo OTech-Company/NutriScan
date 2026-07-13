@@ -35,7 +35,6 @@ struct OnboardingScreen: View {
                     
                     if currentPage < OnboardingPage.allCases.count - 1 {
                         Button("SKIP") {
-                            // Triggers navigation to the Home screen
                             hasSeenOnboarding = true
                         }
                         .font(Font.AppFont.textPrimary)
