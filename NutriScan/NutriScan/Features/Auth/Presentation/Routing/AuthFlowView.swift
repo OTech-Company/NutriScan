@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct AuthFlowView: View {
-    @StateObject private var router = AppRouter()
+    @StateObject private var router = AppRouter() // ← owns the NavigationPath
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -18,6 +18,6 @@ struct AuthFlowView: View {
                     route.view()
                 }
         }
-        .environmentObject(router)
+        .environmentObject(router) // ← makes router.push() reachable by child views
     }
 }
