@@ -22,7 +22,6 @@ struct OnboardingScreen: View {
                 HStack {
                     if currentPage > 0 {
                         Button("BACK") {
-                            // Applied spring animation here
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                                 currentPage -= 1
                             }
@@ -60,7 +59,6 @@ struct OnboardingScreen: View {
                     CustomPuffedButton(
                         title: OnboardingPage.allCases[currentPage].buttonTitle,
                         action: {
-                            // Applied spring animation here to remove the default opacity transition
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                                 if currentPage < OnboardingPage.allCases.count - 1 {
                                     currentPage += 1
