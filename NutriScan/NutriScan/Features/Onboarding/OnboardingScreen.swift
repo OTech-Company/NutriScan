@@ -10,15 +10,15 @@ import SwiftUI
 struct OnboardingScreen: View {
     @State private var currentPage = 0
     @State private var isAnimating = false
-    
+
     @Environment(\.colorScheme) var colorScheme
-    @AppStorage("hasSeenOnboarding") private var hasSeenOnboarding = false
-    
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
+
     var body: some View {
         ZStack {
             (colorScheme == .dark ? Color.Teal.teal1600 : .white)
                 .ignoresSafeArea()
-            
+
             VStack {
                 HStack {
                     if currentPage > 0 {
@@ -30,12 +30,12 @@ struct OnboardingScreen: View {
                         .font(Font.AppFont.textPrimary)
                         .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .gray)
                     }
-                    
+
                     Spacer()
-                    
+
                     if currentPage < OnboardingPage.allCases.count - 1 {
                         Button("SKIP") {
-                            hasSeenOnboarding = true
+                            flowCoordinator.finishOnboarding()
                         }
                         .font(Font.AppFont.textPrimary)
                         .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .gray)
@@ -43,7 +43,7 @@ struct OnboardingScreen: View {
                 }
                 .padding(.horizontal, 24)
                 .padding(.top, 16)
-                
+
                 TabView(selection: $currentPage) {
                     ForEach(OnboardingPage.allCases, id: \.rawValue) { page in
                         getPageView(for: page)
@@ -53,9 +53,9 @@ struct OnboardingScreen: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(.spring(response: 0.5, dampingFraction: 0.8), value: currentPage)
                 .onAppear { isAnimating = true }
-                
+
                 Spacer()
-                
+
                 VStack(spacing: 30) {
                     CustomPuffedButton(
                         title: OnboardingPage.allCases[currentPage].buttonTitle,
@@ -64,18 +64,18 @@ struct OnboardingScreen: View {
                                 if currentPage < OnboardingPage.allCases.count - 1 {
                                     currentPage += 1
                                 } else {
-                                    hasSeenOnboarding = true
+                                    flowCoordinator.finishOnboarding()
                                 }
                             }
                         }
                     )
-                    
+
                     HStack(spacing: 8) {
                         ForEach(0 ..< OnboardingPage.allCases.count, id: \.self) { index in
                             let isSelected = (index == currentPage)
                             let selectedColor = colorScheme == .dark ? Color.Teal.teal700 : Color.gray
                             let unselectedColor = colorScheme == .dark ? Color.Teal.teal1300 : Color.gray.opacity(0.3)
-                            
+
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(isSelected ? selectedColor : unselectedColor)
                                 .frame(width: isSelected ? 30 : 8, height: 8)
@@ -88,11 +88,11 @@ struct OnboardingScreen: View {
             .safeAreaPadding()
         }
     }
-    
+
     private func getPageView(for page: OnboardingPage) -> some View {
         let isActive = (currentPage == page.rawValue)
         let currentImage = colorScheme == .dark ? page.darkImage : page.lightImage
-        
+
         return VStack(spacing: 24) {
             Image(currentImage)
                 .resizable()
@@ -101,12 +101,12 @@ struct OnboardingScreen: View {
                 .scaleEffect(isActive ? 1.0 : 0.6)
                 .opacity(isActive ? 1.0 : 0.0)
                 .animation(.spring(response: 0.5, dampingFraction: 0.5), value: isActive)
-            
+
             Text(page.title)
                 .font(Font.AppFont.title2)
                 .foregroundColor(colorScheme == .dark ? Color.Teal.teal100 : .primary)
                 .multilineTextAlignment(.center)
-            
+
             Text(page.description)
                 .font(Font.AppFont.textSecondary)
                 .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .secondary)
@@ -114,7 +114,7 @@ struct OnboardingScreen: View {
                 .padding(.horizontal, 24)
                 .lineSpacing(4)
                 .opacity(isActive ? 1 : 0)
-                .offset(y: isActive ? 0: 20)
+                .offset(y: isActive ? 0 : 20)
                 .animation(.spring(dampingFraction: 0.8).delay(0.2), value: isActive)
         }
     }
@@ -122,4 +122,5 @@ struct OnboardingScreen: View {
 
 #Preview {
     OnboardingScreen()
+        .environmentObject(AppFlowCoordinator())
 }
