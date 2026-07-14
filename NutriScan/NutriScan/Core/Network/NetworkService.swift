@@ -5,14 +5,6 @@
 //  Created by Youssef Abd El-Fatah on 14/07/2026.
 //
 
-
-//
-//  NetworkService.swift
-//  Drape
-//
-//  Created by Moaz on 01/07/2026.
-//
-
 import Foundation
 
 protocol NetworkServiceProtocol {
