@@ -44,4 +44,9 @@ extension Color {
         static let teal1500 = Color(red: 10 / 255.0, green: 84 / 255.0, blue: 90 / 255.0)
         static let teal1600 = Color(red: 15 / 255.0, green: 71 / 255.0, blue: 74 / 255.0)
     }
+    
+    struct Red {
+        static let red100 = Color(red: 255 / 255.0, green: 241 / 255.0, blue: 243 / 255.0)
+        static let red500 = Color(red: 250 / 255.0, green: 77 / 255.0, blue: 94 / 255.0) 
+    }
 }
