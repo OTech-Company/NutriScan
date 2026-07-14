@@ -7,12 +7,11 @@
 
 import SwiftUI
 
-struct SplashScreen: View {
+struct SplashView: View {
     @State private var isAnimated = false
     @State private var logoAppears = false
-    
-    var onComplete: () -> Void
-    
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
+        
     var body: some View {
         ZStack {
             (isAnimated ? Color.white : Color.Teal.teal1300)
@@ -92,12 +91,12 @@ struct SplashScreen: View {
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                onComplete()
+                flowCoordinator.finishSplash()
             }
         }
     }
 }
 
 #Preview {
-    SplashScreen(onComplete: {})
+    SplashView()
 }
