@@ -16,14 +16,17 @@ struct SocialLoginButton: View {
         Button(action: action) {
             Image(iconName)
                 .resizable()
+                .renderingMode(.template)
                 .scaledToFit()
-                .frame(width: 24, height: 24) // Adjust inner icon size as needed
-                .frame(width: 56, height: 56) // Outer button frame
+                .frame(width: 24, height: 24)
+                .foregroundStyle(colorScheme == .light ? Color.Teal.teal1600 : Color.Teal.teal400)
+                .frame(width: 56, height: 56) 
                 .background(Color.clear)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(colorScheme == .light ? Color.Gray.gray500 : Color.Teal.teal600, lineWidth: 1)
                 )
-        }.customTealShadow()
+        }
+        .customTealShadow()
     }
 }
