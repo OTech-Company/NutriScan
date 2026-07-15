@@ -4,6 +4,7 @@
 //
 //  Created by Osama Hosam on 14/07/2026.
 //
+
 import SwiftUI
 
 struct LoginView: View {
@@ -17,12 +18,10 @@ struct LoginView: View {
     @State private var passwordState: TextFieldState = .normal
 
     var body: some View {
-        ScrollView{
-            ZStack(alignment: .top) {
-                // Background
-                (colorScheme == .light ? Color.Teal.teal100 : Color.Teal.teal1600)
-                    .ignoresSafeArea()
-                
+        ZStack(alignment: .top) {
+            (colorScheme == .light ? Color.Teal.teal100 : Color.Teal.teal1600)
+                .ignoresSafeArea()
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
                     AuthHeaderView()
                     
@@ -49,7 +48,6 @@ struct LoginView: View {
                         .padding(.top, 24)
                         
                         CustomPuffedButton(title: "Sign in") {
-                            // On real success from your AuthUseCase:
                             flowCoordinator.didAuthenticate()
                         }
                         .padding(.top, 32)
@@ -64,9 +62,7 @@ struct LoginView: View {
                         }
                         .padding(.top, 24)
                         
-                        Spacer()
-                        
-                        // Footer Section
+                        Spacer(minLength: 40)
                         HStack(spacing: 4) {
                             Text("Don't have an account?")
                                 .font(Font.AppFont.textSecondary)
@@ -82,15 +78,13 @@ struct LoginView: View {
                                     .underline()
                             }
                         }
-                        .padding(.bottom, 48)
+                        .padding(.bottom, 32)
                     }
                     .padding(.horizontal, 20)
                 }
             }
-            .navigationBarHidden(true)
-            .ignoresSafeArea()
+            .ignoresSafeArea(edges: .top)
         }
+        .navigationBarHidden(true)
     }
 }
-
-
