@@ -84,7 +84,6 @@ struct CustomPuffedButton: View {
                 .clipShape(CustomPuffedShape(puffHeight: 5, cornerRadius: 14))
                 .customTealShadow()
         }
-        .padding(.horizontal, 22)
     }
 }
 
