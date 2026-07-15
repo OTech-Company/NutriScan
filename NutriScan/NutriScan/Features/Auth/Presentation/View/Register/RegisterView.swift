@@ -33,7 +33,7 @@ struct RegisterView: View {
                 .padding(.top, 12)
             }
         }
-        .appBackground()
+        .appAuthBackground()
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
     }

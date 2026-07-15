@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct AppBackgroundModifier: ViewModifier {
+struct AppAuthBackgroundModifier: ViewModifier {
     @Environment(\.colorScheme) var colorScheme
 
     func body(content: Content) -> some View {
@@ -21,7 +21,7 @@ struct AppBackgroundModifier: ViewModifier {
 }
 
 extension View {
-    func appBackground() -> some View {
-        modifier(AppBackgroundModifier())
+    func appAuthBackground() -> some View {
+        modifier(AppAuthBackgroundModifier())
     }
 }
