@@ -7,9 +7,7 @@ import SwiftUI
 
 struct RegisterFormFieldsSection: View {
 
-    @Binding var email: ValidatedField
-    @Binding var password: ValidatedField
-    @Binding var confirmPassword: ValidatedField
+    @Bindable var viewModel: RegisterViewModel
 
     var body: some View {
         VStack(spacing: 20) {
@@ -17,42 +15,41 @@ struct RegisterFormFieldsSection: View {
                 title: "Email Address",
                 leadingIcon: "envelope",
                 isPassword: false,
-                errorMessage: email.error,
+                errorMessage: viewModel.email.error,
                 placeHolder: "Enter your email address...",
-                textFieldValue: $email.value,
-                state: $email.state
+                textFieldValue: $viewModel.email.value,
+                state: $viewModel.email.state
             )
 
             CustomTextField(
                 title: "Password",
                 leadingIcon: "lock",
                 isPassword: true,
-                errorMessage: password.error,
+                errorMessage: viewModel.password.error,
                 placeHolder: "Create a password",
-                textFieldValue: $password.value,
-                state: $password.state
+                textFieldValue: $viewModel.password.value,
+                state: $viewModel.password.state
             )
 
             CustomTextField(
                 title: "Password Confirmation",
                 leadingIcon: "lock",
                 isPassword: true,
-                errorMessage: confirmPassword.error,
+                errorMessage: viewModel.confirmPassword.error,
                 placeHolder: "Repeat password",
-                textFieldValue: $confirmPassword.value,
-                state: $confirmPassword.state
+                textFieldValue: $viewModel.confirmPassword.value,
+                state: $viewModel.confirmPassword.state
             )
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
+        .onChange(of: viewModel.email.value)           { viewModel.validateEmail() }
+        .onChange(of: viewModel.password.value)        { viewModel.validatePassword() }
+        .onChange(of: viewModel.confirmPassword.value) { viewModel.validateConfirmPassword() }
     }
 }
 
 #Preview {
-    RegisterFormFieldsSection(
-        email: .constant(ValidatedField()),
-        password: .constant(ValidatedField()),
-        confirmPassword: .constant(ValidatedField(value: "pass_mismatch", state: .error, error: "ERROR: Password do not match!"))
-    )
-    .background(Color.Teal.teal100)
+    RegisterFormFieldsSection(viewModel: RegisterViewModel())
+        .background(Color.Teal.teal100)
 }
