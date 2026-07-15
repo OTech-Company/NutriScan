@@ -17,75 +17,78 @@ struct LoginView: View {
     @State private var passwordState: TextFieldState = .normal
 
     var body: some View {
-        ZStack(alignment: .top) {
-            // Background
-            (colorScheme == .light ? Color.Teal.teal100 : Color.Teal.teal1600)
-                .ignoresSafeArea()
-
-            VStack(spacing: 0) {
-                AuthHeaderView()
+        ScrollView{
+            ZStack(alignment: .top) {
+                // Background
+                (colorScheme == .light ? Color.Teal.teal100 : Color.Teal.teal1600)
+                    .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
+                    AuthHeaderView()
                     
-                    VStack(spacing: 16) {
-                        CustomTextField(
-                            title: "Email Address",
-                            leadingIcon: "envelope",
-                            placeHolder: "elementary221b@gmail.com",
-                            textFieldValue: $email,
-                            state: $emailState
-                        )
+                    VStack(spacing: 0) {
                         
-                        CustomTextField(
-                            title: "Password",
-                            leadingIcon: "lock",
-                            isPassword: true,
-                            placeHolder: "*****************",
-                            textFieldValue: $password,
-                            state: $passwordState
-                        )
-                    }
-                    .padding(.top, 24)
-                    
-                    CustomPuffedButton(title: "Sign in") {
-                        // On real success from your AuthUseCase:
-                        flowCoordinator.didAuthenticate()
-                    }
-                    .padding(.top, 32)
-                    
-                    AuthDivider()
-                        .padding(.top, 40)
-                    
-                    HStack(spacing: 24) {
-                        SocialLoginButton(iconName: "facebook", action: {})
-                        SocialLoginButton(iconName: "google", action: {})
-                        SocialLoginButton(iconName: "instagram", action: {})
-                    }
-                    .padding(.top, 24)
-                    
-                    Spacer()
-                    
-                    // Footer Section
-                    HStack(spacing: 4) {
-                        Text("Don't have an account?")
-                            .font(Font.AppFont.textSecondary)
-                            .foregroundColor(colorScheme == .light ? Color.Gray.gray1000 : Color.Gray.gray400)
-                        
-                        Button(action: {
-                            router.push(AuthRoute.register)
-                        }) {
-                            Text("Sign Up.")
-                                .font(Font.AppFont.textSecondary)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color.Teal.teal1000)
-                                .underline()
+                        VStack(spacing: 16) {
+                            CustomTextField(
+                                title: "Email Address",
+                                leadingIcon: "envelope",
+                                placeHolder: "elementary221b@gmail.com",
+                                textFieldValue: $email,
+                                state: $emailState
+                            )
+                            
+                            CustomTextField(
+                                title: "Password",
+                                leadingIcon: "lock",
+                                isPassword: true,
+                                placeHolder: "*****************",
+                                textFieldValue: $password,
+                                state: $passwordState
+                            )
                         }
+                        .padding(.top, 24)
+                        
+                        CustomPuffedButton(title: "Sign in") {
+                            // On real success from your AuthUseCase:
+                            flowCoordinator.didAuthenticate()
+                        }
+                        .padding(.top, 32)
+                        
+                        AuthDivider()
+                            .padding(.top, 32)
+                        
+                        HStack(spacing: 8) {
+                            SocialLoginButton(iconName: "facebook", action: {})
+                            SocialLoginButton(iconName: "google", action: {})
+                            SocialLoginButton(iconName: "instagram", action: {})
+                        }
+                        .padding(.top, 24)
+                        
+                        Spacer()
+                        
+                        // Footer Section
+                        HStack(spacing: 4) {
+                            Text("Don't have an account?")
+                                .font(Font.AppFont.textSecondary)
+                                .foregroundColor(colorScheme == .light ? Color.Gray.gray1000 : Color.Gray.gray1000)
+                            
+                            Button(action: {
+                                router.push(AuthRoute.register)
+                            }) {
+                                Text("Sign Up.")
+                                    .font(Font.AppFont.textSecondary)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color.Teal.teal1000)
+                                    .underline()
+                            }
+                        }
+                        .padding(.bottom, 48)
                     }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
             }
+            .navigationBarHidden(true)
+            .ignoresSafeArea()
         }
-        .navigationBarHidden(true)
-        .ignoresSafeArea(edges: .top)
     }
 }
