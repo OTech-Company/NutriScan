@@ -8,7 +8,8 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
-
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         VStack(spacing: 16) {
             Button("View Meal") {
@@ -18,6 +19,8 @@ struct HomeView: View {
                 router.presentSheet(HomeRoute.summary)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(colorScheme == .light ? .white : Color.Teal.teal1600)
         .navigationTitle("Home")
     }
 }

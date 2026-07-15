@@ -11,7 +11,8 @@ import SwiftUI
 struct LoginView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
-
+    @Environment(\.colorScheme) private var colorScheme
+    
     @State private var email = ""
     @State private var password = ""
 
@@ -34,5 +35,7 @@ struct LoginView: View {
         }
         .padding()
         .navigationTitle("Log In")
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(colorScheme == .light ? .white : Color.Teal.teal1600)
     }
 }

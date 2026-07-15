@@ -14,7 +14,7 @@ import SwiftUI
 /// vice versa.
 struct HomeFlowView: View {
     @StateObject private var router = AppRouter()
-
+    
     var body: some View {
         NavigationStack(path: $router.path) {
             HomeView()

@@ -11,7 +11,8 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
-
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         VStack(spacing: 16) {
             Button("Edit Profile") {
@@ -24,6 +25,8 @@ struct ProfileView: View {
                 flowCoordinator.logout()
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(colorScheme == .light ? .white : Color.Teal.teal1600)
         .navigationTitle("Profile")
     }
 }

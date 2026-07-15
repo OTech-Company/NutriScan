@@ -10,6 +10,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
+    @Environment(\.colorScheme) private var colorScheme
 
     @State private var email = ""
     @State private var password = ""
@@ -29,5 +30,7 @@ struct RegisterView: View {
         }
         .padding()
         .navigationTitle("Register")
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(colorScheme == .light ? .white : Color.Teal.teal1600)
     }
 }
