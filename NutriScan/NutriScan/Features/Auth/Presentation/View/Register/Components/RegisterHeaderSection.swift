@@ -17,7 +17,8 @@ struct RegisterHeaderSection: View {
 
             Text("Sign Up For Free!")
                 .font(Font.AppFont.title2)
-                .foregroundColor(.white)
+                .foregroundColor(Color.Teal.teal200)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.bottom, 36)
