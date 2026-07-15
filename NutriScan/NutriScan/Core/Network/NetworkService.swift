@@ -24,16 +24,16 @@ final class NetworkService: NetworkServiceProtocol {
             throw NetworkError.invalidURL
         }
         
-        var headers: [String: String] {
-            [
-                "X-Shopify-Access-Token": ShopifyConfig.accessToken,
-                "Content-Type": "application/json"
-            ]
-        }
+//        var headers: [String: String] {
+//            [
+//                "X-Shopify-Access-Token": ShopifyConfig.accessToken,
+//                "Content-Type": "application/json"
+//            ]
+//        }
 
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
-        request.allHTTPHeaderFields = headers
+//        request.allHTTPHeaderFields = headers
         
         if let body = endpoint.body {
             let encoder = JSONEncoder()
@@ -72,5 +72,17 @@ final class NetworkService: NetworkServiceProtocol {
         } catch {
             throw NetworkError.unknown(error)
         }
+    }
+}
+
+struct AnyEncodable: Encodable {
+    private let _encode: (Encoder) throws -> Void
+    
+    init(_ wrapped: some Encodable) {
+        _encode = wrapped.encode
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        try _encode(encoder)
     }
 }
