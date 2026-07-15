@@ -25,6 +25,5 @@ struct AuthDivider: View {
                 .fill(Color.Gray.gray800)
                 .frame(height: 1)
         }
-        .padding(.horizontal, 22)
     }
 }

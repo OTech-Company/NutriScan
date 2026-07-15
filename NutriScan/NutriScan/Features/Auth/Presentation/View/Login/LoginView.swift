@@ -24,7 +24,6 @@ struct LoginView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
                     AuthHeaderView()
-                    
                     VStack(spacing: 0) {
                         
                         VStack(spacing: 16) {
