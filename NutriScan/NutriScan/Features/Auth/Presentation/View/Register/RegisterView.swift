@@ -2,32 +2,55 @@
 //  RegisterView.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 14/07/2026.
-//
-
 
 import SwiftUI
 
 struct RegisterView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
+    @EnvironmentObject private var router: AppRouter
 
-    @State private var email = ""
-    @State private var password = ""
+    @State private var viewModel = RegisterViewModel()
 
     var body: some View {
-        VStack(spacing: 16) {
-            TextField("Email", text: $email)
-                .textFieldStyle(.roundedBorder)
-            SecureField("Password", text: $password)
-                .textFieldStyle(.roundedBorder)
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 0) {
 
-            Button("Create Account") {
-                // On real success from your AuthUseCase:
+                // MARK: Header
+                RegisterHeaderSection()
+
+                // MARK: Form Fields
+                RegisterFormFieldsSection(viewModel: viewModel)
+                    .padding(.top, 24)
+
+                Spacer(minLength: 32)
+
+                // MARK: Sign Up Button
+                RegisterSignUpButtonSection(
+                    onSignUp: handleSignUp,
+                    onSignIn: { router.pop() },
+                    isLoading: viewModel.isLoading
+                )
+                .padding(.top, 12)
+            }
+        }
+        .appAuthBackground()
+        .navigationBarHidden(true)
+        .ignoresSafeArea(edges: .top)
+    }
+
+    // MARK: - Sign Up
+    private func handleSignUp() {
+        Task {
+            let success = await viewModel.signUp()
+            if success {
                 flowCoordinator.didAuthenticate()
             }
-            .buttonStyle(.borderedProminent)
         }
-        .padding()
-        .navigationTitle("Register")
     }
+}
+
+#Preview {
+    RegisterView()
+        .environmentObject(AppFlowCoordinator())
+        .environmentObject(AppRouter())
 }
