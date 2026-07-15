@@ -55,14 +55,12 @@ final class RegisterViewModel {
 
 
     func signUp() async -> Bool {
-        
         guard validateAll() else { return false }
         
         isLoading = true
         
-        DispatchQueue.main.asyncAfter(deadline:.now() + 3) {
-            self.isLoading = false
-        }
+        // Simulate network latency (2 seconds)
+        try? await Task.sleep(for: .seconds(2))
         
         defer { isLoading = false }
         
