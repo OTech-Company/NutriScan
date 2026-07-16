@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2C730B0030092E71004399C5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
 		2C730B0330092ED1004399C5 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
+		D4AED0FD3009683200CB773F /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4AED0FD3009683200CB773F /* AppAuth in Frameworks */,
 				2C730B0330092ED1004399C5 /* Shimmer in Frameworks */,
 				2C730B0030092E71004399C5 /* Kingfisher in Frameworks */,
 			);
@@ -142,6 +144,7 @@
 			packageProductDependencies = (
 				2C730AFF30092E71004399C5 /* Kingfisher */,
 				2C730B0230092ED1004399C5 /* Shimmer */,
+				D4AED0FC3009683200CB773F /* AppAuth */,
 			);
 			productName = NutriScan;
 			productReference = 9F31AC073005B6AC008CB279 /* NutriScan.app */;
@@ -228,6 +231,7 @@
 			packageReferences = (
 				2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */,
+				D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9F31AC083005B6AC008CB279 /* Products */;
@@ -608,6 +612,14 @@
 				minimumVersion = 1.5.1;
 			};
 		};
+		D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -620,6 +632,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */;
 			productName = Shimmer;
+		};
+		D4AED0FC3009683200CB773F /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
