@@ -10,12 +10,15 @@ import SwiftUI
 
 enum AuthRoute: Route {
     case register
+    case forgotPassword
 
     @ViewBuilder
     var destination: some View {
         switch self {
         case .register:
             RegisterView()
+        case .forgotPassword:
+            ForgotPasswordView()
         }
     }
 }
