@@ -6,16 +6,21 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest # Uses a GitHub Mac runner with Xcode pre-installed
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build SwiftUI App
+      - name: Build SwiftUI App on Available Simulator
         run: |
+          # Dynamically fetch the first available iOS Simulator ID from the system
+          SIMULATOR_ID=$(xcrun simctl list devices available | grep -E "iPhone|iPad|Air" | grep -v "unavailable" | head -n 1 | awk -F '[()]' '{print $(NF-1)}')
+          
+          echo "Selected Simulator ID: $SIMULATOR_ID"
+          
           xcodebuild clean build \
             -project "NutriScan/NutriScan.xcodeproj" \
             -scheme "NutriScan" \
-            -destination "platform=iOS Simulator,name=iPhone 15" \
+            -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
             CODE_SIGNING_ALLOWED=NO
