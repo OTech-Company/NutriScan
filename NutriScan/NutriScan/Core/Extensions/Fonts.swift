@@ -24,5 +24,10 @@ extension Font {
         static let textSecondary = Font.custom("LexendDeca-Regular", size: 14)
         static let textCaption = Font.custom("LexendDeca-Light", size: 12)
         static let questrialRegular14 = Font.custom("Questrial-Regular", size: 14)
+        
+        // History Row specific fonts
+        static let plusJakartaSansSemiBold16 = Font.custom("PlusJakartaSans-SemiBold", size: 16)
+        static let lexendDecaRegular12 = Font.custom("LexendDeca-Regular", size: 12)
+        static let lexendDecaMedium11 = Font.custom("LexendDeca-Medium", size: 11)
     }
 }

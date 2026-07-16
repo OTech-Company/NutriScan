@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2C730B0030092E71004399C5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
+		2C730B0330092ED1004399C5 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9F31AC183005B6AE008CB279 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C730B0330092ED1004399C5 /* Shimmer in Frameworks */,
+				2C730B0030092E71004399C5 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,12 +92,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C730AFE30092E71004399C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9F31ABFE3005B6AC008CB279 = {
 			isa = PBXGroup;
 			children = (
 				9F31AC093005B6AC008CB279 /* NutriScan */,
 				9F31AC1A3005B6AE008CB279 /* NutriScanTests */,
 				9F31AC243005B6AE008CB279 /* NutriScanUITests */,
+				2C730AFE30092E71004399C5 /* Frameworks */,
 				9F31AC083005B6AC008CB279 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,6 +140,8 @@
 			);
 			name = NutriScan;
 			packageProductDependencies = (
+				2C730AFF30092E71004399C5 /* Kingfisher */,
+				2C730B0230092ED1004399C5 /* Shimmer */,
 			);
 			productName = NutriScan;
 			productReference = 9F31AC073005B6AC008CB279 /* NutriScan.app */;
@@ -208,6 +225,10 @@
 			);
 			mainGroup = 9F31ABFE3005B6AC008CB279;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9F31AC083005B6AC008CB279 /* Products */;
 			projectDirPath = "";
@@ -569,6 +590,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.10.0;
+			};
+		};
+		2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/swiftui-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2C730AFF30092E71004399C5 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		2C730B0230092ED1004399C5 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */;
+			productName = Shimmer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9F31ABFF3005B6AC008CB279 /* Project object */;
 }
