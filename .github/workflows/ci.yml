@@ -14,8 +14,25 @@ jobs:
 
       - name: Build SwiftUI App on Available Simulator
         run: |
-          xcodebuild clean build \
-            -project "NutriScan/NutriScan.xcodeproj" \
-            -scheme "NutriScan" \
-            -destination "platform=iOS Simulator,OS=latest,name=iPhone 17" \
-            CODE_SIGNING_ALLOWED=NO
+          # 1. Grab the first fully-functional and available Simulator ID
+          SIMULATOR_ID=$(xcrun simctl list devices available | grep -E "iPhone|iPad|Air" | grep -v "unavailable" | head -n 1 | awk -F '[()]' '{print $(NF-1)}')
+          
+          if [ -n "$SIMULATOR_ID" ]; then
+            echo "Selected Simulator ID: $SIMULATOR_ID"
+            
+            # 2. Build enforcing platform, ID, and matching architecture
+            xcodebuild clean build \
+              -project "NutriScan/NutriScan.xcodeproj" \
+              -scheme "NutriScan" \
+              -destination "platform=iOS Simulator,id=$SIMULATOR_ID,arch=arm64" \
+              CODE_SIGNING_ALLOWED=NO \
+              COMPILER_INDEX_STORE_ENABLE=NO
+          else
+            echo "No specific device ID found. Falling back to generic platform build."
+            xcodebuild clean build \
+              -project "NutriScan/NutriScan.xcodeproj" \
+              -scheme "NutriScan" \
+              -destination "generic/platform=iOS Simulator" \
+              CODE_SIGNING_ALLOWED=NO \
+              COMPILER_INDEX_STORE_ENABLE=NO
+          fi
