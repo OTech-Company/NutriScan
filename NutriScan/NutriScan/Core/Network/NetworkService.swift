@@ -23,17 +23,10 @@ final class NetworkService: NetworkServiceProtocol {
         guard let url = endpoint.fullURL else {
             throw NetworkError.invalidURL
         }
-        
-//        var headers: [String: String] {
-//            [
-//                "X-Shopify-Access-Token": ShopifyConfig.accessToken,
-//                "Content-Type": "application/json"
-//            ]
-//        }
 
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
-//        request.allHTTPHeaderFields = headers
+        request.allHTTPHeaderFields = endpoint.headers
         
         if let body = endpoint.body {
             let encoder = JSONEncoder()
