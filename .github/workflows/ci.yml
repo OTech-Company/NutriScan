@@ -6,16 +6,16 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest # Uses a GitHub Mac runner with Xcode pre-installed
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build SwiftUI App
+      - name: Build SwiftUI App on Available Simulator
         run: |
           xcodebuild clean build \
             -project "NutriScan/NutriScan.xcodeproj" \
             -scheme "NutriScan" \
-            -destination "generic/platform=iOS Simulator" \
+            -destination "platform=iOS Simulator" \
             CODE_SIGNING_ALLOWED=NO
