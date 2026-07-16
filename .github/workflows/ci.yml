@@ -17,5 +17,5 @@ jobs:
           xcodebuild clean build \
             -project "NutriScan/NutriScan.xcodeproj" \
             -scheme "NutriScan" \
-            -destination "platform=iOS Simulator,name=iPhone 15" \
+            -destination "generic/platform=iOS Simulator" \
             CODE_SIGNING_ALLOWED=NO
