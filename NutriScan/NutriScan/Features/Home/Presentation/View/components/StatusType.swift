@@ -1,19 +1,12 @@
 import SwiftUI
 
-enum StatusType {
-    case safe
-    case caution
-    case unsafe
+enum StatusType: String, Codable {
+    case safe = "SAFE"
+    case caution = "CAUTION"
+    case unsafe = "UNSAFE"
     
     var label: String {
-        switch self {
-        case .safe:
-            return "HEALTHY"
-        case .caution:
-            return "PROBIOTIC"
-        case .unsafe:
-            return "HIGH\nSUGAR"
-        }
+        return self.rawValue
     }
     
     var backgroundColor: Color {
