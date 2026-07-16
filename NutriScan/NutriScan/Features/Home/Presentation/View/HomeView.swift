@@ -1,23 +1,55 @@
 //
-//  empty.swift
+//  HomeView.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 13/07/2026.
-//
+
 import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
 
+    @State private var viewModel = HomeViewModel()
+
     var body: some View {
-        VStack(spacing: 16) {
-            Button("View Meal") {
-                router.push(HomeRoute.mealDetail(id: "123"))
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 20) {
+                // MARK: Greeting
+                HomeGreetingSection(userName: viewModel.userName)
+                    .padding(.top, 22)
+
+                // MARK: Daily Tip
+                HomeDailyTipSection(tipMessage: viewModel.dailyTip)
+                    .padding(.top,16)
+
+                // MARK: Scan CTA
+                HomeReadyToScanSection {
+                    // TODO: Navigate to scanner screen
+                }
+
+                // MARK: Recent History
+                RecentHistoryView(
+                    historyItems: viewModel.recentHistory,
+                    onViewAll: {
+                        // TODO: Navigate to full history
+                    }
+                )
             }
-            Button("See Summary") {
-                router.presentSheet(HomeRoute.summary)
-            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 32)
         }
-        .navigationTitle("Home")
+        .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
+        .navigationBarHidden(true)
     }
+}
+
+#Preview("Light") {
+    HomeView()
+        .environmentObject(AppRouter())
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark") {
+    HomeView()
+        .environmentObject(AppRouter())
+        .preferredColorScheme(.dark)
 }
