@@ -23,5 +23,6 @@ extension Font {
         static let textDefault = Font.custom("LexendDeca-Regular", size: 16)
         static let textSecondary = Font.custom("LexendDeca-Regular", size: 14)
         static let textCaption = Font.custom("LexendDeca-Light", size: 12)
+        static let questrialRegular14 = Font.custom("Questrial-Regular", size: 14)
     }
 }
