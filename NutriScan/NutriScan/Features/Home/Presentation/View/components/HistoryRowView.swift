@@ -11,75 +11,64 @@ struct HistoryRowView: View {
     let item: UiStateHistoryItem
     
     var body: some View {
-        HStack(spacing: 14) {
-            // Food Image / Icon Container
+        HStack(spacing: 8) {
+            // Food Image Placeholder or Loaded Image (Circle)
             Group {
                 if let imageName = item.imageName, !imageName.isEmpty ,  imageName.starts(with: "http") {
-                    CachedImage(
-                        urlString: imageName,
-                        failureImageName: "",
-                        contentMode: .fill
-                    )
-                  
+                        CachedImage(
+                            urlString: imageName,
+                            failureImageName: "",
+                            contentMode: .fill
+                        )
                 } else {
                     fallbackIconView
                 }
             }
-            .frame(width: 56, height: 56)
-            .clipShape(RoundedRectangle(cornerRadius: 14))
-            .overlay(
-                RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.Teal.teal500.opacity(0.15), lineWidth: 1)
-            )
-            .shadow(color: Color.black.opacity(0.04), radius: 4, x: 0, y: 2)
+            .frame(width: 64, height: 64)
+            .clipShape(Circle())
             
             // Text Content
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading) {
                 Text(item.title)
-                    .font(Font.AppFont.plusJakartaSansSemiBold16)
+                    .font(Font.AppFont.subtitle2)
                     .foregroundColor(Color.HomeSemantic.historyTitle)
-                    .lineLimit(1)
                 
-                HStack(spacing: 4) {
-                    Image(systemName: "calendar")
-                        .font(.system(size: 11))
-                        .foregroundColor(Color.HomeSemantic.historySubtitle)
-                    
-                    Text(item.scannedAt)
-                        .font(Font.AppFont.lexendDecaRegular12)
-                        .foregroundColor(Color.HomeSemantic.historySubtitle)
-                        .lineLimit(1)
-                }
+                Text(item.scannedAt)
+                    .font(Font.AppFont.textCaption)
+                    .foregroundColor(Color.HomeSemantic.historySubtitle)
             }
             
             Spacer()
             
-            // Status Tag Badge
-            HStack(spacing: 6) {
-                Image(systemName: badgeIcon(for: item.status))
-                    .font(.system(size: 11, weight: .bold))
+            // Status Icon & Tag
+            HStack(spacing: 8) {
+                if item.status == .safe {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(Color.HomeSemantic.tagSafeText)
+                        .font(.system(size: 20))
+                } else {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(item.status == .unsafe ? Color.Red.red500 : .yellow)
+                        .font(.system(size: 18))
+                }
                 
-                Text(item.status.label.replacingOccurrences(of: "\n", with: " "))
-                    .font(Font.AppFont.lexendDecaMedium11)
-                    .fontWeight(.bold)
-                    .lineLimit(1)
+                Text(item.status.label)
+                    .font(Font.AppFont.textCaption)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(
+                        Capsule()
+                            .fill(item.status.backgroundColor)
+                    )
+                    .foregroundColor(item.status.textColor)
             }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(
-                Capsule()
-                    .fill(item.status.backgroundColor)
-            )
-            .foregroundColor(item.status.textColor)
         }
         .padding(.horizontal, 16)
-        .padding(.vertical, 14)
+        .frame(height: 96)
         .background(Color.HomeSemantic.historyCardBackground)
-        .cornerRadius(18)
-        .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(Color.Teal.teal500.opacity(0.12), lineWidth: 1)
-        )
+        .cornerRadius(22)
         .customTealShadow()
     }
     
@@ -110,17 +99,6 @@ struct HistoryRowView: View {
             return "hand.raised.fill"
         case .unsafe:
             return "exclamationmark.octagon.fill"
-        }
-    }
-    
-    private func badgeIcon(for status: StatusType) -> String {
-        switch status {
-        case .safe:
-            return "checkmark.circle.fill"
-        case .caution:
-            return "exclamationmark.triangle.fill"
-        case .unsafe:
-            return "xmark.octagon.fill"
         }
     }
 }
