@@ -1,0 +1,21 @@
+name: Build Check
+
+on:
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build SwiftUI App on Available Simulator
+        run: |
+          xcodebuild clean build \
+            -project "NutriScan/NutriScan.xcodeproj" \
+            -scheme "NutriScan" \
+            -destination "platform=iOS Simulator" \
+            CODE_SIGNING_ALLOWED=NO
