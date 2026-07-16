@@ -1,30 +1,31 @@
 name: Build Check
-
 on:
   pull_request:
     branches: [ main, dev ]
-
 jobs:
   build:
     runs-on: macos-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Build SwiftUI App on Available Simulator
         run: |
-          # 1. Grab the first fully-functional and available Simulator ID
-          SIMULATOR_ID=$(xcrun simctl list devices available | grep -E "iPhone|iPad|Air" | grep -v "unavailable" | head -n 1 | awk -F '[()]' '{print $(NF-1)}')
-          
+          # 1. Grab the first available Simulator UUID (regex-based, not field-position-based)
+          SIMULATOR_ID=$(xcrun simctl list devices available \
+            | grep -E "iPhone|iPad" \
+            | grep -v "unavailable" \
+            | head -n 1 \
+            | grep -oE '\([0-9A-F-]{36}\)' \
+            | tr -d '()')
+
           if [ -n "$SIMULATOR_ID" ]; then
             echo "Selected Simulator ID: $SIMULATOR_ID"
-            
-            # 2. Build enforcing platform, ID, and matching architecture
+
+            # 2. Build against that specific simulator
             xcodebuild clean build \
               -project "NutriScan/NutriScan.xcodeproj" \
               -scheme "NutriScan" \
-              -destination "platform=iOS Simulator,id=$SIMULATOR_ID,arch=arm64" \
+              -destination "platform=iOS Simulator,id=$SIMULATOR_ID" \
               CODE_SIGNING_ALLOWED=NO \
               COMPILER_INDEX_STORE_ENABLE=NO
           else
