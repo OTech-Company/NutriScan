@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct WeightPickerScreen: View {
+struct WeightPickerView: View {
     @State private var weight: Int = 60
     @EnvironmentObject private var router: AppRouter
 
@@ -51,5 +51,5 @@ struct WeightPickerScreen: View {
 }
  
 #Preview {
-    WeightPickerScreen()
+    WeightPickerView()
 }

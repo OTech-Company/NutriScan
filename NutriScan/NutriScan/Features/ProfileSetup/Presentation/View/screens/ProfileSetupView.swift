@@ -27,14 +27,9 @@ struct ProfileSetupView: View {
                 .textFieldStyle(.roundedBorder)
 
             Button("Set go set up ur date of birth") {
-                router.push(ProfileSetupRoute.birthdatePicker)
+                router.push(ProfileSetupRoute.heightPicker)
             }
 
-            Button("Finish Setup") {
-                // On real success from your ProfileUseCase:
-                flowCoordinator.finishProfileSetup()
-            }
-            .buttonStyle(.borderedProminent)
         }
         .padding()
         .navigationTitle("Profile Setup")
