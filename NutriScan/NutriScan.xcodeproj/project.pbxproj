@@ -39,6 +39,7 @@
 		C5E4A1E9300578BD00D77222 /* Exceptions for "NutriScan" folder in "NutriScan" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Features/ProfileSetup/Data/DTOs/ProfileSetupEX26.txt,
 				Features/ProfileSetup/Data/Repositories/ProfileSetupEX1.txt,
 				Features/ProfileSetup/Data/Services/ProfileSetupEX3.txt,
 				Features/ProfileSetup/Domain/Entity/ProfileSetupEX4.txt,
@@ -55,6 +56,7 @@
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 9F31AC033005B6AC008CB279 /* Sources */;
 			membershipExceptions = (
+				Features/ProfileSetup/Data/DTOs/ProfileSetupEX26.txt,
 				Features/ProfileSetup/Data/Repositories/ProfileSetupEX1.txt,
 				Features/ProfileSetup/Data/Services/ProfileSetupEX3.txt,
 				Features/ProfileSetup/Domain/Entity/ProfileSetupEX4.txt,

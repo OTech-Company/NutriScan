@@ -8,16 +8,16 @@
 
 import SwiftUI
 
-//struct HomeFlowView: View {
-//    @StateObject private var router = AppRouter()
-//
-//    var body: some View {
-//        NavigationStack(path: $router.path) {
-//            HomeView()
-//                .navigationDestination(for: AnyRoute.self) { route in
-//                    route.view()
-//                }
-//        }
-//        .environmentObject(router)
-//    }
-//}
+struct ProfileSetupFlowView: View {
+    @StateObject private var router = AppRouter()
+
+    var body: some View {
+        NavigationStack(path: $router.path) {
+            ProfileSetupView()
+                .navigationDestination(for: AnyRoute.self) { route in
+                    route.view()
+                }
+        }
+        .environmentObject(router)
+    }
+}
