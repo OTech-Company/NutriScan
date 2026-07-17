@@ -43,100 +43,10 @@ extension Color {
         static let teal1400 = Color(red: 11 / 255.0, green: 95 / 255.0, blue: 101 / 255.0)
         static let teal1500 = Color(red: 10 / 255.0, green: 84 / 255.0, blue: 90 / 255.0)
         static let teal1600 = Color(red: 15 / 255.0, green: 71 / 255.0, blue: 74 / 255.0)
-        static let tealMuted = Color(red: 96 / 255.0, green: 166 / 255.0, blue: 161 / 255.0)
     }
     
     struct Red {
         static let red100 = Color(red: 255 / 255.0, green: 241 / 255.0, blue: 243 / 255.0)
         static let red500 = Color(red: 250 / 255.0, green: 77 / 255.0, blue: 94 / 255.0) 
-    }
-    
-    struct Navy {
-        static let navyDark = Color(red: 36 / 255.0, green: 46 / 255.0, blue: 73 / 255.0) // #242E49
-        static let slateBlue = Color(red: 93 / 255.0, green: 106 / 255.0, blue: 133 / 255.0) // #5D6A85
-    }
-}
-
-// MARK: - Home Feature Semantic Colors
-extension Color {
-    enum HomeSemantic {
-        // General Background
-        static let homeBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600)
-        
-        // Greeting Section
-        static let greetingTitle = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400)
-        static let greetingSubtitle = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal400)
-        static let greetingBell = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal400)
-        
-        // Daily Health Tip Section
-        static let tipIconBackground = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1300)
-        static let tipIcon = Color(light: Color.Teal.teal800, dark: Color.Teal.teal400)
-        static let tipLabel = Color(light: Color.Teal.teal800, dark: Color.Teal.teal400)
-        static let tipMessage = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal200)
-        static let tipBorder = Color(light: Color.Teal.teal400, dark: Color.Teal.teal800)
-        static let tipBackgroundStart = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1400)
-        static let tipBackgroundEnd = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1500)
-        
-        // Ready To Scan Section
-        static let scanCardBackground = Color(light: .white, dark: Color.Teal.teal1400)
-        static let scanTitle = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal100)
-        static let scanSubtitle = Color(light: Color.Teal.tealMuted, dark: Color.Teal.teal400)
-        static let scanIcon = Color(light: Color.Teal.teal800, dark: Color.Teal.teal400)
-        static let scanBorder = Color(light: Color.Teal.teal500, dark: Color.Teal.teal800)
-        
-        // Recent History Section
-        static let historyCardBackground = Color(light: .white, dark: Color.Teal.teal1400)
-        static let historyTitle = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal100)
-        static let historySubtitle = Color(light: Color.Gray.gray700, dark: Color.Teal.teal400)
-        static let historyHeaderTitle = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal100)
-        static let historyHeaderAction = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal400)
-        
-        // Tags
-        static let tagSafeBackground = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1300)
-        static let tagSafeText = Color(light: Color.Teal.teal800, dark: Color.Teal.teal400)
-    }
-}
-
-// MARK: - Forgot Password Semantic Colors
-extension Color {
-    struct ForgotPasswordSemantic {
-        // Header
-        static let headerTitle = Color(light: Color.Teal.teal300, dark: Color.Teal.teal300)
-        static let headerSubtitle = Color(light: Color.Gray.gray100, dark: Color.Gray.gray100)
-        
-        // Options
-        static let optionBackground = Color(light: .white, dark: Color.Teal.teal1400)
-        static let optionSelectedBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1500)
-        static let optionBorder = Color(light: Color.Teal.teal400.opacity(0.1), dark: Color.Teal.teal1300)
-        static let optionSelectedBorder = Color(light: Color.Teal.teal600, dark: Color.Teal.teal400)
-        
-        // Option Icon Container
-        static let iconContainerBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1300.opacity(0.6))
-        static let iconContainerSelectedBackground = Color(light: Color.Teal.teal400, dark: Color.Teal.teal600)
-        
-        // Option Icon
-        static let iconColor = Color(light: Color.Gray.gray1000, dark: Color.Teal.teal400)
-        static let iconSelectedColor = Color(light: Color.Teal.teal1000, dark: Color.white)
-        
-        // Option Title
-        static let optionTitleColor = Color(light: Color.Navy.navyDark, dark: Color.Teal.teal100)
-        static let optionTitleSelectedColor = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400)
-        
-        // Option Subtitle
-        static let optionSubtitleColor = Color(light: Color.Navy.slateBlue, dark: Color.Teal.teal400)
-        static let optionSubtitleSelectedColor = Color(light: Color.Gray.gray1000, dark: Color.Teal.teal300)
-        
-        // Arrow
-        static let arrowColor = Color(light: Color.Gray.gray1000, dark: Color.Teal.teal1300)
-        static let arrowSelectedColor = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400)
-    }
-}
-
-// MARK: - Light/Dark Dynamic Color Initializer
-extension Color {
-    init(light: Color, dark: Color) {
-        self.init(uiColor: UIColor { traitCollection in
-            traitCollection.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
-        })
     }
 }
