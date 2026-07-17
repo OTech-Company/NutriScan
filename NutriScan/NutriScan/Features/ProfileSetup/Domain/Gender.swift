@@ -4,7 +4,7 @@
 //
 //  Created by Mina_Wagdy on 17/07/2026.
 //
-//
+
 import SwiftUI
 
 enum Gender: String, CaseIterable {
@@ -18,11 +18,13 @@ enum Gender: String, CaseIterable {
         }
     }
 
-    var imageName: String {
-        switch self {
-        case .male: return "male"
-        case .female: return "female"
+    func imageName(for colorScheme: ColorScheme) -> String {
+        switch (self, colorScheme) {
+        case (.male, .light):   return "maleLight"
+        case (.male, .dark):    return "maleDark"
+        case (.female, .light): return "femaleLight"
+        case (.female, .dark):  return "femaleDark"
+        default:                return "maleLight" // exhaustive fallback, .dark/.light are the only real cases
         }
     }
 }
-

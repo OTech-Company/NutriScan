@@ -4,30 +4,20 @@
 //
 //  Created by Mina_Wagdy on 17/07/2026.
 //
-//
-//  GenderSelectionCard.swift
-//  NutriScan
-//
-//  Created by Mina_Wagdy on 17/07/2026.
-//
-//
-//  GenderSelectionCard.swift
-//  NutriScan
-//
-//  Created by Mina_Wagdy on 17/07/2026.
-//
+
 import SwiftUI
 
 struct GenderSelectionCard: View {
-    let title: String
-    let image: Image
+    let gender: Gender
     let isSelected: Bool
     let action: () -> Void
+
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Button(action: action) {
             VStack(spacing: GenderSelectionCardConstants.internalSpacing) {
-                image
+                Image(gender.imageName(for: colorScheme))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(
@@ -35,13 +25,13 @@ struct GenderSelectionCard: View {
                         height: GenderSelectionCardConstants.imageSize
                     )
 
-                Text(title)
+                Text(gender.title)
                     .font(
                         isSelected
                             ? Font.AppFont.title3 : Font.AppFont.subtitle2
                     )
                     .foregroundColor(
-                        title == "Male"
+                        gender == .male
                             ? Color.ProfileSetupSemantic.maleCardText
                             : Color.ProfileSetupSemantic.femaleCardText
                     )
@@ -72,7 +62,7 @@ struct GenderSelectionCard: View {
                 isSelected ? GenderSelectionCardConstants.selectedScale : 1.0
             )
             .fixedSize()
-            .compositingGroup()  // ensures scale applies to the rendered card as one flattened unit, not per-subview
+            .compositingGroup()
         }
         .buttonStyle(.plain)
         .animation(
@@ -94,11 +84,8 @@ private struct SelectedCardShadow: ViewModifier {
 
 #Preview("Light Mode") {
     HStack(spacing: 22) {
-        GenderSelectionCard(
-            title: "Female", image: Image("female"), isSelected: false,
-            action: {})
-        GenderSelectionCard(
-            title: "Male", image: Image("male"), isSelected: true, action: {})
+        GenderSelectionCard(gender: .female, isSelected: false, action: {})
+        GenderSelectionCard(gender: .male, isSelected: true, action: {})
     }
     .padding()
     .background(Color.Teal.teal100)
@@ -107,11 +94,8 @@ private struct SelectedCardShadow: ViewModifier {
 
 #Preview("Dark Mode") {
     HStack(spacing: 22) {
-        GenderSelectionCard(
-            title: "Female", image: Image("female"), isSelected: false,
-            action: {})
-        GenderSelectionCard(
-            title: "Male", image: Image("male"), isSelected: true, action: {})
+        GenderSelectionCard(gender: .female, isSelected: false, action: {})
+        GenderSelectionCard(gender: .male, isSelected: true, action: {})
     }
     .padding()
     .background(Color.Teal.teal1600)

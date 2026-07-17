@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct GenderSelectionRow: View {
     @Binding var selectedGender: Gender
 
@@ -27,8 +26,7 @@ struct GenderSelectionRow: View {
             }
 
             GenderSelectionCard(
-                title: gender.title,
-                image: Image(gender.imageName),
+                gender: gender,
                 isSelected: selectedGender == gender,
                 action: { selectedGender = gender }
             )
