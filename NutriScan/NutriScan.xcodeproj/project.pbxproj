@@ -39,17 +39,37 @@
 		C5E4A1E9300578BD00D77222 /* Exceptions for "NutriScan" folder in "NutriScan" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Features/ProfileSetup/Data/Repositories/ProfileSetupEX1.txt,
+				Features/ProfileSetup/Data/Services/ProfileSetupEX3.txt,
+				Features/ProfileSetup/Domain/Entity/ProfileSetupEX4.txt,
+				Features/ProfileSetup/Domain/Repositories/ProfileSetupEX5.txt,
+				Features/ProfileSetup/Domain/UseCase/ProfileSetupEX6.txt,
 				Info.plist,
 			);
 			target = 9F31AC063005B6AC008CB279 /* NutriScan */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		6F8319D0300A98E7000C7659 /* Exceptions for "NutriScan" folder in "Compile Sources" phase from "NutriScan" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 9F31AC033005B6AC008CB279 /* Sources */;
+			membershipExceptions = (
+				Features/ProfileSetup/Data/Repositories/ProfileSetupEX1.txt,
+				Features/ProfileSetup/Data/Services/ProfileSetupEX3.txt,
+				Features/ProfileSetup/Domain/Entity/ProfileSetupEX4.txt,
+				Features/ProfileSetup/Domain/Repositories/ProfileSetupEX5.txt,
+				Features/ProfileSetup/Domain/UseCase/ProfileSetupEX6.txt,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9F31AC093005B6AC008CB279 /* NutriScan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				C5E4A1E9300578BD00D77222 /* Exceptions for "NutriScan" folder in "NutriScan" target */,
+				6F8319D0300A98E7000C7659 /* Exceptions for "NutriScan" folder in "Compile Sources" phase from "NutriScan" target */,
 			);
 			path = NutriScan;
 			sourceTree = "<group>";
