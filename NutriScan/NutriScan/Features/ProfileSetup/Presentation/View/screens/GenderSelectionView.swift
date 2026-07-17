@@ -13,39 +13,34 @@ struct GenderSelectionView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            (
-                Text("\(viewModel.currentStep)")
-                    .foregroundColor(Color.Teal.teal1000)
-                +
-                Text("/")
-                    .foregroundColor(Color.Gray.gray600)
-                +
-                Text("\(viewModel.totalSteps)")
-                    .foregroundColor(Color.Gray.gray400)
-            )
+            (Text("\(viewModel.currentStep)")
+                .foregroundColor(Color.Teal.teal1000)
+                + Text("/")
+                .foregroundColor(Color.Gray.gray600)
+                + Text("\(viewModel.totalSteps)")
+                .foregroundColor(Color.Gray.gray400))
                 .padding(.top, 128)
                 .font(Font.AppFont.textSecondary)
 
-            (
-                Text("What is You ")
-                    .foregroundColor(Color.Gray.gray1600)
-                +
-                Text("Gender?")
-                    .foregroundColor(Color.Teal.teal1000)
-            )
-            .font(Font.AppFont.title3)
-            .multilineTextAlignment(.center)
-            .padding(.top, 8)
-
-            Text("We'll use this information to personalize your NutriScan experience.")
-                .font(Font.AppFont.textDefault)
-                .foregroundColor(Color.Gray.gray700)
+            (Text("What is You ")
+                .foregroundColor(Color.Gray.gray1600)
+                + Text("Gender?")
+                .foregroundColor(Color.Teal.teal1000))
+                .font(Font.AppFont.title3)
                 .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
                 .padding(.top, 8)
 
+            Text(
+                "We'll use this information to personalize your NutriScan experience."
+            )
+            .font(Font.AppFont.textDefault)
+            .foregroundColor(Color.Gray.gray700)
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, 40)
+            .padding(.top, 8)
+
             Spacer(minLength: 60)
-            
+
             GenderSelectionRow(selectedGender: $viewModel.selectedGender)
 
             Spacer()
@@ -56,7 +51,7 @@ struct GenderSelectionView: View {
             .padding(.bottom, 24)
         }
         .frame(maxWidth: .infinity)
-        .appAuthBackground()
+        .appProfileSetupBackground()
         .navigationBarHidden(true)
     }
 }
