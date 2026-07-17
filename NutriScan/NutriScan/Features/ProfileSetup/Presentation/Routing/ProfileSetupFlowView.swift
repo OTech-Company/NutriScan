@@ -13,7 +13,7 @@ struct ProfileSetupFlowView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ProfileSetupView()
+            WeightPickerScreen()
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }
