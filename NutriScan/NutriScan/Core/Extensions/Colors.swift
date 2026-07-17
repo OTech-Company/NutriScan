@@ -99,3 +99,18 @@ extension Color {
         })
     }
 }
+
+extension Color {
+    enum ProfileSetupSemantic {
+        // Female Card (Unselected)
+        static let femaleCardBackground = Color(light: Color.Red.red100, dark: Color.Teal.teal1300)
+        static let femaleCardText = Color(light: Color.Red.red500, dark: Color.Red.red100)
+
+        // Male Card (Selected)
+        static let maleCardBackground = Color(light: Color.Teal.teal600, dark: Color.Teal.teal500)
+        static let maleCardText = Color.Teal.teal1600 // static, both modes
+
+        // Selection indicator (triangle above selected card)
+        static let selectionIndicator = Color(light: Color.Teal.teal800, dark: Color.Teal.teal500)
+    }
+}
