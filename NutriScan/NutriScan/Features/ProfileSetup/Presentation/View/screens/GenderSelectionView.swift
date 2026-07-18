@@ -26,7 +26,7 @@ struct GenderSelectionView: View {
                 .foregroundColor(Color.Gray.gray1600)
                 + Text("Gender?")
                 .foregroundColor(Color.Teal.teal1000))
-                .font(Font.AppFont.title3)
+                .font(Font.AppFont.title2)
                 .multilineTextAlignment(.center)
                 .padding(.top, 8)
 
