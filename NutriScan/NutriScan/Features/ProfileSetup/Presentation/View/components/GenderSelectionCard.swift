@@ -49,7 +49,7 @@ struct GenderSelectionCard: View {
                     : GenderSelectionCardConstants.unselectedHeight
             )
             .background(
-                isSelected
+                gender == .male
                     ? Color.ProfileSetupSemantic.maleCardBackground
                     : Color.ProfileSetupSemantic.femaleCardBackground
             )

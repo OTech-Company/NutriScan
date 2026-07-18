@@ -23,7 +23,7 @@ struct GenderSelectionView: View {
                 .font(Font.AppFont.textSecondary)
 
             (Text("What is You ")
-                .foregroundColor(Color.Gray.gray1600)
+                .foregroundColor(Color.ProfileSetupSemantic.whatIsYourText)
                 + Text("Gender?")
                 .foregroundColor(Color.Teal.teal1000))
                 .font(Font.AppFont.title2)

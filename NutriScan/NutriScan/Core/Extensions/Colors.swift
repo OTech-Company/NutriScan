@@ -112,5 +112,10 @@ extension Color {
 
         // Selection indicator (triangle above selected card)
         static let selectionIndicator = Color(light: Color.Teal.teal800, dark: Color.Teal.teal500)
+        
+        static let whatIsYourText = Color(
+            light: Color.Gray.gray1600,
+            dark: Color.Teal.teal100
+        )
     }
 }
