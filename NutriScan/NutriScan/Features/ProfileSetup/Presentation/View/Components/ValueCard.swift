@@ -26,7 +26,7 @@ struct ValueCard: View {
                 .scaledToFit()
                 .frame(width: 12, height: 10)
                 .rotationEffect(.degrees(180))
-                .foregroundStyle(Color.Teal.teal500)
+                .foregroundStyle(Color.ProfileSetupSemantic.accent)
 
             HStack(spacing: style == .boxed ? 16 : 18) {
                 ForEach((-sideCount)...sideCount, id: \.self) { offset in
@@ -45,16 +45,16 @@ struct ValueCard: View {
 
             Text("\(number)")
                 .font(.system(size: 34, weight: .bold))
-                .foregroundStyle(Color.Gray.gray1600)
+                .foregroundStyle(Color.ProfileSetupSemantic.primaryText)
                 .frame(
                     width: 120,
                     height: style == .boxed ? 180 : 118
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 24)
-                        .fill(Color.Teal.teal500)
+                        .fill(Color.ProfileSetupSemantic.selectedCard)
                         .shadow(
-                            color: Color.Teal.teal500.opacity(style == .plain ? 0.35 : 0.2),
+                            color: Color.ProfileSetupSemantic.selectedCard.opacity(style == .plain ? 0.35 : 0.2),
                             radius: style == .plain ? 18 : 8
                         )
                 )
@@ -68,11 +68,11 @@ struct ValueCard: View {
 
                 Text("\(number)")
                     .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(Color.Gray.gray500)
+                    .foregroundStyle(Color.ProfileSetupSemantic.secondaryText)
                     .frame(width: 91, height: 132)
                     .background(
                         RoundedRectangle(cornerRadius: 24)
-                            .fill(Color.Gray.gray100)
+                            .fill(Color.ProfileSetupSemantic.unselectedCard)
                     )
                     .opacity(opacity(for: offset))
 
@@ -80,7 +80,7 @@ struct ValueCard: View {
 
                 Text("\(number)")
                     .font(.system(size: 40, weight: .semibold))
-                    .foregroundStyle(Color.Gray.gray500)
+                    .foregroundStyle(Color.ProfileSetupSemantic.secondaryText)
                     .frame(width: 72)
                     .opacity(opacity(for: offset))
             }
@@ -103,7 +103,8 @@ struct ValueCard: View {
 
 #Preview("Plain") {
     ZStack {
-        Color.white.ignoresSafeArea()
+        Color.ProfileSetupSemantic.background
+            .ignoresSafeArea()
 
         ValueCard(
             value: 183,
@@ -115,7 +116,8 @@ struct ValueCard: View {
 
 #Preview("Boxed") {
     ZStack {
-        Color.white.ignoresSafeArea()
+        Color.ProfileSetupSemantic.background
+            .ignoresSafeArea()
 
         ValueCard(
             value: 72,

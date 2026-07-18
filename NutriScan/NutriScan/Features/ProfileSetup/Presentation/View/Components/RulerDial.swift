@@ -121,11 +121,17 @@ struct RulerDial: View {
                         state = value.translation.width
                     }
                     .onChanged { gesture in
+                        if gesture.translation == .zero {
+                            Haptics.prepareSelection()
+                        }
+
                         let newOffset = Int(round(-gesture.translation.width / pointsPerTick))
                         let computed = lastValue + newOffset
                         let bounded = max(effectiveRange.lowerBound,
                                           min(effectiveRange.upperBound, computed))
                         if value != bounded {
+                            
+                            Haptics.selectionChanged()
                             value = bounded
                         }
                     }

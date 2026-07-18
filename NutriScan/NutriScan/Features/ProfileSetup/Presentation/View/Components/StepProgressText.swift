@@ -7,13 +7,28 @@
 
 import SwiftUI
 
-// Progress Indicator
 struct StepProgressText: View {
+
     var current: Int
     var total: Int
+
     var body: some View {
-        Text("\(current)/\(total)")
-            .font(.subheadline)
-            .foregroundColor(Color.Teal.teal900)
+        HStack(spacing: 0) {
+            Text("\(current)")
+                .foregroundStyle(Color.ProfileSetupSemantic.stepCurrent)
+
+            Text("/\(total)")
+                .foregroundStyle(Color.ProfileSetupSemantic.stepRemaining)
+        }
+        .font(.subheadline)
+    }
+}
+
+#Preview {
+    ZStack {
+        Color.ProfileSetupSemantic.background
+            .ignoresSafeArea()
+
+        StepProgressText(current: 3, total: 4)
     }
 }

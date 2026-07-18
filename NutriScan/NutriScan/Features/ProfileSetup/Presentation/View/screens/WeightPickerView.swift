@@ -25,7 +25,7 @@ struct WeightPickerView: View {
             TitleBlock(
                 segments: [
                     TitleSegment("Your current "),
-                    TitleSegment("weight", color: Color.Teal.teal900)
+                    TitleSegment("weight",color: Color.ProfileSetupSemantic.accent)
                 ],
                 subtitle: "Your weight helps us estimate your daily \n calorie needs more accurately."
             )
@@ -46,7 +46,10 @@ struct WeightPickerView: View {
             }
         }
         .padding(.top, 12)
-        .background(Color.white.ignoresSafeArea())
+        .background(
+            Color.ProfileSetupSemantic.background
+                .ignoresSafeArea()
+        )
     }
 }
  

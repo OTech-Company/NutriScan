@@ -8,38 +8,49 @@
 
 import SwiftUI
 
-
 struct HeightPickerView: View {
+
     @State private var height: Int = 170
+
     @EnvironmentObject private var router: AppRouter
 
     var body: some View {
         VStack(spacing: 28) {
+
             HStack {
 //                BackButton(action: {})
                 Spacer()
             }
             .padding(.horizontal, 20)
- 
+
             StepProgressText(current: 3, total: 4)
- 
+
             TitleBlock(
                 segments: [
                     TitleSegment("How "),
-                    TitleSegment("tall ", color: Color.Teal.teal900) ,
+                    TitleSegment(
+                        "tall ",
+                        color: Color.ProfileSetupSemantic.accent
+                    ),
                     TitleSegment("are you?")
                 ],
-                subtitle: "We'll use your height to personalize your \n nutrition insights and calorie calculations."
+                subtitle: "We'll use your height to personalize your\nnutrition insights and calorie calculations."
             )
- 
-            Spacer(minLength: 10)
- 
 
-            ValueCard(value: height, style: .boxed ,sideCount: 2)
+            Spacer(minLength: 10)
+
+            ValueCard(
+                value: height,
+                style: .boxed,
+                sideCount: 2
+            )
 
             Spacer()
-            
-            RulerDial(value: $height, unit: .height)
+
+            RulerDial(
+                value: $height,
+                unit: .height
+            )
 
             Spacer()
 
@@ -48,10 +59,13 @@ struct HeightPickerView: View {
             }
         }
         .padding(.top, 12)
-        .background(Color.white.ignoresSafeArea())
+        .background(
+            Color.ProfileSetupSemantic.background
+                .ignoresSafeArea()
+        )
     }
 }
- 
+
 #Preview {
     HeightPickerView()
 }
