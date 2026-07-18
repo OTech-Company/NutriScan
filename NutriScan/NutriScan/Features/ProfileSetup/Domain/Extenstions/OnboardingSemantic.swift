@@ -23,24 +23,24 @@ extension Color {
         )
 
         static let accent = Color(
-            light: Color.Teal.teal900,
-            dark: Color.Teal.teal500
+            light: Color.Teal.teal1000,
+            dark: Color.Teal.teal1000
         )
 
         static let subtitle = Color(
-            light: Color.Gray.gray800,
-            dark: Color.Teal.teal400
+            light: Color.Gray.gray700,
+            dark: Color.Teal.teal1300
         )
 
         // Step Indicator
         static let stepCurrent = Color(
-            light: Color.Teal.teal1000, // was teal900
-            dark: Color.Teal.teal1000 // was teal500
+            light: Color.Teal.teal1000,
+            dark: Color.Teal.teal1000
         )
 
         static let stepRemaining = Color(
-            light: Color.Gray.gray600, // was gray700
-            dark: Color.Teal.teal300 // was teal1400
+            light: Color.Gray.gray600,
+            dark: Color.Teal.teal300 
         )
 
         // Navigation

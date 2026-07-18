@@ -10,7 +10,7 @@
 import SwiftUI
 
 
-struct HealthProfileView: View {
+struct HealthProfileSetupView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 

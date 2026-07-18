@@ -22,8 +22,9 @@ struct TitleBlock: View {
     var segments: [TitleSegment]
     var subtitle: String
 
-    var titleFont: Font = .system(size: 30, weight: .bold)
-
+    var titleFont: Font = Font.AppFont.title2
+    var descriptionFont: Font = Font.AppFont.textDefault
+    
     var defaultTitleColor: Color = Color.ProfileSetupSemantic.title
     var subtitleColor: Color = Color.ProfileSetupSemantic.subtitle
 
@@ -39,7 +40,7 @@ struct TitleBlock: View {
                 .font(titleFont)
 
             Text(subtitle)
-                .font(.subheadline)
+                .font(descriptionFont)
                 .foregroundColor(subtitleColor)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
