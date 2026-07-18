@@ -13,16 +13,13 @@ struct GenderSelectionView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            (Text("\(viewModel.currentStep)")
-                .foregroundColor(Color.Teal.teal1000)
-                + Text("/")
-                .foregroundColor(Color.Gray.gray600)
-                + Text("\(viewModel.totalSteps)")
-                .foregroundColor(Color.Gray.gray400))
+            StepProgressText(
+                current: viewModel.currentStep,
+                total: viewModel.totalSteps
+            )
                 .padding(.top, 128)
-                .font(Font.AppFont.textSecondary)
 
-            (Text("What is You ")
+            (Text("What is Your ")
                 .foregroundColor(Color.ProfileSetupSemantic.whatIsYourText)
                 + Text("Gender?")
                 .foregroundColor(Color.Teal.teal1000))

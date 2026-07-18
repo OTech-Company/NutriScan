@@ -34,13 +34,13 @@ extension Color {
 
         // Step Indicator
         static let stepCurrent = Color(
-            light: Color.Teal.teal900,
-            dark: Color.Teal.teal500
+            light: Color.Teal.teal1000, // was teal900
+            dark: Color.Teal.teal1000 // was teal500
         )
 
         static let stepRemaining = Color(
-            light: Color.Gray.gray700,
-            dark: Color.Teal.teal400
+            light: Color.Gray.gray600, // was gray700
+            dark: Color.Teal.teal300 // was teal1400
         )
 
         // Navigation
@@ -100,6 +100,22 @@ extension Color {
         static let primaryButtonText = Color(
             light: .white,
             dark: .white
+        )
+        // Gender Screen
+        // Female Card (Unselected)
+        static let femaleCardBackground = Color(light: Color.Red.red100, dark: Color.Teal.teal1400)
+        static let femaleCardText = Color(light: Color.Red.red500, dark: Color.Red.red100)
+
+        // Male Card (Selected)
+        static let maleCardBackground = Color.Teal.teal500
+        static let maleCardText = Color.Teal.teal1600 // static, both modes
+
+        // Selection indicator (triangle above selected card)
+        static let selectionIndicator = Color(light: Color.Teal.teal800, dark: Color.Teal.teal500)
+        
+        static let whatIsYourText = Color(
+            light: Color.Gray.gray1600,
+            dark: Color.Teal.teal100
         )
     }
 }
