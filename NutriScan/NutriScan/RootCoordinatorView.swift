@@ -29,6 +29,8 @@ struct RootCoordinatorView: View {
                 OnboardingFlowView()
             case .auth:
                 AuthFlowView()
+            case .profileSetup:
+                ProfileSetupFlowView()
             case .main:
                 MainTabView()
             }
