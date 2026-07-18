@@ -29,5 +29,15 @@ extension Font {
         static let plusJakartaSansSemiBold16 = Font.custom("PlusJakartaSans-SemiBold", size: 16)
         static let lexendDecaRegular12 = Font.custom("LexendDeca-Regular", size: 12)
         static let lexendDecaMedium11 = Font.custom("LexendDeca-Medium", size: 11)
+        
+        // Forgot Password specific fonts
+        static let plusJakartaSansBold28 = Font.custom("PlusJakartaSans-Bold", size: 28)
+        static let plusJakartaSansMedium16 = Font.custom("PlusJakartaSans-Medium", size: 16)
+        static let plusJakartaSansSemiBold18 = Font.custom("PlusJakartaSans-SemiBold", size: 18)
+        static let lexendDecaRegular12_FP = Font.custom("LexendDeca-Regular", size: 12) 
+        static let plusJakartaSansBold24 = Font.custom("PlusJakartaSans-Bold", size: 24)
+        static let lexendDecaMedium16 = Font.custom("LexendDeca-Medium", size: 16)
+        static let plusJakartaSansMedium18 = Font.custom("PlusJakartaSans-Medium", size: 18)
+        static let lexendDecaLight12 = Font.custom("LexendDeca-Light", size: 12)
     }
 }

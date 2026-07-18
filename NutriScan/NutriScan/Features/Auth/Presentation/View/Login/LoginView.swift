@@ -22,8 +22,21 @@ struct LoginView: View {
                     LoginFormFieldsSection(viewModel: viewModel)
                         .padding(.top, 24)
                     
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            router.push(AuthRoute.forgotPassword)
+                        }) {
+                            Text("Forgot Password?")
+                                .font(Font.AppFont.textSecondary)
+                                .fontWeight(.medium)
+                                .foregroundColor(Color.Teal.teal1000)
+                        }
+                    }
+                    .padding(.top, 12)
+                    
                     CustomPuffedButton(title: "Sign in", action: handleSignIn, isLoading: viewModel.isLoading)
-                        .padding(.top, 32)
+                        .padding(.top, 24)
                     
                     AuthDivider()
                         .padding(.top, 32)
