@@ -20,7 +20,7 @@ struct StepProgressText: View {
             Text("/\(total)")
                 .foregroundStyle(Color.ProfileSetupSemantic.stepRemaining)
         }
-        .font(.subheadline)
+        .font(Font.AppFont.textSecondary)
     }
 }
 

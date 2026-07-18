@@ -11,10 +11,13 @@ enum ProfileSetupRoute: Route {
     case birthdatePicker
     case weightPicker
     case heightPicker
+    case genderPicker
     
     @ViewBuilder
     var destination: some View {
         switch self {
+        case .genderPicker:
+            GenderPickerView()
         case .birthdatePicker:
             birthdatePickerView()
         case .healthProfile:

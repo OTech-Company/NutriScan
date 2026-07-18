@@ -5,7 +5,6 @@
 //  Created by Osama Hosam on 14/07/2026.
 //
 
-
 import SwiftUI
 
 struct ProfileSetupFlowView: View {
@@ -13,7 +12,7 @@ struct ProfileSetupFlowView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ProfileSetupView()
+            GenderPickerView()
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }
