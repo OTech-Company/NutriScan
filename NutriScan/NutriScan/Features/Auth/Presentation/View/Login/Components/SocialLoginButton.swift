@@ -10,7 +10,6 @@ import SwiftUI
 struct SocialLoginButton: View {
     let iconName: String
     let action: () -> Void
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         Button(action: action) {
@@ -19,12 +18,12 @@ struct SocialLoginButton: View {
                 .renderingMode(.template)
                 .scaledToFit()
                 .frame(width: 24, height: 24)
-                .foregroundStyle(colorScheme == .light ? Color.Teal.teal1600 : Color.Teal.teal400)
+                .foregroundStyle(Color.LoginSemantic.socialButtonIcon)
                 .frame(width: 56, height: 56) 
                 .background(Color.clear)
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(colorScheme == .light ? Color.Gray.gray500 : Color.Teal.teal600, lineWidth: 1)
+                        .stroke(Color.LoginSemantic.socialButtonBorder, lineWidth: 1)
                 )
         }
         .customTealShadow()
