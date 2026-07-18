@@ -14,7 +14,7 @@ struct RegisterSignUpButtonSection: View {
 
     var body: some View {
         VStack(spacing: 18) {
-            CustomPuffedButton(title: "Sign Up", action: onSignUp, isLoading: isLoading)
+            CustomPuffedButton(title: "Sign Up", action: onSignUp, isLoading: isLoading)                .padding(.horizontal, 20)
 
             // "Already have an account?" row
             HStack(spacing: 4) {

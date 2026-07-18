@@ -93,7 +93,6 @@ struct CustomPuffedButton: View {
             .customTealShadow()
         }
         .disabled(isLoading)
-        .padding(.horizontal, 22)
     }
 }
 
