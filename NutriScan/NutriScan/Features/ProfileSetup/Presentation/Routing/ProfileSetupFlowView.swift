@@ -12,7 +12,7 @@ struct ProfileSetupFlowView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            GenderSelectionView()
+            GenderPickerView()
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }

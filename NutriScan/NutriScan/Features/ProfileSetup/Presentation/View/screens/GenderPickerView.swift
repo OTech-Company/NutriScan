@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GenderSelectionView: View {
+struct GenderPickerView: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel = GenderSelectionViewModel()
 
@@ -54,13 +54,13 @@ struct GenderSelectionView: View {
 }
 
 #Preview("Light Mode") {
-    GenderSelectionView()
+    GenderPickerView()
         .environmentObject(AppRouter())
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark Mode") {
-    GenderSelectionView()
+    GenderPickerView()
         .environmentObject(AppRouter())
         .preferredColorScheme(.dark)
 }

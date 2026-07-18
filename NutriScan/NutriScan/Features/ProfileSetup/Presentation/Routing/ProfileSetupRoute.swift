@@ -17,7 +17,7 @@ enum ProfileSetupRoute: Route {
     var destination: some View {
         switch self {
         case .genderPicker:
-            GenderSelectionView()
+            GenderPickerView()
         case .birthdatePicker:
             birthdatePickerView()
         case .healthProfile:
