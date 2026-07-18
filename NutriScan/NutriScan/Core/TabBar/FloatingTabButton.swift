@@ -54,17 +54,9 @@ struct FloatingTabButton: View {
                 .frame(width: Self.size, height: Self.size)
                 .shadow(color: .black.opacity(0.15), radius: 5, x: 0, y: 5)
             
-            Image(systemName: selectedTab.rawValue)
+            Image(systemName: AppTab.scan.rawValue)
                 .font(.system(size: 32, weight: .semibold))
                 .foregroundColor(iconColor)
-                .id(selectedTab)
-            // 2. Apply the custom coin flip transition
-                .transition(
-                    .asymmetric(
-                        insertion: .coinFlipInsertion,
-                        removal: .opacity
-                    )
-                )
         }
     }
 }

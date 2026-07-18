@@ -13,4 +13,14 @@ enum AppTab: String, CaseIterable {
     case scan = "viewfinder"
     case bookmark = "bookmark"
     case profile = "person"
+    
+    var filledIcon: String {
+        switch self {
+        case .home: return "house.fill"
+        case .history: return "clock.fill" // Or an appropriate filled clock
+        case .scan: return "viewfinder" // scan doesn't change
+        case .bookmark: return "bookmark.fill"
+        case .profile: return "person.fill"
+        }
+    }
 }

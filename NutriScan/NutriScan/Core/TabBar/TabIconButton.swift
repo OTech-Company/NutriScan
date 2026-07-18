@@ -20,13 +20,30 @@ struct TabIconButton: View {
                 UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                 action()
             }) {
-                Image(systemName: tab.rawValue)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(Self.iconColor)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    // التعديل هنا: الأيقونة بتصغر وتختفي في مكانها بنعومة
-                    .scaleEffect(isSelected ? 0.0 : 1.0)
-                    .opacity(isSelected ? 0 : 1)
+                ZStack {
+                    if tab != .scan {
+                        // Unselected (stroke)
+                        Image(systemName: tab.rawValue)
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundColor(Self.iconColor)
+                            .opacity(isSelected ? 0 : 1)
+                            .rotation3DEffect(
+                                .degrees(isSelected ? 89.9 : 0),
+                                axis: (x: 1.0, y: 0.0, z: 0.0)
+                            )
+                        
+                        // Selected (fill)
+                        Image(systemName: tab.filledIcon)
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundColor(Self.iconColor)
+                            .opacity(isSelected ? 1 : 0)
+                            .rotation3DEffect(
+                                .degrees(isSelected ? 0 : -89.9),
+                                axis: (x: 1.0, y: 0.0, z: 0.0)
+                            )
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .preference(
                 key: TabBarPositionKey.self,

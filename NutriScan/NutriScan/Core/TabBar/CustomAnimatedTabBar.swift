@@ -12,6 +12,7 @@ import SwiftUI
 struct CustomAnimatedTabBar: View {
     @Binding var selectedTab: AppTab
 
+    @State private var animatedCurveTab: AppTab = .home
     @State private var tabPositions: [AppTab: CGFloat] = [:]
 
     /// Shared spring used for both the notch and floating button so they stay
@@ -30,14 +31,23 @@ struct CustomAnimatedTabBar: View {
     private static let floatingButtonOffsetY: CGFloat = 2
 
     var body: some View {
-        // Fall back to screen center before GeometryReader preferences arrive.
-        let currentX = tabPositions[selectedTab]
-            ?? UIScreen.main.bounds.width / 2
+        let screenCenter = UIScreen.main.bounds.width / 2
+
+        // The animated curve moves to the selected navigation tab.
+        let currentCurveX = tabPositions[animatedCurveTab] ?? screenCenter
+        
+        // The center notch is permanently fixed in the center.
+        let currentNotchX = screenCenter
 
         ZStack(alignment: .top) {
 
             // ── 1. Background shape ─────────────────────────────────────
-            TabBarBackground(xAxis: currentX)
+            let isOverlappingCenter = abs(currentCurveX - currentNotchX) < 50
+            TabBarBackground(
+                curveX: currentCurveX, 
+                notchX: currentNotchX, 
+                hideSmallNotch: selectedTab == .scan || isOverlappingCenter
+            )
 
             // ── 2. Tab icons ────────────────────────────────────────────
             HStack(spacing: 0) {
@@ -48,6 +58,7 @@ struct CustomAnimatedTabBar: View {
                     ) {
                         withAnimation(Self.tabSpring) {
                             selectedTab = tab
+                            animatedCurveTab = tab
                         }
                     }
                 }
@@ -56,13 +67,24 @@ struct CustomAnimatedTabBar: View {
             .coordinateSpace(name: "TabBarCoordinateSpace")
 
             // ── 3. Floating button ──────────────────────────────────────
-            FloatingTabButton(selectedTab: selectedTab)
-                .position(x: currentX, y: Self.floatingButtonOffsetY)
-                .animation(Self.tabSpring, value: selectedTab)
+            Button {
+                withAnimation(Self.tabSpring) {
+                    selectedTab = .scan
+                    animatedCurveTab = .scan
+                }
+            } label: {
+                FloatingTabButton(selectedTab: selectedTab)
+            }
+            .buttonStyle(.plain)
+            .position(x: currentNotchX, y: Self.floatingButtonOffsetY)
+            .animation(Self.tabSpring, value: selectedTab)
         }
         .frame(height: Self.barHeight)
         .onPreferenceChange(TabBarPositionKey.self) { value in
             tabPositions.merge(value) { $1 }
+        }
+        .onAppear {
+            animatedCurveTab = selectedTab
         }
     }
 }
@@ -72,7 +94,9 @@ struct CustomAnimatedTabBar: View {
 /// Renders the teal tab-bar shape with the animated notch cut-out and shadow.
 /// Extends into the bottom safe area so the colour bleeds edge-to-edge.
 private struct TabBarBackground: View {
-    let xAxis: CGFloat
+    let curveX: CGFloat
+    let notchX: CGFloat
+    let hideSmallNotch: Bool
 
     @Environment(\.colorScheme) private var colorScheme
 
@@ -81,7 +105,7 @@ private struct TabBarBackground: View {
     }
 
     var body: some View {
-        AnimatedNotchShape(xAxis: xAxis)
+        TabBarCurveShape(curveX: curveX, notchX: notchX, hideSmallNotch: hideSmallNotch)
             .fill(fillColor)
             .customTealShadow()
             .ignoresSafeArea(edges: .bottom)
