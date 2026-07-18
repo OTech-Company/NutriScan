@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ForgotPasswordConfirmationPopup: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var recipient: String
     var onResend: () -> Void
     var onClose: () -> Void
@@ -27,7 +29,7 @@ struct ForgotPasswordConfirmationPopup: View {
                 VStack(alignment: .leading, spacing: 0) {
 
                     // MARK: Illustration
-                    Image("forgot_pass_confirm")
+                    Image(colorScheme == .light ? "forgot_pass_confirm" : "forgot_pass_confirm_dark")
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity)
@@ -37,13 +39,13 @@ struct ForgotPasswordConfirmationPopup: View {
                     // MARK: Title
                     Text("Password Sent!")
                         .font(Font.AppFont.title1)
-                        .foregroundColor(Color.Teal.teal1000)
+                        .foregroundColor(Color.ForgotPasswordSemantic.confirmationTitle)
                         .padding(.top, 12)
 
                     // MARK: Subtitle
                     Text("We've sent the password to\n\(recipient)")
                         .font(Font.AppFont.textPrimary)
-                        .foregroundColor(Color.Gray.gray800)
+                        .foregroundColor(Color.ForgotPasswordSemantic.confirmationSubtitle)
                         .lineSpacing(4)
                         .padding(.top, 8)
 
@@ -52,7 +54,7 @@ struct ForgotPasswordConfirmationPopup: View {
                         .padding(.top, 20)
                  }
                 .padding(16)
-                .background(Color.white)
+                .background(Color.ForgotPasswordSemantic.confirmationCardBackground)
                 .cornerRadius(24)
                 .padding(.horizontal, 24)
 
