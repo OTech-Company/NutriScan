@@ -40,11 +40,18 @@ struct ProfileSetupStepView<Content: View>: View {
                 Spacer(minLength: 80)
                 
                 StepProgressText(current: currentStep, total: totalSteps)
-                
+//                Spacer(minLength: 8)
                 TitleBlock(
                     segments: titleSegments,
                     subtitle: subtitle
                 )
+            }
+            
+            switch currentStep {
+            case 3:
+                Spacer(minLength: 42)
+            default:
+                Spacer(minLength: 80)
             }
             
             // 3. Dynamic Center Component Layer (Pushed entirely outside header logic)

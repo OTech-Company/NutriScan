@@ -29,7 +29,7 @@ struct TitleBlock: View {
     var subtitleColor: Color = Color.ProfileSetupSemantic.subtitle
 
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
 
             segments
                 .map {
