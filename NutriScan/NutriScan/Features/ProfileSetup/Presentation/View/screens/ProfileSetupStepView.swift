@@ -4,13 +4,6 @@
 //
 //  Created by Osama Hosam on 17/07/2026.
 //
-//
-//  ProfileSetupStepView.swift
-//  NutriScan
-//
-//  Created by Osama Hosam on 17/07/2026.
-//
-
 import SwiftUI
 
 struct ProfileSetupStepView<Content: View>: View {
@@ -20,45 +13,64 @@ struct ProfileSetupStepView<Content: View>: View {
     let subtitle: String
     let onBack: () -> Void
     let onNext: () -> Void
-
+    
     var showBackButton: Bool = true
-
-
     var showHeader: Bool = true
-
+    
     @ViewBuilder let content: () -> Content
-
+    
     var body: some View {
-        VStack(spacing: 28) {
-            if showBackButton {
-                HStack {
-                    BackButton(action: onBack)
-                    Spacer()
+        VStack(spacing: 0) {
+            // 1. Fixed Top Navigation Row
+            ZStack {
+                if showBackButton {
+                    HStack {
+                        BackButton(action: onBack)
+                        Spacer()
+                    }
                 }
-                .padding(.horizontal, 20)
+                Text("")
             }
-
+            .frame(height: 48)
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            
+            // 2. Main Header Text Blocks
             if showHeader {
+                Spacer(minLength: 80)
+                
                 StepProgressText(current: currentStep, total: totalSteps)
-
+                
                 TitleBlock(
                     segments: titleSegments,
                     subtitle: subtitle
                 )
             }
+            
+            // 3. Dynamic Center Component Layer (Pushed entirely outside header logic)
             content()
-
-            Spacer()
-
-            if showHeader {
-                ProgressNextButton(currentStep: currentStep, totalSteps: totalSteps) {
-                    onNext()
-                }
-                .padding(.bottom, 30)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            
+            // 4. Dynamic Spacing Layout based on the Step
+            switch currentStep {
+            case 1:
+                Spacer(minLength: 102)
+            case 2:
+                Spacer(minLength: 132)
+            case 3:
+                Spacer(minLength: 63)
+            case 4:
+                Spacer(minLength: 53)
+            default:
+                Spacer()
             }
+            
+            // 5. Fixed Next Button Row
+            ProgressNextButton(currentStep: currentStep, totalSteps: totalSteps) {
+                onNext()
+            }
+            .padding(.bottom, 42)
         }
-        .padding(.top, 12)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
             Color.ProfileSetupSemantic.background
                 .ignoresSafeArea()

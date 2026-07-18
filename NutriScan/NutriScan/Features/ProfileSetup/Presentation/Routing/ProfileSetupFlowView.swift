@@ -41,11 +41,10 @@ struct ProfileSetupFlowView: View {
             showHeader: currentStep != .healthProfile
         ) {
             stepContent
-                .id(currentStep) // forces the transition below to run on step change
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing).combined(with: .opacity),
-                    removal: .move(edge: .leading).combined(with: .opacity)
-                ))
+                 .id(currentStep)
+                 .transition(.opacity)
+                 .animation(.easeInOut(duration: 0.25), value: currentStep)
+         
         }
         .animation(.easeInOut(duration: 0.3), value: currentStep)
     }
