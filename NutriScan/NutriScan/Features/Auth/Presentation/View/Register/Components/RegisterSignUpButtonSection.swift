@@ -10,8 +10,6 @@ struct RegisterSignUpButtonSection: View {
     var onSignIn: () -> Void
     var isLoading: Bool = false
 
-    @Environment(\.colorScheme) var colorScheme
-
     var body: some View {
         VStack(spacing: 18) {
             CustomPuffedButton(title: "Sign Up", action: onSignUp, isLoading: isLoading)                .padding(.horizontal, 20)
@@ -20,13 +18,13 @@ struct RegisterSignUpButtonSection: View {
             HStack(spacing: 4) {
                 Text("Already have an account?")
                     .font(Font.AppFont.textSecondary)
-                    .foregroundColor(colorScheme == .light ? Color.Gray.gray1000 : Color.Gray.gray400)
+                    .foregroundColor(Color.RegisterSemantic.footerText)
 
                 Button(action: onSignIn) {
                     Text("Sign In.")
                         .font(Font.AppFont.textSecondary)
                         .fontWeight(.bold)
-                        .foregroundColor(Color.Teal.teal1000)
+                        .foregroundColor(Color.RegisterSemantic.footerLink)
                         .underline()
                 }
             }
