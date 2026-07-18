@@ -41,4 +41,13 @@ enum PasswordResetOption: String, CaseIterable, Identifiable {
         case .sms: return "send_sms_icon"
         }
     }
+    
+    var maskedRecipient: String {
+        switch self {
+        case .email: return "elem*******221b@gmail.com"
+        case .twoFactor: return "your 2FA Authenticator app"
+        case .googleAuth: return "your Google Authenticator app"
+        case .sms: return "+1 (555) *******98"
+        }
+    }
 }

@@ -17,12 +17,12 @@ struct RegisterHeaderSection: View {
 
             Text("Sign Up For Free!")
                 .font(Font.AppFont.title2)
-                .foregroundColor(Color.Teal.teal200)
+                .foregroundColor(Color.RegisterSemantic.headerTitle)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.bottom, 36)
-        .background(Color.Teal.teal800)
+        .background(Color.RegisterSemantic.headerBackground)
         .clipShape(
             UnevenRoundedRectangle(
                 bottomLeadingRadius: 32,

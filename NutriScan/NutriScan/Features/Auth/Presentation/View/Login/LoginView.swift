@@ -30,7 +30,7 @@ struct LoginView: View {
                             Text("Forgot Password?")
                                 .font(Font.AppFont.textSecondary)
                                 .fontWeight(.medium)
-                                .foregroundColor(Color.Teal.teal1000)
+                                .foregroundColor(Color.LoginSemantic.forgotPasswordText)
                         }
                     }
                     .padding(.top, 12)
@@ -52,7 +52,7 @@ struct LoginView: View {
                     HStack(spacing: 4) {
                         Text("Don't have an account?")
                             .font(Font.AppFont.textSecondary)
-                            .foregroundColor(Color.Gray.gray1000)
+                            .foregroundColor(Color.LoginSemantic.footerText)
                         
                         Button(action: {
                             router.push(AuthRoute.register)
@@ -60,7 +60,7 @@ struct LoginView: View {
                             Text("Sign Up.")
                                 .font(Font.AppFont.textSecondary)
                                 .fontWeight(.bold)
-                                .foregroundColor(Color.Teal.teal1000)
+                                .foregroundColor(Color.LoginSemantic.footerLink)
                                 .underline()
                         }
                     }

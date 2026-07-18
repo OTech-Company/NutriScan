@@ -39,5 +39,10 @@ extension Color {
         // Arrow
         static let arrowColor = Color(light: Color.Gray.gray1000, dark: Color.Teal.teal1300)
         static let arrowSelectedColor = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400)
+        
+        // Confirmation Popup
+        static let confirmationCardBackground = Color(light: .white, dark: Color.Teal.teal1500)
+        static let confirmationTitle = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal1000)
+        static let confirmationSubtitle = Color(light: Color.Gray.gray1000, dark: Color.Gray.gray300)
     }
 }
