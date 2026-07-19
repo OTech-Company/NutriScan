@@ -36,7 +36,7 @@ struct MainTabView: View {
                     .background(colorScheme == .light ? .white : Color.Teal.teal1600)
                     .tag(AppTab.calories)
                 
-                Text("Scan Flow")
+                ScanFlowView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(colorScheme == .light ? .white : Color.Teal.teal1600)
                     .tag(AppTab.scan)
