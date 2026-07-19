@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 enum EditProfileSemantics {
     enum Spacing {
-        static let screenHorizontal: CGFloat = 20
+        static let screenHorizontal: CGFloat = 22
         static let sectionVertical: CGFloat = 24
         static let fieldVertical: CGFloat = 12
         static let chipSpacing: CGFloat = 8

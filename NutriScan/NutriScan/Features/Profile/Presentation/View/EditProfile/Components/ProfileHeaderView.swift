@@ -75,6 +75,5 @@ struct ProfileHeaderView: View {
                     .foregroundColor(Color.EditProfileSemantics.profileEmail)
             }
         }
-        .padding(.leading, 24)
     }
 }

@@ -73,5 +73,6 @@ struct EditProfileView: View {
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
         )
         .navigationBarHidden(true)
+        
     }
 }
