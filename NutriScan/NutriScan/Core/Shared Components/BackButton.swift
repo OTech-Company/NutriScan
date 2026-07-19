@@ -15,11 +15,14 @@ struct BackButton: View {
         Button(action: action) {
             Image(systemName: "chevron.left")
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(Color.ProfileSetupSemantic.backButtonIcon)
+                .foregroundColor(Color.BackButtonSemantics.backButtonIcon)
                 .frame(width: 48, height: 48)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.ProfileSetupSemantic.backButtonBorder, lineWidth: 1.5)
+                        .stroke(
+                            Color.BackButtonSemantics.backButtonBorder,
+                            lineWidth: 1.5
+                        )
                 )
         }
     }
