@@ -13,33 +13,68 @@ struct ProfileHeaderView: View {
 
     var body: some View {
         HStack(spacing: EditProfileSemantics.Spacing.headerRowSpacing) {
-            ZStack(alignment: .bottomTrailing) {
-                avatarImage
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: EditProfileSemantics.Sizes.avatarDiameter,
-                           height: EditProfileSemantics.Sizes.avatarDiameter)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.EditProfileSemantics.avatarBorder, lineWidth: 2))
+            ZStack(alignment: .topTrailing) {
+                ZStack {
+                    Circle()
+                        .stroke(
+                            Color.EditProfileSemantics.avatarBorder,
+                            lineWidth: 2
+                        )
+                        .frame(
+                            width: EditProfileSemantics.Sizes
+                                .outerAvatarDiameter,
+                            height: EditProfileSemantics.Sizes
+                                .outerAvatarDiameter
+                        )
 
-                Image(systemName: "pencil")
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(Color.EditProfileSemantics.editBadgeIcon)
-                    .frame(width: EditProfileSemantics.Sizes.editBadgeDiameter,
-                           height: EditProfileSemantics.Sizes.editBadgeDiameter)
-                    .background(Circle().fill(Color.EditProfileSemantics.editBadgeBackground))
+                    avatarImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(
+                            width: EditProfileSemantics.Sizes.avatarDiameter,
+                            height: EditProfileSemantics.Sizes.avatarDiameter
+                        )
+                        .clipShape(Circle())
+                }
+
+                ZStack {
+                    Circle()
+                        .fill(Color.white)
+                        .stroke(Color.white, lineWidth: 2)
+                        .frame(
+                            width: EditProfileSemantics.Sizes
+                                .outerEditBadgeDiameter,
+                            height: EditProfileSemantics.Sizes
+                                .outerEditBadgeDiameter)
+
+                    Image(systemName: "pencil")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(
+                            Color.EditProfileSemantics.editBadgeIcon
+                        )
+                        .frame(
+                            width: EditProfileSemantics.Sizes.editBadgeDiameter,
+                            height: EditProfileSemantics.Sizes.editBadgeDiameter
+                        )
+                        .background(
+                            Circle().fill(
+                                Color.EditProfileSemantics.editBadgeBackground))
+                }
+                .offset(x: 4, y: -4)
             }
 
-            VStack(alignment: .leading, spacing: EditProfileSemantics.Spacing.headerNameSpacing) {
+            VStack(
+                alignment: .leading,
+                spacing: EditProfileSemantics.Spacing.headerNameSpacing
+            ) {
                 Text(name)
-                    .font(Font.AppFont.subtitle1)
+                    .font(Font.AppFont.title2)
                     .foregroundColor(Color.EditProfileSemantics.profileName)
                 Text(email)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.EditProfileSemantics.profileEmail)
             }
-
-            Spacer()
         }
+        .padding(.leading, 24)
     }
 }

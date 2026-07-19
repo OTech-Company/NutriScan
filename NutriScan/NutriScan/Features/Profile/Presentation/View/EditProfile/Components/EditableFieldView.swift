@@ -15,7 +15,7 @@ struct EditableFieldView: View {
         HStack {
             TextField(placeholder, text: $text)
                 .font(Font.AppFont.textPrimary)
-                .foregroundColor(Color.EditProfileSemantics.textPrimary)
+                .foregroundColor(Color.EditProfileSemantics.textSecondary)
 
             Image(systemName: trailingIcon)
                 .foregroundColor(Color.EditProfileSemantics.textSecondary)

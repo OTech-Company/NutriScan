@@ -16,12 +16,12 @@ struct EditProfileView: View {
                 alignment: .leading,
                 spacing: EditProfileSemantics.Spacing.sectionVertical
             ) {
-                BackButton(action: { router.pop() })
+                BackButton(action: { router.pop() }).padding(.bottom, EditProfileSemantics.Spacing.sectionVertical)
 
                 ProfileHeaderView(
                     name: viewModel.name,
                     email: viewModel.email,
-                    avatarImage: Image("avatar-placeholder")
+                    avatarImage: Image(systemName: "person.circle.fill")
                 )
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
@@ -57,6 +57,7 @@ struct EditProfileView: View {
                 .padding(.top, 8)
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
+            .padding(.bottom, 120)
         }
         .background(
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()

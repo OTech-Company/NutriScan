@@ -9,9 +9,9 @@ import SwiftUI
 
 @Observable
 final class EditProfileViewModel {
-    var name: String = ""
+    var name: String = "Mina Wagdy"
     var username: String = ""
-    var email: String = ""
+    var email: String = "minawagdy2228@gmail.com"
     var password: String = ""
     // MARK: - Data Sources (The "All" lists)
     // These can be statically initialized, or fetched from a local database/repository.

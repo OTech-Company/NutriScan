@@ -13,19 +13,21 @@ enum EditProfileSemantics {
         static let sectionVertical: CGFloat = 24
         static let fieldVertical: CGFloat = 12
         static let chipSpacing: CGFloat = 8
-        static let headerNameSpacing: CGFloat = 2
+        static let headerNameSpacing: CGFloat = 4
         static let headerRowSpacing: CGFloat = 12
     }
 
     enum Sizes {
-        static let avatarDiameter: CGFloat = 72
-        static let editBadgeDiameter: CGFloat = 22
+        static let avatarDiameter: CGFloat = 88
+        static let outerAvatarDiameter : CGFloat = 100
+        static let editBadgeDiameter: CGFloat = 32
+        static let outerEditBadgeDiameter : CGFloat = 36
         static let fieldHeight: CGFloat = 52
         static let buttonHeight: CGFloat = 62
     }
 
     enum Radius {
-        static let field: CGFloat = 14
+        static let field: CGFloat = 16
         static let card: CGFloat = 16
     }
 
