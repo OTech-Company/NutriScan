@@ -15,7 +15,7 @@ enum AppNetworkConfig {
     var baseURL: String {
         switch self {
         case .core:
-            return "https://mock-api.lovable.app" // the test backend url
+            return "http://localhost:8080" // local backend url
         case .auth:
             return "https://auth.nutriscan.ai" // used with Login, refresh, logout, and the Google flow
         }
