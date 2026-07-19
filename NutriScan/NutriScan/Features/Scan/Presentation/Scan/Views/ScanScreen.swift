@@ -8,26 +8,32 @@ struct ScanScreen: View {
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
 
-    init(viewModel: ScanViewModel = .makeDefault()) {
-        _viewModel = StateObject(wrappedValue: viewModel)
-    }
-    
+    init(viewModel: ScanViewModel = ScanViewModel(
+            lookupProductUseCase: LookupProductUseCaseImpl(
+                repository: ProductRepositoryImpl() 
+            )
+        )) {
+            _viewModel = StateObject(wrappedValue: viewModel)
+        }
     var body: some View {
         ZStack {
-            BarcodeScannerView { code in
-                viewModel.onBarcodeDetected(code)
+            Group {
+                BarcodeScannerView { code in
+                    viewModel.onBarcodeDetected(code)
+                }
+
+                ScanMask()
             }
             .ignoresSafeArea()
 
-            ScanMask()
+            cornerBracketFrame
+                .padding(.horizontal, 40)
                 .ignoresSafeArea()
 
             VStack {
                 topBar
-                Spacer()
-                cornerBracketFrame
-                    .padding(.horizontal, 40)
-                Spacer()
+                
+                Spacer() // This pushes the product card down to the bottom
 
                 if let product = viewModel.detectedProduct {
                     ProductMatchCard(product: product) {
@@ -35,7 +41,7 @@ struct ScanScreen: View {
                         router.path.append(AnyRoute(ScanRoute.productDetail(barcode: product.barcode)))
                     }
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 24)
+                    .padding(.bottom, 120) // Adjust this value to raise the card above your custom tab bar safely
                     .transition(.move(edge: .bottom).combined(with: .opacity))
                 }
             }
@@ -79,14 +85,11 @@ struct ScanScreen: View {
 
     // MARK: Corner bracket viewfinder
 
-    private var cornerBracketFrame: some View {
-        GeometryReader { geo in
+        private var cornerBracketFrame: some View {
             CornerBracketsShape()
-                .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-                .frame(width: geo.size.width, height: 260)
+                .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                .frame(height: 260)
         }
-        .frame(height: 260)
-    }
 }
 
 // MARK: - Preview

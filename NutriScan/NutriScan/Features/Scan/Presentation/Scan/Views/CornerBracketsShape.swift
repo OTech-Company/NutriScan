@@ -8,28 +8,40 @@ struct CornerBracketsShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
-        // Top-left
+        // 1. Top-Left
         path.move(to: CGPoint(x: rect.minX, y: rect.minY + cornerLength))
-        path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.minY + cornerRadius),
-                    radius: cornerRadius, startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.minX, y: rect.minY),
+            tangent2End: CGPoint(x: rect.minX + cornerLength, y: rect.minY),
+            radius: cornerRadius
+        )
         path.addLine(to: CGPoint(x: rect.minX + cornerLength, y: rect.minY))
 
-        // Top-right
+        // 2. Top-Right
         path.move(to: CGPoint(x: rect.maxX - cornerLength, y: rect.minY))
-        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.minY + cornerRadius),
-                    radius: cornerRadius, startAngle: .degrees(270), endAngle: .degrees(0), clockwise: false)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.maxX, y: rect.minY),
+            tangent2End: CGPoint(x: rect.maxX, y: rect.minY + cornerLength),
+            radius: cornerRadius
+        )
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + cornerLength))
 
-        // Bottom-right
+        // 3. Bottom-Right
         path.move(to: CGPoint(x: rect.maxX, y: rect.maxY - cornerLength))
-        path.addArc(center: CGPoint(x: rect.maxX - cornerRadius, y: rect.maxY - cornerRadius),
-                    radius: cornerRadius, startAngle: .degrees(0), endAngle: .degrees(90), clockwise: false)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.maxX, y: rect.maxY),
+            tangent2End: CGPoint(x: rect.maxX - cornerLength, y: rect.maxY),
+            radius: cornerRadius
+        )
         path.addLine(to: CGPoint(x: rect.maxX - cornerLength, y: rect.maxY))
 
-        // Bottom-left
+        // 4. Bottom-Left
         path.move(to: CGPoint(x: rect.minX + cornerLength, y: rect.maxY))
-        path.addArc(center: CGPoint(x: rect.minX + cornerRadius, y: rect.maxY - cornerRadius),
-                    radius: cornerRadius, startAngle: .degrees(90), endAngle: .degrees(180), clockwise: false)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.minX, y: rect.maxY),
+            tangent2End: CGPoint(x: rect.minX, y: rect.maxY - cornerLength),
+            radius: cornerRadius
+        )
         path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - cornerLength))
 
         return path
@@ -37,8 +49,12 @@ struct CornerBracketsShape: Shape {
 }
 
 #Preview {
-    CornerBracketsShape()
-        .stroke(Color.white, style: StrokeStyle(lineWidth: 3, lineCap: .round))
-        .frame(width: 300, height: 260)
-        .background(Color.black)
+    ZStack {
+        Color.black.ignoresSafeArea()
+        
+        CornerBracketsShape()
+            .stroke(Color.white, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
+            .frame(width: 331, height: 260) // Matches your NutriScan Figma card width
+            .padding(40)
+    }
 }

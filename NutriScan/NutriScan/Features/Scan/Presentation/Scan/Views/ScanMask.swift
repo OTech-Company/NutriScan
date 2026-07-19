@@ -7,7 +7,8 @@ struct ScanMask: View {
         GeometryReader { geo in
             let windowHeight: CGFloat = 260
             let windowWidth = geo.size.width - 80
-            let windowY = geo.size.height * 0.38
+            
+            let windowY = ((geo.size.height - windowHeight) / 2) + 5
 
             Canvas { context, size in
                 var path = Rectangle().path(in: CGRect(origin: .zero, size: size))
