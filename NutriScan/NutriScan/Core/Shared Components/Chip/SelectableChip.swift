@@ -18,7 +18,7 @@ struct SelectableChip: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 4) {
+            HStack(spacing: 12) {
                 if state == .add {
                     Image(systemName: "plus")
                         .font(.system(size: 12, weight: .semibold))
