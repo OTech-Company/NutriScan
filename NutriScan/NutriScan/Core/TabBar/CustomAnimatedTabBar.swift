@@ -23,69 +23,71 @@ struct CustomAnimatedTabBar: View {
         blendDuration: 0.5
     )
 
-    /// Height of the visible tab-bar region (matches the SVG: y 30→110 = 80 pt).
-    static let barHeight: CGFloat = 80
+    /// Height of the visible tab-bar region.
+    static let barHeight: CGFloat = 60
 
     /// How far the floating button's center sits below the bar's top edge.
     /// Keeps the button visually centered inside the notch.
     private static let floatingButtonOffsetY: CGFloat = 2
 
     var body: some View {
-        let screenCenter = UIScreen.main.bounds.width / 2
+        GeometryReader { geometry in
+            let screenCenter = geometry.size.width / 2
 
-        // The animated curve moves to the selected navigation tab.
-        let currentCurveX = tabPositions[animatedCurveTab] ?? screenCenter
-        
-        // The center notch is permanently fixed in the center.
-        let currentNotchX = screenCenter
+            // The animated curve moves to the selected navigation tab.
+            let currentCurveX = tabPositions[animatedCurveTab] ?? screenCenter
+            
+            // The center notch is permanently fixed in the center.
+            let currentNotchX = screenCenter
 
-        ZStack(alignment: .top) {
+            ZStack(alignment: .top) {
 
-            // ── 1. Background shape ─────────────────────────────────────
-            let isOverlappingCenter = abs(currentCurveX - currentNotchX) < 50
-            TabBarBackground(
-                curveX: currentCurveX, 
-                notchX: currentNotchX, 
-                hideSmallNotch: selectedTab == .scan || isOverlappingCenter
-            )
+                // ── 1. Background shape ─────────────────────────────────────
+                let isOverlappingCenter = abs(currentCurveX - currentNotchX) < 50
+                TabBarBackground(
+                    curveX: currentCurveX, 
+                    notchX: currentNotchX, 
+                    hideSmallNotch: selectedTab == .scan || isOverlappingCenter
+                )
 
-            // ── 2. Tab icons ────────────────────────────────────────────
-            HStack(spacing: 0) {
-                ForEach(AppTab.allCases, id: \.self) { tab in
-                    TabIconButton(
-                        tab: tab,
-                        isSelected: selectedTab == tab
-                    ) {
-                        withAnimation(Self.tabSpring) {
-                            selectedTab = tab
-                            animatedCurveTab = tab
+                // ── 2. Tab icons ────────────────────────────────────────────
+                HStack(spacing: 0) {
+                    ForEach(AppTab.allCases, id: \.self) { tab in
+                        TabIconButton(
+                            tab: tab,
+                            isSelected: selectedTab == tab
+                        ) {
+                            withAnimation(Self.tabSpring) {
+                                selectedTab = tab
+                                animatedCurveTab = tab
+                            }
                         }
                     }
                 }
-            }
-            .padding(.horizontal, 16)
-            .coordinateSpace(name: "TabBarCoordinateSpace")
+                .padding(.horizontal, 16)
+                .coordinateSpace(name: "TabBarCoordinateSpace")
 
-            // ── 3. Floating button ──────────────────────────────────────
-            Button {
-                withAnimation(Self.tabSpring) {
-                    selectedTab = .scan
-                    animatedCurveTab = .scan
+                // ── 3. Floating button ──────────────────────────────────────
+                Button {
+                    withAnimation(Self.tabSpring) {
+                        selectedTab = .scan
+                        animatedCurveTab = .scan
+                    }
+                } label: {
+                    FloatingTabButton(selectedTab: selectedTab)
                 }
-            } label: {
-                FloatingTabButton(selectedTab: selectedTab)
+                .buttonStyle(.plain)
+                .position(x: currentNotchX, y: Self.floatingButtonOffsetY)
+                .animation(Self.tabSpring, value: selectedTab)
             }
-            .buttonStyle(.plain)
-            .position(x: currentNotchX, y: Self.floatingButtonOffsetY)
-            .animation(Self.tabSpring, value: selectedTab)
+            .onPreferenceChange(TabBarPositionKey.self) { value in
+                tabPositions.merge(value) { $1 }
+            }
+            .onAppear {
+                animatedCurveTab = selectedTab
+            }
         }
         .frame(height: Self.barHeight)
-        .onPreferenceChange(TabBarPositionKey.self) { value in
-            tabPositions.merge(value) { $1 }
-        }
-        .onAppear {
-            animatedCurveTab = selectedTab
-        }
     }
 }
 

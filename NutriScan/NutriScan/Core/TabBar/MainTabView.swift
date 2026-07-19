@@ -31,10 +31,10 @@ struct MainTabView: View {
                 HomeFlowView()
                     .tag(AppTab.home)
                 
-                Text("History Flow")
+                Text("Calories Flow")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(colorScheme == .light ? .white : Color.Teal.teal1600)
-                    .tag(AppTab.history)
+                    .tag(AppTab.calories)
                 
                 Text("Scan Flow")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

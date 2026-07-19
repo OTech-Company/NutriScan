@@ -8,19 +8,19 @@
 import Foundation
 
 enum AppTab: String, CaseIterable {
-    case home = "house"
-    case history = "clock.arrow.circlepath"
-    case scan = "viewfinder"
-    case bookmark = "bookmark"
-    case profile = "person"
+    case home = "home-stroke"
+    case calories = "calories-stroke"
+    case scan = "scan"
+    case bookmark = "bookmark-stroke"
+    case profile = "profile-stroke"
     
     var filledIcon: String {
         switch self {
-        case .home: return "house.fill"
-        case .history: return "clock.fill" // Or an appropriate filled clock
-        case .scan: return "viewfinder" // scan doesn't change
-        case .bookmark: return "bookmark.fill"
-        case .profile: return "person.fill"
+        case .home: return "home-fill"
+        case .calories: return "calories-fill"
+        case .scan: return "scan"
+        case .bookmark: return "bookmark-fill"
+        case .profile: return "profile-fill"
         }
     }
 }

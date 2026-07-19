@@ -23,8 +23,8 @@ struct TabIconButton: View {
                 ZStack {
                     if tab != .scan {
                         // Unselected (stroke)
-                        Image(systemName: tab.rawValue)
-                            .font(.system(size: 24, weight: .semibold))
+                        Image(tab.rawValue)
+                            // .font(.system(size: 24, weight: .semibold)) // removed, not applicable for Image asset
                             .foregroundColor(Self.iconColor)
                             .opacity(isSelected ? 0 : 1)
                             .rotation3DEffect(
@@ -33,8 +33,8 @@ struct TabIconButton: View {
                             )
                         
                         // Selected (fill)
-                        Image(systemName: tab.filledIcon)
-                            .font(.system(size: 24, weight: .semibold))
+                        Image(tab.filledIcon)
+                            // .font(.system(size: 24, weight: .semibold)) // removed, not applicable for Image asset
                             .foregroundColor(Self.iconColor)
                             .opacity(isSelected ? 1 : 0)
                             .rotation3DEffect(
