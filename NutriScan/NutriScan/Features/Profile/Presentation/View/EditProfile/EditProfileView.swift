@@ -16,7 +16,8 @@ struct EditProfileView: View {
                 alignment: .leading,
                 spacing: EditProfileSemantics.Spacing.sectionVertical
             ) {
-                BackButton(action: { router.pop() }).padding(.bottom, EditProfileSemantics.Spacing.sectionVertical)
+                BackButton(action: { router.pop() }).padding(
+                    .bottom, EditProfileSemantics.Spacing.sectionVertical)
 
                 ProfileHeaderView(
                     name: viewModel.name,
@@ -38,15 +39,24 @@ struct EditProfileView: View {
                 }
                 SelectableChipsSectionView(
                     title: "Chronic Conditions",
-                    items: viewModel.allConditions,
+                    predefinedItems: viewModel.allConditions,
+                    customItems: $viewModel.customConditions,
                     selected: $viewModel.selectedConditions,
-                    onAddOther: { /* Handle add condition */  }
+                    isAdding: $viewModel.isAddingCondition,
+                    inputText: $viewModel.conditionInput,
+                    onSubmit: { viewModel.submitCondition() },
+                    onRemoveCustom: { viewModel.removeCustomCondition($0) }
                 )
+
                 SelectableChipsSectionView(
                     title: "Allergies",
-                    items: viewModel.allAllergies,
+                    predefinedItems: viewModel.allAllergies,
+                    customItems: $viewModel.customAllergies,
                     selected: $viewModel.selectedAllergies,
-                    onAddOther: { /* Handle add allergy */  }
+                    isAdding: $viewModel.isAddingAllergy,
+                    inputText: $viewModel.allergyInput,
+                    onSubmit: { viewModel.submitAllergy() },
+                    onRemoveCustom: { viewModel.removeCustomAllergy($0) }
                 )
 
                 CustomPuffedButton(

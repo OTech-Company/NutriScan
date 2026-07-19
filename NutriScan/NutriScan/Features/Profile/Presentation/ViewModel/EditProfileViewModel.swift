@@ -13,44 +13,89 @@ final class EditProfileViewModel {
     var username: String = ""
     var email: String = "minawagdy2228@gmail.com"
     var password: String = ""
-    // MARK: - Data Sources (The "All" lists)
-    // These can be statically initialized, or fetched from a local database/repository.
+    
+    // MARK: - Data Sources (Predefined lists)
     let allAllergies: [String]
     let allConditions: [String]
-    var availableConditions = ["Diabetes", "Hypertension", "Celiac Disease"]
-    var availableAllergies = ["Peanuts", "Gluten", "Dairy"]
-
+    
+    // MARK: - Selected States
     var selectedConditions: Set<String>
     var selectedAllergies: Set<String>
 
-    var showAddConditionSheet = false
-    var showAddAllergySheet = false
+    // MARK: - Custom Items States
+    var customConditions: [String] = []
+    var customAllergies: [String] = []
+
+    // MARK: - Input States
+    var isAddingCondition = false
+    var isAddingAllergy = false
+
+    var conditionInput = ""
+    var allergyInput = ""
+
     var isLoading = false
+    
     init() {
-        // Define the available options
-        let fetchedAllergies = [
-            "Peanuts", "Dairy", "Gluten",
-        ]
-        let fetchedConditions = [
-            "Diabetes", "Hypertension", "Celiac Disease",
-        ]
+        let fetchedAllergies = ["Peanuts", "Dairy", "Gluten"]
+        let fetchedConditions = ["Diabetes", "Hypertension", "Celiac Disease"]
 
         self.allAllergies = fetchedAllergies
         self.allConditions = fetchedConditions
 
-        // Initialize the selected sets with all available options by default
         self.selectedAllergies = Set(fetchedAllergies)
         self.selectedConditions = Set(fetchedConditions)
     }
-    // TODO: wire to ProfileUseCase for fetch/save once backend integration lands
-    // MARK: - Actions
-    func handleAddOtherAllergy() {
-        // Logic to present a text field alert or bottom sheet
-        print("Add other allergy tapped")
+
+    // MARK: - Actions: Conditions
+    func submitCondition() {
+        let trimmed = conditionInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            isAddingCondition = false
+            return
+        }
+
+        let allExisting = allConditions + customConditions
+        
+        // Prevent duplicates (case-insensitive)
+        if let existing = allExisting.first(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
+            selectedConditions.insert(existing)
+        } else {
+            customConditions.append(trimmed)
+            selectedConditions.insert(trimmed)
+        }
+
+        conditionInput = ""
+        isAddingCondition = false
     }
 
-    func handleAddOtherCondition() {
-        // Logic to present a text field alert or bottom sheet
-        print("Add other condition tapped")
+    func removeCustomCondition(_ condition: String) {
+        customConditions.removeAll { $0 == condition }
+        selectedConditions.remove(condition)
+    }
+
+    // MARK: - Actions: Allergies
+    func submitAllergy() {
+        let trimmed = allergyInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            isAddingAllergy = false
+            return
+        }
+
+        let allExisting = allAllergies + customAllergies
+        
+        if let existing = allExisting.first(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
+            selectedAllergies.insert(existing)
+        } else {
+            customAllergies.append(trimmed)
+            selectedAllergies.insert(trimmed)
+        }
+
+        allergyInput = ""
+        isAddingAllergy = false
+    }
+
+    func removeCustomAllergy(_ allergy: String) {
+        customAllergies.removeAll { $0 == allergy }
+        selectedAllergies.remove(allergy)
     }
 }

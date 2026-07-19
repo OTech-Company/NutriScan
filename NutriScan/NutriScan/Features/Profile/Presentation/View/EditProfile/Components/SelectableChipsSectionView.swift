@@ -9,9 +9,16 @@ import SwiftUI
 
 struct SelectableChipsSectionView: View {
     let title: String
-    let items: [String]
+    let predefinedItems: [String]
+    
+    @Binding var customItems: [String]
     @Binding var selected: Set<String>
-    var onAddOther: () -> Void
+    
+    @Binding var isAdding: Bool
+    @Binding var inputText: String
+    
+    let onSubmit: () -> Void
+    let onRemoveCustom: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -23,14 +30,29 @@ struct SelectableChipsSectionView: View {
                 horizontalSpacing: EditProfileSemantics.Spacing.chipSpacing,
                 verticalSpacing: EditProfileSemantics.Spacing.chipSpacing
             ) {
-                ForEach(items, id: \.self) { item in
+                // 1. Render Default Chips
+                ForEach(predefinedItems, id: \.self) { item in
                     SelectableChip(
                         title: item,
                         state: selected.contains(item) ? .selected : .normal,
                         action: { toggle(item) }
                     )
                 }
-                SelectableChip(title: "Other", state: .add, action: onAddOther)
+                
+                ForEach(customItems, id: \.self) { item in
+                    SelectableChip(
+                        title: item,
+                        state: .custom(isSelected: selected.contains(item)),
+                        action: { toggle(item) },
+                        onRemove: { onRemoveCustom(item) }
+                    )
+                }
+                
+                if isAdding {
+                    InputChip(text: $inputText, onSubmit: onSubmit)
+                } else {
+                    SelectableChip(title: "Other", state: .add, action: { isAdding = true })
+                }
             }
         }
     }
