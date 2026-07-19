@@ -11,12 +11,11 @@ struct OnboardingScreen: View {
     @State private var currentPage = 0
     @State private var isAnimating = false
 
-    @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     var body: some View {
         ZStack {
-            (colorScheme == .dark ? Color.Teal.teal1600 : .white)
+            Color.OnboardingSemantic.background
                 .ignoresSafeArea()
 
             VStack {
@@ -28,7 +27,7 @@ struct OnboardingScreen: View {
                             }
                         }
                         .font(Font.AppFont.textPrimary)
-                        .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .gray)
+                        .foregroundColor(Color.OnboardingSemantic.navButtonForeground)
                     }
 
                     Spacer()
@@ -38,7 +37,7 @@ struct OnboardingScreen: View {
                             flowCoordinator.finishOnboarding()
                         }
                         .font(Font.AppFont.textPrimary)
-                        .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .gray)
+                        .foregroundColor(Color.OnboardingSemantic.navButtonForeground)
                     }
                 }
                 .padding(.horizontal, 24)
@@ -73,8 +72,8 @@ struct OnboardingScreen: View {
                     HStack(spacing: 8) {
                         ForEach(0 ..< OnboardingPage.allCases.count, id: \.self) { index in
                             let isSelected = (index == currentPage)
-                            let selectedColor = colorScheme == .dark ? Color.Teal.teal700 : Color.gray
-                            let unselectedColor = colorScheme == .dark ? Color.Teal.teal1300 : Color.gray.opacity(0.3)
+                            let selectedColor = Color.OnboardingSemantic.dotSelected
+                            let unselectedColor = Color.OnboardingSemantic.dotUnselected
 
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(isSelected ? selectedColor : unselectedColor)
@@ -91,7 +90,7 @@ struct OnboardingScreen: View {
 
     private func getPageView(for page: OnboardingPage) -> some View {
         let isActive = (currentPage == page.rawValue)
-        let currentImage = colorScheme == .dark ? page.darkImage : page.lightImage
+        let currentImage = page.imageName
 
         return VStack(spacing: 24) {
             Image(currentImage)
@@ -104,12 +103,12 @@ struct OnboardingScreen: View {
 
             Text(page.title)
                 .font(Font.AppFont.title2)
-                .foregroundColor(colorScheme == .dark ? Color.Teal.teal100 : .primary)
+                .foregroundColor(Color.OnboardingSemantic.pageTitle)
                 .multilineTextAlignment(.center)
 
             Text(page.description)
                 .font(Font.AppFont.textSecondary)
-                .foregroundColor(colorScheme == .dark ? Color.Teal.teal400 : .secondary)
+                .foregroundColor(Color.OnboardingSemantic.pageDescription)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
                 .lineSpacing(4)

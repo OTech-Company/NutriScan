@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum OnboardingPage: Int, CaseIterable {
     case scanLabels, knowWhatsSafe, shopWithConfidence
@@ -24,6 +25,10 @@ enum OnboardingPage: Int, CaseIterable {
         case .knowWhatsSafe: return "onboarding-night-2"
         case .shopWithConfidence: return "onboarding-night-3"
         }
+    }
+
+    var imageName: String {
+        UITraitCollection.current.userInterfaceStyle == .dark ? darkImage : lightImage
     }
     
     var title: String {
