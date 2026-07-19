@@ -43,17 +43,6 @@ extension Color {
             dark: Color.Teal.teal300 
         )
 
-        // Navigation
-        static let backButtonBorder = Color(
-            light: Color.Teal.teal700,
-            dark: Color.Teal.teal500
-        )
-
-        static let backButtonIcon = Color(
-            light: Color.Teal.teal900,
-            dark: Color.Teal.teal500
-        )
-
         // Inputs & Cards
         static let cardBackground = Color(
             light: .white,
