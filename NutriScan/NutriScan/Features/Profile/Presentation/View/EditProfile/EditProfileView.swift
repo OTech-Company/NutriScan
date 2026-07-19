@@ -36,21 +36,21 @@ struct EditProfileView: View {
                         placeholder: "password", text: $viewModel.password,
                         trailingIcon: "lock")
                 }
-
-                ConditionsSectionView(
-                    allConditions: viewModel.availableConditions,
+                SelectableChipsSectionView(
+                    title: "Chronic Conditions",
+                    items: viewModel.allConditions,
                     selected: $viewModel.selectedConditions,
-                    onAddOther: { viewModel.showAddConditionSheet = true }
+                    onAddOther: { /* Handle add condition */  }
                 )
-
-                AllergiesSectionView(
-                    allAllergies: viewModel.availableAllergies,
+                SelectableChipsSectionView(
+                    title: "Allergies",
+                    items: viewModel.allAllergies,
                     selected: $viewModel.selectedAllergies,
-                    onAddOther: { viewModel.showAddAllergySheet = true }
+                    onAddOther: { /* Handle add allergy */  }
                 )
 
                 CustomPuffedButton(
-                    title: "Sign in",
+                    title: "Save",
                     action: { /* TODO: backend save */  },
                     isLoading: viewModel.isLoading
                 )
@@ -58,7 +58,9 @@ struct EditProfileView: View {
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
         }
-        .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
+        .background(
+            Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
+        )
         .navigationBarHidden(true)
     }
 }

@@ -14,7 +14,7 @@ struct AllergiesSectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Allergies")
-                .font(Font.AppFont.subtitle2)
+                .font(Font.AppFont.title3)
                 .foregroundColor(Color.EditProfileSemantics.sectionTitle)
 
             FlowChipsLayout(

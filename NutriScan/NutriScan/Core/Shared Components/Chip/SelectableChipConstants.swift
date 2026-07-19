@@ -7,7 +7,7 @@
 import SwiftUI
 
 enum SelectableChipConstants {
-    static let height: CGFloat = 36
-    static let cornerRadius: CGFloat = 12
-    static let horizontalPadding: CGFloat = 14
+    static let height: CGFloat = 42
+    static let cornerRadius: CGFloat = 9999
+    static let horizontalPadding: CGFloat = 24
 }

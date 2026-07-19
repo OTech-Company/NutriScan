@@ -1,19 +1,21 @@
 //
-//  ConditionsSectionView.swift
+//  SelectableChipsSectionView.swift
 //  NutriScan
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
+
 import SwiftUI
 
-struct ConditionsSectionView: View {
-    let allConditions: [String]
+struct SelectableChipsSectionView: View {
+    let title: String
+    let items: [String]
     @Binding var selected: Set<String>
     var onAddOther: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Chronic Conditions")
+            Text(title)
                 .font(Font.AppFont.title3)
                 .foregroundColor(Color.EditProfileSemantics.sectionTitle)
 
@@ -21,11 +23,11 @@ struct ConditionsSectionView: View {
                 horizontalSpacing: EditProfileSemantics.Spacing.chipSpacing,
                 verticalSpacing: EditProfileSemantics.Spacing.chipSpacing
             ) {
-                ForEach(allConditions, id: \.self) { condition in
+                ForEach(items, id: \.self) { item in
                     SelectableChip(
-                        title: condition,
-                        state: selected.contains(condition) ? .selected : .normal,
-                        action: { toggle(condition) }
+                        title: item,
+                        state: selected.contains(item) ? .selected : .normal,
+                        action: { toggle(item) }
                     )
                 }
                 SelectableChip(title: "Other", state: .add, action: onAddOther)
@@ -33,11 +35,13 @@ struct ConditionsSectionView: View {
         }
     }
 
-    private func toggle(_ condition: String) {
+    private func toggle(_ item: String) {
         withAnimation(EditProfileSemantics.Animation.chipSelection) {
-            if selected.contains(condition) { selected.remove(condition) }
-            else { selected.insert(condition) }
+            if selected.contains(item) {
+                selected.remove(item)
+            } else {
+                selected.insert(item)
+            }
         }
     }
 }
-
