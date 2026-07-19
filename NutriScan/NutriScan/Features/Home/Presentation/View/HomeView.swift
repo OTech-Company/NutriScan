@@ -7,8 +7,6 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
-    @Environment(\.colorScheme) private var colorScheme
-    
 
     @State private var viewModel = HomeViewModel()
 

@@ -1,3 +1,10 @@
+//
+//  RulerDial.swift
+//  NutriScan
+//
+//  Created by Osama Hosam on 17/07/2026.
+//
+
 import SwiftUI
 
 // MARK: - Ruler Unit

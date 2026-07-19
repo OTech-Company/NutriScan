@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - CustomAnimatedTabBar
-
 struct CustomAnimatedTabBar: View {
     @Binding var selectedTab: AppTab
 

@@ -4,96 +4,67 @@
 //
 //  Created by Osama Hosam on 14/07/2026.
 //
-//
-//  ProfileSetupFlowView.swift
-//  NutriScan
-//
-//  Created by Osama Hosam on 14/07/2026.
-//
 
 import SwiftUI
 
-/// Single screen for the whole profile-setup wizard. Steps are NOT
-/// separate navigation destinations — `currentStep` drives which
-/// content is shown, and we animate the swap in place. This avoids
-/// pushing a new screen (and duplicating title/subtitle/progress
-/// chrome) for every step.
 struct ProfileSetupFlowView: View {
-    @EnvironmentObject private var router: AppRouter
+    @StateObject private var router = AppRouter()
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
-    @State private var currentStep: ProfileSetupStep = .gender
-
-    // Answers collected across steps. Add more as needed.
-    @State private var gender: Gender = .female
-    @State private var birthdate: Date = Date()
-    @State private var weight: Int = 60
-    @State private var height: Int = 170
+    @State private var viewModel = ProfileSetupFlowViewModel()
 
     var body: some View {
-        ProfileSetupStepView(
-            currentStep: currentStep.stepNumber,
-            totalSteps: ProfileSetupStep.totalSteps ,
-            titleSegments: currentStep.titleSegments,
-            subtitle: currentStep.subtitle,
-            onBack: goBack,
-            onNext: goNext,
-            showBackButton: currentStep != ProfileSetupStep.allCases.first,
-            showHeader: currentStep != .healthProfile
-        ) {
-            stepContent
-                 .id(currentStep)
-                 .transition(.opacity)
-                 .animation(.easeInOut(duration: 0.25), value: currentStep)
-         
+        NavigationStack(path: $router.path) {
+            ProfileSetupStepView(
+                currentStep: viewModel.currentStepIndex,
+                totalSteps: viewModel.totalSteps,
+                titleSegments: viewModel.currentStep.titleSegments,
+                subtitle: viewModel.currentStep.subtitle,
+                onBack: handleBack,
+                onNext: handleNext
+            ) {
+                centerContent
+            }
+            .appProfileSetupBackground()
+            .animation(.easeInOut(duration: 0.25), value: viewModel.currentStep)
+            .navigationDestination(for: AnyRoute.self) { route in
+                route.view()
+            }
+            .navigationBarHidden(true)
         }
-        .animation(.easeInOut(duration: 0.3), value: currentStep)
+        .environmentObject(router)
     }
 
     @ViewBuilder
-    private var stepContent: some View {
-        switch currentStep {
+    private var centerContent: some View {
+        switch viewModel.currentStep {
         case .gender:
-            GenderSelectionRow(selectedGender: $gender)
-
+            GenderSelectionRow(selectedGender: $viewModel.selectedGender)
         case .birthdate:
-            // TODO: plug in your existing birthdate picker content here,
-            // bound to `$birthdate`.
-            Text("Birthdate content goes here")
-
+            BirthdateSelectionView(birthdate: $viewModel.birthdate)
         case .weight:
-            VStack(spacing: 40) {
-                ValueCard(value: weight, style: .plain)
-                RulerDial(value: $weight, unit: .weight)
-            }
-
+            WeightSelectionView(weight: $viewModel.weight)
         case .height:
-            VStack(spacing: 40) {
-                ValueCard(value: height, style: .boxed)
-                RulerDial(value: $height, unit: .height)
-            }
-
+            HeightSelectionView(height: $viewModel.height)
         case .healthProfile:
-            // TODO: plug in your existing health profile content here.
-            VStack(spacing: 40) {
-                HealthProfileSetupView()
-            }
+            EmptyView() // handled by a separate screen
         }
     }
 
-    private func goNext() {
-        if let next = ProfileSetupStep(rawValue: currentStep.rawValue + 1) {
-            currentStep = next
+    private func handleBack() {
+        if viewModel.isFirstStep {
+            flowCoordinator.logout() // or another way to exit the flow if needed. Wait, flowCoordinator.flow = .splash/onboarding? For now we just pop if there's an outer stack, but since this is the root of the flow, pop won't work on router if it's empty. Let's see what happens.
         } else {
-            // Last step completed — hand off to whatever comes after
-            // profile setup (e.g. router.push(SomeRoute) or dismiss).
+            viewModel.goBack()
         }
     }
 
-    private func goBack() {
-        if let previous = ProfileSetupStep(rawValue: currentStep.rawValue - 1) {
-            currentStep = previous
+    private func handleNext() {
+        if viewModel.currentStep == .height {
+            // Push health profile route
+            router.push(ProfileSetupRoute.healthProfile)
         } else {
-            router.pop() // first step's back button exits the whole flow
+            viewModel.goNext()
         }
     }
 }

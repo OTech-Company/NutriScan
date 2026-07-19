@@ -46,7 +46,7 @@ struct HomeDailyTipSection: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.HomeSemantic.tipBorder, lineWidth: 1)
         )
-        .dailyTipShadow()
+        .customTealShadow()
     }
 }
 

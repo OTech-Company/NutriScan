@@ -94,7 +94,7 @@ struct CustomTextFieldInput: View {
             }
         }
         .padding(.horizontal, 16)
-        .frame(height: 56)
+        .frame(height: 68)
         .background(fieldBackgroundColor)
         .cornerRadius(12)
         .background(

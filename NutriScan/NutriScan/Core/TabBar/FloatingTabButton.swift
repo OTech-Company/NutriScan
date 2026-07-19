@@ -40,7 +40,7 @@ struct FloatingTabButton: View {
                                 LinearGradient(
                                     stops: [
                                         .init(color: .clear, location: 0.35),
-                                        .init(color: .white.opacity(0.6), location: 0.5),
+                                        .init(color: .white.opacity(0.2), location: 0.5),
                                         .init(color: .clear, location: 0.65)
                                     ],
                                     startPoint: .topLeading,
