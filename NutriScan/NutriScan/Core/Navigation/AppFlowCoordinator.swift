@@ -26,6 +26,13 @@ final class AppFlowCoordinator: ObservableObject {
         false
     }
 
+    private var hasCompletedProfileSetup: Bool {
+        // e.g. check the fetched User entity for required profile fields,
+        // or a dedicated flag from your ProfileRepository
+        UserDefaults.standard.bool(forKey: "hasCompletedProfileSetup")
+    }
+    
+
     /// Called once, e.g. after Splash finishes its minimum display time
     /// and/or any startup checks (session validation, remote config, etc).
     func finishSplash() {
@@ -33,6 +40,8 @@ final class AppFlowCoordinator: ObservableObject {
             flow = .onboarding
         } else if !isAuthenticated {
             flow = .auth
+        } else if !hasCompletedProfileSetup {
+            flow = .profileSetup
         } else {
             flow = .main
         }
@@ -44,9 +53,14 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     func didAuthenticate() {
+        flow = hasCompletedProfileSetup ? .main : .profileSetup
+    }
+    
+    func finishProfileSetup() {
+        UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
         flow = .main
     }
-
+    
     func logout() {
         flow = .auth
     }

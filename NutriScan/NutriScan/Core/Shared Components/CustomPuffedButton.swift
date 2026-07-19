@@ -72,19 +72,27 @@ struct CustomPuffedShape: Shape {
 struct CustomPuffedButton: View {
     var title: String
     var action: () -> Void
-    
+    var isLoading: Bool = false
+
     var body: some View {
         Button(action: action) {
-            Text(title)
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 62)
-                .background(Color.Teal.teal1000)
-                .clipShape(CustomPuffedShape(puffHeight: 5, cornerRadius: 14))
-                .customTealShadow()
+            Group {
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                } else {
+                    Text(title)
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(.white)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 62)
+            .background(Color.Teal.teal1000)
+            .clipShape(CustomPuffedShape(puffHeight: 5, cornerRadius: 14))
+            .customTealShadow()
         }
-        .padding(.horizontal, 22)
+        .disabled(isLoading)
     }
 }
 

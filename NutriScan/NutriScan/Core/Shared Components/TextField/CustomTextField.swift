@@ -20,7 +20,7 @@ struct CustomTextField: View {
     @State private var isSecure: Bool = true
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 12) {
             CustomTextFieldTitle(title: title)
             
             CustomTextFieldInput(

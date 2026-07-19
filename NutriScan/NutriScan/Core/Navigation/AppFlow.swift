@@ -15,5 +15,6 @@ enum AppFlow: Equatable {
     case splash
     case onboarding
     case auth
+    case profileSetup
     case main
 }

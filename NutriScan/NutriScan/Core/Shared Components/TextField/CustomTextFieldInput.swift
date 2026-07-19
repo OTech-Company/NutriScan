@@ -100,9 +100,13 @@ struct CustomTextFieldInput: View {
         .background(
             Group {
                 if state == .error {
-                    // Simulates Figma's (x:0, y:0, blur:0, spread:4) perfectly
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color.Red.red500.opacity(0.25))
+                        .padding(-4)
+                }
+                if isTyping {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.Teal.teal1000.opacity(0.25))
                         .padding(-4)
                 }
             }

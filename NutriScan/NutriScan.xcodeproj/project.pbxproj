@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2C730B0030092E71004399C5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
+		2C730B0330092ED1004399C5 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
+		D4AED0FD3009683200CB773F /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9F31AC183005B6AE008CB279 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -33,17 +39,37 @@
 		C5E4A1E9300578BD00D77222 /* Exceptions for "NutriScan" folder in "NutriScan" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Features/ProfileSetup/Data/DTOs/ProfileSetupEX26.txt,
+				Features/ProfileSetup/Data/Repositories/ProfileSetupEX1.txt,
+				Features/ProfileSetup/Domain/Entity/ProfileSetupEX4.txt,
+				Features/ProfileSetup/Domain/Repositories/ProfileSetupEX5.txt,
+				Features/ProfileSetup/Domain/UseCase/ProfileSetupEX6.txt,
 				Info.plist,
 			);
 			target = 9F31AC063005B6AC008CB279 /* NutriScan */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		6F8319D0300A98E7000C7659 /* Exceptions for "NutriScan" folder in "Compile Sources" phase from "NutriScan" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 9F31AC033005B6AC008CB279 /* Sources */;
+			membershipExceptions = (
+				Features/ProfileSetup/Data/DTOs/ProfileSetupEX26.txt,
+				Features/ProfileSetup/Data/Repositories/ProfileSetupEX1.txt,
+				Features/ProfileSetup/Domain/Entity/ProfileSetupEX4.txt,
+				Features/ProfileSetup/Domain/Repositories/ProfileSetupEX5.txt,
+				Features/ProfileSetup/Domain/UseCase/ProfileSetupEX6.txt,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		9F31AC093005B6AC008CB279 /* NutriScan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				C5E4A1E9300578BD00D77222 /* Exceptions for "NutriScan" folder in "NutriScan" target */,
+				6F8319D0300A98E7000C7659 /* Exceptions for "NutriScan" folder in "Compile Sources" phase from "NutriScan" target */,
 			);
 			path = NutriScan;
 			sourceTree = "<group>";
@@ -65,6 +91,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4AED0FD3009683200CB773F /* AppAuth in Frameworks */,
+				2C730B0330092ED1004399C5 /* Shimmer in Frameworks */,
+				2C730B0030092E71004399C5 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,12 +114,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C730AFE30092E71004399C5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9F31ABFE3005B6AC008CB279 = {
 			isa = PBXGroup;
 			children = (
 				9F31AC093005B6AC008CB279 /* NutriScan */,
 				9F31AC1A3005B6AE008CB279 /* NutriScanTests */,
 				9F31AC243005B6AE008CB279 /* NutriScanUITests */,
+				2C730AFE30092E71004399C5 /* Frameworks */,
 				9F31AC083005B6AC008CB279 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,6 +162,9 @@
 			);
 			name = NutriScan;
 			packageProductDependencies = (
+				2C730AFF30092E71004399C5 /* Kingfisher */,
+				2C730B0230092ED1004399C5 /* Shimmer */,
+				D4AED0FC3009683200CB773F /* AppAuth */,
 			);
 			productName = NutriScan;
 			productReference = 9F31AC073005B6AC008CB279 /* NutriScan.app */;
@@ -208,6 +248,11 @@
 			);
 			mainGroup = 9F31ABFE3005B6AC008CB279;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */,
+				D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9F31AC083005B6AC008CB279 /* Products */;
 			projectDirPath = "";
@@ -423,7 +468,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.NutriScan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.osamahosam.NutriScan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -453,7 +498,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mycompany.NutriScan;
+				PRODUCT_BUNDLE_IDENTIFIER = com.osamahosam.NutriScan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -569,6 +614,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.10.0;
+			};
+		};
+		2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/swiftui-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
+		D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2C730AFF30092E71004399C5 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		2C730B0230092ED1004399C5 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */;
+			productName = Shimmer;
+		};
+		D4AED0FC3009683200CB773F /* AppAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
+			productName = AppAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9F31ABFF3005B6AC008CB279 /* Project object */;
 }

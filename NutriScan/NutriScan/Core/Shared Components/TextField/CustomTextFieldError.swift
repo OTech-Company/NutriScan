@@ -20,28 +20,28 @@ struct CustomTextFieldError: View {
     }
     
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 4) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 16))
+                .font(.system(size: 11))
                 .foregroundColor(errorItemColor)
-            
+
             Text(errorMessage)
-                .font(Font.AppFont.title1)
+                .font(.caption)
                 .foregroundColor(errorItemColor)
                 .lineLimit(1)
-                .minimumScaleFactor(0.5)
-            
+                .minimumScaleFactor(0.8)
+
             Spacer()
         }
-        .padding(.horizontal, 16)
-        .frame(height: 44)
+        .padding(.horizontal, 12)
+        .frame(height: 32)
         .frame(maxWidth: .infinity)
         .background(errorBackgroundColor)
-        .cornerRadius(12)
+        .cornerRadius(8)
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 8)
                 .stroke(errorItemColor, lineWidth: 1)
         )
-        .transition(.move(edge: .bottom).combined(with: .opacity))
+        .transition(.opacity.combined(with: .move(edge: .top)))
     }
 }
