@@ -1,7 +1,0 @@
-//
-//  WeightPicker.swift
-//  NutriScan
-//
-//  Created by Osama Hosam on 17/07/2026.
-//
-

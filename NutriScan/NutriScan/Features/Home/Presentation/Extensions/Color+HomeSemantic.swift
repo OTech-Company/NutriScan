@@ -11,7 +11,7 @@ import SwiftUI
 extension Color {
     enum HomeSemantic {
         // General Background
-        static let homeBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600)
+        static let homeBackground = Color(light: .white, dark: Color.Teal.teal1600)
         
         // Greeting Section
         static let greetingTitle = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400)

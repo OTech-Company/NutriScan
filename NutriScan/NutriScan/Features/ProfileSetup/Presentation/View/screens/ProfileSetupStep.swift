@@ -4,10 +4,6 @@
 //
 //  Created by Osama Hosam on 18/07/2026.
 //
-//
-//  ProfileSetupStep.swift
-//  NutriScan
-//
 
 import SwiftUI
 
