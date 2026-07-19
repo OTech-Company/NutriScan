@@ -28,7 +28,7 @@ enum ProfileSetupStep: Int, CaseIterable {
         case .height:
             return [TitleSegment("How "), TitleSegment("tall", color: Color.ProfileSetupSemantic.accent), TitleSegment(" are you?")]
         case .healthProfile:
-            return [TitleSegment("Your health ", ), TitleSegment("profile", color: Color.ProfileSetupSemantic.accent)]
+            return [TitleSegment("Your health "), TitleSegment("profile", color: Color.ProfileSetupSemantic.accent)]
         }
     }
 
