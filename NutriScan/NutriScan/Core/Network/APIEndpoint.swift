@@ -12,13 +12,16 @@ protocol APIEndpoint {
     var path: String { get }
     var method: HTTPMethod { get }
     var queryParameters: [String: String]? { get }
-    var body: Encodable? { get }
+    var body: RequestBody { get }
     var headers: [String: String] { get }
+    var requiresAuth: Bool { get }
 }
 
 extension APIEndpoint {
-    var body: Encodable? { nil }
+    var queryParameters: [String: String]? { nil }
+    var body: RequestBody { .none }
     var headers: [String: String] { [:] }
+    var requiresAuth: Bool { true } // most endpoints need a token; auth endpoints opt out
 
     var fullURL: URL? {
         var components = URLComponents(string: baseURL + path)
@@ -30,5 +33,3 @@ extension APIEndpoint {
         return components?.url
     }
 }
-
-

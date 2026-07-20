@@ -11,12 +11,15 @@ protocol NetworkServiceProtocol {
     func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T
 }
 
-final class NetworkService: NetworkServiceProtocol {
-    static let shared = NetworkService()
-    private let session: URLSession
+struct EmptyResponse: Decodable {}
 
-    private init(session: URLSession = .shared) {
+final class NetworkService: NetworkServiceProtocol {
+    private let session: URLSession
+    private let tokenProvider: TokenProviding?
+
+    init(session: URLSession = .shared, tokenProvider: TokenProviding? = nil) {
         self.session = session
+        self.tokenProvider = tokenProvider
     }
 
     func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T {
@@ -27,11 +30,31 @@ final class NetworkService: NetworkServiceProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
         request.allHTTPHeaderFields = endpoint.headers
-        
-        if let body = endpoint.body {
+
+        if endpoint.requiresAuth, let token = await tokenProvider?.accessToken() {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        switch endpoint.body {
+        case .none:
+            break
+
+        case .json(let encodable):
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
-            request.httpBody = try encoder.encode(AnyEncodable(body))
+            request.httpBody = try encoder.encode(AnyEncodable(encodable))
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        case .formURLEncoded(let params):
+            let encoded = params.map { key, value in
+                "\(key.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? key)=\(value.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? value)"
+            }.joined(separator: "&")
+            request.httpBody = encoded.data(using: .utf8)
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        case .multipart(let form):
+            request.httpBody = form.encode()
+            request.setValue(form.contentTypeHeader, forHTTPHeaderField: "Content-Type")
         }
 
         do {
@@ -42,13 +65,12 @@ final class NetworkService: NetworkServiceProtocol {
             }
 
             guard (200...299).contains(httpResponse.statusCode) else {
+                let apiError = try? JSONDecoder().decode(APIErrorResponse.self, from: data)
+                throw NetworkError.serverError(statusCode: httpResponse.statusCode, apiError: apiError)
+            }
 
-                if let json = String(data: data, encoding: .utf8) {
-                    print("Status:", httpResponse.statusCode)
-                    print("Response:", json)
-                }
-
-                throw NetworkError.serverError(statusCode: httpResponse.statusCode)
+            if httpResponse.statusCode == 204 || data.isEmpty, let empty = EmptyResponse() as? T {
+                return empty
             }
 
             do {
@@ -56,7 +78,6 @@ final class NetworkService: NetworkServiceProtocol {
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 return try decoder.decode(T.self, from: data)
             } catch {
-                print("NetworkError.decodingFailed : \(NetworkError.decodingFailed)")
                 throw NetworkError.decodingFailed
             }
 
@@ -70,12 +91,14 @@ final class NetworkService: NetworkServiceProtocol {
 
 struct AnyEncodable: Encodable {
     private let _encode: (Encoder) throws -> Void
-    
-    init(_ wrapped: some Encodable) {
-        _encode = wrapped.encode
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        try _encode(encoder)
-    }
+    init(_ wrapped: some Encodable) { _encode = wrapped.encode }
+    func encode(to encoder: Encoder) throws { try _encode(encoder) }
+}
+
+private extension CharacterSet {
+    static let urlQueryValueAllowed: CharacterSet = {
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: "+&=") // these need escaping inside form values, unlike in a query string
+        return allowed
+    }()
 }
