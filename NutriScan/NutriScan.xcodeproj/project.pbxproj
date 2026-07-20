@@ -110,6 +110,7 @@
 		8CD9D0857AD632D1C2677DE7 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */; };
 		8D815A3F5043EB47D5BD72CB /* AuthDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C964278B9DAFBBA013037F /* AuthDivider.swift */; };
 		8DB5B30032700DF6C7BBC9B2 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F22888476A92466A8F7007 /* RegisterViewModel.swift */; };
+		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
 		8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */; };
 		8FC42A97300EACDD00A2B876 /* TokenProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A96300EACDD00A2B876 /* TokenProviding.swift */; };
@@ -319,6 +320,7 @@
 		8C8BF72F529571DA910FBB27 /* ScanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlowView.swift; sourceTree = "<group>"; };
 		8C9FCB95B1BB5CFB86039766 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		8E2478F7BB592188D447103B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8FA3439F300EB7C20044192A /* ProductEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEndpoint.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
 		8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
 		8FC42A96300EACDD00A2B876 /* TokenProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenProviding.swift; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 			isa = PBXGroup;
 			children = (
 				7D4C56E11B541B29F6BE8003 /* ProductAPIService.swift */,
+				8FA3439F300EB7C20044192A /* ProductEndpoint.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1851,6 +1854,7 @@
 				7F25CBE6FC01DE19F4AA74D0 /* empty2.swift in Sources */,
 				CE1644E9DB351B60402F1331 /* empty4.swift in Sources */,
 				37CBFAD2F65D78E634D04864 /* empty67.swift in Sources */,
+				8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */,
 				6924E0FD08FF44F18D0B8D8F /* empty77.swift in Sources */,
 				9A223F7CA1474E3455C90D3E /* empty8.swift in Sources */,
 				7E1042EF21D7A5286650D434 /* empty80.swift in Sources */,
