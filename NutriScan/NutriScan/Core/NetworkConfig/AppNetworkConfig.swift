@@ -9,15 +9,15 @@
 import Foundation
 
 enum AppNetworkConfig {
-    case core // The main url
+    case core
     case auth
     
     var baseURL: String {
         switch self {
         case .core:
-            return "https://mock-api.lovable.app" // the test backend url
+            return "https://nutriscan.dev/api/v1/"
         case .auth:
-            return "https://auth.nutriscan.ai" // used with Login, refresh, logout, and the Google flow
+            return "https://auth.nutriscan.ai"
         }
     }
 }
