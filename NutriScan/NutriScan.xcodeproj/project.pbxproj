@@ -10,6 +10,7 @@
 		2C730B0030092E71004399C5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
 		2C730B0330092ED1004399C5 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
 		D4AED0FD3009683200CB773F /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
+		BB1234560001000100010001 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = BB1234560001000100010002 /* Lottie */; };
 		8117CD6D2470275218A1B868 /* APIEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AE9E4C13F1200CBA28FC7AA /* APIEndpoint.swift */; };
 		E65A378B40FEE9B09F35B438 /* APIErrorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF02AE8A83580AD2F848FDF5 /* APIErrorResponse.swift */; };
 		26E0850BA11B06E6A75AA2C5 /* AnyRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C0D41F2232B55E79E45FE1 /* AnyRoute.swift */; };
@@ -445,6 +446,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4AED0FD3009683200CB773F /* AppAuth in Frameworks */,
+				BB1234560001000100010001 /* Lottie in Frameworks */,
 				2C730B0330092ED1004399C5 /* Shimmer in Frameworks */,
 				2C730B0030092E71004399C5 /* Kingfisher in Frameworks */,
 			);
@@ -1677,6 +1679,7 @@
 				2C730AFF30092E71004399C5 /* Kingfisher */,
 				2C730B0230092ED1004399C5 /* Shimmer */,
 				D4AED0FC3009683200CB773F /* AppAuth */,
+				BB1234560001000100010002 /* Lottie */,
 			);
 			productName = NutriScan;
 			productReference = 9F31AC073005B6AC008CB279 /* NutriScan.app */;
@@ -1757,6 +1760,7 @@
 				2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */,
 				D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
+				BB1234560001000100010003 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			productRefGroup = 9F31AC083005B6AC008CB279 /* Products */;
 			projectDirPath = "";
@@ -2343,6 +2347,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		BB1234560001000100010003 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2360,6 +2372,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */;
 			productName = AppAuth;
+		};
+		BB1234560001000100010002 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB1234560001000100010003 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
