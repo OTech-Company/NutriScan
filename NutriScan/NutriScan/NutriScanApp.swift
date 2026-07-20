@@ -12,7 +12,6 @@ struct NutriScanApp: App {
     var body: some Scene {
         WindowGroup {
             RootCoordinatorView()
-                .toastable()
         }
     }
 }

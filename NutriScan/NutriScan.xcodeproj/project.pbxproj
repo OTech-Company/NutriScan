@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2C730B0030092E71004399C5 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
 		2C730B0330092ED1004399C5 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
-		2C831E91300D8BB100812B5C /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2C831E90300D8BB100812B5C /* Lottie */; };
 		D4AED0FD3009683200CB773F /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
 /* End PBXBuildFile section */
 
@@ -95,7 +94,6 @@
 				D4AED0FD3009683200CB773F /* AppAuth in Frameworks */,
 				2C730B0330092ED1004399C5 /* Shimmer in Frameworks */,
 				2C730B0030092E71004399C5 /* Kingfisher in Frameworks */,
-				2C831E91300D8BB100812B5C /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,7 +165,6 @@
 				2C730AFF30092E71004399C5 /* Kingfisher */,
 				2C730B0230092ED1004399C5 /* Shimmer */,
 				D4AED0FC3009683200CB773F /* AppAuth */,
-				2C831E90300D8BB100812B5C /* Lottie */,
 			);
 			productName = NutriScan;
 			productReference = 9F31AC073005B6AC008CB279 /* NutriScan.app */;
@@ -255,7 +252,6 @@
 				2C730AFB30092E15004399C5 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */,
 				D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */,
-				2C831E8F300D8B7B00812B5C /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9F31AC083005B6AC008CB279 /* Products */;
@@ -636,14 +632,6 @@
 				minimumVersion = 1.5.1;
 			};
 		};
-		2C831E8F300D8B7B00812B5C /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/airbnb/lottie-ios";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.6.1;
-			};
-		};
 		D4AED0FB3009683200CB773F /* XCRemoteSwiftPackageReference "AppAuth-iOS" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openid/AppAuth-iOS.git";
@@ -664,11 +652,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C730B0130092EC1004399C5 /* XCRemoteSwiftPackageReference "swiftui-Shimmer" */;
 			productName = Shimmer;
-		};
-		2C831E90300D8BB100812B5C /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2C831E8F300D8B7B00812B5C /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
 		};
 		D4AED0FC3009683200CB773F /* AppAuth */ = {
 			isa = XCSwiftPackageProductDependency;

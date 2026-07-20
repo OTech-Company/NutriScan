@@ -2,8 +2,6 @@
 //  RegisterFormFieldsSection.swift
 //  NutriScan
 //
-//  Created by albaraa alsayed on 29/01/1448 AH.
-//
 
 import SwiftUI
 
@@ -13,26 +11,6 @@ struct RegisterFormFieldsSection: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            CustomTextField(
-                title: "First Name",
-                leadingIcon: "person",
-                isPassword: false,
-                errorMessage: viewModel.firstName.error,
-                placeHolder: "Enter your first name...",
-                textFieldValue: $viewModel.firstName.value,
-                state: $viewModel.firstName.state
-            )
-
-            CustomTextField(
-                title: "Last Name",
-                leadingIcon: "person",
-                isPassword: false,
-                errorMessage: viewModel.lastName.error,
-                placeHolder: "Enter your last name...",
-                textFieldValue: $viewModel.lastName.value,
-                state: $viewModel.lastName.state
-            )
-
             CustomTextField(
                 title: "Email Address",
                 leadingIcon: "envelope",
@@ -65,11 +43,9 @@ struct RegisterFormFieldsSection: View {
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
-        .onChange(of: viewModel.firstName.value)       { viewModel.validate(field: .firstName) }
-        .onChange(of: viewModel.lastName.value)        { viewModel.validate(field: .lastName) }
-        .onChange(of: viewModel.email.value)           { viewModel.validate(field: .email) }
-        .onChange(of: viewModel.password.value)        { viewModel.validate(field: .password) }
-        .onChange(of: viewModel.confirmPassword.value) { viewModel.validate(field: .confirmPassword) }
+        .onChange(of: viewModel.email.value)           { viewModel.validateEmail() }
+        .onChange(of: viewModel.password.value)        { viewModel.validatePassword() }
+        .onChange(of: viewModel.confirmPassword.value) { viewModel.validateConfirmPassword() }
     }
 }
 
