@@ -41,7 +41,7 @@ final class NetworkService: NetworkServiceProtocol {
 
         case .json(let encodable):
             let encoder = JSONEncoder()
-            encoder.keyEncodingStrategy = .convertToSnakeCase
+            encoder.keyEncodingStrategy = endpoint.keyEncodingStrategy
             request.httpBody = try encoder.encode(AnyEncodable(encodable))
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -75,7 +75,7 @@ final class NetworkService: NetworkServiceProtocol {
 
             do {
                 let decoder = JSONDecoder()
-                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                decoder.keyDecodingStrategy = endpoint.keyDecodingStrategy
                 return try decoder.decode(T.self, from: data)
             } catch {
                 throw NetworkError.decodingFailed
