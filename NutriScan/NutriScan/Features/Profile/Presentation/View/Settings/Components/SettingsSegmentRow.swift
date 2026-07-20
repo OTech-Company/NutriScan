@@ -63,25 +63,25 @@ struct SettingsSegmentRow<T: Hashable & CustomStringConvertible>: View {
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
-
-#Preview {
-    @Previewable @State var appearance: AppAppearance = .system
-    @Previewable @State var language: AppLanguage = .english
-
-    VStack(spacing: 12) {
-        SettingsSegmentRow(
-            icon: "circle.lefthalf.filled",
-            title: "Appearance",
-            options: AppAppearance.allCases,
-            selected: $appearance
-        )
-        SettingsSegmentRow(
-            icon: "globe",
-            title: "Language",
-            options: AppLanguage.allCases,
-            selected: $language
-        )
-    }
-    .padding()
-    .background(Color.SettingsSemantic.screenBackground)
-}
+//
+//#Preview {
+//    @Previewable @State var appearance: AppAppearance = .system
+//    @Previewable @State var language: AppLanguage = .english
+//
+//    VStack(spacing: 12) {
+//        SettingsSegmentRow(
+//            icon: "circle.lefthalf.filled",
+//            title: "Appearance",
+//            options: AppAppearance.allCases,
+//            selected: $appearance
+//        )
+//        SettingsSegmentRow(
+//            icon: "globe",
+//            title: "Language",
+//            options: AppLanguage.allCases,
+//            selected: $language
+//        )
+//    }
+//    .padding()
+//    .background(Color.SettingsSemantic.screenBackground)
+//}
