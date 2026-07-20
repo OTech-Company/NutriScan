@@ -9,4 +9,5 @@ import Foundation
 
 protocol AuthRepositoryProtocol {
     func register(request: RegisterRequest) async throws -> RegisterResult
+    func resendVerification(email: String) async throws -> ResendVerificationResult
 }

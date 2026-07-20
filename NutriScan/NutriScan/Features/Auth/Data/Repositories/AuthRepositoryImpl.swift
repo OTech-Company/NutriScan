@@ -19,4 +19,10 @@ final class AuthRepositoryImpl: AuthRepositoryProtocol {
         let response = try await remoteService.register(dto)
         return response.toDomain()
     }
+
+    func resendVerification(email: String) async throws -> ResendVerificationResult {
+        let dto = ResendVerificationRequestDTO(email: email)
+        let response = try await remoteService.resendVerification(dto)
+        return response.toDomain()
+    }
 }

@@ -44,7 +44,7 @@ struct RegisterView: View {
                     subtitle: "Your account has been created successfully."
                 ) {
                     showSuccess = false
-                    flowCoordinator.didAuthenticate()
+                    router.push(AuthRoute.verificationPending(email: viewModel.email.value))
                 }
                 .transition(.opacity)
             }
