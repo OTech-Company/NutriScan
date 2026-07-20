@@ -19,26 +19,6 @@ struct AppValidator {
         return nil
     }
 
-    static func firstNameValidator(_ name: String?) -> String? {
-        guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return "First name is required"
-        }
-        if name.count < 2 || name.count > 50 {
-            return "First name must be between 2 and 50 characters"
-        }
-        return nil
-    }
-
-    static func lastNameValidator(_ name: String?) -> String? {
-        guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return "Last name is required"
-        }
-        if name.count < 2 || name.count > 50 {
-            return "Last name must be between 2 and 50 characters"
-        }
-        return nil
-    }
-
     static func validateMobile(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
             return "Mobile number is required"
@@ -76,8 +56,8 @@ struct AppValidator {
         guard let value = value, !value.isEmpty else {
             return "Password is required"
         }
-        if value.count < 8 {
-            return "Password must be at least 8 characters"
+        if value.count < 6 {
+            return "Password must be at least 6 characters"
         }
         return nil
     }
