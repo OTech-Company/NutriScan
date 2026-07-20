@@ -9,6 +9,7 @@ import Foundation
 
 protocol AuthRemoteServiceProtocol {
     func register(_ dto: RegisterRequestDTO) async throws -> RegisterResponseDTO
+    func resendVerification(_ dto: ResendVerificationRequestDTO) async throws -> ResendVerificationResponseDTO
 }
 
 final class AuthRemoteService: AuthRemoteServiceProtocol {
@@ -20,5 +21,14 @@ final class AuthRemoteService: AuthRemoteServiceProtocol {
 
     func register(_ dto: RegisterRequestDTO) async throws -> RegisterResponseDTO {
         return try await networkService.request(AuthEndpoint.register(dto))
+    }
+
+    func resendVerification(_ dto: ResendVerificationRequestDTO) async throws -> ResendVerificationResponseDTO {
+        do {
+            return try await networkService.request(AuthEndpoint.resendVerification(dto))
+        } catch NetworkError.decodingFailed {
+            // If the server returns empty content, return a default response model
+            return ResendVerificationResponseDTO(message: "Verification email resent successfully.")
+        }
     }
 }

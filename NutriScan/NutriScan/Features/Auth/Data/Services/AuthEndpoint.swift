@@ -9,6 +9,7 @@ import Foundation
 
 enum AuthEndpoint: APIEndpoint {
     case register(RegisterRequestDTO)
+    case resendVerification(ResendVerificationRequestDTO)
 
     var baseURL: String {
         return AppNetworkConfig.core.baseURL
@@ -18,12 +19,14 @@ enum AuthEndpoint: APIEndpoint {
         switch self {
         case .register:
             return "auth/register"
+        case .resendVerification:
+            return "auth/resend-verification"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .register:
+        case .register, .resendVerification:
             return .post
         }
     }
@@ -35,6 +38,8 @@ enum AuthEndpoint: APIEndpoint {
     var body: Encodable? {
         switch self {
         case .register(let dto):
+            return dto
+        case .resendVerification(let dto):
             return dto
         }
     }
