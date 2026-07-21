@@ -12,8 +12,8 @@ extension Color {
         static let background = Color(light: .white, dark: Color.Teal.teal1600)
         
         // Header Section
-        static let title = Color(light: Color.Teal.teal1000, dark: .white)
-        static let subtitle = Color(light: Color.Gray.gray700, dark: Color.Teal.teal400)
+        static let title = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal00)
+        static let subtitle = Color(light: Color.Gray.gray700, dark: Color.Teal.teal300)
     }
 }
 
