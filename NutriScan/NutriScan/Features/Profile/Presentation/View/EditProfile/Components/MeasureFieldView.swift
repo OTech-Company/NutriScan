@@ -11,6 +11,9 @@ struct MeasureFieldView: View {
     let label: String
     @Binding var value: String
     var unit: String = ""
+    
+    // Configurable limit
+    var maxLength: Int = 3
 
     var body: some View {
         HStack(spacing: 6) {
@@ -26,6 +29,9 @@ struct MeasureFieldView: View {
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.trailing)
                 .fixedSize()
+                .onChange(of: value) { oldValue, newValue in
+                    sanitizeInput(newValue: newValue)
+                }
 
             if !unit.isEmpty {
                 Text(unit)
@@ -43,11 +49,25 @@ struct MeasureFieldView: View {
         )
         .clipShape(RoundedRectangle(cornerRadius: EditProfileSemantics.Radius.field))
     }
+    
+    // text formatting and length capping
+    private func sanitizeInput(newValue: String) {
+        // Strip out any non-numeric characters (e.g., if pasted)
+        let numericString = newValue.filter { $0.isNumber }
+        
+        // Cap the length to maxLength
+        if numericString.count > maxLength {
+            value = String(numericString.prefix(maxLength))
+        } else if newValue != numericString {
+            // Update the value if invalid characters were removed
+            value = numericString
+        }
+    }
 }
 
 #Preview("Light") {
     HStack(spacing: 12) {
-        MeasureFieldView(label: "Hight", value: .constant("180"), unit: "cm")
+        MeasureFieldView(label: "Height", value: .constant("180"), unit: "cm")
         MeasureFieldView(label: "Weight", value: .constant("80"), unit: "kg")
     }
     .padding()
@@ -57,7 +77,7 @@ struct MeasureFieldView: View {
 
 #Preview("Dark") {
     HStack(spacing: 12) {
-        MeasureFieldView(label: "Hight", value: .constant("180"), unit: "cm")
+        MeasureFieldView(label: "Height", value: .constant("180"), unit: "cm")
         MeasureFieldView(label: "Weight", value: .constant("80"), unit: "kg")
     }
     .padding()

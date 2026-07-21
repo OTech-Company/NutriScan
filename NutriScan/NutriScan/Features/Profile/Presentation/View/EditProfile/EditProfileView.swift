@@ -20,20 +20,47 @@ struct EditProfileView: View {
                     .bottom, EditProfileSemantics.Spacing.sectionVertical)
 
                 ProfileHeaderView(
-                    name: viewModel.firstName + " " + viewModel.lastName,
+                    name: viewModel.firstName.value + " " + viewModel.lastName.value,
                     email: viewModel.email,
                     avatarImage: Image(systemName: "person.circle.fill")
                 )
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
-                    EditableFieldView(placeholder: "first name", text: $viewModel.firstName)
-                    EditableFieldView(placeholder: "last name", text: $viewModel.lastName)
+                    
+                    // First Name Field
+                    VStack(spacing: 4) {
+                        EditableFieldView(placeholder: "first name", text: $viewModel.firstName.value)
+                        if viewModel.firstName.state == .error {
+                            CustomTextFieldError(errorMessage: viewModel.firstName.error)
+                        }
+                    }
+                    
+                    // Last Name Field
+                    VStack(spacing: 4) {
+                        EditableFieldView(placeholder: "last name", text: $viewModel.lastName.value)
+                        if viewModel.lastName.state == .error {
+                            CustomTextFieldError(errorMessage: viewModel.lastName.error)
+                        }
+                    }
 
                     DateSelectionField(date: $viewModel.birthdate)
 
-                    HStack(spacing: 12) {
-                        MeasureFieldView(label: "Height", value: $viewModel.height, unit: "cm")
-                        MeasureFieldView(label: "Weight", value: $viewModel.weight, unit: "kg")
+                    HStack(alignment: .top, spacing: 12) {
+                        // Height Field
+                        VStack(spacing: 4) {
+                            MeasureFieldView(label: "Height", value: $viewModel.height.value, unit: "cm")
+                            if viewModel.height.state == .error {
+                                CustomTextFieldError(errorMessage: viewModel.height.error)
+                            }
+                        }
+                        
+                        // Weight Field
+                        VStack(spacing: 4) {
+                            MeasureFieldView(label: "Weight", value: $viewModel.weight.value, unit: "kg")
+                            if viewModel.weight.state == .error {
+                                CustomTextFieldError(errorMessage: viewModel.weight.error)
+                            }
+                        }
                     }
                 }
                 
@@ -57,7 +84,11 @@ struct EditProfileView: View {
 
                 CustomPuffedButton(
                     title: "Save",
-                    action: { /* TODO: backend save */  },
+                    action: {
+                        withAnimation {
+                            viewModel.validateAndSave()
+                        }
+                    },
                     isLoading: viewModel.isLoading
                 )
                 .padding(.top, 8)
