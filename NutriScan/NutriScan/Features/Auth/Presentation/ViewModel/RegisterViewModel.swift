@@ -135,7 +135,7 @@ final class RegisterViewModel {
 
     private func handleAPIError(_ apiError: APIErrorResponse) {
         guard let details = apiError.details, !details.isEmpty else {
-            generalError = apiError.message ?? "Validation failed"
+            generalError = apiError.userFriendlyMessage
             return
         }
         

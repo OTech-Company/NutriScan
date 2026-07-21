@@ -17,7 +17,7 @@ enum AppNetworkConfig {
         case .core:
             return "https://nutriscan.dev/api/v1/"
         case .auth:
-            return "https://auth.nutriscan.ai"
+            return "https://auth.nutriscan.dev/"
         }
     }
 }
