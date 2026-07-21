@@ -14,6 +14,9 @@ final class ForgotPasswordViewModel {
     // MARK: - Fields
     var email = ValidatedField()
     
+    // MARK: - Fields
+    var email = ValidatedField()
+    
     // MARK: - Status
     var isLoading: Bool = false
     var successMessage: String? = nil
