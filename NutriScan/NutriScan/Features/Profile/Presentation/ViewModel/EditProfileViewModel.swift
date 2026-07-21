@@ -41,7 +41,7 @@ final class EditProfileViewModel {
 
     var isLoading = false
     
-    // MARK: - Backend Mocks (To be replaced with real API calls)
+    // MARK: - Backend Mocks
     private let backendConditions = ["Asthma", "COPD", "Arthritis", "Thyroid Disorder", "Osteoporosis", "Kidney Disease"]
     private let backendAllergies = ["Shellfish", "Soy", "Eggs", "Tree Nuts", "Wheat", "Sesame"]
 
@@ -55,37 +55,13 @@ final class EditProfileViewModel {
         self.selectedAllergies = Set(fetchedAllergies)
         self.selectedConditions = Set(fetchedConditions)
     }
-    
-    // MARK: - Validation Methods
-    private func validateName(_ value: String) -> String? {
-        let trimmed = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return "Name is required." }
-        if trimmed.count < 2 { return "Must be at least 2 characters." }
-        
-        let nameRegex = "^[\\p{L} .'-]+$" // Only letters, spaces, and hyphens
-        let nameTest = NSPredicate(format: "SELF MATCHES %@", nameRegex)
-        if !nameTest.evaluate(with: trimmed) { return "Please use valid characters." }
-        
-        return nil
-    }
-    
-    private func validateHeight(_ value: String) -> String? {
-        if value.isEmpty { return "Required." }
-        guard let h = Double(value), h >= 50, h <= 300 else { return "Invalid height." }
-        return nil
-    }
-    
-    private func validateWeight(_ value: String) -> String? {
-        if value.isEmpty { return "Required." }
-        guard let w = Double(value), w >= 20, w <= 500 else { return "Invalid weight." }
-        return nil
-    }
 
     func validateAndSave() {
-        let isFirstNameValid = firstName.validate(using: validateName)
-        let isLastNameValid = lastName.validate(using: validateName)
-        let isHeightValid = height.validate(using: validateHeight)
-        let isWeightValid = weight.validate(using: validateWeight)
+        // Direct injection of static AppValidator methods
+        let isFirstNameValid = firstName.validate(using: AppValidator.displayNameValidator)
+        let isLastNameValid = lastName.validate(using: AppValidator.displayNameValidator)
+        let isHeightValid = height.validate(using: AppValidator.heightValidator)
+        let isWeightValid = weight.validate(using: AppValidator.weightValidator)
         
         guard isFirstNameValid, isLastNameValid, isHeightValid, isWeightValid else {
             return
