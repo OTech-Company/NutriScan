@@ -73,6 +73,16 @@
 		6DD0CE29CC51AFC8DCB6EC03 /* BirthdateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DCC3D24B114E0EF78A9700D /* BirthdateSelectionView.swift */; };
 		6E5A5981D510BA1046A20CFC /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FE4B62133192972ABD71A /* OnboardingScreen.swift */; };
 		6F1E4C26B29F085597C11899 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */; };
+		6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */; };
+		6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */; };
+		6FC3C247301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */; };
+		6FC3C248301003E400ACB5EE /* DailySteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C237301003E400ACB5EE /* DailySteps.swift */; };
+		6FC3C249301003E400ACB5EE /* StepRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */; };
+		6FC3C24A301003E400ACB5EE /* ObserveDailyStepsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */; };
+		6FC3C24B301003E400ACB5EE /* StepCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C241301003E400ACB5EE /* StepCounterView.swift */; };
+		6FC3C24C301003E400ACB5EE /* PedometerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */; };
+		6FC3C24E3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C24D3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift */; };
+		6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C24F3010135C00ACB5EE /* HealthKitStepDataSource.swift */; };
 		70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */; };
 		722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2550A33566860771C07AAB9 /* ProductMatchCard.swift */; };
 		764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB294EB0DF9DEBB41F600F58 /* AppProfileSetupBackgroundModifier.swift */; };
@@ -295,6 +305,17 @@
 		6CDBE2512792663CF5B889AC /* ProfileSetupStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupStep.swift; sourceTree = "<group>"; };
 		6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryViewModel.swift; sourceTree = "<group>"; };
 		6EE2AB21FB9BAAC693D7FCBB /* GenderSelectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectionCard.swift; sourceTree = "<group>"; };
+		6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
+		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
+		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
+		6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryProtocol.swift; sourceTree = "<group>"; };
+		6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveDailyStepsUseCase.swift; sourceTree = "<group>"; };
+		6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStepAuthorizationUseCase.swift; sourceTree = "<group>"; };
+		6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounterViewModel.swift; sourceTree = "<group>"; };
+		6FC3C241301003E400ACB5EE /* StepCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounterView.swift; sourceTree = "<group>"; };
+		6FC3C24D3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchStepsHistoryUseCaseProtocol.swift; sourceTree = "<group>"; };
+		6FC3C24F3010135C00ACB5EE /* HealthKitStepDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStepDataSource.swift; sourceTree = "<group>"; };
+		6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NutriScan.entitlements; sourceTree = "<group>"; };
 		702881CEB0053AD3B4F54F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		70E3F47BE0D97360F9B4EFE0 /* UserMeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMeResponse.swift; sourceTree = "<group>"; };
 		7152B246043D48F88D62F29B /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
@@ -892,6 +913,103 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		6FC3C233301003E400ACB5EE /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C24F3010135C00ACB5EE /* HealthKitStepDataSource.swift */,
+				6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		6FC3C235301003E400ACB5EE /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		6FC3C236301003E400ACB5EE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C233301003E400ACB5EE /* DataSources */,
+				6FC3C235301003E400ACB5EE /* Repositories */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6FC3C238301003E400ACB5EE /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C237301003E400ACB5EE /* DailySteps.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		6FC3C23A301003E400ACB5EE /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		6FC3C23D301003E400ACB5EE /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C24D3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift */,
+				6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */,
+				6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		6FC3C23E301003E400ACB5EE /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C238301003E400ACB5EE /* Entities */,
+				6FC3C23A301003E400ACB5EE /* Repositories */,
+				6FC3C23D301003E400ACB5EE /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6FC3C240301003E400ACB5EE /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6FC3C242301003E400ACB5EE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C241301003E400ACB5EE /* StepCounterView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6FC3C243301003E400ACB5EE /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C240301003E400ACB5EE /* ViewModels */,
+				6FC3C242301003E400ACB5EE /* Views */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		6FC3C244301003E400ACB5EE /* StepTracker */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C236301003E400ACB5EE /* Data */,
+				6FC3C23E301003E400ACB5EE /* Domain */,
+				6FC3C243301003E400ACB5EE /* Presentation */,
+			);
+			path = StepTracker;
+			sourceTree = "<group>";
+		};
 		719B4CACACDAFD373485C365 /* EditProfile */ = {
 			isa = PBXGroup;
 			children = (
@@ -1205,6 +1323,7 @@
 		9F31AC093005B6AC008CB279 /* NutriScan */ = {
 			isa = PBXGroup;
 			children = (
+				6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */,
 				CC00461AC2210C41A0FC5224 /* Core */,
 				C587477207AF141CE28207AA /* DI */,
 				F00E8B813AF1AA6E29087914 /* Features */,
@@ -1493,6 +1612,7 @@
 		F00E8B813AF1AA6E29087914 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				6FC3C244301003E400ACB5EE /* StepTracker */,
 				086CE7E1A1C755FF6BCCB4FE /* Auth */,
 				20D947D1CB6B4B3A738328CC /* Home */,
 				87472DC8E6BB934DABBED0FF /* Onboarding */,
@@ -1719,7 +1839,16 @@
 				220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */,
 				DC73ACADE5B3296996297205 /* CustomPuffedButton.swift in Sources */,
 				7D2767545C9B74D3BA022068 /* CustomTextField.swift in Sources */,
+				6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */,
 				526136CC5A7326A6B5784EC2 /* CustomTextFieldError.swift in Sources */,
+				6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */,
+				6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */,
+				6FC3C247301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift in Sources */,
+				6FC3C248301003E400ACB5EE /* DailySteps.swift in Sources */,
+				6FC3C249301003E400ACB5EE /* StepRepositoryProtocol.swift in Sources */,
+				6FC3C24A301003E400ACB5EE /* ObserveDailyStepsUseCase.swift in Sources */,
+				6FC3C24B301003E400ACB5EE /* StepCounterView.swift in Sources */,
+				6FC3C24C301003E400ACB5EE /* PedometerDataSource.swift in Sources */,
 				9E3D57EFDE580D3E9DED13F6 /* CustomTextFieldInput.swift in Sources */,
 				7E9497A88EC033792836AD39 /* CustomTextFieldTitle.swift in Sources */,
 				23898615DA617925934CC71F /* DIContainer.swift in Sources */,
@@ -1787,6 +1916,7 @@
 				B149458D7ECAA1D19E709E9C /* ProductRepository.swift in Sources */,
 				B9DEF23EAEAEE40811334D58 /* ProductRepositoryImpl.swift in Sources */,
 				31F5A64521573EE429D9D849 /* ProfileFlowView.swift in Sources */,
+				6FC3C24E3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift in Sources */,
 				ECA0DCAA247501DBCFBFAE6E /* ProfileHeaderView.swift in Sources */,
 				EED166A6FBD76233AC55E406 /* ProfileRepository.swift in Sources */,
 				C10F7BA4E82DDB3682B14C75 /* ProfileRoute.swift in Sources */,
@@ -2019,6 +2149,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NutriScan/NutriScan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SZGA3DJBTA;
@@ -2026,6 +2157,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NutriScan/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "\"\"";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NutriScan uses your camera to scan product barcodes so it can look up nutrition information.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We read your step history to show your daily activity trends.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "We use motion data to count your daily steps.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -2049,6 +2183,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NutriScan/NutriScan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SZGA3DJBTA;
@@ -2056,6 +2191,9 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NutriScan/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "\"\"";
+				INFOPLIST_KEY_NSCameraUsageDescription = "NutriScan uses your camera to scan product barcodes so it can look up nutrition information.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We read your step history to show your daily activity trends.";
+				INFOPLIST_KEY_NSMotionUsageDescription = "We use motion data to count your daily steps.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
