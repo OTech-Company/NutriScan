@@ -1,5 +1,5 @@
 //
-//  StepHistoryScreen.swift
+//  StepHistoryScreen 2.swift
 //  NutriScan
 //
 //  Created by Osama Hosam on 22/07/2026.
@@ -33,7 +33,7 @@ struct StepHistoryScreen: View {
                     ProgressView()
                         .frame(maxHeight: .infinity)
                 } else {
-                    StepHistoryBarChartView(history: viewModel.history, goalSteps: 10_000)
+                    StepHistoryBarChartView(history: viewModel.history, goalSteps: 10_000, range: selectedRange)
                         .padding(.horizontal)
                 }
 

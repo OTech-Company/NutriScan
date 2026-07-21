@@ -1,10 +1,9 @@
 //
-//  StepHistoryBarChartView.swift
+//  StepHistoryBarChartView 2.swift
 //  NutriScan
 //
 //  Created by Osama Hosam on 22/07/2026.
 //
-
 
 import SwiftUI
 import Charts
@@ -12,6 +11,7 @@ import Charts
 struct StepHistoryBarChartView: View {
     let history: [DailySteps]
     let goalSteps: Int
+    let range: StepHistoryRange
 
     @Environment(\.colorScheme) private var colorScheme
 
@@ -21,6 +21,28 @@ struct StepHistoryBarChartView: View {
 
     private var axisTextColor: Color {
         colorScheme == .dark ? Color.Gray.gray600 : Color.Gray.gray800
+    }
+
+    /// How many days between two consecutive x-axis labels, chosen so
+    /// labels never overlap regardless of how wide the date range is.
+    private var axisStrideDays: Int {
+        switch range {
+        case .sinceYesterday: return 1
+        case .lastWeek: return 1
+        case .lastMonth: return 5
+        case .last3Months: return 14
+        case .last6Months: return 30
+        }
+    }
+
+    /// Longer ranges show only month (or month+day) to keep labels short.
+    private var axisDateFormat: Date.FormatStyle {
+        switch range {
+        case .sinceYesterday, .lastWeek, .lastMonth:
+            return .dateTime.day().month(.abbreviated)
+        case .last3Months, .last6Months:
+            return .dateTime.month(.abbreviated)
+        }
     }
 
     var body: some View {
@@ -66,9 +88,11 @@ struct StepHistoryBarChartView: View {
             }
         }
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day)) { _ in
-                AxisValueLabel(format: .dateTime.day().month(.abbreviated))
-                    .font(.custom("LexendDeca-Regular", size: 11))
+            AxisMarks(values: .stride(by: .day, count: axisStrideDays)) { _ in
+                AxisGridLine()
+                    .foregroundStyle(Color.Gray.gray300.opacity(0.3))
+                AxisValueLabel(format: axisDateFormat)
+                    .font(.custom("LexendDeca-Regular", size: 10))
                     .foregroundStyle(axisTextColor)
             }
         }
@@ -105,7 +129,8 @@ struct StepHistoryBarChartView: View {
                     stepCount: Int.random(in: 3000...12000)
                 )
             }.reversed(),
-            goalSteps: 10_000
+            goalSteps: 10_000,
+            range: .lastWeek
         )
         .padding()
     }

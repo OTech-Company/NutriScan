@@ -19,6 +19,10 @@ final class StepCounterViewModel: ObservableObject {
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
     private var observationTask: Task<Void, Never>?
 
+    /// Cache of already-fetched history, keyed by range, so switching
+    /// back to a previously selected range doesn't trigger a refetch.
+    private var historyCache: [StepHistoryRange: [DailySteps]] = [:]
+
     init(
         observeStepsUseCase: ObserveDailyStepsUseCaseProtocol,
         requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol,
@@ -39,12 +43,18 @@ final class StepCounterViewModel: ObservableObject {
         observationTask?.cancel()
     }
 
-    func loadHistory(range: StepHistoryRange) {
+    func loadHistory(range: StepHistoryRange, forceRefresh: Bool = false) {
+        if !forceRefresh, let cached = historyCache[range] {
+            history = cached
+            return
+        }
         Task {
             isLoadingHistory = true
             errorMessage = nil
             do {
-                history = try await fetchHistoryUseCase.execute(range: range)
+                let result = try await fetchHistoryUseCase.execute(range: range)
+                historyCache[range] = result
+                history = result
             } catch {
                 errorMessage = error.localizedDescription
             }
