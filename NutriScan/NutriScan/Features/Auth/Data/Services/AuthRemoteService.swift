@@ -11,6 +11,7 @@ protocol AuthRemoteServiceProtocol {
     func register(_ dto: RegisterRequestDTO) async throws -> RegisterResponseDTO
     func resendVerification(_ dto: ResendVerificationRequestDTO) async throws -> ResendVerificationResponseDTO
     func login(_ dto: LoginRequestDTO) async throws -> LoginResponseDTO
+    func forgotPassword(_ dto: ForgotPasswordRequestDTO) async throws -> ForgotPasswordResponseDTO
 }
 
 final class AuthRemoteService: AuthRemoteServiceProtocol {
@@ -35,5 +36,9 @@ final class AuthRemoteService: AuthRemoteServiceProtocol {
 
     func login(_ dto: LoginRequestDTO) async throws -> LoginResponseDTO {
         return try await networkService.request(AuthEndpoint.login(dto))
+    }
+
+    func forgotPassword(_ dto: ForgotPasswordRequestDTO) async throws -> ForgotPasswordResponseDTO {
+        return try await networkService.request(AuthEndpoint.forgotPassword(dto))
     }
 }

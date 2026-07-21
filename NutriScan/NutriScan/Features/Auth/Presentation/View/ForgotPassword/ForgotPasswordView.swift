@@ -21,9 +21,20 @@ struct ForgotPasswordView: View {
                         router.pop()
                     })
                     
-                    // MARK: Reset Options
-                    ForgotPasswordOptionsSection(viewModel: viewModel)
-                        .padding(.top, 32)
+                    // MARK: Email Input
+                    CustomTextField(
+                        title: "Email Address",
+                        leadingIcon: "envelope",
+                        errorMessage: viewModel.email.error,
+                        placeHolder: "elementary221b@gmail.com",
+                        textFieldValue: $viewModel.email.value,
+                        state: $viewModel.email.state
+                    )
+                    .padding(.horizontal, 20)
+                    .padding(.top, 32)
+                    .onChange(of: viewModel.email.value) {
+                        viewModel.validateEmail()
+                    }
                     
                     Spacer(minLength: 40)
                     
@@ -41,12 +52,12 @@ struct ForgotPasswordView: View {
             // Custom Confirmation Overlay
             if showConfirmation {
                 ForgotPasswordConfirmationPopup(
-                    recipient: viewModel.selectedOption.maskedRecipient,
+                    recipient: viewModel.email.value,
                     onResend: handleReset,
                     onClose: {
                         withAnimation(.easeInOut(duration: 0.25)) {
                             showConfirmation = false
-                            router.pop() // Pop screen when closed/dismissed as per success flow
+                            router.pop()
                         }
                     }
                 )
