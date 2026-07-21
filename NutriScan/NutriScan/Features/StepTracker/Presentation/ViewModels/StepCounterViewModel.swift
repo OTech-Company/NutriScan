@@ -55,6 +55,7 @@ final class StepCounterViewModel: ObservableObject {
     private func requestAuthorizationAndObserve() async {
         do {
             let granted = try await requestAuthUseCase.execute()
+            print("🔵 StepTracker auth granted:", granted)
             isAuthorized = granted
             errorMessage = nil
             guard granted else {
@@ -63,6 +64,7 @@ final class StepCounterViewModel: ObservableObject {
             }
             startObserving()
         } catch {
+            print("🔴 StepTracker auth error:", error)
             errorMessage = error.localizedDescription
         }
     }

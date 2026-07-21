@@ -79,10 +79,14 @@
 		6FC3C248301003E400ACB5EE /* DailySteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C237301003E400ACB5EE /* DailySteps.swift */; };
 		6FC3C249301003E400ACB5EE /* StepRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */; };
 		6FC3C24A301003E400ACB5EE /* ObserveDailyStepsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */; };
-		6FC3C24B301003E400ACB5EE /* StepCounterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C241301003E400ACB5EE /* StepCounterView.swift */; };
+		6FC3C24B301003E400ACB5EE /* TodayStepsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C241301003E400ACB5EE /* TodayStepsScreen.swift */; };
 		6FC3C24C301003E400ACB5EE /* PedometerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */; };
 		6FC3C24E3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C24D3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift */; };
 		6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C24F3010135C00ACB5EE /* HealthKitStepDataSource.swift */; };
+		6FC3C2533010187F00ACB5EE /* StepGaugeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C2523010187F00ACB5EE /* StepGaugeCardView.swift */; };
+		6FC3C256301018AF00ACB5EE /* StepHistoryBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C255301018AF00ACB5EE /* StepHistoryBarChartView.swift */; };
+		6FC3C258301018EF00ACB5EE /* StepHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C257301018EF00ACB5EE /* StepHistoryScreen.swift */; };
+		6FC3C25D3010214000ACB5EE /* StepRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C25C3010214000ACB5EE /* StepRoute.swift */; };
 		70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */; };
 		722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2550A33566860771C07AAB9 /* ProductMatchCard.swift */; };
 		764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB294EB0DF9DEBB41F600F58 /* AppProfileSetupBackgroundModifier.swift */; };
@@ -312,10 +316,14 @@
 		6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveDailyStepsUseCase.swift; sourceTree = "<group>"; };
 		6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStepAuthorizationUseCase.swift; sourceTree = "<group>"; };
 		6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounterViewModel.swift; sourceTree = "<group>"; };
-		6FC3C241301003E400ACB5EE /* StepCounterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounterView.swift; sourceTree = "<group>"; };
+		6FC3C241301003E400ACB5EE /* TodayStepsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayStepsScreen.swift; sourceTree = "<group>"; };
 		6FC3C24D3010134E00ACB5EE /* FetchStepsHistoryUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchStepsHistoryUseCaseProtocol.swift; sourceTree = "<group>"; };
 		6FC3C24F3010135C00ACB5EE /* HealthKitStepDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStepDataSource.swift; sourceTree = "<group>"; };
 		6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NutriScan.entitlements; sourceTree = "<group>"; };
+		6FC3C2523010187F00ACB5EE /* StepGaugeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepGaugeCardView.swift; sourceTree = "<group>"; };
+		6FC3C255301018AF00ACB5EE /* StepHistoryBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryBarChartView.swift; sourceTree = "<group>"; };
+		6FC3C257301018EF00ACB5EE /* StepHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryScreen.swift; sourceTree = "<group>"; };
+		6FC3C25C3010214000ACB5EE /* StepRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRoute.swift; sourceTree = "<group>"; };
 		702881CEB0053AD3B4F54F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		70E3F47BE0D97360F9B4EFE0 /* UserMeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMeResponse.swift; sourceTree = "<group>"; };
 		7152B246043D48F88D62F29B /* OnboardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPage.swift; sourceTree = "<group>"; };
@@ -986,7 +994,10 @@
 		6FC3C242301003E400ACB5EE /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				6FC3C241301003E400ACB5EE /* StepCounterView.swift */,
+				6FC3C25B3010213900ACB5EE /* Router */,
+				6FC3C2543010188400ACB5EE /* Components */,
+				6FC3C257301018EF00ACB5EE /* StepHistoryScreen.swift */,
+				6FC3C241301003E400ACB5EE /* TodayStepsScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1008,6 +1019,23 @@
 				6FC3C243301003E400ACB5EE /* Presentation */,
 			);
 			path = StepTracker;
+			sourceTree = "<group>";
+		};
+		6FC3C2543010188400ACB5EE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C255301018AF00ACB5EE /* StepHistoryBarChartView.swift */,
+				6FC3C2523010187F00ACB5EE /* StepGaugeCardView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6FC3C25B3010213900ACB5EE /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				6FC3C25C3010214000ACB5EE /* StepRoute.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 		719B4CACACDAFD373485C365 /* EditProfile */ = {
@@ -1836,6 +1864,7 @@
 				83BCED67AF3D310ED2A792A7 /* Color+SettingsSemantic.swift in Sources */,
 				87CDFD7A6B4A9E03D3672A78 /* Colors+Extension.swift in Sources */,
 				901C9D543FA7B839A1109594 /* CornerBracketsShape.swift in Sources */,
+				6FC3C2533010187F00ACB5EE /* StepGaugeCardView.swift in Sources */,
 				220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */,
 				DC73ACADE5B3296996297205 /* CustomPuffedButton.swift in Sources */,
 				7D2767545C9B74D3BA022068 /* CustomTextField.swift in Sources */,
@@ -1847,7 +1876,7 @@
 				6FC3C248301003E400ACB5EE /* DailySteps.swift in Sources */,
 				6FC3C249301003E400ACB5EE /* StepRepositoryProtocol.swift in Sources */,
 				6FC3C24A301003E400ACB5EE /* ObserveDailyStepsUseCase.swift in Sources */,
-				6FC3C24B301003E400ACB5EE /* StepCounterView.swift in Sources */,
+				6FC3C24B301003E400ACB5EE /* TodayStepsScreen.swift in Sources */,
 				6FC3C24C301003E400ACB5EE /* PedometerDataSource.swift in Sources */,
 				9E3D57EFDE580D3E9DED13F6 /* CustomTextFieldInput.swift in Sources */,
 				7E9497A88EC033792836AD39 /* CustomTextFieldTitle.swift in Sources */,
@@ -1886,6 +1915,7 @@
 				EEC0C0F7B84E3B39F14FAEE7 /* HomeSummaryView.swift in Sources */,
 				CD69B359FF5E093173E1137D /* HomeView.swift in Sources */,
 				9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */,
+				6FC3C25D3010214000ACB5EE /* StepRoute.swift in Sources */,
 				0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */,
 				88CAD96BC98D8EBCC6D9CBC3 /* KeychainManager.swift in Sources */,
 				F89B812210D15C20CA577A10 /* LoginFormFieldsSection.swift in Sources */,
@@ -1913,6 +1943,7 @@
 				9BF9BFBA75D2836ADE31A716 /* ProductDetailViewModel.swift in Sources */,
 				AACB8FDACC2DCC73FBFBF5AD /* ProductError.swift in Sources */,
 				722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */,
+				6FC3C256301018AF00ACB5EE /* StepHistoryBarChartView.swift in Sources */,
 				B149458D7ECAA1D19E709E9C /* ProductRepository.swift in Sources */,
 				B9DEF23EAEAEE40811334D58 /* ProductRepositoryImpl.swift in Sources */,
 				31F5A64521573EE429D9D849 /* ProfileFlowView.swift in Sources */,
@@ -1962,6 +1993,7 @@
 				1C6AB4424F02C11E9C662180 /* SocialLoginButton.swift in Sources */,
 				13366415059A24108AF1B614 /* SplashScreen.swift in Sources */,
 				AA78F155D98A2E3105D26DEA /* StatusType.swift in Sources */,
+				6FC3C258301018EF00ACB5EE /* StepHistoryScreen.swift in Sources */,
 				E63165F0244F25ECD64784DB /* StepProgressText.swift in Sources */,
 				A02EC62E58FAD2A7E02BF822 /* TabBarCurveShape.swift in Sources */,
 				44C3CB9EBBBDB24729DAA533 /* TabBarPositionKey.swift in Sources */,
