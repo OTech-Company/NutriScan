@@ -18,6 +18,7 @@ final class LoginViewModel {
     // MARK: - Status
     var isLoading: Bool = false
     var generalError: String? = nil
+    var isEmailUnverified: Bool = false
 
     private let loginUseCase: LoginUseCase
 
@@ -52,6 +53,7 @@ final class LoginViewModel {
         guard validateAll() else { return false }
         isLoading = true
         generalError = nil
+        isEmailUnverified = false
         defer { isLoading = false }
         
         do {
@@ -59,7 +61,12 @@ final class LoginViewModel {
             _ = try await loginUseCase.execute(request: request)
             return true
         } catch let error as NetworkError {
-            generalError = error.localizedDescription
+            if case .apiError(let apiError) = error,
+               apiError.errorDescription == "Account is not fully set up" {
+                isEmailUnverified = true
+            } else {
+                generalError = error.localizedDescription
+            }
             return false
         } catch {
             generalError = error.localizedDescription

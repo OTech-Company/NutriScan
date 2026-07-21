@@ -103,6 +103,9 @@ struct LoginView: View {
             let success = await viewModel.signIn()
             if success {
                 flowCoordinator.didAuthenticate()
+            } else if viewModel.isEmailUnverified {
+                router.push(AuthRoute.verificationPending(email: viewModel.email.value))
+                viewModel.isEmailUnverified = false
             }
         }
     }
