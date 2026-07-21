@@ -11,8 +11,7 @@ import SwiftUI
 final class EditProfileViewModel {
     var firstName: String = "Mina"
     var lastName: String = "Wagdy"
-    var birthdate: Date =
-        Calendar.current.date(byAdding: .year, value: -23, to: Date()) ?? Date()
+    var birthdate: Date = Calendar.current.date(byAdding: .year, value: -23, to: Date()) ?? Date()
     var height: String = "190"
     var weight: String = "105"
     var email: String = "minawagdy2228@gmail.com"
@@ -29,14 +28,18 @@ final class EditProfileViewModel {
     var customConditions: [String] = []
     var customAllergies: [String] = []
 
-    // MARK: - Input States
-    var isAddingCondition = false
-    var isAddingAllergy = false
+    // MARK: - Bottom Sheet States
+    var showConditionSearchSheet = false
+    var showAllergySearchSheet = false
 
-    var conditionInput = ""
-    var allergyInput = ""
+    var conditionSearchQuery = ""
+    var allergySearchQuery = ""
 
     var isLoading = false
+    
+    // MARK: - Backend Mocks (To be replaced with real API calls)
+    private let backendConditions = ["Asthma", "COPD", "Arthritis", "Thyroid Disorder", "Osteoporosis", "Kidney Disease"]
+    private let backendAllergies = ["Shellfish", "Soy", "Eggs", "Tree Nuts", "Wheat", "Sesame"]
 
     init() {
         let fetchedAllergies = ["Peanuts", "Dairy", "Gluten"]
@@ -48,30 +51,28 @@ final class EditProfileViewModel {
         self.selectedAllergies = Set(fetchedAllergies)
         self.selectedConditions = Set(fetchedConditions)
     }
+    
+    // MARK: - Computed Filtered Results
+    var filteredConditions: [String] {
+        if conditionSearchQuery.isEmpty { return backendConditions }
+        return backendConditions.filter { $0.localizedCaseInsensitiveContains(conditionSearchQuery) }
+    }
+    
+    var filteredAllergies: [String] {
+        if allergySearchQuery.isEmpty { return backendAllergies }
+        return backendAllergies.filter { $0.localizedCaseInsensitiveContains(allergySearchQuery) }
+    }
 
     // MARK: - Actions: Conditions
-    func submitCondition() {
-        let trimmed = conditionInput.trimmingCharacters(
-            in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            isAddingCondition = false
-            return
+    func selectCustomCondition(_ condition: String) {
+        if !customConditions.contains(condition) && !allConditions.contains(condition) {
+            customConditions.append(condition)
         }
-
-        let allExisting = allConditions + customConditions
-
-        // Prevent duplicates (case-insensitive)
-        if let existing = allExisting.first(where: {
-            $0.caseInsensitiveCompare(trimmed) == .orderedSame
-        }) {
-            selectedConditions.insert(existing)
-        } else {
-            customConditions.append(trimmed)
-            selectedConditions.insert(trimmed)
-        }
-
-        conditionInput = ""
-        isAddingCondition = false
+        selectedConditions.insert(condition)
+        
+        // Reset and close sheet
+        conditionSearchQuery = ""
+        showConditionSearchSheet = false
     }
 
     func removeCustomCondition(_ condition: String) {
@@ -80,27 +81,15 @@ final class EditProfileViewModel {
     }
 
     // MARK: - Actions: Allergies
-    func submitAllergy() {
-        let trimmed = allergyInput.trimmingCharacters(
-            in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            isAddingAllergy = false
-            return
+    func selectCustomAllergy(_ allergy: String) {
+        if !customAllergies.contains(allergy) && !allAllergies.contains(allergy) {
+            customAllergies.append(allergy)
         }
-
-        let allExisting = allAllergies + customAllergies
-
-        if let existing = allExisting.first(where: {
-            $0.caseInsensitiveCompare(trimmed) == .orderedSame
-        }) {
-            selectedAllergies.insert(existing)
-        } else {
-            customAllergies.append(trimmed)
-            selectedAllergies.insert(trimmed)
-        }
-
-        allergyInput = ""
-        isAddingAllergy = false
+        selectedAllergies.insert(allergy)
+        
+        // Reset and close sheet
+        allergySearchQuery = ""
+        showAllergySearchSheet = false
     }
 
     func removeCustomAllergy(_ allergy: String) {

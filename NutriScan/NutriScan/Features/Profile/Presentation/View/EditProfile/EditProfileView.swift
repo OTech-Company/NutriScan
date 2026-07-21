@@ -32,18 +32,17 @@ struct EditProfileView: View {
                     DateSelectionField(date: $viewModel.birthdate)
 
                     HStack(spacing: 12) {
-                        MeasureFieldView(label: "Hight", value: $viewModel.height, unit: "cm")
+                        MeasureFieldView(label: "Height", value: $viewModel.height, unit: "cm")
                         MeasureFieldView(label: "Weight", value: $viewModel.weight, unit: "kg")
                     }
                 }
+                
                 SelectableChipsSectionView(
                     title: "Chronic Conditions",
                     predefinedItems: viewModel.allConditions,
                     customItems: $viewModel.customConditions,
                     selected: $viewModel.selectedConditions,
-                    isAdding: $viewModel.isAddingCondition,
-                    inputText: $viewModel.conditionInput,
-                    onSubmit: { viewModel.submitCondition() },
+                    onAddOther: { viewModel.showConditionSearchSheet = true },
                     onRemoveCustom: { viewModel.removeCustomCondition($0) }
                 )
 
@@ -52,9 +51,7 @@ struct EditProfileView: View {
                     predefinedItems: viewModel.allAllergies,
                     customItems: $viewModel.customAllergies,
                     selected: $viewModel.selectedAllergies,
-                    isAdding: $viewModel.isAddingAllergy,
-                    inputText: $viewModel.allergyInput,
-                    onSubmit: { viewModel.submitAllergy() },
+                    onAddOther: { viewModel.showAllergySearchSheet = true },
                     onRemoveCustom: { viewModel.removeCustomAllergy($0) }
                 )
 
@@ -72,6 +69,27 @@ struct EditProfileView: View {
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
         )
         .navigationBarHidden(true)
-
+        // MARK: - Condition Search Sheet
+        .sheet(isPresented: $viewModel.showConditionSearchSheet) {
+            SearchSelectionSheet(
+                title: "Search Conditions",
+                searchQuery: $viewModel.conditionSearchQuery,
+                results: viewModel.filteredConditions,
+                onSelect: { selectedCondition in
+                    viewModel.selectCustomCondition(selectedCondition)
+                }
+            )
+        }
+        // MARK: - Allergy Search Sheet
+        .sheet(isPresented: $viewModel.showAllergySearchSheet) {
+            SearchSelectionSheet(
+                title: "Search Allergies",
+                searchQuery: $viewModel.allergySearchQuery,
+                results: viewModel.filteredAllergies,
+                onSelect: { selectedAllergy in
+                    viewModel.selectCustomAllergy(selectedAllergy)
+                }
+            )
+        }
     }
 }

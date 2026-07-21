@@ -4,20 +4,15 @@
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
-
 import SwiftUI
 
 struct SelectableChipsSectionView: View {
     let title: String
     let predefinedItems: [String]
-    
     @Binding var customItems: [String]
     @Binding var selected: Set<String>
     
-    @Binding var isAdding: Bool
-    @Binding var inputText: String
-    
-    let onSubmit: () -> Void
+    var onAddOther: () -> Void
     let onRemoveCustom: (String) -> Void
 
     var body: some View {
@@ -39,6 +34,7 @@ struct SelectableChipsSectionView: View {
                     )
                 }
                 
+                // 2. Render User Custom Chips
                 ForEach(customItems, id: \.self) { item in
                     SelectableChip(
                         title: item,
@@ -48,11 +44,8 @@ struct SelectableChipsSectionView: View {
                     )
                 }
                 
-                if isAdding {
-                    InputChip(text: $inputText, onSubmit: onSubmit)
-                } else {
-                    SelectableChip(title: "Other", state: .add, action: { isAdding = true })
-                }
+                // 3. Render "+ Other" Button
+                SelectableChip(title: "Other", state: .add, action: onAddOther)
             }
         }
     }

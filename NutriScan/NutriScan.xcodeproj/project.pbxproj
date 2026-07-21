@@ -166,6 +166,7 @@
 		D40DD1A8300FF62A001CF496 /* MeasureFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1A7300FF61F001CF496 /* MeasureFieldView.swift */; };
 		D40DD1AA300FF912001CF496 /* DateSelectionField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1A9300FF90F001CF496 /* DateSelectionField.swift */; };
 		D40DD1AC300FFE92001CF496 /* DateSelectionFieldSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1AB300FFE83001CF496 /* DateSelectionFieldSemantics.swift */; };
+		D40DD1AF301005A5001CF496 /* SearchSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */; };
 		D4AED0FD3009683200CB773F /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
 		D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4F9FEF57E05BD25284EF02 /* BackButtonSemantics.swift */; };
 		D84A1824E923C92FD27A3051 /* UpdateProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910C10E63D03A92A12BA055 /* UpdateProfileRequest.swift */; };
@@ -384,6 +385,7 @@
 		D40DD1A7300FF61F001CF496 /* MeasureFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureFieldView.swift; sourceTree = "<group>"; };
 		D40DD1A9300FF90F001CF496 /* DateSelectionField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionField.swift; sourceTree = "<group>"; };
 		D40DD1AB300FFE83001CF496 /* DateSelectionFieldSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionFieldSemantics.swift; sourceTree = "<group>"; };
+		D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSelectionSheet.swift; sourceTree = "<group>"; };
 		D4E5DE6B86999459A4937187 /* HomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSummaryView.swift; sourceTree = "<group>"; };
 		DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderComponent.swift; sourceTree = "<group>"; };
 		DC1D0663CB45E88B8922C022 /* RegisterHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeaderSection.swift; sourceTree = "<group>"; };
@@ -778,6 +780,7 @@
 		5BC12155BF94D2FD6A4DC0CB /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */,
 				D40DD1A7300FF61F001CF496 /* MeasureFieldView.swift */,
 				B9B6383C22E3B7DE8618626A /* EditableFieldView.swift */,
 				627DA9F7A0302DB0ABA0E337 /* ProfileHeaderView.swift */,
@@ -1751,6 +1754,7 @@
 				ECB3F2FCF4610D5E7FBEFDEC /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				380D984BCD58A838914C9833 /* ForgotPasswordHeaderSection.swift in Sources */,
 				118D43F698178DF8218874B3 /* ForgotPasswordOptionsSection.swift in Sources */,
+				D40DD1AF301005A5001CF496 /* SearchSelectionSheet.swift in Sources */,
 				02167D4B39D248160AC76E3A /* ForgotPasswordResetButtonSection.swift in Sources */,
 				F724F474F05C4A67BD9F9A61 /* ForgotPasswordView.swift in Sources */,
 				A84C197E9C39944B56297C00 /* ForgotPasswordViewModel.swift in Sources */,
