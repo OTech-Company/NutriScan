@@ -9,15 +9,18 @@ import SwiftUI
 
 @Observable
 final class EditProfileViewModel {
-    var name: String = "Mina Wagdy"
-    var username: String = ""
+    var firstName: String = "Mina"
+    var lastName: String = "Wagdy"
+    var birthdate: Date =
+        Calendar.current.date(byAdding: .year, value: -23, to: Date()) ?? Date()
+    var height: String = "190"
+    var weight: String = "105"
     var email: String = "minawagdy2228@gmail.com"
-    var password: String = ""
-    
+
     // MARK: - Data Sources (Predefined lists)
     let allAllergies: [String]
     let allConditions: [String]
-    
+
     // MARK: - Selected States
     var selectedConditions: Set<String>
     var selectedAllergies: Set<String>
@@ -34,7 +37,7 @@ final class EditProfileViewModel {
     var allergyInput = ""
 
     var isLoading = false
-    
+
     init() {
         let fetchedAllergies = ["Peanuts", "Dairy", "Gluten"]
         let fetchedConditions = ["Diabetes", "Hypertension", "Celiac Disease"]
@@ -48,16 +51,19 @@ final class EditProfileViewModel {
 
     // MARK: - Actions: Conditions
     func submitCondition() {
-        let trimmed = conditionInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmed = conditionInput.trimmingCharacters(
+            in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             isAddingCondition = false
             return
         }
 
         let allExisting = allConditions + customConditions
-        
+
         // Prevent duplicates (case-insensitive)
-        if let existing = allExisting.first(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
+        if let existing = allExisting.first(where: {
+            $0.caseInsensitiveCompare(trimmed) == .orderedSame
+        }) {
             selectedConditions.insert(existing)
         } else {
             customConditions.append(trimmed)
@@ -75,15 +81,18 @@ final class EditProfileViewModel {
 
     // MARK: - Actions: Allergies
     func submitAllergy() {
-        let trimmed = allergyInput.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmed = allergyInput.trimmingCharacters(
+            in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             isAddingAllergy = false
             return
         }
 
         let allExisting = allAllergies + customAllergies
-        
-        if let existing = allExisting.first(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
+
+        if let existing = allExisting.first(where: {
+            $0.caseInsensitiveCompare(trimmed) == .orderedSame
+        }) {
             selectedAllergies.insert(existing)
         } else {
             customAllergies.append(trimmed)

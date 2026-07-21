@@ -20,22 +20,21 @@ struct EditProfileView: View {
                     .bottom, EditProfileSemantics.Spacing.sectionVertical)
 
                 ProfileHeaderView(
-                    name: viewModel.name,
+                    name: viewModel.firstName + " " + viewModel.lastName,
                     email: viewModel.email,
                     avatarImage: Image(systemName: "person.circle.fill")
                 )
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
-                    EditableFieldView(
-                        placeholder: "name", text: $viewModel.name)
-                    EditableFieldView(
-                        placeholder: "user name", text: $viewModel.username)
-                    EditableFieldView(
-                        placeholder: "email", text: $viewModel.email,
-                        trailingIcon: "envelope")
-                    EditableFieldView(
-                        placeholder: "password", text: $viewModel.password,
-                        trailingIcon: "lock")
+                    EditableFieldView(placeholder: "first name", text: $viewModel.firstName)
+                    EditableFieldView(placeholder: "last name", text: $viewModel.lastName)
+
+                    DateSelectionField(date: $viewModel.birthdate)
+
+                    HStack(spacing: 12) {
+                        MeasureFieldView(label: "Hight", value: $viewModel.height, unit: "cm")
+                        MeasureFieldView(label: "Weight", value: $viewModel.weight, unit: "kg")
+                    }
                 }
                 SelectableChipsSectionView(
                     title: "Chronic Conditions",
@@ -73,6 +72,6 @@ struct EditProfileView: View {
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
         )
         .navigationBarHidden(true)
-        
+
     }
 }

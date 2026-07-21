@@ -27,7 +27,7 @@ enum EditProfileSemantics {
     }
 
     enum Radius {
-        static let field: CGFloat = 16
+        static let field: CGFloat = 12
         static let card: CGFloat = 16
     }
 
