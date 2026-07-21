@@ -4,6 +4,7 @@
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
+
 import SwiftUI
 
 struct EditProfileView: View {
@@ -27,7 +28,6 @@ struct EditProfileView: View {
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
                     
-                    // First Name Field
                     VStack(spacing: 4) {
                         EditableFieldView(placeholder: "first name", text: $viewModel.firstName.value)
                         if viewModel.firstName.state == .error {
@@ -35,7 +35,6 @@ struct EditProfileView: View {
                         }
                     }
                     
-                    // Last Name Field
                     VStack(spacing: 4) {
                         EditableFieldView(placeholder: "last name", text: $viewModel.lastName.value)
                         if viewModel.lastName.state == .error {
@@ -46,7 +45,6 @@ struct EditProfileView: View {
                     DateSelectionField(date: $viewModel.birthdate)
 
                     HStack(alignment: .top, spacing: 12) {
-                        // Height Field
                         VStack(spacing: 4) {
                             MeasureFieldView(label: "Height", value: $viewModel.height.value, unit: "cm")
                             if viewModel.height.state == .error {
@@ -54,7 +52,6 @@ struct EditProfileView: View {
                             }
                         }
                         
-                        // Weight Field
                         VStack(spacing: 4) {
                             MeasureFieldView(label: "Weight", value: $viewModel.weight.value, unit: "kg")
                             if viewModel.weight.state == .error {
@@ -66,32 +63,38 @@ struct EditProfileView: View {
                 
                 SelectableChipsSectionView(
                     title: "Chronic Conditions",
-                    predefinedItems: viewModel.allConditions,
-                    customItems: $viewModel.customConditions,
-                    selected: $viewModel.selectedConditions,
+                    items: viewModel.conditionChips,
                     onAddOther: { viewModel.showConditionSearchSheet = true },
-                    onRemoveCustom: { viewModel.removeCustomCondition($0) }
+                    onToggle: { viewModel.toggleCondition($0) },
+                    onRemove: { viewModel.removeCondition($0) }
                 )
 
                 SelectableChipsSectionView(
                     title: "Allergies",
-                    predefinedItems: viewModel.allAllergies,
-                    customItems: $viewModel.customAllergies,
-                    selected: $viewModel.selectedAllergies,
+                    items: viewModel.allergyChips,
                     onAddOther: { viewModel.showAllergySearchSheet = true },
-                    onRemoveCustom: { viewModel.removeCustomAllergy($0) }
+                    onToggle: { viewModel.toggleAllergy($0) },
+                    onRemove: { viewModel.removeAllergy($0) }
                 )
 
                 CustomPuffedButton(
                     title: "Save",
                     action: {
-                        withAnimation {
-                            viewModel.validateAndSave()
+                        Task {
+                            await viewModel.validateAndSave()
                         }
                     },
                     isLoading: viewModel.isLoading
                 )
+                .animation(.easeInOut, value: viewModel.isLoading)
                 .padding(.top, 8)
+                
+                if let error = viewModel.errorMessage {
+                    Text(error)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .padding(.top, 8)
+                }
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
             .padding(.bottom, 120)
@@ -100,25 +103,26 @@ struct EditProfileView: View {
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
         )
         .navigationBarHidden(true)
-        // MARK: - Condition Search Sheet
+        .task {
+            await viewModel.loadInitialData()
+        }
         .sheet(isPresented: $viewModel.showConditionSearchSheet) {
             SearchSelectionSheet(
                 title: "Search Conditions",
                 searchQuery: $viewModel.conditionSearchQuery,
                 results: viewModel.filteredConditions,
                 onSelect: { selectedCondition in
-                    viewModel.selectCustomCondition(selectedCondition)
+                    viewModel.selectCondition(selectedCondition)
                 }
             )
         }
-        // MARK: - Allergy Search Sheet
         .sheet(isPresented: $viewModel.showAllergySearchSheet) {
             SearchSelectionSheet(
                 title: "Search Allergies",
                 searchQuery: $viewModel.allergySearchQuery,
                 results: viewModel.filteredAllergies,
                 onSelect: { selectedAllergy in
-                    viewModel.selectCustomAllergy(selectedAllergy)
+                    viewModel.selectAllergy(selectedAllergy)
                 }
             )
         }
