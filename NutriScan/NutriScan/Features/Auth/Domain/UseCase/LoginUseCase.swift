@@ -18,8 +18,8 @@ final class LoginUseCase {
         let result = try await repository.login(request: request)
         
         // Persist tokens securely in Keychain
-        try KeychainManager.shared.save(key: "access_token", value: result.accessToken)
-        try KeychainManager.shared.save(key: "refresh_token", value: result.refreshToken)
+        try KeychainManager.shared.save(key: .accessToken, value: result.accessToken)
+        try KeychainManager.shared.save(key: .refreshToken, value: result.refreshToken)
         
         return result
     }

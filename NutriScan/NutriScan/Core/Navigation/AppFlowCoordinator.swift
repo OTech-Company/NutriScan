@@ -23,7 +23,7 @@ final class AppFlowCoordinator: ObservableObject {
 
     private var isAuthenticated: Bool {
         do {
-            _ = try KeychainManager.shared.get(key: "access_token")
+            _ = try KeychainManager.shared.get(key: .accessToken)
             return true
         } catch {
             return false
@@ -66,8 +66,8 @@ final class AppFlowCoordinator: ObservableObject {
     }
     
     func logout() {
-        try? KeychainManager.shared.delete(key: "access_token")
-        try? KeychainManager.shared.delete(key: "refresh_token")
+        try? KeychainManager.shared.delete(key: .accessToken)
+        try? KeychainManager.shared.delete(key: .refreshToken)
         flow = .auth
     }
 }
