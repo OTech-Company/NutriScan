@@ -18,12 +18,12 @@ enum NetworkError: Error, LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .invalidURL:       return "Invalid URL"
-        case .noInternet:       return "No internet connection"
-        case .decodingFailed:   return "Failed to decode response"
-        case .serverError(let code): return "Server error: \(code)"
-        case .apiError(let response): return response.message ?? "Validation failed"
-        case .unknown(let error):    return error.localizedDescription
+        case .invalidURL:             return "Invalid URL"
+        case .noInternet:             return "No internet connection"
+        case .decodingFailed:         return "Failed to decode response"
+        case .serverError(let code):  return "Server error: \(code)"
+        case .apiError(let response): return response.userFriendlyMessage
+        case .unknown(let error):     return error.localizedDescription
         }
     }
 }

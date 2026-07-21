@@ -11,67 +11,91 @@ struct LoginView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
+    @State private var showFailureDialog = false
+    @State private var errorMessage = ""
     @State private var viewModel = LoginViewModel()
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 0) {
-                AuthHeaderView()
+        ZStack {
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 0) {
-                    
-                    LoginFormFieldsSection(viewModel: viewModel)
-                        .padding(.top, 24)
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            router.push(AuthRoute.forgotPassword)
-                        }) {
-                            Text("Forgot Password?")
-                                .font(Font.AppFont.textSecondary)
-                                .fontWeight(.medium)
-                                .foregroundColor(Color.LoginSemantic.forgotPasswordText)
-                        }
-                    }
-                    .padding(.top, 12)
-                    
-                    CustomPuffedButton(title: "Sign in", action: handleSignIn, isLoading: viewModel.isLoading)
-                        .padding(.top, 24)
-                    
-                    AuthDivider()
-                        .padding(.top, 32)
-                    
-                    HStack(spacing: 8) {
-                        SocialLoginButton(iconName: "facebook", action: {})
-                        SocialLoginButton(iconName: "google", action: {})
-                        SocialLoginButton(iconName: "instagram", action: {})
-                    }
-                    .padding(.top, 24)
-                    
-                    Spacer(minLength: 40)
-                    HStack(spacing: 4) {
-                        Text("Don't have an account?")
-                            .font(Font.AppFont.textSecondary)
-                            .foregroundColor(Color.LoginSemantic.footerText)
+                    AuthHeaderView()
+                    VStack(spacing: 0) {
                         
-                        Button(action: {
-                            router.push(AuthRoute.register)
-                        }) {
-                            Text("Sign Up.")
-                                .font(Font.AppFont.textSecondary)
-                                .fontWeight(.bold)
-                                .foregroundColor(Color.LoginSemantic.footerLink)
-                                .underline()
+                        LoginFormFieldsSection(viewModel: viewModel)
+                            .padding(.top, 24)
+                        
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                router.push(AuthRoute.forgotPassword)
+                            }) {
+                                Text("Forgot Password?")
+                                    .font(Font.AppFont.textSecondary)
+                                    .fontWeight(.medium)
+                                    .foregroundColor(Color.LoginSemantic.forgotPasswordText)
+                            }
                         }
+                        .padding(.top, 12)
+                        
+                        CustomPuffedButton(title: "Sign in", action: handleSignIn, isLoading: viewModel.isLoading)
+                            .padding(.top, 24)
+                        
+                        AuthDivider()
+                            .padding(.top, 32)
+                        
+                        HStack(spacing: 8) {
+                            SocialLoginButton(iconName: "facebook", action: {})
+                            SocialLoginButton(iconName: "google", action: {})
+                            SocialLoginButton(iconName: "instagram", action: {})
+                        }
+                        .padding(.top, 24)
+                        
+                        Spacer(minLength: 40)
+                        HStack(spacing: 4) {
+                            Text("Don't have an account?")
+                                .font(Font.AppFont.textSecondary)
+                                .foregroundColor(Color.LoginSemantic.footerText)
+                            
+                            Button(action: {
+                                router.push(AuthRoute.register)
+                            }) {
+                                Text("Sign Up.")
+                                    .font(Font.AppFont.textSecondary)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color.LoginSemantic.footerLink)
+                                    .underline()
+                            }
+                        }
+                        .padding(.bottom, 32)
                     }
-                    .padding(.bottom, 32)
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
+            }
+            .appAuthBackground()
+            .navigationBarHidden(true)
+            .ignoresSafeArea(edges: .top)
+            
+            // Failure Dialog Overlay
+            if showFailureDialog {
+                FailureDialog(
+                    title: "Login Failed",
+                    subtitle: errorMessage
+                ) {
+                    showFailureDialog = false
+                }
+                .transition(.opacity)
+                .zIndex(1)
             }
         }
-        .appAuthBackground()
-        .navigationBarHidden(true)
-        .ignoresSafeArea(edges: .top)
+        .onChange(of: viewModel.generalError) { _, error in
+            if let error = error {
+                errorMessage = error
+                withAnimation {
+                    showFailureDialog = true
+                }
+            }
+        }
     }
 
     private func handleSignIn() {

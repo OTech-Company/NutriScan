@@ -22,8 +22,12 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private var isAuthenticated: Bool {
-        // e.g. check Keychain for a valid session token
-        false
+        do {
+            _ = try KeychainManager.shared.get(key: "access_token")
+            return true
+        } catch {
+            return false
+        }
     }
 
     private var hasCompletedProfileSetup: Bool {
@@ -62,6 +66,8 @@ final class AppFlowCoordinator: ObservableObject {
     }
     
     func logout() {
+        try? KeychainManager.shared.delete(key: "access_token")
+        try? KeychainManager.shared.delete(key: "refresh_token")
         flow = .auth
     }
 }

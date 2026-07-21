@@ -19,6 +19,12 @@ final class LoginViewModel {
     var isLoading: Bool = false
     var generalError: String? = nil
 
+    private let loginUseCase: LoginUseCase
+
+    init(loginUseCase: LoginUseCase = LoginUseCase()) {
+        self.loginUseCase = loginUseCase
+    }
+
     // MARK: - Per-field validation (used by real-time onChange)
 
     func validateEmail() {
@@ -45,13 +51,19 @@ final class LoginViewModel {
     func signIn() async -> Bool {
         guard validateAll() else { return false }
         isLoading = true
+        generalError = nil
         defer { isLoading = false }
         
-        print("hellow nageh")
-        // Simulate network latency (2 seconds)
-        try? await Task.sleep(for: .seconds(2))
-        
-        // TODO: call AuthUseCase.login(email: email.value, password: password.value)
-        return true
+        do {
+            let request = LoginRequest(email: email.value, password: password.value)
+            _ = try await loginUseCase.execute(request: request)
+            return true
+        } catch let error as NetworkError {
+            generalError = error.localizedDescription
+            return false
+        } catch {
+            generalError = error.localizedDescription
+            return false
+        }
     }
 }

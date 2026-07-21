@@ -29,8 +29,17 @@ final class NetworkService: NetworkServiceProtocol {
         request.allHTTPHeaderFields = endpoint.headers
         
         if let body = endpoint.body {
-            let encoder = JSONEncoder()
-            request.httpBody = try encoder.encode(AnyEncodable(body))
+            if endpoint.headers["Content-Type"] == "application/x-www-form-urlencoded" {
+                if let data = try? JSONEncoder().encode(AnyEncodable(body)),
+                   let dictionary = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                    var components = URLComponents()
+                    components.queryItems = dictionary.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
+                    request.httpBody = components.percentEncodedQuery?.data(using: .utf8)
+                }
+            } else {
+                let encoder = JSONEncoder()
+                request.httpBody = try encoder.encode(AnyEncodable(body))
+            }
         }
 
         do {
