@@ -5,10 +5,7 @@
 //  Created by Osama Hosam on 18/07/2026.
 //
 
-
-
 import SwiftUI
-
 
 struct HealthProfileSetupView: View {
     @EnvironmentObject private var router: AppRouter
@@ -25,11 +22,25 @@ struct HealthProfileSetupView: View {
     @State private var customConditions: [String] = []
     @State private var customAllergies: [String] = []
     
-    @State private var isAddingCondition = false
-    @State private var isAddingAllergy = false
+    // MARK: - Search Sheet States
+    @State private var showConditionSearchSheet = false
+    @State private var showAllergySearchSheet = false
     
-    @State private var conditionInput = ""
-    @State private var allergyInput = ""
+    @State private var conditionSearchQuery = ""
+    @State private var allergySearchQuery = ""
+
+    // MARK: - Filtered Results for Search Sheets
+    var filteredConditions: [String] {
+        let unselected = allConditions.filter { !selectedConditions.contains($0) }
+        if conditionSearchQuery.isEmpty { return unselected }
+        return unselected.filter { $0.localizedCaseInsensitiveContains(conditionSearchQuery) }
+    }
+    
+    var filteredAllergies: [String] {
+        let unselected = allAllergies.filter { !selectedAllergies.contains($0) }
+        if allergySearchQuery.isEmpty { return unselected }
+        return unselected.filter { $0.localizedCaseInsensitiveContains(allergySearchQuery) }
+    }
 
     var body: some View {
             
@@ -77,24 +88,32 @@ struct HealthProfileSetupView: View {
                     VStack(spacing: 24) {
                         SelectableChipsSectionView(
                             title: "Chronic Conditions",
-                            predefinedItems: allConditions,
-                            customItems: $customConditions,
-                            selected: $selectedConditions,
-                            isAdding: $isAddingCondition,
-                            inputText: $conditionInput,
-                            onSubmit: submitCondition,
-                            onRemoveCustom: removeCustomCondition
+                            items: allConditions.map { ProfileChipItem(name: $0, isSelected: selectedConditions.contains($0), isNewlyAdded: false) } +
+                                   customConditions.map { ProfileChipItem(name: $0, isSelected: selectedConditions.contains($0), isNewlyAdded: true) },
+                            onAddOther: { showConditionSearchSheet = true },
+                            onToggle: { condition in
+                                if selectedConditions.contains(condition) {
+                                    selectedConditions.remove(condition)
+                                } else {
+                                    selectedConditions.insert(condition)
+                                }
+                            },
+                            onRemove: removeCustomCondition
                         )
                         
                         SelectableChipsSectionView(
                             title: "Allergies",
-                            predefinedItems: allAllergies,
-                            customItems: $customAllergies,
-                            selected: $selectedAllergies,
-                            isAdding: $isAddingAllergy,
-                            inputText: $allergyInput,
-                            onSubmit: submitAllergy,
-                            onRemoveCustom: removeCustomAllergy
+                            items: allAllergies.map { ProfileChipItem(name: $0, isSelected: selectedAllergies.contains($0), isNewlyAdded: false) } +
+                                   customAllergies.map { ProfileChipItem(name: $0, isSelected: selectedAllergies.contains($0), isNewlyAdded: true) },
+                            onAddOther: { showAllergySearchSheet = true },
+                            onToggle: { allergy in
+                                if selectedAllergies.contains(allergy) {
+                                    selectedAllergies.remove(allergy)
+                                } else {
+                                    selectedAllergies.insert(allergy)
+                                }
+                            },
+                            onRemove: removeCustomAllergy
                         )
                     }
                     .padding(.horizontal, 22)
@@ -115,24 +134,36 @@ struct HealthProfileSetupView: View {
             }
         }
         .navigationBarHidden(true)
+        .sheet(isPresented: $showConditionSearchSheet) {
+            SearchSelectionSheet(
+                title: "Search Conditions",
+                searchQuery: $conditionSearchQuery,
+                results: filteredConditions,
+                onSelect: { selectedCondition in
+                    selectCondition(selectedCondition)
+                }
+            )
+        }
+        .sheet(isPresented: $showAllergySearchSheet) {
+            SearchSelectionSheet(
+                title: "Search Allergies",
+                searchQuery: $allergySearchQuery,
+                results: filteredAllergies,
+                onSelect: { selectedAllergy in
+                    selectAllergy(selectedAllergy)
+                }
+            )
+        }
     }
     
     // MARK: - Actions: Conditions
-    private func submitCondition() {
-        let trimmed = conditionInput.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            isAddingCondition = false
-            return
+    private func selectCondition(_ condition: String) {
+        if !allConditions.contains(condition) && !customConditions.contains(condition) {
+            customConditions.append(condition)
         }
-        let allExisting = allConditions + customConditions
-        if let existing = allExisting.first(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
-            selectedConditions.insert(existing)
-        } else {
-            customConditions.append(trimmed)
-            selectedConditions.insert(trimmed)
-        }
-        conditionInput = ""
-        isAddingCondition = false
+        selectedConditions.insert(condition)
+        conditionSearchQuery = ""
+        showConditionSearchSheet = false
     }
 
     private func removeCustomCondition(_ condition: String) {
@@ -141,21 +172,13 @@ struct HealthProfileSetupView: View {
     }
 
     // MARK: - Actions: Allergies
-    private func submitAllergy() {
-        let trimmed = allergyInput.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
-            isAddingAllergy = false
-            return
+    private func selectAllergy(_ allergy: String) {
+        if !allAllergies.contains(allergy) && !customAllergies.contains(allergy) {
+            customAllergies.append(allergy)
         }
-        let allExisting = allAllergies + customAllergies
-        if let existing = allExisting.first(where: { $0.caseInsensitiveCompare(trimmed) == .orderedSame }) {
-            selectedAllergies.insert(existing)
-        } else {
-            customAllergies.append(trimmed)
-            selectedAllergies.insert(trimmed)
-        }
-        allergyInput = ""
-        isAddingAllergy = false
+        selectedAllergies.insert(allergy)
+        allergySearchQuery = ""
+        showAllergySearchSheet = false
     }
 
     private func removeCustomAllergy(_ allergy: String) {
