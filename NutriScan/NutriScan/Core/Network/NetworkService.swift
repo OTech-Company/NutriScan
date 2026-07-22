@@ -18,11 +18,14 @@ extension NetworkServiceProtocol {
     }
 }
 
+struct EmptyResponse: Decodable {}
+
 final class NetworkService: NetworkServiceProtocol {
     static let shared = NetworkService()
+
     private let session: URLSession
 
-    private init(session: URLSession = .shared) {
+    init(session: URLSession = .shared) {
         self.session = session
     }
 
@@ -35,30 +38,35 @@ final class NetworkService: NetworkServiceProtocol {
         request.httpMethod = endpoint.method.rawValue
         request.allHTTPHeaderFields = endpoint.headers
 
-        // Auto-inject Authorization header from Keychain, unless the endpoint
-        // already set one explicitly.
-        if request.value(forHTTPHeaderField: "Authorization") == nil,
-           let accessToken = try? KeychainManager.shared.get(key: .accessToken),
-           !accessToken.isEmpty {
-            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        // Attach Authorization header from Keychain if required
+        if endpoint.requiresAuth,
+           request.value(forHTTPHeaderField: "Authorization") == nil {
+            if let accessToken = try? KeychainManager.shared.get(key: .accessToken),
+               !accessToken.isEmpty {
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            }
         }
 
-        if let body = endpoint.body {
-            if endpoint.headers["Content-Type"] == "application/x-www-form-urlencoded" {
-                let data = try JSONEncoder().encode(AnyEncodable(body))
-                guard let dictionary = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
-                    throw NetworkError.unknown(
-                        NSError(domain: "NetworkService", code: -1, userInfo: [
-                            NSLocalizedDescriptionKey: "Form-encoded body must be a flat key-value object."
-                        ])
-                    )
-                }
-                var components = URLComponents()
-                components.queryItems = dictionary.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
-                request.httpBody = components.percentEncodedQuery?.data(using: .utf8)
-            } else {
-                request.httpBody = try JSONEncoder().encode(AnyEncodable(body))
-            }
+        switch endpoint.body {
+        case .none:
+            break
+
+        case .json(let encodable):
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = endpoint.keyEncodingStrategy
+            request.httpBody = try encoder.encode(AnyEncodable(encodable))
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        case .formURLEncoded(let params):
+            let encoded = params.map { key, value in
+                "\(key.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? key)=\(value.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? value)"
+            }.joined(separator: "&")
+            request.httpBody = encoded.data(using: .utf8)
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+        case .multipart(let form):
+            request.httpBody = form.encode()
+            request.setValue(form.contentTypeHeader, forHTTPHeaderField: "Content-Type")
         }
 
         do {
@@ -97,11 +105,19 @@ final class NetworkService: NetworkServiceProtocol {
                 throw NetworkError.serverError(statusCode: httpResponse.statusCode)
             }
 
+            if httpResponse.statusCode == 204 || data.isEmpty, let empty = EmptyResponse() as? T {
+                return empty
+            }
+
             do {
                 let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = endpoint.keyDecodingStrategy
                 return try decoder.decode(T.self, from: data)
             } catch {
-                print("NetworkError.decodingFailed : \(NetworkError.decodingFailed)")
+                if let json = String(data: data, encoding: .utf8) {
+                    print("Decoding failed for \(T.self):", error)
+                    print("Response:", json)
+                }
                 throw NetworkError.decodingFailed
             }
 
@@ -123,4 +139,12 @@ struct AnyEncodable: Encodable {
     func encode(to encoder: Encoder) throws {
         try _encode(encoder)
     }
+}
+
+private extension CharacterSet {
+    static let urlQueryValueAllowed: CharacterSet = {
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: "+&=") // these need escaping inside form values, unlike in a query string
+        return allowed
+    }()
 }

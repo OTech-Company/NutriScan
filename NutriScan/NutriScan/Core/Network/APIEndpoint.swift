@@ -12,13 +12,28 @@ protocol APIEndpoint {
     var path: String { get }
     var method: HTTPMethod { get }
     var queryParameters: [String: String]? { get }
-    var body: Encodable? { get }
+    var body: RequestBody { get }
     var headers: [String: String] { get }
+    var requiresAuth: Bool { get }
+    var keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy { get }
+    var keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy { get }
 }
 
 extension APIEndpoint {
-    var body: Encodable? { nil }
+    var queryParameters: [String: String]? { nil }
+    var body: RequestBody { .none }
     var headers: [String: String] { [:] }
+    var requiresAuth: Bool { true }
+
+    var keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy {
+        let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL]
+        return snakeCaseURLs.contains(baseURL) ? .convertFromSnakeCase : .useDefaultKeys
+    }
+
+    var keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy {
+        let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL]
+        return snakeCaseURLs.contains(baseURL) ? .convertToSnakeCase : .useDefaultKeys
+    }
 
     var fullURL: URL? {
         var components = URLComponents(string: baseURL + path)
@@ -30,5 +45,3 @@ extension APIEndpoint {
         return components?.url
     }
 }
-
-

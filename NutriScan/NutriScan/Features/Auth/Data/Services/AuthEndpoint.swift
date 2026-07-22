@@ -26,13 +26,13 @@ enum AuthEndpoint: APIEndpoint {
     var path: String {
         switch self {
         case .register:
-            return "auth/register"
+            return "/api/v1/auth/register"
         case .resendVerification:
-            return "auth/resend-verification"
+            return "/api/v1/auth/resend-verification"
         case .login, .refreshToken:
             return "realms/nutriscan/protocol/openid-connect/token"
         case .forgotPassword:
-            return "auth/forgot-password"
+            return "/api/v1/auth/forgot-password"
         }
     }
 
@@ -47,27 +47,35 @@ enum AuthEndpoint: APIEndpoint {
         return nil
     }
 
-    var body: Encodable? {
+    var body: RequestBody {
         switch self {
         case .register(let dto):
-            return dto
+            return .json(dto)
         case .resendVerification(let dto):
-            return dto
+            return .json(dto)
         case .login(let dto):
-            return dto
+            return .formURLEncoded([
+                "username": dto.username,
+                "password": dto.password,
+                "grant_type": dto.grantType,
+                "client_id": dto.clientId
+            ])
         case .forgotPassword(let dto):
-            return dto
+            return .json(dto)
         case .refreshToken(let dto):
-            return dto
+            return .formURLEncoded([
+                "refresh_token": dto.refreshToken,
+                "grant_type": dto.grantType,
+                "client_id": dto.clientId
+            ])
         }
     }
 
     var headers: [String: String] {
-        switch self {
-        case .login, .refreshToken:
-            return ["Content-Type": "application/x-www-form-urlencoded"]
-        default:
-            return ["Content-Type": "application/json"]
-        }
+        [:]
+    }
+
+    var requiresAuth: Bool {
+        false
     }
 }

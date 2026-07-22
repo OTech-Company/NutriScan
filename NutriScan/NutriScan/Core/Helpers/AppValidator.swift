@@ -110,4 +110,26 @@ struct AppValidator {
         }
         return nil
     }
+    
+    // MARK: - New Physical Measurement Validators
+    
+    static func heightValidator(_ value: String?) -> String? {
+        guard let value = value, !value.isEmpty else {
+            return "Height is required"
+        }
+        guard let h = Double(value), h >= 50, h <= 300 else {
+            return "Invalid height"
+        }
+        return nil
+    }
+    
+    static func weightValidator(_ value: String?) -> String? {
+        guard let value = value, !value.isEmpty else {
+            return "Weight is required"
+        }
+        guard let w = Double(value), w >= 20, w <= 500 else {
+            return "Invalid weight"
+        }
+        return nil
+    }
 }

@@ -63,16 +63,6 @@ extension Color {
             light: Color.Gray.gray1600,
             dark: .white
         )
-        
-        static let calenderText = Color(
-            light: Color.Gray.gray600,
-            dark: Color.Teal.teal200
-        )
-        
-        static let calenderBoarder = Color(
-            light: Color.Gray.gray300,
-            dark: Color.Teal.teal200
-        )
 
         static let secondaryText = Color(
             light: Color.Gray.gray700,

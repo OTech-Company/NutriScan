@@ -4,12 +4,7 @@
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
-//
-//  SelectableChip.swift
-//  NutriScan
-//
-//  Created by Mina_Wagdy on 19/07/2026.
-//
+
 import SwiftUI
 
 enum ChipState: Equatable {
@@ -32,16 +27,18 @@ struct SelectableChip: View {
                     Image(systemName: "plus")
                         .font(.system(size: 12, weight: .semibold))
                 }
-                
+
                 Text(title)
                     .font(Font.AppFont.textSecondary)
-                
-                if case .custom = state {
+
+                // Only show the remove control when a removal handler was
+                // actually provided — not just because the state is .custom.
+                if let onRemove {
                     Image(systemName: "xmark")
                         .font(.system(size: 10, weight: .bold))
                         .padding(.leading, 4)
                         .onTapGesture {
-                            onRemove?()
+                            onRemove()
                         }
                 }
             }
@@ -56,7 +53,8 @@ struct SelectableChip: View {
                 .strokeBorder(
                     borderColor,
                     style: StrokeStyle(
-                        lineWidth: 1, dash: state == .add ? [4, 3] : []))
+                        lineWidth: 1, dash: state == .add ? [4, 3] : [])
+                )
             )
             .clipShape(
                 RoundedRectangle(
@@ -67,8 +65,10 @@ struct SelectableChip: View {
 
     private var backgroundColor: Color {
         switch state {
-        case .normal, .add, .custom(false): return Color.ChipSemantics.defaultBackground
-        case .selected, .custom(true): return Color.ChipSemantics.selectedBackground
+        case .normal, .add, .custom(false):
+            return Color.ChipSemantics.defaultBackground
+        case .selected, .custom(true):
+            return Color.ChipSemantics.selectedBackground
         }
     }
 

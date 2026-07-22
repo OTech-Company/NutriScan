@@ -10,7 +10,7 @@ import Foundation
 struct RefreshTokenRequestDTO: Encodable {
     let refreshToken: String
     let grantType: String = "refresh_token"
-    let clientId: String = "mobile_api"
+    let clientId: String = "mobile-api"
 
     enum CodingKeys: String, CodingKey {
         case refreshToken = "refresh_token"

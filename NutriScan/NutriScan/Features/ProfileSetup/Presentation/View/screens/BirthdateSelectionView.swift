@@ -9,16 +9,9 @@ import SwiftUI
 
 struct BirthdateSelectionView: View {
     @Binding var birthdate: Date
-    @State private var isPickerPresented = false
 
     private var age: Int {
         Calendar.current.dateComponents([.year], from: birthdate, to: Date()).year ?? 0
-    }
-
-    private var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd/MM/yyyy"
-        return formatter.string(from: birthdate)
     }
 
     var body: some View {
@@ -33,7 +26,7 @@ struct BirthdateSelectionView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.Teal.teal700)
                     )
-                
+
                 Text("Years")
                     .font(Font.AppFont.title2)
                     .foregroundStyle(Color.Teal.teal1600)
@@ -47,39 +40,7 @@ struct BirthdateSelectionView: View {
             )
             .customTealShadow()
 
-            Button {
-                isPickerPresented = true
-            } label: {
-                HStack {
-                    Text(formattedDate)
-                        .font(Font.AppFont.textPrimary)
-                        .foregroundStyle(Color.ProfileSetupSemantic.calenderText)
-                    Spacer()
-                    Image(systemName: "calendar")
-                        .foregroundStyle(Color.ProfileSetupSemantic.calenderText)
-                }
-                .padding(.horizontal, 16)
-                .frame(height: 52)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .strokeBorder(Color.ProfileSetupSemantic.calenderBoarder, lineWidth: 1)
-                )
-            }
-            .buttonStyle(.plain)
-        }
-        .sheet(isPresented: $isPickerPresented) {
-            NavigationStack {
-                DatePicker(
-                    "Birthdate",
-                    selection: $birthdate,
-                    in: ...Date(),
-                    displayedComponents: .date
-                )
-                .datePickerStyle(.wheel)
-                .labelsHidden()
-                .padding()
-            }
-            .presentationDetents([.height(320)])
+            DateSelectionField(date: $birthdate)
         }
     }
 }
