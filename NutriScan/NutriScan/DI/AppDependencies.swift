@@ -11,9 +11,8 @@ struct AppDependencies {
     static func setup() {
         let container = DIContainer.shared
         
-        // 1. Core Services (Register your temporary token provider here)
-        container.register(type: TokenProviding.self, component: HardcodedTokenProvider())
-        container.register(type: NetworkServiceProtocol.self, component: NetworkService(tokenProvider: container.resolve(type: TokenProviding.self)))
+        // 1. Core Services
+        container.register(type: NetworkServiceProtocol.self, component: NetworkService())
         
         // 2. Profile Feature
         container.register(

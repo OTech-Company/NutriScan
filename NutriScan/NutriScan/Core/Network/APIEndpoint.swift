@@ -23,7 +23,7 @@ extension APIEndpoint {
     var queryParameters: [String: String]? { nil }
     var body: RequestBody { .none }
     var headers: [String: String] { [:] }
-    var requiresAuth: Bool { true } // most endpoints need a token; auth endpoints opt out
+    var requiresAuth: Bool { true }
 
     var keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy {
         let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL]

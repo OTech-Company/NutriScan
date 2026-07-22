@@ -18,6 +18,13 @@ final class LoginViewModel {
     // MARK: - Status
     var isLoading: Bool = false
     var generalError: String? = nil
+    var isEmailUnverified: Bool = false
+
+    private let loginUseCase: LoginUseCase
+
+    init(loginUseCase: LoginUseCase = LoginUseCase()) {
+        self.loginUseCase = loginUseCase
+    }
 
     // MARK: - Per-field validation (used by real-time onChange)
 
@@ -45,13 +52,25 @@ final class LoginViewModel {
     func signIn() async -> Bool {
         guard validateAll() else { return false }
         isLoading = true
+        generalError = nil
+        isEmailUnverified = false
         defer { isLoading = false }
         
-        print("hellow nageh")
-        // Simulate network latency (2 seconds)
-        try? await Task.sleep(for: .seconds(2))
-        
-        // TODO: call AuthUseCase.login(email: email.value, password: password.value)
-        return true
+        do {
+            let request = LoginRequest(email: email.value, password: password.value)
+            _ = try await loginUseCase.execute(request: request)
+            return true
+        } catch let error as NetworkError {
+            if case .apiError(let apiError) = error,
+               apiError.errorDescription == "Account is not fully set up" {
+                isEmailUnverified = true
+            } else {
+                generalError = error.localizedDescription
+            }
+            return false
+        } catch {
+            generalError = error.localizedDescription
+            return false
+        }
     }
 }
