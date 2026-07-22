@@ -22,10 +22,11 @@ struct EditProfileView: View {
                     ProgressView()
                         .scaleEffect(1.5)
                         .tint(Color.EditProfileSemantics.titlePrimary)
-                    
+
                     Text("Loading Profile...")
                         .font(.subheadline)
-                        .foregroundColor(Color.EditProfileSemantics.textSecondary)
+                        .foregroundColor(
+                            Color.EditProfileSemantics.textSecondary)
                 }
             } else {
                 ScrollView(showsIndicators: false) {
@@ -34,65 +35,93 @@ struct EditProfileView: View {
                         spacing: EditProfileSemantics.Spacing.sectionVertical
                     ) {
                         BackButton(action: { router.pop() }).padding(
-                            .bottom, EditProfileSemantics.Spacing.sectionVertical)
+                            .bottom,
+                            EditProfileSemantics.Spacing.sectionVertical)
 
                         ProfileHeaderView(
-                            name: viewModel.firstName.value + " " + viewModel.lastName.value,
+                            name: viewModel.firstName.value + " "
+                                + viewModel.lastName.value,
                             email: viewModel.email,
                             avatarImage: Image(systemName: "person.circle.fill")
                         )
                         .disabled(!isEditingMode)
 
-                        VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
-                            
+                        VStack(
+                            spacing: EditProfileSemantics.Spacing.fieldVertical
+                        ) {
+
                             VStack(spacing: 4) {
-                                EditableFieldView(placeholder: "first name", text: $viewModel.firstName.value, isEditing: isEditingMode)
+                                EditableFieldView(
+                                    placeholder: "first name",
+                                    text: $viewModel.firstName.value,
+                                    isEditing: isEditingMode)
                                 if viewModel.firstName.state == .error {
-                                    CustomTextFieldError(errorMessage: viewModel.firstName.error)
-                                }
-                            }
-                            
-                            VStack(spacing: 4) {
-                                EditableFieldView(placeholder: "last name", text: $viewModel.lastName.value, isEditing: isEditingMode)
-                                if viewModel.lastName.state == .error {
-                                    CustomTextFieldError(errorMessage: viewModel.lastName.error)
+                                    CustomTextFieldError(
+                                        errorMessage: viewModel.firstName.error)
                                 }
                             }
 
-                            DateSelectionField(date: $viewModel.birthdate, isEditing: isEditingMode)
+                            VStack(spacing: 4) {
+                                EditableFieldView(
+                                    placeholder: "last name",
+                                    text: $viewModel.lastName.value,
+                                    isEditing: isEditingMode)
+                                if viewModel.lastName.state == .error {
+                                    CustomTextFieldError(
+                                        errorMessage: viewModel.lastName.error)
+                                }
+                            }
+
+                            DateSelectionField(
+                                date: $viewModel.birthdate,
+                                isEditing: isEditingMode)
 
                             HStack(alignment: .top, spacing: 12) {
                                 VStack(spacing: 4) {
-                                    MeasureFieldView(label: "Height", value: $viewModel.height.value, unit: "cm", isEditing: isEditingMode)
+                                    MeasureFieldView(
+                                        label: "Height",
+                                        value: $viewModel.height.value,
+                                        unit: "cm", isEditing: isEditingMode)
                                     if viewModel.height.state == .error {
-                                        CustomTextFieldError(errorMessage: viewModel.height.error)
+                                        CustomTextFieldError(
+                                            errorMessage: viewModel.height.error
+                                        )
                                     }
                                 }
-                                
+
                                 VStack(spacing: 4) {
-                                    MeasureFieldView(label: "Weight", value: $viewModel.weight.value, unit: "kg", isEditing: isEditingMode)
+                                    MeasureFieldView(
+                                        label: "Weight",
+                                        value: $viewModel.weight.value,
+                                        unit: "kg", isEditing: isEditingMode)
                                     if viewModel.weight.state == .error {
-                                        CustomTextFieldError(errorMessage: viewModel.weight.error)
+                                        CustomTextFieldError(
+                                            errorMessage: viewModel.weight.error
+                                        )
                                     }
                                 }
                             }
                         }
-                        
+
                         SelectableChipsSectionView(
                             title: "Chronic Conditions",
-                            items: viewModel.conditionChips,
-                            onAddOther: { viewModel.showConditionSearchSheet = true },
-                            onToggle: { viewModel.toggleCondition($0) },
-                            onRemove: { viewModel.removeCondition($0) }
+                            items: viewModel.conditions.chips,
+                            onAddOther: {
+                                viewModel.conditions.showSearchSheet = true
+                            },
+                            onToggle: { viewModel.conditions.toggle($0) },
+                            onRemove: { viewModel.conditions.remove($0) }
                         )
                         .disabled(!isEditingMode)
 
                         SelectableChipsSectionView(
                             title: "Allergies",
-                            items: viewModel.allergyChips,
-                            onAddOther: { viewModel.showAllergySearchSheet = true },
-                            onToggle: { viewModel.toggleAllergy($0) },
-                            onRemove: { viewModel.removeAllergy($0) }
+                            items: viewModel.allergies.chips,
+                            onAddOther: {
+                                viewModel.allergies.showSearchSheet = true
+                            },
+                            onToggle: { viewModel.allergies.toggle($0) },
+                            onRemove: { viewModel.allergies.remove($0) }
                         )
                         .disabled(!isEditingMode)
 
@@ -118,7 +147,7 @@ struct EditProfileView: View {
                         )
                         .animation(.easeInOut, value: viewModel.isLoading)
                         .padding(.top, 8)
-                        
+
                         if let error = viewModel.errorMessage {
                             Text(error)
                                 .font(.caption)
@@ -126,12 +155,26 @@ struct EditProfileView: View {
                                 .padding(.top, 8)
                         }
                     }
-                    .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
+                    .padding(
+                        .horizontal,
+                        EditProfileSemantics.Spacing.screenHorizontal
+                    )
                     .padding(.bottom, 120)
                 }
             }
         }
         .navigationBarHidden(true)
+        // MARK: TODO
+//        .onAppear {
+//            withAnimation(.easeInOut(duration: 0.3)) {
+//                tabBarVisibility.isHidden = true
+//            }
+//        }
+//        .onDisappear {
+//            withAnimation(.easeInOut(duration: 0.3)) {
+//                tabBarVisibility.isHidden = false
+//            }
+//        }
         .task {
             isFetchingProfile = true
             await viewModel.loadInitialData()
@@ -139,23 +182,23 @@ struct EditProfileView: View {
                 isFetchingProfile = false
             }
         }
-        .sheet(isPresented: $viewModel.showConditionSearchSheet) {
+        .sheet(isPresented: $viewModel.conditions.showSearchSheet) {
             SearchSelectionSheet(
                 title: "Search Conditions",
-                searchQuery: $viewModel.conditionSearchQuery,
-                results: viewModel.filteredConditions,
+                searchQuery: $viewModel.conditions.searchQuery,
+                results: viewModel.conditions.filteredItems,
                 onSelect: { selectedCondition in
-                    viewModel.selectCondition(selectedCondition)
+                    viewModel.conditions.select(selectedCondition)
                 }
             )
         }
-        .sheet(isPresented: $viewModel.showAllergySearchSheet) {
+        .sheet(isPresented: $viewModel.allergies.showSearchSheet) {
             SearchSelectionSheet(
                 title: "Search Allergies",
-                searchQuery: $viewModel.allergySearchQuery,
-                results: viewModel.filteredAllergies,
+                searchQuery: $viewModel.allergies.searchQuery,
+                results: viewModel.allergies.filteredItems,
                 onSelect: { selectedAllergy in
-                    viewModel.selectAllergy(selectedAllergy)
+                    viewModel.allergies.select(selectedAllergy)
                 }
             )
         }

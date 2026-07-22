@@ -257,6 +257,7 @@
 		D40DD1D5301026F0001CF496 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1D4301026EB001CF496 /* DIContainer.swift */; };
 		D40DD1D730102706001CF496 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1D630102704001CF496 /* AppDependencies.swift */; };
 		D40DD1DC30102BC0001CF496 /* ProfileChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1DB30102BBE001CF496 /* ProfileChipItem.swift */; };
+		D48A24363011534F0004D95E /* ChipSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2435301153460004D95E /* ChipSelectionManager.swift */; };
 		D4AED0FD3009683200CB773F /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
 		D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4F9FEF57E05BD25284EF02 /* BackButtonSemantics.swift */; };
 		D84A1824E923C92FD27A3051 /* UpdateProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910C10E63D03A92A12BA055 /* UpdateProfileRequest.swift */; };
@@ -569,6 +570,7 @@
 		D40DD1D4301026EB001CF496 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		D40DD1D630102704001CF496 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		D40DD1DB30102BBE001CF496 /* ProfileChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChipItem.swift; sourceTree = "<group>"; };
+		D48A2435301153460004D95E /* ChipSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipSelectionManager.swift; sourceTree = "<group>"; };
 		D4E5DE6B86999459A4937187 /* HomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSummaryView.swift; sourceTree = "<group>"; };
 		DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderComponent.swift; sourceTree = "<group>"; };
 		DC1D0663CB45E88B8922C022 /* RegisterHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterHeaderSection.swift; sourceTree = "<group>"; };
@@ -2091,6 +2093,7 @@
 		E8E6CBB40F86F2B7D097EF94 /* Chip */ = {
 			isa = PBXGroup;
 			children = (
+				D48A2435301153460004D95E /* ChipSelectionManager.swift */,
 				84487153C1FC6580C23A07A5 /* ChipSemantics.swift */,
 				0F2002489FC565C9985DC20C /* FlowChipsLayout.swift */,
 				969F97EA94D104FF0E5D3CF4 /* InputChip.swift */,
@@ -2396,6 +2399,7 @@
 				2C78ED1A300E6C7E0092E6B2 /* SocialLoginButton.swift in Sources */,
 				2C78ED1C300E6C7E0092E6B2 /* Color+LoginSemantic.swift in Sources */,
 				2C78ED1D300E6C7E0092E6B2 /* RegisterSignUpButtonSection.swift in Sources */,
+				D48A24363011534F0004D95E /* ChipSelectionManager.swift in Sources */,
 				2C78ED1E300E6C7E0092E6B2 /* RegisterUseCase.swift in Sources */,
 				2C78ED1F300E6C7E0092E6B2 /* AuthFlowView.swift in Sources */,
 				2C78ED20300E6C7E0092E6B2 /* ForgotPasswordView.swift in Sources */,
