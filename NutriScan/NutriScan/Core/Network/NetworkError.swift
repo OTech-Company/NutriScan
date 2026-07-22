@@ -14,6 +14,8 @@ enum NetworkError: Error, LocalizedError {
     case decodingFailed
     case serverError(statusCode: Int, apiError: APIErrorResponse?)
     case unknown(Error)
+    case rateLimited
+    case requestFailed(statusCode: Int)
 
     var errorDescription: String? {
         switch self {
@@ -23,6 +25,12 @@ enum NetworkError: Error, LocalizedError {
         case .serverError(let code, let apiError):
             return apiError?.message ?? "Server error: \(code)"
         case .unknown(let error): return error.localizedDescription
+        case .rateLimited:
+            return "You've hit the daily request limit. Please try again later."
+        case .requestFailed(let statusCode):
+            return "The server responded with an error (code \(statusCode))."
+        
         }
     }
 }
+
