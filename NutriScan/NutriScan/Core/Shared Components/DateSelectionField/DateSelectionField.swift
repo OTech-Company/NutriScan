@@ -10,6 +10,7 @@ import SwiftUI
 struct DateSelectionField: View {
     @Binding var date: Date
     var dateRange: PartialRangeThrough<Date> = ...Date()
+    var isEditing: Bool = true
 
     @State private var isPickerPresented = false
 
@@ -33,12 +34,14 @@ struct DateSelectionField: View {
             }
             .padding(.horizontal, 16)
             .frame(height: 52)
+            .background(isEditing ? Color.EditProfileSemantics.editableSurface : Color.EditProfileSemantics.surfacePrimary)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
                     .strokeBorder(Color.DateSelectionFieldSemantics.calenderBoarder, lineWidth: 1)
             )
         }
         .buttonStyle(.plain)
+        .disabled(!isEditing)
         .sheet(isPresented: $isPickerPresented) {
             NavigationStack {
                 DatePicker(

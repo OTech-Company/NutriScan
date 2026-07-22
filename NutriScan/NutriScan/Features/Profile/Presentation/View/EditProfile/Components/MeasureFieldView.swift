@@ -14,6 +14,7 @@ struct MeasureFieldView: View {
     
     // Configurable limit
     var maxLength: Int = 3
+    var isEditing: Bool = false
 
     var body: some View {
         HStack(spacing: 6) {
@@ -29,6 +30,7 @@ struct MeasureFieldView: View {
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.trailing)
                 .fixedSize()
+                .disabled(!isEditing)
                 .onChange(of: value) { oldValue, newValue in
                     sanitizeInput(newValue: newValue)
                 }
@@ -42,7 +44,7 @@ struct MeasureFieldView: View {
         .padding(.horizontal, 16)
         .frame(height: EditProfileSemantics.Sizes.fieldHeight)
         .frame(maxWidth: .infinity)
-        .background(Color.EditProfileSemantics.surfacePrimary)
+        .background(isEditing ? Color.EditProfileSemantics.editableSurface : Color.EditProfileSemantics.surfacePrimary)
         .overlay(
             RoundedRectangle(cornerRadius: EditProfileSemantics.Radius.field)
                 .stroke(Color.EditProfileSemantics.borderPrimary, lineWidth: 1)
@@ -67,8 +69,8 @@ struct MeasureFieldView: View {
 
 #Preview("Light") {
     HStack(spacing: 12) {
-        MeasureFieldView(label: "Height", value: .constant("180"), unit: "cm")
-        MeasureFieldView(label: "Weight", value: .constant("80"), unit: "kg")
+        MeasureFieldView(label: "Height", value: .constant("180"), unit: "cm", isEditing: true)
+        MeasureFieldView(label: "Weight", value: .constant("80"), unit: "kg", isEditing: true)
     }
     .padding()
     .background(Color.EditProfileSemantics.backgroundPrimary)
@@ -77,8 +79,8 @@ struct MeasureFieldView: View {
 
 #Preview("Dark") {
     HStack(spacing: 12) {
-        MeasureFieldView(label: "Height", value: .constant("180"), unit: "cm")
-        MeasureFieldView(label: "Weight", value: .constant("80"), unit: "kg")
+        MeasureFieldView(label: "Height", value: .constant("180"), unit: "cm", isEditing: true)
+        MeasureFieldView(label: "Weight", value: .constant("80"), unit: "kg", isEditing: true)
     }
     .padding()
     .background(Color.EditProfileSemantics.backgroundPrimary)
