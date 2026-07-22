@@ -164,7 +164,7 @@ struct EditProfileView: View {
             }
         }
         .navigationBarHidden(true)
-        // MARK: TODO
+        // MARK: TODO: Hide the tab bar when this view appears, and show it again when it disappears.
 //        .onAppear {
 //            withAnimation(.easeInOut(duration: 0.3)) {
 //                tabBarVisibility.isHidden = true

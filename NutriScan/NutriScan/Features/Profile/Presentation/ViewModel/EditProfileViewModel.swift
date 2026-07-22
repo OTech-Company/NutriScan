@@ -12,7 +12,8 @@ import SwiftUI
 final class EditProfileViewModel {
 
     // MARK: - Dependencies
-    private let useCase: ProfileUseCaseProtocol
+    private let getProfileDataUseCase: GetProfileDataUseCaseProtocol
+    private let updateProfileUseCase: UpdateProfileUseCaseProtocol
 
     // MARK: - Validated Fields
     var firstName = ValidatedField(value: "")
@@ -25,7 +26,6 @@ final class EditProfileViewModel {
     var birthdate: Date = Date()
     var gender: String = "FEMALE"
 
-    // MARK: - Chip Collections (delegated, not duplicated)
     var conditions = ChipSelectionManager()
     var allergies = ChipSelectionManager()
 
@@ -36,8 +36,12 @@ final class EditProfileViewModel {
     // MARK: - Dirty-Check Baseline
     private var snapshot: ProfileUpdate?
 
-    init(useCase: ProfileUseCaseProtocol = DIContainer.shared.resolve(type: ProfileUseCaseProtocol.self)) {
-        self.useCase = useCase
+    init(
+        getProfileDataUseCase: GetProfileDataUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileDataUseCaseProtocol.self),
+        updateProfileUseCase: UpdateProfileUseCaseProtocol = DIContainer.shared.resolve(type: UpdateProfileUseCaseProtocol.self)
+    ) {
+        self.getProfileDataUseCase = getProfileDataUseCase
+        self.updateProfileUseCase = updateProfileUseCase
     }
 
     // MARK: - Networking: Load Data
@@ -48,7 +52,7 @@ final class EditProfileViewModel {
         errorMessage = nil
 
         do {
-            let data = try await useCase.getEditProfileData()
+            let data = try await getProfileDataUseCase.execute()
 
             self.email = data.profile.email
             self.firstName.value = data.profile.firstName
@@ -123,7 +127,7 @@ final class EditProfileViewModel {
         errorMessage = nil
 
         do {
-            _ = try await useCase.updateProfile(update: buildUpdateRequest())
+            _ = try await updateProfileUseCase.execute(update: buildUpdateRequest())
             await loadInitialData() // also re-captures snapshot
             print("Profile saved and refreshed successfully!")
         } catch {
