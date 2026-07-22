@@ -31,7 +31,7 @@ struct MainTabView: View {
                 HomeFlowView()
                     .tag(AppTab.home)
                 
-                Text("Calories Flow")
+                TodayStepsScreen()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(colorScheme == .light ? .white : Color.Teal.teal1600)
                     .tag(AppTab.calories)
