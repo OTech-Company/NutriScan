@@ -9,16 +9,11 @@ import SwiftUI
 
 struct SelectableChipsSectionView: View {
     let title: String
-    let predefinedItems: [String]
+    let items: [ProfileChipItem]
     
-    @Binding var customItems: [String]
-    @Binding var selected: Set<String>
-    
-    @Binding var isAdding: Bool
-    @Binding var inputText: String
-    
-    let onSubmit: () -> Void
-    let onRemoveCustom: (String) -> Void
+    var onAddOther: () -> Void
+    let onToggle: (String) -> Void
+    let onRemove: (String) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -30,39 +25,26 @@ struct SelectableChipsSectionView: View {
                 horizontalSpacing: EditProfileSemantics.Spacing.chipSpacing,
                 verticalSpacing: EditProfileSemantics.Spacing.chipSpacing
             ) {
-                // 1. Render Default Chips
-                ForEach(predefinedItems, id: \.self) { item in
-                    SelectableChip(
-                        title: item,
-                        state: selected.contains(item) ? .selected : .normal,
-                        action: { toggle(item) }
-                    )
+                ForEach(items, id: \.name) { chip in
+                    if chip.isNewlyAdded {
+                        // Newly added from search: shows 'x', selected by default
+                        SelectableChip(
+                            title: chip.name,
+                            state: .custom(isSelected: chip.isNewlyAdded),
+                            action: { }, // Tap does nothing, user must click 'x'
+                            onRemove: { onRemove(chip.name) }
+                        )
+                    } else {
+                        // Backend originated: no 'x', toggles selection state on tap
+                        SelectableChip(
+                            title: chip.name,
+                            state: .custom(isSelected: chip.isSelected),
+                            action: { onToggle(chip.name) }
+                        )
+                    }
                 }
                 
-                ForEach(customItems, id: \.self) { item in
-                    SelectableChip(
-                        title: item,
-                        state: .custom(isSelected: selected.contains(item)),
-                        action: { toggle(item) },
-                        onRemove: { onRemoveCustom(item) }
-                    )
-                }
-                
-                if isAdding {
-                    InputChip(text: $inputText, onSubmit: onSubmit)
-                } else {
-                    SelectableChip(title: "Other", state: .add, action: { isAdding = true })
-                }
-            }
-        }
-    }
-
-    private func toggle(_ item: String) {
-        withAnimation(EditProfileSemantics.Animation.chipSelection) {
-            if selected.contains(item) {
-                selected.remove(item)
-            } else {
-                selected.insert(item)
+                SelectableChip(title: "Other", state: .add, action: onAddOther)
             }
         }
     }

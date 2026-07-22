@@ -6,9 +6,9 @@
 //
 
 struct GetProfileUseCase {
-    private let repository: ProfileRepository
+    private let repository: ProfileRepositoryOsama
     
-    init(repository: ProfileRepository) {
+    init(repository: ProfileRepositoryOsama) {
         self.repository = repository
     }
     

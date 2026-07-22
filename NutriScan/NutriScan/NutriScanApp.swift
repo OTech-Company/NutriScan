@@ -9,10 +9,14 @@ import SwiftUI
  
 @main
 struct NutriScanApp: App {
+    
+    init() {
+        AppDependencies.setup()
+    }
+    
     var body: some Scene {
         WindowGroup {
             RootCoordinatorView()
         }
     }
 }
- 

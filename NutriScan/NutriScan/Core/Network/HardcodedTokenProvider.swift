@@ -1,0 +1,18 @@
+//
+//  HardcodedTokenProvider.swift
+//  NutriScan
+//
+//  Created by Mina_Wagdy on 22/07/2026.
+//
+
+//MARK: - To be removed, once the Auth module is merged and the TokenProvider is implemented.
+import Foundation
+
+/// TEMPORARY: Used for testing authenticated endpoints before Auth is merged.
+final class HardcodedTokenProvider: TokenProviding {
+    func accessToken() async -> String? {
+        // Paste your Bearer token from Postman here (without the "Bearer " prefix)
+        return
+            "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItZ0pFazFQMzROM2lSb3FTWFZqNml6MHh2bnBNLUVxQW1sM3pvZ1VteGFZIn0.eyJleHAiOjE3ODQ2NzYzNjcsImlhdCI6MTc4NDY3NTQ2NywianRpIjoib25ydHJvOmViNzg0NTllLTljZjgtNzJlZi1mZTE3LTY0NzZlZDg3YjgyYSIsImlzcyI6Imh0dHBzOi8vYXV0aC5udXRyaXNjYW4uZGV2L3JlYWxtcy9udXRyaXNjYW4iLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiZWQzM2JiN2ItNDE2OS00MjIyLThjY2UtNGI2YzEzMzg1NTFkIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibW9iaWxlLWFwaSIsInNpZCI6IlM2Z0NBT2lGOU5HOXhhR0tzTWFMLXdnQSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1udXRyaXNjYW4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkZhbSBXYWdkeXkiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJtaW5hLndhZ2R5IiwiZ2l2ZW5fbmFtZSI6IkZhbSIsImZhbWlseV9uYW1lIjoiV2FnZHl5IiwiZW1haWwiOiJtaW5hd2FnZHkyMjI4QGdtYWlsLmNvbSJ9.aRFug_6IILEx4CY_LTAxcHvbGdxswB_Ghn06iufK9tqbj3jTeUQjlKPNEjW8SpvI4BfBboJ5hZXJPfV7ZNQBYhdN4OWlk3LbgAsFAKrLkRv0PbuFS5iWSOacEyMVmr78Zvay3eox1K8JmziQn4LNL5GI4gk1e29LmoLg7f0ZlVTyLBFtYsucZ2LPtw1s0dk7Q4NMyoh8JoRjGWn4NTI0GEN4fEDlZIQB4cVpNk7yEQG6IaD9RXEnHP7TqwQVF7Pxa_FS1yzQb_j_U0OCBjUVDkk0QiN-Qw3Amab2O31g5qZPxghGHT3O6ri1iyGdAsLCt8YKCbQZEkt4AiiXr-xhtQ"
+    }
+}

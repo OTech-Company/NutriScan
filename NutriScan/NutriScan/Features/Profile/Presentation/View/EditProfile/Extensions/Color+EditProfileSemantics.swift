@@ -14,9 +14,8 @@ extension Color {
 
         static let borderPrimary = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1200)
         static let borderSecondary = Color(light: Color.Gray.gray500, dark: Color.Teal.teal1300)
-
-        static let textPrimary = Color(light: Color.Gray.gray600, dark: Color.Teal.teal200)
-        static let textSecondary = Color(light: Color.Gray.gray600, dark: Color.Teal.teal1300)
+        
+        static let textSecondary = Color(light: Color.Gray.gray600, dark: Color.Teal.teal1200)
         static let textTertiary = Color(light: Color.Gray.gray700, dark: Color.Teal.teal1200)
         static let titlePrimary = Color(light: Color.Gray.gray1300, dark: Color.Teal.teal500)
 
