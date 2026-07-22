@@ -28,7 +28,6 @@
 		20756B5A931C8F1D42FB2495 /* RootCoordinatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF61EFB1E9B5737340EA4E8 /* RootCoordinatorView.swift */; };
 		220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8558D901B3429A7C63DB45C /* CustomAnimatedTabBar.swift */; };
 		2305D7797A178FEA10CFD101 /* ProductAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D4C56E11B541B29F6BE8003 /* ProductAPIService.swift */; };
-		23898615DA617925934CC71F /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE911408318D588FC3FAFA1F /* DIContainer.swift */; };
 		26993C95C78FCE1152995328 /* HomeGreetingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A03FD27820D533F4E0316B /* HomeGreetingSection.swift */; };
 		26E0850BA11B06E6A75AA2C5 /* AnyRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C0D41F2232B55E79E45FE1 /* AnyRoute.swift */; };
 		291DBDE1D916C9441EFA202F /* GenderSelectionCardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2773A1A9257E4010CD6256B /* GenderSelectionCardConstants.swift */; };
@@ -599,7 +598,6 @@
 		FCDA2BDB1D2261F5C835DDB9 /* ValidatedField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatedField.swift; sourceTree = "<group>"; };
 		FD60BB56546246FBDBA25FAD /* NetworkProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProfileRepository.swift; sourceTree = "<group>"; };
 		FDB75FF17A398DC32AA8D5EA /* ProfileSetupRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupRoute.swift; sourceTree = "<group>"; };
-		FE911408318D588FC3FAFA1F /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1904,7 +1902,6 @@
 		C587477207AF141CE28207AA /* DI */ = {
 			isa = PBXGroup;
 			children = (
-				FE911408318D588FC3FAFA1F /* DIContainer.swift */,
 				D40DD1D630102704001CF496 /* AppDependencies.swift */,
 				D40DD1D4301026EB001CF496 /* DIContainer.swift */,
 			);
@@ -2333,7 +2330,6 @@
 				526136CC5A7326A6B5784EC2 /* CustomTextFieldError.swift in Sources */,
 				9E3D57EFDE580D3E9DED13F6 /* CustomTextFieldInput.swift in Sources */,
 				7E9497A88EC033792836AD39 /* CustomTextFieldTitle.swift in Sources */,
-				23898615DA617925934CC71F /* DIContainer.swift in Sources */,
 				E7DD7FF9F564F432819A558E /* EditProfileSemantics.swift in Sources */,
 				2C78ED35300E6D180092E6B2 /* SuccessDialog.swift in Sources */,
 				2C78ED48300E6D180092E6B3 /* ResendVerificationRequestDTO.swift in Sources */,
