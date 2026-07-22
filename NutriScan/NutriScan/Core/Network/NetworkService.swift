@@ -9,20 +9,27 @@ import Foundation
 
 protocol NetworkServiceProtocol {
     func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T
+    func request<T: Decodable>(_ endpoint: APIEndpoint, isRetry: Bool) async throws -> T
+}
+
+extension NetworkServiceProtocol {
+    func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T {
+        try await request(endpoint, isRetry: false)
+    }
 }
 
 struct EmptyResponse: Decodable {}
 
 final class NetworkService: NetworkServiceProtocol {
-    private let session: URLSession
-    private let tokenProvider: TokenProviding?
+    static let shared = NetworkService()
 
-    init(session: URLSession = .shared, tokenProvider: TokenProviding? = nil) {
+    private let session: URLSession
+
+    init(session: URLSession = .shared) {
         self.session = session
-        self.tokenProvider = tokenProvider
     }
 
-    func request<T: Decodable>(_ endpoint: APIEndpoint) async throws -> T {
+    func request<T: Decodable>(_ endpoint: APIEndpoint, isRetry: Bool = false) async throws -> T {
         guard let url = endpoint.fullURL else {
             throw NetworkError.invalidURL
         }
@@ -31,8 +38,13 @@ final class NetworkService: NetworkServiceProtocol {
         request.httpMethod = endpoint.method.rawValue
         request.allHTTPHeaderFields = endpoint.headers
 
-        if endpoint.requiresAuth, let token = await tokenProvider?.accessToken() {
-            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        // Attach Authorization header from Keychain if required
+        if endpoint.requiresAuth,
+           request.value(forHTTPHeaderField: "Authorization") == nil {
+            if let accessToken = try? KeychainManager.shared.get(key: .accessToken),
+               !accessToken.isEmpty {
+                request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+            }
         }
 
         switch endpoint.body {
@@ -64,9 +76,33 @@ final class NetworkService: NetworkServiceProtocol {
                 throw NetworkError.unknown(URLError(.badServerResponse))
             }
 
+            // 401 handling: refresh once, then re-run this ENTIRE function via
+            // recursion (isRetry: true) instead of duplicating the request/decode
+            // logic inline. This guarantees the retried call gets the exact same
+            // status-code handling, decoding, and error mapping as any other request.
+            let isTokenEndpoint = endpoint.path.contains("openid-connect/token")
+
+            if httpResponse.statusCode == 401, !isRetry, !isTokenEndpoint {
+                do {
+                    _ = try await TokenRefresher.shared.refreshToken()
+                } catch {
+                    // Refresh token itself is dead — surface a clear, single error type.
+                    throw NetworkError.unauthorized
+                }
+                return try await self.request(endpoint, isRetry: true)
+            }
+
             guard (200...299).contains(httpResponse.statusCode) else {
-                let apiError = try? JSONDecoder().decode(APIErrorResponse.self, from: data)
-                throw NetworkError.serverError(statusCode: httpResponse.statusCode, apiError: apiError)
+                if let json = String(data: data, encoding: .utf8) {
+                    print("Status:", httpResponse.statusCode)
+                    print("Response:", json)
+                }
+                let decoder = JSONDecoder()
+                if let apiError = try? decoder.decode(APIErrorResponse.self, from: data) {
+                    throw NetworkError.apiError(apiError)
+                }
+
+                throw NetworkError.serverError(statusCode: httpResponse.statusCode)
             }
 
             if httpResponse.statusCode == 204 || data.isEmpty, let empty = EmptyResponse() as? T {
@@ -78,6 +114,10 @@ final class NetworkService: NetworkServiceProtocol {
                 decoder.keyDecodingStrategy = endpoint.keyDecodingStrategy
                 return try decoder.decode(T.self, from: data)
             } catch {
+                if let json = String(data: data, encoding: .utf8) {
+                    print("Decoding failed for \(T.self):", error)
+                    print("Response:", json)
+                }
                 throw NetworkError.decodingFailed
             }
 
@@ -91,8 +131,14 @@ final class NetworkService: NetworkServiceProtocol {
 
 struct AnyEncodable: Encodable {
     private let _encode: (Encoder) throws -> Void
-    init(_ wrapped: some Encodable) { _encode = wrapped.encode }
-    func encode(to encoder: Encoder) throws { try _encode(encoder) }
+
+    init(_ wrapped: some Encodable) {
+        _encode = wrapped.encode
+    }
+
+    func encode(to encoder: Encoder) throws {
+        try _encode(encoder)
+    }
 }
 
 private extension CharacterSet {

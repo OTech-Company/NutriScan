@@ -10,7 +10,6 @@ import SwiftUI
 struct ForgotPasswordView: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel = ForgotPasswordViewModel()
-    @State private var showConfirmation = false
 
     var body: some View {
         ZStack {
@@ -29,7 +28,11 @@ struct ForgotPasswordView: View {
                     
                     // MARK: Action Button
                     ForgotPasswordResetButtonSection(
-                        onReset: handleReset,
+                        onReset: {
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                viewModel.startResetFlow()
+                            }
+                        },
                         isLoading: viewModel.isLoading
                     )
                 }
@@ -39,14 +42,18 @@ struct ForgotPasswordView: View {
             .ignoresSafeArea(edges: .top)
             
             // Custom Confirmation Overlay
-            if showConfirmation {
+            if viewModel.popupState != .hidden {
                 ForgotPasswordConfirmationPopup(
-                    recipient: viewModel.selectedOption.maskedRecipient,
-                    onResend: handleReset,
+                    viewModel: viewModel,
+                    onSendLink: handleReset,
+                    onResendLink: handleReset,
                     onClose: {
                         withAnimation(.easeInOut(duration: 0.25)) {
-                            showConfirmation = false
-                            router.pop() // Pop screen when closed/dismissed as per success flow
+                            let wasSent = viewModel.popupState == .emailSent
+                            viewModel.closePopup()
+                            if wasSent {
+                                router.pop()
+                            }
                         }
                     }
                 )
@@ -59,12 +66,7 @@ struct ForgotPasswordView: View {
 
     private func handleReset() {
         Task {
-            let success = await viewModel.resetPassword()
-            if success {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                    showConfirmation = true
-                }
-            }
+            _ = await viewModel.resetPassword()
         }
     }
 }
