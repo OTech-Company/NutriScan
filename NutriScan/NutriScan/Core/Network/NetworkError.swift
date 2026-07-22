@@ -14,6 +14,7 @@ enum NetworkError: Error, LocalizedError {
     case decodingFailed
     case serverError(statusCode: Int)
     case apiError(APIErrorResponse)
+    case unauthorized
     case unknown(Error)
 
     var errorDescription: String? {
@@ -23,6 +24,7 @@ enum NetworkError: Error, LocalizedError {
         case .decodingFailed:         return "Failed to decode response"
         case .serverError(let code):  return "Server error: \(code)"
         case .apiError(let response): return response.userFriendlyMessage
+        case .unauthorized:           return "Session expired. Please log in again."
         case .unknown(let error):     return error.localizedDescription
         }
     }

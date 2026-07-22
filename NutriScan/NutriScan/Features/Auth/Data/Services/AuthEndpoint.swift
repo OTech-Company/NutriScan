@@ -12,10 +12,11 @@ enum AuthEndpoint: APIEndpoint {
     case resendVerification(ResendVerificationRequestDTO)
     case login(LoginRequestDTO)
     case forgotPassword(ForgotPasswordRequestDTO)
+    case refreshToken(RefreshTokenRequestDTO)
 
     var baseURL: String {
         switch self {
-        case .login:
+        case .login, .refreshToken:
             return AppNetworkConfig.auth.baseURL
         default:
             return AppNetworkConfig.core.baseURL
@@ -28,7 +29,7 @@ enum AuthEndpoint: APIEndpoint {
             return "auth/register"
         case .resendVerification:
             return "auth/resend-verification"
-        case .login:
+        case .login, .refreshToken:
             return "realms/nutriscan/protocol/openid-connect/token"
         case .forgotPassword:
             return "auth/forgot-password"
@@ -37,7 +38,7 @@ enum AuthEndpoint: APIEndpoint {
 
     var method: HTTPMethod {
         switch self {
-        case .register, .resendVerification, .login, .forgotPassword:
+        case .register, .resendVerification, .login, .forgotPassword, .refreshToken:
             return .post
         }
     }
@@ -56,12 +57,14 @@ enum AuthEndpoint: APIEndpoint {
             return dto
         case .forgotPassword(let dto):
             return dto
+        case .refreshToken(let dto):
+            return dto
         }
     }
 
     var headers: [String: String] {
         switch self {
-        case .login:
+        case .login, .refreshToken:
             return ["Content-Type": "application/x-www-form-urlencoded"]
         default:
             return ["Content-Type": "application/json"]
