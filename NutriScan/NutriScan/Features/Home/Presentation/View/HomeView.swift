@@ -25,6 +25,18 @@ struct HomeView: View {
                 HomeReadyToScanSection {
                     // TODO: Navigate to scanner screen
                 }
+                
+                
+                ExploreSectionHeader()
+                
+                VStack {
+                    SettingsNavRow(icon: "home_news", title: "Health News") {
+                        // Add action when news button pressed
+                    }
+                    SettingsNavRow(icon: "home_chat_with_AI", title: "Chat with AI") {
+                        // Add action when AI button pressed
+                    }
+                }
 
                 // MARK: Recent History
                 RecentHistoryView(
