@@ -7,6 +7,7 @@
 import Foundation
 import Security
 
+
 // To safely store the access_token and refresh_token
 final class KeychainManager {
     static let shared = KeychainManager()
@@ -19,11 +20,11 @@ final class KeychainManager {
         case itemNotFound
     }
 
-    func save(key: String, value: String) throws {
+    func save(key: KeychainKey, value: String) throws {
         let data = Data(value.utf8)
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key.rawValue,
             kSecValueData as String: data,
         ]
 
@@ -36,10 +37,10 @@ final class KeychainManager {
         }
     }
 
-    func get(key: String) throws -> String {
+    func get(key: KeychainKey) throws -> String {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key.rawValue,
             kSecReturnData as String: kCFBooleanTrue!,
             kSecMatchLimit as String: kSecMatchLimitOne,
         ]
@@ -54,10 +55,10 @@ final class KeychainManager {
         return String(decoding: data, as: UTF8.self)
     }
 
-    func delete(key: String) throws {
+    func delete(key: KeychainKey) throws {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
+            kSecAttrAccount as String: key.rawValue,
         ]
 
         let status = SecItemDelete(query as CFDictionary)

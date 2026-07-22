@@ -9,19 +9,20 @@
 import Foundation
 
 enum AppNetworkConfig {
-    case core // The main url
+    case core
     case auth
     case openFoodFacts
     
     var baseURL: String {
         switch self {
         case .core:
-            return "https://nutriscan.dev" // the test backend url
+            // Profile (and other core) endpoints include `/api/v1/...` in their path.
+            return "https://nutriscan.dev"
         case .auth:
-            return "https://auth.nutriscan.dev" // used with Login, refresh, logout, and the Google flow
+            // Auth paths have no leading slash (e.g. `realms/...`), so keep the trailing `/`.
+            return "https://auth.nutriscan.dev/"
         case .openFoodFacts:
             return "https://world.openfoodfacts.org/api/v2/product"
         }
     }
 }
-

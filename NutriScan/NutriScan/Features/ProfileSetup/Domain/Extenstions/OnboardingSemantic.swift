@@ -59,10 +59,7 @@ extension Color {
             dark: Color.Teal.teal1500
         )
 
-        static let primaryText = Color(
-            light: Color.Gray.gray1600,
-            dark: .white
-        )
+        static let primaryText = Color.Teal.teal1600
 
         static let secondaryText = Color(
             light: Color.Gray.gray700,

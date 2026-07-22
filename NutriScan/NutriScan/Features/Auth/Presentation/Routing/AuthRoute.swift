@@ -11,6 +11,7 @@ import SwiftUI
 enum AuthRoute: Route {
     case register
     case forgotPassword
+    case verificationPending(email: String)
 
     @ViewBuilder
     var destination: some View {
@@ -19,6 +20,8 @@ enum AuthRoute: Route {
             RegisterView()
         case .forgotPassword:
             ForgotPasswordView()
+        case .verificationPending(let email):
+            VerificationPendingView(email: email)
         }
     }
 }
