@@ -11,6 +11,7 @@ extension Color {
     struct EditProfileSemantics {
         static let backgroundPrimary = Color(light: .white, dark: Color.Teal.teal1400)
         static let surfacePrimary = Color(light: .white, dark: Color.Teal.teal1400)
+        static let editableSurface = Color(light: Color.Gray.gray100, dark: Color.Teal.teal1400)
 
         static let borderPrimary = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1200)
         static let borderSecondary = Color(light: Color.Gray.gray500, dark: Color.Teal.teal1300)
