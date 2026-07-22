@@ -8,11 +8,20 @@
 import Foundation
 import Observation
 
+enum ForgotPasswordPopupState {
+    case hidden
+    case enterEmail
+    case emailSent
+}
+
 @Observable
 final class ForgotPasswordViewModel {
     
-    // MARK: - Fields
-    var email = ValidatedField()
+    // MARK: - Selected Option
+    var selectedOption: PasswordResetOption = .email
+    
+    // MARK: - Popup State
+    var popupState: ForgotPasswordPopupState = .hidden
     
     // MARK: - Fields
     var email = ValidatedField()
@@ -25,6 +34,15 @@ final class ForgotPasswordViewModel {
     
     init(forgotPasswordUseCase: ForgotPasswordUseCase = ForgotPasswordUseCase()) {
         self.forgotPasswordUseCase = forgotPasswordUseCase
+    }
+    
+    // MARK: - Popup Flow Actions
+    func startResetFlow() {
+        popupState = .enterEmail
+    }
+    
+    func closePopup() {
+        popupState = .hidden
     }
     
     // MARK: - Validation
@@ -44,6 +62,7 @@ final class ForgotPasswordViewModel {
         do {
             let result = try await forgotPasswordUseCase.execute(email: email.value)
             successMessage = result.message
+            popupState = .emailSent
             return true
         } catch {
             email.state = .error

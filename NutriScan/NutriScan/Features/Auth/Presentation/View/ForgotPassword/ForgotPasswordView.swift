@@ -10,7 +10,6 @@ import SwiftUI
 struct ForgotPasswordView: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel = ForgotPasswordViewModel()
-    @State private var showConfirmation = false
 
     var body: some View {
         ZStack {
@@ -21,26 +20,19 @@ struct ForgotPasswordView: View {
                         router.pop()
                     })
                     
-                    // MARK: Email Input
-                    CustomTextField(
-                        title: "Email Address",
-                        leadingIcon: "envelope",
-                        errorMessage: viewModel.email.error,
-                        placeHolder: "elementary221b@gmail.com",
-                        textFieldValue: $viewModel.email.value,
-                        state: $viewModel.email.state
-                    )
-                    .padding(.horizontal, 20)
-                    .padding(.top, 32)
-                    .onChange(of: viewModel.email.value) {
-                        viewModel.validateEmail()
-                    }
+                    // MARK: Reset Options
+                    ForgotPasswordOptionsSection(viewModel: viewModel)
+                        .padding(.top, 32)
                     
                     Spacer(minLength: 40)
                     
                     // MARK: Action Button
                     ForgotPasswordResetButtonSection(
-                        onReset: handleReset,
+                        onReset: {
+                            withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                viewModel.startResetFlow()
+                            }
+                        },
                         isLoading: viewModel.isLoading
                     )
                 }
@@ -50,14 +42,18 @@ struct ForgotPasswordView: View {
             .ignoresSafeArea(edges: .top)
             
             // Custom Confirmation Overlay
-            if showConfirmation {
+            if viewModel.popupState != .hidden {
                 ForgotPasswordConfirmationPopup(
-                    recipient: viewModel.email.value,
-                    onResend: handleReset,
+                    viewModel: viewModel,
+                    onSendLink: handleReset,
+                    onResendLink: handleReset,
                     onClose: {
                         withAnimation(.easeInOut(duration: 0.25)) {
-                            showConfirmation = false
-                            router.pop()
+                            let wasSent = viewModel.popupState == .emailSent
+                            viewModel.closePopup()
+                            if wasSent {
+                                router.pop()
+                            }
                         }
                     }
                 )
@@ -70,12 +66,7 @@ struct ForgotPasswordView: View {
 
     private func handleReset() {
         Task {
-            let success = await viewModel.resetPassword()
-            if success {
-                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                    showConfirmation = true
-                }
-            }
+            _ = await viewModel.resetPassword()
         }
     }
 }
