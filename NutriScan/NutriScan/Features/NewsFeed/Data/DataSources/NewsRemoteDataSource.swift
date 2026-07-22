@@ -14,23 +14,17 @@ protocol NewsRemoteDataSourceProtocol {
 }
 
 final class NewsRemoteDataSource: NewsRemoteDataSourceProtocol {
-    private let apiClient: APIClientProtocol
+    private let networkService: NetworkServiceProtocol
 
-    init(apiClient: APIClientProtocol) {
-        self.apiClient = apiClient
+    init(networkService: NetworkServiceProtocol = NetworkService()) {
+        self.networkService = networkService
     }
 
     func fetchTopHeadlines(category: String) async throws -> NewsResponseDTO {
-        try await apiClient.request(
-            NewsEndpoint.topHeadlines(category: category),
-            as: NewsResponseDTO.self
-        )
+        try await networkService.request(NewsEndpoint.topHeadlines(category: category))
     }
 
     func fetchEverything(query: String) async throws -> NewsResponseDTO {
-        try await apiClient.request(
-            NewsEndpoint.everything(query: query),
-            as: NewsResponseDTO.self
-        )
+        try await networkService.request(NewsEndpoint.everything(query: query))
     }
 }

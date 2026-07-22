@@ -1,16 +1,16 @@
 //
 //  NewsEndpoint.swift
 //  NewsFeed (Feature)
-//
-//  Maps 1:1 to the two requests defined in the "NutriScan News" Postman
-//  collection: `/v2/everything` (search) and `/v2/top-headlines` (category).
-//
 
 import Foundation
 
-enum NewsEndpoint: Endpoint {
+enum NewsEndpoint: APIEndpoint {
     case topHeadlines(category: String)
     case everything(query: String)
+
+    var baseURL: String {
+        NewsAPIConfig.baseURL
+    }
 
     var path: String {
         switch self {
@@ -21,18 +21,26 @@ enum NewsEndpoint: Endpoint {
         }
     }
 
-    var queryItems: [URLQueryItem] {
-        var items: [URLQueryItem] = [
-            URLQueryItem(name: "apiKey", value: NewsAPIConfig.apiKey)
+    var method: HTTPMethod {
+        .get
+    }
+
+    var queryParameters: [String: String]? {
+        var params = [
+            "apiKey": NewsAPIConfig.apiKey
         ]
 
         switch self {
         case .topHeadlines(let category):
-            items.append(URLQueryItem(name: "category", value: category))
+            params["category"] = category
         case .everything(let query):
-            items.append(URLQueryItem(name: "q", value: query))
+            params["q"] = query
         }
 
-        return items
+        return params
+    }
+
+    var requiresAuth: Bool {
+        false // Set to false because NewsAPI handles auth via the `apiKey` query parameter
     }
 }

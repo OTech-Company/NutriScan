@@ -16,8 +16,8 @@ struct NewsFeedView: View {
         if let viewModel {
             _viewModel = StateObject(wrappedValue: viewModel)
         } else {
-            let apiClient: APIClientProtocol = APIClient()
-            let remoteDataSource: NewsRemoteDataSourceProtocol = NewsRemoteDataSource(apiClient: apiClient)
+            let networkService: NetworkServiceProtocol = NetworkService()
+            let remoteDataSource: NewsRemoteDataSourceProtocol = NewsRemoteDataSource(networkService: networkService)
             let repository: NewsRepositoryProtocol = NewsRepository(remoteDataSource: remoteDataSource)
 
             let defaultViewModel = NewsFeedViewModel(
