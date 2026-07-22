@@ -9,10 +9,10 @@
 
 import SwiftUI
 
-struct NewsFeedView: View {
-    @StateObject private var viewModel: NewsFeedViewModel
+struct NewsView: View {
+    @StateObject private var viewModel: NewsViewModel
 
-    init(viewModel: NewsFeedViewModel? = nil) {
+    init(viewModel: NewsViewModel? = nil) {
         if let viewModel {
             _viewModel = StateObject(wrappedValue: viewModel)
         } else {
@@ -20,7 +20,7 @@ struct NewsFeedView: View {
             let remoteDataSource: NewsRemoteDataSourceProtocol = NewsRemoteDataSource(networkService: networkService)
             let repository: NewsRepositoryProtocol = NewsRepository(remoteDataSource: remoteDataSource)
 
-            let defaultViewModel = NewsFeedViewModel(
+            let defaultViewModel = NewsViewModel(
                 fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCase(repository: repository),
                 searchArticlesUseCase: SearchArticlesUseCase(repository: repository)
             )
@@ -119,5 +119,5 @@ struct NewsFeedView: View {
 }
 
 #Preview {
-    NewsFeedView()
+    NewsView()
 }

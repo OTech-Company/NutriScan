@@ -22,8 +22,6 @@ struct FetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol {
 
     func execute(category: String) async throws -> [Article] {
         let articles = try await repository.fetchTopHeadlines(category: category)
-        // Business rule: de-duplicate by title since the feed source
-        // sometimes republishes the same story under slightly different URLs.
         return articles.deduplicatedByTitle()
     }
 }

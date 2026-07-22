@@ -9,7 +9,7 @@
 import Foundation
 
 @MainActor
-final class NewsFeedViewModel: ObservableObject {
+final class NewsViewModel: ObservableObject {
 
     enum ViewState: Equatable {
         case idle
