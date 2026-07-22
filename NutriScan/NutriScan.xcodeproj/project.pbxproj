@@ -60,6 +60,9 @@
 		2C78F006300E6D180092E6B3 /* ForgotPasswordResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */; };
 		2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */; };
 		2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */; };
+		2C78F012300E6D180092E6B3 /* RefreshTokenRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F011300E6D180092E6B3 /* RefreshTokenRequestDTO.swift */; };
+		2C78F014300E6D180092E6B3 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F013300E6D180092E6B3 /* Notification+Extensions.swift */; };
+		2C78F016300E6D180092E6B3 /* TokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F015300E6D180092E6B3 /* TokenRefresher.swift */; };
 		2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECFC300E6C7E0092E6B2 /* AuthDivider.swift */; };
 		2C78ED17300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECED300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift */; };
 		2C78ED18300E6C7E0092E6B2 /* RegisterHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ED04300E6C7E0092E6B2 /* RegisterHeaderSection.swift */; };
@@ -288,6 +291,9 @@
 		2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordResult.swift; sourceTree = "<group>"; };
 		2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForgotPasswordResponseDTO+Domain.swift"; sourceTree = "<group>"; };
 		2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordUseCase.swift; sourceTree = "<group>"; };
+		2C78F011300E6D180092E6B3 /* RefreshTokenRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenRequestDTO.swift; sourceTree = "<group>"; };
+		2C78F013300E6D180092E6B3 /* Notification+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extensions.swift"; sourceTree = "<group>"; };
+		2C78F015300E6D180092E6B3 /* TokenRefresher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefresher.swift; sourceTree = "<group>"; };
 		2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResponseDTO.swift; sourceTree = "<group>"; };
 		2C78ECD5300E6C700092E6B2 /* RegisterRequest+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterRequest+DTO.swift"; sourceTree = "<group>"; };
 		2C78ECD6300E6C700092E6B2 /* RegisterResponseDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterResponseDTO+Domain.swift"; sourceTree = "<group>"; };
@@ -679,6 +685,7 @@
 		2C78ECD4300E6C700092E6B2 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F011300E6D180092E6B3 /* RefreshTokenRequestDTO.swift */,
 				2C78F001300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift */,
 				2C78F003300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift */,
 				2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */,
@@ -934,6 +941,7 @@
 		3661F24417E53BBF138D32A9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F015300E6D180092E6B3 /* TokenRefresher.swift */,
 				2C78ED2A300E6CC50092E6B2 /* APIEndpoint.swift */,
 				2C78ED2B300E6CC50092E6B2 /* HTTPMethod.swift */,
 				2C78ED2C300E6CC50092E6B2 /* NetworkError.swift */,
@@ -1059,6 +1067,7 @@
 		5CED900565685504B6F05E75 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F013300E6D180092E6B3 /* Notification+Extensions.swift */,
 				E9E7AFEE788A78ABBC1820F5 /* AppAuthBackgroundModifier.swift */,
 				3DDF6D11618FF7B0E6E8422E /* Color+Dynamic.swift */,
 				D17F082499900C257CEE1D16 /* Colors+Extension.swift */,
@@ -1968,6 +1977,9 @@
 				2C78F006300E6D180092E6B3 /* ForgotPasswordResult.swift in Sources */,
 				2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */,
 				2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */,
+				2C78F012300E6D180092E6B3 /* RefreshTokenRequestDTO.swift in Sources */,
+				2C78F014300E6D180092E6B3 /* Notification+Extensions.swift in Sources */,
+				2C78F016300E6D180092E6B3 /* TokenRefresher.swift in Sources */,
 				2C78ED15300E6C7E0092E6B2 /* ForgotPasswordResetButtonSection.swift in Sources */,
 				2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */,
 				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
