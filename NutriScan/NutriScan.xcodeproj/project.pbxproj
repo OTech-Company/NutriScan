@@ -124,6 +124,7 @@
 		8CD9D0857AD632D1C2677DE7 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */; };
 		8D815A3F5043EB47D5BD72CB /* AuthDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C964278B9DAFBBA013037F /* AuthDivider.swift */; };
 		8DB5B30032700DF6C7BBC9B2 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F22888476A92466A8F7007 /* RegisterViewModel.swift */; };
+		8F2EE806300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2EE805300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift */; };
 		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
 		8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */; };
@@ -349,6 +350,7 @@
 		8C8BF72F529571DA910FBB27 /* ScanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlowView.swift; sourceTree = "<group>"; };
 		8C9FCB95B1BB5CFB86039766 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		8E2478F7BB592188D447103B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8F2EE805300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HealtProfileSetupSemantic.swift"; sourceTree = "<group>"; };
 		8FA3439F300EB7C20044192A /* ProductEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEndpoint.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
 		8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 		0629C8EBE0FF74EC7568AFFF /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				8F2EE804300FEE1E00BBC8EE /* Extensions */,
 				44C04495F43BC9467B443856 /* Routing */,
 				9A5221F928441474D8ED432D /* View */,
 				8747EE831E1ECCA3F882166E /* ViewModel */,
@@ -1247,6 +1250,14 @@
 			path = Repositories;
 			sourceTree = "<group>";
 		};
+		8F2EE804300FEE1E00BBC8EE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8F2EE805300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		8F98B9175D6145087D751784 /* Security */ = {
 			isa = PBXGroup;
 			children = (
@@ -1987,6 +1998,7 @@
 				A35257A4A76A3755EEE65E16 /* SettingsLogoutButton.swift in Sources */,
 				80E3E81EE7F77DB2BEF484EA /* SettingsNavRow.swift in Sources */,
 				A3139845EAAF0AA019A8AAD3 /* SettingsOptions.swift in Sources */,
+				8F2EE806300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift in Sources */,
 				DF8C799C34206520431D05F1 /* SettingsSegmentRow.swift in Sources */,
 				1D6E84E32F4668FB17E8512E /* SettingsView.swift in Sources */,
 				7656C044D75870646BAEFF96 /* SettingsViewModel.swift in Sources */,
