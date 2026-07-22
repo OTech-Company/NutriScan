@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C78F002300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F001300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift */; };
+		2C78F004300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F003300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift */; };
+		2C78F006300E6D180092E6B3 /* ForgotPasswordResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */; };
+		2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */; };
+		2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */; };
 		03FB29FBFAC4BC298B1AC07B /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22164FCF23242F77F47B8A13 /* AppTab.swift */; };
 		061C18E236BF762D7F25AC1D /* LexendDeca-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE460834D961C79AD9C40263 /* LexendDeca-Light.ttf */; };
 		0B67C8DB9699D804AF73B7B1 /* Color+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF6D11618FF7B0E6E8422E /* Color+Dynamic.swift */; };
@@ -48,12 +53,18 @@
 		2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECE8300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift */; };
 		2C78ED14300E6C7E0092E6B2 /* ForgotPasswordHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF5300E6C7E0092E6B2 /* ForgotPasswordHeaderSection.swift */; };
 		2C78ED15300E6C7E0092E6B2 /* ForgotPasswordResetButtonSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF7300E6C7E0092E6B2 /* ForgotPasswordResetButtonSection.swift */; };
+		2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF6300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift */; };
+		2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF8300E6C7E0092E6B2 /* PasswordResetOption.swift */; };
+		2C78F002300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F001300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift */; };
+		2C78F004300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F003300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift */; };
+		2C78F006300E6D180092E6B3 /* ForgotPasswordResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */; };
+		2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */; };
+		2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */; };
 		2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECFC300E6C7E0092E6B2 /* AuthDivider.swift */; };
 		2C78ED17300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECED300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift */; };
 		2C78ED18300E6C7E0092E6B2 /* RegisterHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ED04300E6C7E0092E6B2 /* RegisterHeaderSection.swift */; };
 		2C78ED19300E6C7E0092E6B2 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ED07300E6C7E0092E6B2 /* RegisterView.swift */; };
 		2C78ED1A300E6C7E0092E6B2 /* SocialLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECFF300E6C7E0092E6B2 /* SocialLoginButton.swift */; };
-		2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF6300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift */; };
 		2C78ED1C300E6C7E0092E6B2 /* Color+LoginSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECEE300E6C7E0092E6B2 /* Color+LoginSemantic.swift */; };
 		2C78ED1D300E6C7E0092E6B2 /* RegisterSignUpButtonSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ED05300E6C7E0092E6B2 /* RegisterSignUpButtonSection.swift */; };
 		2C78ED1E300E6C7E0092E6B2 /* RegisterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECEA300E6C7E0092E6B2 /* RegisterUseCase.swift */; };
@@ -62,7 +73,6 @@
 		2C78ED21300E6C7E0092E6B2 /* AuthRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF2300E6C7E0092E6B2 /* AuthRoute.swift */; };
 		2C78ED22300E6C7E0092E6B2 /* AuthHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECFD300E6C7E0092E6B2 /* AuthHeaderView.swift */; };
 		2C78ED23300E6C7E0092E6B2 /* Color+RegisterSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECEF300E6C7E0092E6B2 /* Color+RegisterSemantic.swift */; };
-		2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECF8300E6C7E0092E6B2 /* PasswordResetOption.swift */; };
 		2C78ED25300E6C7E0092E6B2 /* LoginFormFieldsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECFE300E6C7E0092E6B2 /* LoginFormFieldsSection.swift */; };
 		2C78ED26300E6C7E0092E6B2 /* RegisterFormFieldsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ED03300E6C7E0092E6B2 /* RegisterFormFieldsSection.swift */; };
 		2C78ED27300E6C7E0092E6B2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ED0B300E6C7E0092E6B2 /* LoginViewModel.swift */; };
@@ -241,6 +251,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C78F001300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRequestDTO.swift; sourceTree = "<group>"; };
+		2C78F003300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordResponseDTO.swift; sourceTree = "<group>"; };
+		2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordResult.swift; sourceTree = "<group>"; };
+		2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForgotPasswordResponseDTO+Domain.swift"; sourceTree = "<group>"; };
+		2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordUseCase.swift; sourceTree = "<group>"; };
 		01EB74CA07FB9BBCE08073B1 /* CornerBracketsShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBracketsShape.swift; sourceTree = "<group>"; };
 		027B3159563301F48A196427 /* TabIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabIconButton.swift; sourceTree = "<group>"; };
 		02F36DFF397A26263538A993 /* NutriScanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanApp.swift; sourceTree = "<group>"; };
@@ -268,6 +283,11 @@
 		2714BF2FC328678F2D078A5D /* HeightSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightSelectionView.swift; sourceTree = "<group>"; };
 		2C753182300F888C00DAC0BA /* KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainKey.swift; sourceTree = "<group>"; };
 		2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequestDTO.swift; sourceTree = "<group>"; };
+		2C78F001300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordRequestDTO.swift; sourceTree = "<group>"; };
+		2C78F003300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordResponseDTO.swift; sourceTree = "<group>"; };
+		2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordResult.swift; sourceTree = "<group>"; };
+		2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForgotPasswordResponseDTO+Domain.swift"; sourceTree = "<group>"; };
+		2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordUseCase.swift; sourceTree = "<group>"; };
 		2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResponseDTO.swift; sourceTree = "<group>"; };
 		2C78ECD5300E6C700092E6B2 /* RegisterRequest+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterRequest+DTO.swift"; sourceTree = "<group>"; };
 		2C78ECD6300E6C700092E6B2 /* RegisterResponseDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterResponseDTO+Domain.swift"; sourceTree = "<group>"; };
@@ -659,6 +679,8 @@
 		2C78ECD4300E6C700092E6B2 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F001300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift */,
+				2C78F003300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift */,
 				2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */,
 				2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */,
 				2C78ED40300E6D180092E6B3 /* ResendVerificationRequestDTO.swift */,
@@ -672,6 +694,7 @@
 		2C78ECD7300E6C700092E6B2 /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F007300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift */,
 				2C78ECD5300E6C700092E6B2 /* RegisterRequest+DTO.swift */,
 				2C78ECD6300E6C700092E6B2 /* RegisterResponseDTO+Domain.swift */,
 				2C78ED5D300E6D180092E6B3 /* ResendVerificationResponseDTO+Domain.swift */,
@@ -711,6 +734,7 @@
 		2C78ECE7300E6C7E0092E6B2 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F005300E6D180092E6B3 /* ForgotPasswordResult.swift */,
 				2C78ECE5300E6C7E0092E6B2 /* RegisterRequest.swift */,
 				2C78ECE6300E6C7E0092E6B2 /* RegisterResult.swift */,
 				2C78ED5B300E6D180092E6B3 /* ResendVerificationResult.swift */,
@@ -731,6 +755,7 @@
 		2C78ECEB300E6C7E0092E6B2 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				2C78F009300E6D180092E6B3 /* ForgotPasswordUseCase.swift */,
 				2C78ECEA300E6C7E0092E6B2 /* RegisterUseCase.swift */,
 				2C78ED41300E6D180092E6B3 /* ResendVerificationUseCase.swift */,
 				2C78ED94300E6D180092E6B3 /* LoginUseCase.swift */,
@@ -1850,6 +1875,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C78F002300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift in Sources */,
+				2C78F004300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift in Sources */,
+				2C78F006300E6D180092E6B3 /* ForgotPasswordResult.swift in Sources */,
+				2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */,
+				2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */,
 				26E0850BA11B06E6A75AA2C5 /* AnyRoute.swift in Sources */,
 				8662866AF69309468A360A6B /* AppAuthBackgroundModifier.swift in Sources */,
 				AFAB7C51A451F18FC9FED121 /* AppFlow.swift in Sources */,
@@ -1933,13 +1963,19 @@
 				2C78ED12300E6C7E0092E6B2 /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */,
 				2C78ED14300E6C7E0092E6B2 /* ForgotPasswordHeaderSection.swift in Sources */,
+				2C78F002300E6D180092E6B3 /* ForgotPasswordRequestDTO.swift in Sources */,
+				2C78F004300E6D180092E6B3 /* ForgotPasswordResponseDTO.swift in Sources */,
+				2C78F006300E6D180092E6B3 /* ForgotPasswordResult.swift in Sources */,
+				2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */,
+				2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */,
 				2C78ED15300E6C7E0092E6B2 /* ForgotPasswordResetButtonSection.swift in Sources */,
+				2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */,
+				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
 				2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */,
 				2C78ED17300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift in Sources */,
 				2C78ED18300E6C7E0092E6B2 /* RegisterHeaderSection.swift in Sources */,
 				2C78ED19300E6C7E0092E6B2 /* RegisterView.swift in Sources */,
 				2C78ED1A300E6C7E0092E6B2 /* SocialLoginButton.swift in Sources */,
-				2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */,
 				2C78ED1C300E6C7E0092E6B2 /* Color+LoginSemantic.swift in Sources */,
 				2C78ED1D300E6C7E0092E6B2 /* RegisterSignUpButtonSection.swift in Sources */,
 				2C78ED1E300E6C7E0092E6B2 /* RegisterUseCase.swift in Sources */,
@@ -1955,7 +1991,6 @@
 				2C78ED91300E6D180092E6B3 /* LoginResult.swift in Sources */,
 				2C78ED93300E6D180092E6B3 /* LoginResponseDTO+Domain.swift in Sources */,
 				2C78ED95300E6D180092E6B3 /* LoginUseCase.swift in Sources */,
-				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
 				2C78ED25300E6C7E0092E6B2 /* LoginFormFieldsSection.swift in Sources */,
 				2C78ED26300E6C7E0092E6B2 /* RegisterFormFieldsSection.swift in Sources */,
 				2C78ED27300E6C7E0092E6B2 /* LoginViewModel.swift in Sources */,

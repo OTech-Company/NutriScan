@@ -11,6 +11,7 @@ enum AuthEndpoint: APIEndpoint {
     case register(RegisterRequestDTO)
     case resendVerification(ResendVerificationRequestDTO)
     case login(LoginRequestDTO)
+    case forgotPassword(ForgotPasswordRequestDTO)
 
     var baseURL: String {
         switch self {
@@ -29,12 +30,14 @@ enum AuthEndpoint: APIEndpoint {
             return "auth/resend-verification"
         case .login:
             return "realms/nutriscan/protocol/openid-connect/token"
+        case .forgotPassword:
+            return "auth/forgot-password"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .register, .resendVerification, .login:
+        case .register, .resendVerification, .login, .forgotPassword:
             return .post
         }
     }
@@ -50,6 +53,8 @@ enum AuthEndpoint: APIEndpoint {
         case .resendVerification(let dto):
             return dto
         case .login(let dto):
+            return dto
+        case .forgotPassword(let dto):
             return dto
         }
     }

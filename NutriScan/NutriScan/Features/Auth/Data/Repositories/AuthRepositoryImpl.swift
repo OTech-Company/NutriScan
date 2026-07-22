@@ -31,4 +31,10 @@ final class AuthRepositoryImpl: AuthRepositoryProtocol {
         let response = try await remoteService.login(dto)
         return response.toDomain()
     }
+
+    func forgotPassword(email: String) async throws -> ForgotPasswordResult {
+        let dto = ForgotPasswordRequestDTO(email: email)
+        let response = try await remoteService.forgotPassword(dto)
+        return response.toDomain()
+    }
 }

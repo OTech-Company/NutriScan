@@ -14,7 +14,7 @@ struct ForgotPasswordResetButtonSection: View {
     var body: some View {
         VStack {
             CustomPuffedButton(
-                title: "Reset Password",
+                title: "Continue",
                 action: onReset,
                 isLoading: isLoading
             )
