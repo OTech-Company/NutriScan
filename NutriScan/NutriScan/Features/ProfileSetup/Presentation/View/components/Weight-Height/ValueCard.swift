@@ -44,7 +44,7 @@ struct ValueCard: View {
         if offset == 0 {
 
             Text("\(number)")
-                .font(.system(size: 34, weight: .bold))
+                .font(Font.AppFont.title1)
                 .foregroundStyle(Color.ProfileSetupSemantic.primaryText)
                 .frame(
                     width: 120,
@@ -79,7 +79,7 @@ struct ValueCard: View {
             case .plain:
 
                 Text("\(number)")
-                    .font(.system(size: 40, weight: .semibold))
+                    .font(Font.AppFont.title3)
                     .foregroundStyle(Color.ProfileSetupSemantic.secondaryText)
                     .frame(width: 72)
                     .opacity(opacity(for: offset))
