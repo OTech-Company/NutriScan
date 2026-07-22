@@ -578,7 +578,6 @@
 		D48A2439301155DA0004D95E /* GetProfileDataUseCaseProtocol .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GetProfileDataUseCaseProtocol .swift"; sourceTree = "<group>"; };
 		D48A243B301155F60004D95E /* GetProfileDataUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProfileDataUseCase.swift; sourceTree = "<group>"; };
 		D48A243D3011560F0004D95E /* UpdateProfileUseCaseProtocol .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpdateProfileUseCaseProtocol .swift"; sourceTree = "<group>"; };
-		D48A243F301156240004D95E /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
 		D48A2440301158D80004D95E /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		D48A2442301158FC0004D95E /* CoreAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAssembly.swift; sourceTree = "<group>"; };
 		D48A24453011595C0004D95E /* ProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAssembly.swift; sourceTree = "<group>"; };
@@ -1646,7 +1645,6 @@
 		8AD06DE6859F0EED750F93AF /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
-				D48A243F301156240004D95E /* Untitled.swift */,
 				D48A243D3011560F0004D95E /* UpdateProfileUseCaseProtocol .swift */,
 				D48A243B301155F60004D95E /* GetProfileDataUseCase.swift */,
 				D48A2439301155DA0004D95E /* GetProfileDataUseCaseProtocol .swift */,
