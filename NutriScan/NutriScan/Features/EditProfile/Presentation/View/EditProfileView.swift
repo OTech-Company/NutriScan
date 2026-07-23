@@ -131,12 +131,12 @@ struct EditProfileView: View {
                             title: isEditingMode ? "Save" : "Edit",
                             action: {
                                 if isEditingMode {
-                                    Task {
-                                        await viewModel.validateAndSave()
-                                        if viewModel.errorMessage == nil {
-                                            withAnimation {
-                                                isEditingMode = false
-                                            }
+                                    if viewModel.validateFields() {
+                                        if viewModel.hasUnsavedChanges {
+                                            activeAlert = .warning
+                                        } else {
+                                            // Exit edit mode smoothly if no data changed
+                                            withAnimation { isEditingMode = false }
                                         }
                                     }
                                 } else {
@@ -165,34 +165,54 @@ struct EditProfileView: View {
                 activeAlert = .error
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
-                    type: .error,
-                    title: "Action Failed",
-                    description: alertMessage,
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Red.red500
-                )
-            default:
-                return CustomAlertConfig(type: .warning, title: "", description: "")
+        .customAlert(
+            activeAlert: $activeAlert,
+            config: { alert in
+                switch alert {
+                case .error:
+                    return CustomAlertConfig(
+                        type: .error,
+                        title: "Action Failed",
+                        description: alertMessage,
+                        primaryButtonTitle: "OK",
+                        primaryButtonColor: Color.Red.red500
+                    )
+                case .warning:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Save Changes",
+                        description: "You have modified your profile data. Are you sure you want to save these changes?",
+                        primaryButtonTitle: "Save",
+                        primaryButtonColor: Color.Teal.teal1000,
+                        secondaryButtonTitle: "Discard"
+                    )
+                default:
+                    return CustomAlertConfig(type: .warning, title: "", description: "")
+                }
+            },
+            primaryAction: { alert in
+                switch alert {
+                case .error:
+                    viewModel.errorMessage = nil
+                case .warning:
+                    Task {
+                        await viewModel.performSave()
+                        if viewModel.errorMessage == nil {
+                            withAnimation { isEditingMode = false }
+                        }
+                    }
+                default:
+                    break
+                }
+            },
+            secondaryAction: { alert in
+                if alert == .warning {
+                    viewModel.revertChanges()
+                    withAnimation { isEditingMode = false }
+                }
             }
-        }, primaryAction: { _ in
-            viewModel.errorMessage = nil
-        })
+        )
         .navigationBarHidden(true)
-        // MARK: TODO: Hide the tab bar when this view appears, and show it again when it disappears.
-//        .onAppear {
-//            withAnimation(.easeInOut(duration: 0.3)) {
-//                tabBarVisibility.isHidden = true
-//            }
-//        }
-//        .onDisappear {
-//            withAnimation(.easeInOut(duration: 0.3)) {
-//                tabBarVisibility.isHidden = false
-//            }
-//        }
         .task {
             isFetchingProfile = true
             await viewModel.loadInitialData()
