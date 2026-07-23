@@ -155,6 +155,28 @@
 		6F1A8E933012AAE100E1ACC5 /* ArticleMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E573012AAE100E1ACC5 /* ArticleMapper.swift */; };
 		6F1A8E943012AAE100E1ACC5 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E693012AAE100E1ACC5 /* Date+Formatting.swift */; };
 		6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E6F3012AAE100E1ACC5 /* NewsFeedTypography.swift */; };
+		6F1A8EC03012BE2100E1ACC5 /* RAGChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EBD3012BE2100E1ACC5 /* RAGChatViewModel.swift */; };
+		6F1A8EC13012BE2100E1ACC5 /* RAGRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA93012BE2100E1ACC5 /* RAGRepository.swift */; };
+		6F1A8EC23012BE2100E1ACC5 /* RAGAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E9F3012BE2100E1ACC5 /* RAGAPIService.swift */; };
+		6F1A8EC33012BE2100E1ACC5 /* RAGSourceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB83012BE2100E1ACC5 /* RAGSourceCardView.swift */; };
+		6F1A8EC43012BE2100E1ACC5 /* RAGRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA23012BE2100E1ACC5 /* RAGRepositoryImpl.swift */; };
+		6F1A8EC53012BE2100E1ACC5 /* RAGQueryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E9C3012BE2100E1ACC5 /* RAGQueryDTO.swift */; };
+		6F1A8EC63012BE2100E1ACC5 /* RAGResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E9D3012BE2100E1ACC5 /* RAGResponseDTO.swift */; };
+		6F1A8EC73012BE2100E1ACC5 /* RAGLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB63012BE2100E1ACC5 /* RAGLoadingIndicator.swift */; };
+		6F1A8EC83012BE2100E1ACC5 /* RAGSourcesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB93012BE2100E1ACC5 /* RAGSourcesSection.swift */; };
+		6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB43012BE2100E1ACC5 /* RAGChatInputView.swift */; };
+		6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB73012BE2100E1ACC5 /* RAGMessageBubbleView.swift */; };
+		6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EBB3012BE2100E1ACC5 /* RAGChatView.swift */; };
+		6F1A8ECC3012BE2100E1ACC5 /* RAGEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA03012BE2100E1ACC5 /* RAGEndpoint.swift */; };
+		6F1A8ECD3012BE2100E1ACC5 /* RAGRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB13012BE2100E1ACC5 /* RAGRoute.swift */; };
+		6F1A8ECE3012BE2100E1ACC5 /* RAGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */; };
+		6F1A8ECF3012BE2100E1ACC5 /* RAGFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB03012BE2100E1ACC5 /* RAGFlowView.swift */; };
+		6F1A8ED03012BE2100E1ACC5 /* QueryRAGUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EAB3012BE2100E1ACC5 /* QueryRAGUseCase.swift */; };
+		6F1A8ED13012BE2100E1ACC5 /* RAGEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB53012BE2100E1ACC5 /* RAGEmptyStateView.swift */; };
+		6F1A8ED23012BE2100E1ACC5 /* Color+RAGSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */; };
+		6F1A8ED33012BE2100E1ACC5 /* RAGMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */; };
+		6F1A8ED43012BE2100E1ACC5 /* RAGSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */; };
+		6F1A8ED53012BE2100E1ACC5 /* RAGChatHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB33012BE2100E1ACC5 /* RAGChatHeaderView.swift */; };
 		6F1E4C26B29F085597C11899 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */; };
 		6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */; };
 		6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */; };
@@ -489,6 +511,28 @@
 		6F1A8E763012AAE100E1ACC5 /* FeedStateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStateViews.swift; sourceTree = "<group>"; };
 		6F1A8E773012AAE100E1ACC5 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		6F1A8E793012AAE100E1ACC5 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		6F1A8E9C3012BE2100E1ACC5 /* RAGQueryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGQueryDTO.swift; sourceTree = "<group>"; };
+		6F1A8E9D3012BE2100E1ACC5 /* RAGResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGResponseDTO.swift; sourceTree = "<group>"; };
+		6F1A8E9F3012BE2100E1ACC5 /* RAGAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGAPIService.swift; sourceTree = "<group>"; };
+		6F1A8EA03012BE2100E1ACC5 /* RAGEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGEndpoint.swift; sourceTree = "<group>"; };
+		6F1A8EA23012BE2100E1ACC5 /* RAGRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGRepositoryImpl.swift; sourceTree = "<group>"; };
+		6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGError.swift; sourceTree = "<group>"; };
+		6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGMessage.swift; sourceTree = "<group>"; };
+		6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSource.swift; sourceTree = "<group>"; };
+		6F1A8EA93012BE2100E1ACC5 /* RAGRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGRepository.swift; sourceTree = "<group>"; };
+		6F1A8EAB3012BE2100E1ACC5 /* QueryRAGUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryRAGUseCase.swift; sourceTree = "<group>"; };
+		6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+RAGSemantic.swift"; sourceTree = "<group>"; };
+		6F1A8EB03012BE2100E1ACC5 /* RAGFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGFlowView.swift; sourceTree = "<group>"; };
+		6F1A8EB13012BE2100E1ACC5 /* RAGRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGRoute.swift; sourceTree = "<group>"; };
+		6F1A8EB33012BE2100E1ACC5 /* RAGChatHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatHeaderView.swift; sourceTree = "<group>"; };
+		6F1A8EB43012BE2100E1ACC5 /* RAGChatInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatInputView.swift; sourceTree = "<group>"; };
+		6F1A8EB53012BE2100E1ACC5 /* RAGEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGEmptyStateView.swift; sourceTree = "<group>"; };
+		6F1A8EB63012BE2100E1ACC5 /* RAGLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGLoadingIndicator.swift; sourceTree = "<group>"; };
+		6F1A8EB73012BE2100E1ACC5 /* RAGMessageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGMessageBubbleView.swift; sourceTree = "<group>"; };
+		6F1A8EB83012BE2100E1ACC5 /* RAGSourceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSourceCardView.swift; sourceTree = "<group>"; };
+		6F1A8EB93012BE2100E1ACC5 /* RAGSourcesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSourcesSection.swift; sourceTree = "<group>"; };
+		6F1A8EBB3012BE2100E1ACC5 /* RAGChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatView.swift; sourceTree = "<group>"; };
+		6F1A8EBD3012BE2100E1ACC5 /* RAGChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatViewModel.swift; sourceTree = "<group>"; };
 		6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
@@ -1444,48 +1488,142 @@
 		6F1A8E963012AF6400E1ACC5 /* RAG */ = {
 			isa = PBXGroup;
 			children = (
-				6F1A8E993012AF8C00E1ACC5 /* Data */,
-				6F1A8E983012AF8300E1ACC5 /* Domain */,
-				6F1A8E973012AF6E00E1ACC5 /* Presentation */,
+				6F1A8EA43012BE2100E1ACC5 /* Data */,
+				6F1A8EAD3012BE2100E1ACC5 /* Domain */,
+				6F1A8EBF3012BE2100E1ACC5 /* Presentation */,
 			);
 			path = RAG;
 			sourceTree = "<group>";
 		};
-		6F1A8E973012AF6E00E1ACC5 /* Presentation */ = {
+		6F1A8E9E3012BE2100E1ACC5 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
-				6F1A8E9B3012AFB800E1ACC5 /* ViewModels */,
-				6F1A8E9A3012AFAA00E1ACC5 /* Views */,
+				6F1A8E9C3012BE2100E1ACC5 /* RAGQueryDTO.swift */,
+				6F1A8E9D3012BE2100E1ACC5 /* RAGResponseDTO.swift */,
 			);
-			path = Presentation;
+			path = DTOs;
 			sourceTree = "<group>";
 		};
-		6F1A8E983012AF8300E1ACC5 /* Domain */ = {
+		6F1A8EA13012BE2100E1ACC5 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8E9F3012BE2100E1ACC5 /* RAGAPIService.swift */,
+				6F1A8EA03012BE2100E1ACC5 /* RAGEndpoint.swift */,
 			);
-			path = Domain;
+			path = Network;
 			sourceTree = "<group>";
 		};
-		6F1A8E993012AF8C00E1ACC5 /* Data */ = {
+		6F1A8EA33012BE2100E1ACC5 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8EA23012BE2100E1ACC5 /* RAGRepositoryImpl.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		6F1A8EA43012BE2100E1ACC5 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E9E3012BE2100E1ACC5 /* DTOs */,
+				6F1A8EA13012BE2100E1ACC5 /* Network */,
+				6F1A8EA33012BE2100E1ACC5 /* Repositories */,
 			);
 			path = Data;
 			sourceTree = "<group>";
 		};
-		6F1A8E9A3012AFAA00E1ACC5 /* Views */ = {
+		6F1A8EA83012BE2100E1ACC5 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */,
+				6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */,
+				6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */,
 			);
-			path = Views;
+			path = Entities;
 			sourceTree = "<group>";
 		};
-		6F1A8E9B3012AFB800E1ACC5 /* ViewModels */ = {
+		6F1A8EAA3012BE2100E1ACC5 /* RepositoryInterfaces */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8EA93012BE2100E1ACC5 /* RAGRepository.swift */,
 			);
-			path = ViewModels;
+			path = RepositoryInterfaces;
+			sourceTree = "<group>";
+		};
+		6F1A8EAC3012BE2100E1ACC5 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EAB3012BE2100E1ACC5 /* QueryRAGUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		6F1A8EAD3012BE2100E1ACC5 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EA83012BE2100E1ACC5 /* Entities */,
+				6F1A8EAA3012BE2100E1ACC5 /* RepositoryInterfaces */,
+				6F1A8EAC3012BE2100E1ACC5 /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6F1A8EAF3012BE2100E1ACC5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6F1A8EB23012BE2100E1ACC5 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EB03012BE2100E1ACC5 /* RAGFlowView.swift */,
+				6F1A8EB13012BE2100E1ACC5 /* RAGRoute.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		6F1A8EBA3012BE2100E1ACC5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EB33012BE2100E1ACC5 /* RAGChatHeaderView.swift */,
+				6F1A8EB43012BE2100E1ACC5 /* RAGChatInputView.swift */,
+				6F1A8EB53012BE2100E1ACC5 /* RAGEmptyStateView.swift */,
+				6F1A8EB63012BE2100E1ACC5 /* RAGLoadingIndicator.swift */,
+				6F1A8EB73012BE2100E1ACC5 /* RAGMessageBubbleView.swift */,
+				6F1A8EB83012BE2100E1ACC5 /* RAGSourceCardView.swift */,
+				6F1A8EB93012BE2100E1ACC5 /* RAGSourcesSection.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6F1A8EBC3012BE2100E1ACC5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EBA3012BE2100E1ACC5 /* Components */,
+				6F1A8EBB3012BE2100E1ACC5 /* RAGChatView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6F1A8EBE3012BE2100E1ACC5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EBD3012BE2100E1ACC5 /* RAGChatViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6F1A8EBF3012BE2100E1ACC5 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EAF3012BE2100E1ACC5 /* Extensions */,
+				6F1A8EB23012BE2100E1ACC5 /* Routing */,
+				6F1A8EBC3012BE2100E1ACC5 /* View */,
+				6F1A8EBE3012BE2100E1ACC5 /* ViewModel */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
@@ -2579,6 +2717,28 @@
 				2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */,
 				2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */,
 				26E0850BA11B06E6A75AA2C5 /* AnyRoute.swift in Sources */,
+				6F1A8EC03012BE2100E1ACC5 /* RAGChatViewModel.swift in Sources */,
+				6F1A8EC13012BE2100E1ACC5 /* RAGRepository.swift in Sources */,
+				6F1A8EC23012BE2100E1ACC5 /* RAGAPIService.swift in Sources */,
+				6F1A8EC33012BE2100E1ACC5 /* RAGSourceCardView.swift in Sources */,
+				6F1A8EC43012BE2100E1ACC5 /* RAGRepositoryImpl.swift in Sources */,
+				6F1A8EC53012BE2100E1ACC5 /* RAGQueryDTO.swift in Sources */,
+				6F1A8EC63012BE2100E1ACC5 /* RAGResponseDTO.swift in Sources */,
+				6F1A8EC73012BE2100E1ACC5 /* RAGLoadingIndicator.swift in Sources */,
+				6F1A8EC83012BE2100E1ACC5 /* RAGSourcesSection.swift in Sources */,
+				6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */,
+				6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */,
+				6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */,
+				6F1A8ECC3012BE2100E1ACC5 /* RAGEndpoint.swift in Sources */,
+				6F1A8ECD3012BE2100E1ACC5 /* RAGRoute.swift in Sources */,
+				6F1A8ECE3012BE2100E1ACC5 /* RAGError.swift in Sources */,
+				6F1A8ECF3012BE2100E1ACC5 /* RAGFlowView.swift in Sources */,
+				6F1A8ED03012BE2100E1ACC5 /* QueryRAGUseCase.swift in Sources */,
+				6F1A8ED13012BE2100E1ACC5 /* RAGEmptyStateView.swift in Sources */,
+				6F1A8ED23012BE2100E1ACC5 /* Color+RAGSemantic.swift in Sources */,
+				6F1A8ED33012BE2100E1ACC5 /* RAGMessage.swift in Sources */,
+				6F1A8ED43012BE2100E1ACC5 /* RAGSource.swift in Sources */,
+				6F1A8ED53012BE2100E1ACC5 /* RAGChatHeaderView.swift in Sources */,
 				8662866AF69309468A360A6B /* AppAuthBackgroundModifier.swift in Sources */,
 				AFAB7C51A451F18FC9FED121 /* AppFlow.swift in Sources */,
 				19A50853F5FFD8DA0A42CE8A /* AppFlowCoordinator.swift in Sources */,

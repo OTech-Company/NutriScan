@@ -7,13 +7,12 @@ import SwiftUI
 
 struct RAGFlowView: View {
     @StateObject private var router = AppRouter()
-
-    private let viewModel: RAGChatViewModel
+    @State private var viewModel: RAGChatViewModel
 
     init() {
         let repository = RAGRepositoryImpl()
         let useCase = QueryRAGUseCaseImpl(repository: repository)
-        self._viewModel = State(initialValue: RAGChatViewModel(queryUseCase: useCase))
+        self._viewModel = State(wrappedValue: RAGChatViewModel(queryUseCase: useCase))
     }
 
     var body: some View {
