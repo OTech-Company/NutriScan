@@ -6,7 +6,7 @@
 import SwiftUI
 
 struct RAGChatView: View {
-    @EnvironmentObject private var router: AppRouter
+    @Environment(\.dismiss) private var dismiss
     @State private var viewModel: RAGChatViewModel
 
     init(viewModel: RAGChatViewModel) {
@@ -17,7 +17,7 @@ struct RAGChatView: View {
         VStack(spacing: 0) {
             // Header
             RAGChatHeaderView {
-                router.pop()
+                dismiss()
             }
 
             Divider()
@@ -81,6 +81,5 @@ struct RAGChatView: View {
             )
         }
         .background(Color.RAGSemantic.chatBackground.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
     }
 }

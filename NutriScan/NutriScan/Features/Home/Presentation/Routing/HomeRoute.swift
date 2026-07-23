@@ -9,7 +9,6 @@ import SwiftUI
 enum HomeRoute: Route {
     case mealDetail(id: String)
     case summary
-    case rag
 
     @ViewBuilder
     var destination: some View {
@@ -18,12 +17,8 @@ enum HomeRoute: Route {
             MealDetailView(mealId: id)
         case .summary:
             HomeSummaryView()
-        case .rag:
-            RAGChatView(
-                viewModel: RAGChatViewModel(
-                    queryUseCase: DIContainer.shared.resolve(type: QueryRAGUseCase.self)
-                )
-            )
         }
+    }
+}
     }
 }
