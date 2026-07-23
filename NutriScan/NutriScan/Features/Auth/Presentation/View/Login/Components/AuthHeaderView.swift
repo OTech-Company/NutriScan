@@ -9,25 +9,24 @@ import SwiftUI
 
 struct AuthHeaderView: View {
     var body: some View {
-        VStack(spacing: 44) {
+        VStack(spacing: 48) {
             Image("logo white")
                 .resizable()
                 .scaledToFit()
-                .frame(height: 32)
-                .padding(.top, 108)
+                .frame(height: 40)
+                .padding(.top, 128)
 
             Text("Sign In")
                 .font(Font.AppFont.title2)
                 .foregroundColor(Color.LoginSemantic.headerTitle)
         }
         .frame(maxWidth: .infinity)
-        .padding(.bottom, 48)
-        .padding(.top, 48)
+        .padding(.bottom, 36)
         .background(Color.LoginSemantic.headerBackground)
         .clipShape(
             UnevenRoundedRectangle(
-                bottomLeadingRadius: 24,
-                bottomTrailingRadius: 24
+                bottomLeadingRadius: 32,
+                bottomTrailingRadius: 32
             )
         )
         .customTealShadow()
