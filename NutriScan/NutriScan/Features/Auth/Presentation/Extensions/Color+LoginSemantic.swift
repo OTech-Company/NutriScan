@@ -17,15 +17,15 @@ extension Color {
         static let forgotPasswordText = Color.Teal.teal1000
 
         // MARK: Divider ("OR")
-        static let dividerLine = Color.Gray.gray800
-        static let dividerLabel = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal500)
+        static let dividerLine = Color(light: Color.Gray.gray800, dark: Color.Teal.teal500)
+        static let dividerLabel = Color(light: Color.Gray.gray800, dark: Color.Teal.teal500)
 
         // MARK: Social Login Button
         static let socialButtonIcon = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal400)
         static let socialButtonBorder = Color(light: Color.Gray.gray500, dark: Color.Teal.teal600)
 
         // MARK: Footer ("Don't have an account?")
-        static let footerText = Color.Gray.gray1000
-        static let footerLink = Color.Teal.teal1000
+        static let footerText = Color(light: Color.Gray.gray1000, dark: Color.Teal.teal500)
+        static let footerLink = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal100)
     }
 }

@@ -11,8 +11,7 @@ struct VerificationPendingView: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: VerificationPendingViewModel
     
-    @State private var showResendSuccess = false
-    @State private var showResendFailure = false
+    @State private var activeAlert: ActiveAlert = .none
     @State private var errorMessage = ""
     
     init(email: String) {
@@ -48,45 +47,46 @@ struct VerificationPendingView: View {
             .navigationBarHidden(true)
             .ignoresSafeArea(edges: .top)
             
-            // Success Resend Dialog Overlay
-            if showResendSuccess {
-                SuccessDialog(
-                    title: "Verification Email Sent",
-                    subtitle: viewModel.resendMessage
-                ) {
-                    showResendSuccess = false
-                }
-                .transition(.opacity)
-                .zIndex(1)
-            }
-            
-            // Failure Resend Dialog Overlay
-            if showResendFailure {
-                FailureDialog(
-                    title: "Action Failed",
-                    subtitle: errorMessage
-                ) {
-                    showResendFailure = false
-                }
-                .transition(.opacity)
-                .zIndex(1)
-            }
         }
         .onChange(of: viewModel.resendSuccess) { _, success in
             if success {
-                withAnimation {
-                    showResendSuccess = true
-                }
+                activeAlert = .success
             }
         }
         .onChange(of: viewModel.generalError) { _, error in
             if let error = error {
                 errorMessage = error
-                withAnimation {
-                    showResendFailure = true
-                }
+                activeAlert = .error
             }
         }
+        .customAlert(activeAlert: $activeAlert, config: { alert in
+            switch alert {
+            case .success:
+                return CustomAlertConfig(
+                    type: .success,
+                    title: "Verification Email Sent",
+                    description: viewModel.resendMessage,
+                    primaryButtonTitle: "Continue",
+                    primaryButtonColor: Color.Teal.teal1000
+                )
+            case .error:
+                return CustomAlertConfig(
+                    type: .error,
+                    title: "Action Failed",
+                    description: errorMessage,
+                    primaryButtonTitle: "Try Again",
+                    primaryButtonColor: Color.Red.red500
+                )
+            default:
+                return CustomAlertConfig(type: .warning, title: "", description: "")
+            }
+        }, primaryAction: { alert in
+            if alert == .success {
+                viewModel.resendSuccess = false
+            } else if alert == .error {
+                viewModel.generalError = nil
+            }
+        })
     }
     
     private func handleResend() {

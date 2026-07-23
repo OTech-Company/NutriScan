@@ -20,9 +20,7 @@ final class ProductDetailViewModel: ObservableObject {
 
     nonisolated init(
         barcode: String,
-        lookupProductUseCase: LookupProductUseCase = LookupProductUseCaseImpl(
-            repository: ProductRepositoryImpl()
-        )
+        lookupProductUseCase: LookupProductUseCase = DIContainer.shared.resolve(type: LookupProductUseCase.self)
     ) {
         self.barcode = barcode
         self.lookupProductUseCase = lookupProductUseCase

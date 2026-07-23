@@ -38,7 +38,7 @@ struct RegisterFormFieldsSection: View {
                 leadingIcon: "envelope",
                 isPassword: false,
                 errorMessage: viewModel.email.error,
-                placeHolder: "Enter your email address...",
+                placeHolder: "Enter your email",
                 textFieldValue: $viewModel.email.value,
                 state: $viewModel.email.state
             )
@@ -48,7 +48,7 @@ struct RegisterFormFieldsSection: View {
                 leadingIcon: "lock",
                 isPassword: true,
                 errorMessage: viewModel.password.error,
-                placeHolder: "Create a password",
+                placeHolder: "Enter your password",
                 textFieldValue: $viewModel.password.value,
                 state: $viewModel.password.state
             )

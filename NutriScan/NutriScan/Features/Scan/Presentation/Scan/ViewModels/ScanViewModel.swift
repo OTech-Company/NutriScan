@@ -18,9 +18,7 @@ final class ScanViewModel: ObservableObject {
     }
     
     nonisolated static func makeDefault() -> ScanViewModel {
-        ScanViewModel(lookupProductUseCase: LookupProductUseCaseImpl(
-            repository: ProductRepositoryImpl()
-        ))
+        ScanViewModel(lookupProductUseCase: DIContainer.shared.resolve(type: LookupProductUseCase.self))
     }
     // MARK: - Intents (called by the View)
 

@@ -12,6 +12,8 @@ struct EditProfileView: View {
     @State private var viewModel = EditProfileViewModel()
     @State private var isEditingMode = false
     @State private var isFetchingProfile = true
+    @State private var activeAlert: ActiveAlert = .none
+    @State private var alertMessage = ""
 
     var body: some View {
         ZStack {
@@ -148,12 +150,6 @@ struct EditProfileView: View {
                         .animation(.easeInOut, value: viewModel.isLoading)
                         .padding(.top, 8)
 
-                        if let error = viewModel.errorMessage {
-                            Text(error)
-                                .font(.caption)
-                                .foregroundColor(.red)
-                                .padding(.top, 8)
-                        }
                     }
                     .padding(
                         .horizontal,
@@ -163,6 +159,28 @@ struct EditProfileView: View {
                 }
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, error in
+            if let error = error {
+                alertMessage = error
+                activeAlert = .error
+            }
+        }
+        .customAlert(activeAlert: $activeAlert, config: { alert in
+            switch alert {
+            case .error:
+                return CustomAlertConfig(
+                    type: .error,
+                    title: "Action Failed",
+                    description: alertMessage,
+                    primaryButtonTitle: "OK",
+                    primaryButtonColor: Color.Red.red500
+                )
+            default:
+                return CustomAlertConfig(type: .warning, title: "", description: "")
+            }
+        }, primaryAction: { _ in
+            viewModel.errorMessage = nil
+        })
         .navigationBarHidden(true)
         // MARK: TODO: Hide the tab bar when this view appears, and show it again when it disappears.
 //        .onAppear {

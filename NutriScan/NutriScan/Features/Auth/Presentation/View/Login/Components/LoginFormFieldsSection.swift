@@ -14,7 +14,7 @@ struct LoginFormFieldsSection: View {
                 title: "Email Address",
                 leadingIcon: "envelope",
                 errorMessage: viewModel.email.error,
-                placeHolder: "elementary221b@gmail.com",
+                placeHolder: "Enter your email",
                 textFieldValue: $viewModel.email.value,
                 state: $viewModel.email.state
             )
@@ -24,7 +24,7 @@ struct LoginFormFieldsSection: View {
                 leadingIcon: "lock",
                 isPassword: true,
                 errorMessage: viewModel.password.error,
-                placeHolder: "*****************",
+                placeHolder: "Enter your password",
                 textFieldValue: $viewModel.password.value,
                 state: $viewModel.password.state
             )

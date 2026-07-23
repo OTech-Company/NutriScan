@@ -50,9 +50,9 @@ struct StepHistoryScreen: View {
 #Preview {
     StepHistoryScreen(
         viewModel: StepCounterViewModel(
-            observeStepsUseCase: ObserveDailyStepsUseCase(repository: StepRepositoryImpl()),
-            requestAuthUseCase: RequestStepAuthorizationUseCase(repository: StepRepositoryImpl()),
-            fetchHistoryUseCase: FetchStepsHistoryUseCase(repository: StepRepositoryImpl())
+            observeStepsUseCase: DIContainer.shared.resolve(type: ObserveDailyStepsUseCase.self),
+            requestAuthUseCase: DIContainer.shared.resolve(type: RequestStepAuthorizationUseCase.self),
+            fetchHistoryUseCase: DIContainer.shared.resolve(type: FetchStepsHistoryUseCase.self)
         )
     )
 }
