@@ -17,6 +17,8 @@ struct AppDependencies {
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
         ProfileAssembly(),
+        ScanAssembly(),
+        StepTrackerAssembly()
         // Teammates: add your feature's Assembly here, e.g.
         // HomeAssembly(),
         // AuthAssembly(),
@@ -25,5 +27,33 @@ struct AppDependencies {
     static func setup() {
         let container = DIContainer.shared
         assemblies.forEach { $0.assemble(container: container) }
+    }
+}
+
+// MARK: - Inline Assemblies (to avoid pbxproj conflicts)
+struct ScanAssembly: Assembly {
+    func assemble(container: DIContainer) {
+        container.register(
+            type: LookupProductUseCase.self,
+            component: LookupProductUseCaseImpl(repository: ProductRepositoryImpl())
+        )
+    }
+}
+
+struct StepTrackerAssembly: Assembly {
+    func assemble(container: DIContainer) {
+        let repository = StepRepositoryImpl()
+        container.register(
+            type: ObserveDailyStepsUseCase.self,
+            component: ObserveDailyStepsUseCase(repository: repository)
+        )
+        container.register(
+            type: RequestStepAuthorizationUseCase.self,
+            component: RequestStepAuthorizationUseCase(repository: repository)
+        )
+        container.register(
+            type: FetchStepsHistoryUseCase.self,
+            component: FetchStepsHistoryUseCase(repository: repository)
+        )
     }
 }

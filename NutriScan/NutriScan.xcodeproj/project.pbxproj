@@ -166,7 +166,6 @@
 		7E1042EF21D7A5286650D434 /* empty80.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33E22EE84C6F8AC335CE4B0 /* empty80.swift */; };
 		7E58F658CB993EA71CE8C4D9 /* CachedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F336C240113B3898A67A273 /* CachedImage.swift */; };
 		7E9497A88EC033792836AD39 /* CustomTextFieldTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2D54BA8F765B703F78148A /* CustomTextFieldTitle.swift */; };
-		7EA801DC904BC92E32066C8A /* OnboardingSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92BED68B04E25EE4F9A8B755 /* OnboardingSemantic.swift */; };
 		806E256A2DDFFE8FF2E94F4E /* SettingsIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6438EEEBEEEA80F5C8C5D6 /* SettingsIconBadge.swift */; };
 		80E3E81EE7F77DB2BEF484EA /* SettingsNavRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7365398BF43EC8F124001474 /* SettingsNavRow.swift */; };
 		81F15656CCA3C25584FB1580 /* ScanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82273B5CC6A19254740E4B06 /* ScanViewModel.swift */; };
@@ -187,7 +186,7 @@
 		8CD9D0857AD632D1C2677DE7 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */; };
 		8D815A3F5043EB47D5BD72CB /* AuthDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C964278B9DAFBBA013037F /* AuthDivider.swift */; };
 		8DB5B30032700DF6C7BBC9B2 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F22888476A92466A8F7007 /* RegisterViewModel.swift */; };
-		8F2EE806300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2EE805300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift */; };
+		8F2EE806300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2EE805300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift */; };
 		8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F729C18301145C900094C23 /* ExploreSectionHeader.swift */; };
 		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
@@ -510,13 +509,12 @@
 		8C8BF72F529571DA910FBB27 /* ScanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlowView.swift; sourceTree = "<group>"; };
 		8C9FCB95B1BB5CFB86039766 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		8E2478F7BB592188D447103B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8F2EE805300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HealtProfileSetupSemantic.swift"; sourceTree = "<group>"; };
+		8F2EE805300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HealthProfileSetupSemantic.swift"; sourceTree = "<group>"; };
 		8F729C18301145C900094C23 /* ExploreSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSectionHeader.swift; sourceTree = "<group>"; };
 		8FA3439F300EB7C20044192A /* ProductEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEndpoint.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
 		8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
 		91CE37F9D41A1CBC60382710 /* ForgotPasswordHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordHeaderSection.swift; sourceTree = "<group>"; };
-		92BED68B04E25EE4F9A8B755 /* OnboardingSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingSemantic.swift; sourceTree = "<group>"; };
 		92C40C8ADD09912A731367A4 /* Color+HomeSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HomeSemantic.swift"; sourceTree = "<group>"; };
 		969F97EA94D104FF0E5D3CF4 /* InputChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputChip.swift; sourceTree = "<group>"; };
 		985D47458936A878D0ADE952 /* ProfileSetupEX1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProfileSetupEX1.txt; sourceTree = "<group>"; };
@@ -541,7 +539,6 @@
 		AC552F23C5C24050E0371DFC /* GenderSelectionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectionRow.swift; sourceTree = "<group>"; };
 		AD0249CD6268F0B198FA3A14 /* CustomTextFieldError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldError.swift; sourceTree = "<group>"; };
 		AD902D05BF7786E2E116B445 /* PlusJakartaSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Bold.ttf"; sourceTree = "<group>"; };
-		AD9B27B466212BA2DDFFB912 /* ProfileSetupEX4.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = ProfileSetupEX4.txt; sourceTree = "<group>"; };
 		AF72C9E98099B83F4DF94FC0 /* ForgotPasswordConfirmationPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordConfirmationPopup.swift; sourceTree = "<group>"; };
 		B1D223E8294229110E9CCF7F /* RulerDial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerDial.swift; sourceTree = "<group>"; };
 		B1F22888476A92466A8F7007 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
@@ -690,7 +687,6 @@
 				2C78ECDD300E6C700092E6B2 /* Data */,
 				2C78ECEC300E6C7E0092E6B2 /* Domain */,
 				2C78ED0E300E6C7E0092E6B2 /* Presentation */,
-				78081CEC14B45B522276A719 /* Presentation */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -710,15 +706,6 @@
 				D40DD1CC301022CD001CF496 /* ProfileRepositoryProtocol.swift */,
 			);
 			path = Repositories;
-			sourceTree = "<group>";
-		};
-		11767042F302820B50A49537 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				2B2F6F1DC189D3D50AE1BA35 /* Components */,
-				BF7CEEB8AD96A0CE3B26A6ED /* LoginView.swift */,
-			);
-			path = Login;
 			sourceTree = "<group>";
 		};
 		13D1DDB2A35BB507A3F9D734 /* Domain */ = {
@@ -822,17 +809,6 @@
 				4C355FBC4995FFA1F19C6DC5 /* SettingsView.swift */,
 			);
 			path = Settings;
-			sourceTree = "<group>";
-		};
-		2B2F6F1DC189D3D50AE1BA35 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				59C964278B9DAFBBA013037F /* AuthDivider.swift */,
-				F27DF6750D1CF9E78054C52E /* AuthHeaderView.swift */,
-				631F121BFAE9556EEF81D38C /* LoginFormFieldsSection.swift */,
-				5253B44B0EF73F7315EA85D8 /* SocialLoginButton.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		2BD8688EDFC99D6C1BE6FBA7 /* ViewModel */ = {
@@ -1218,18 +1194,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		5B6EFBA9DCA2FA5E548CA99D /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				AF72C9E98099B83F4DF94FC0 /* ForgotPasswordConfirmationPopup.swift */,
-				91CE37F9D41A1CBC60382710 /* ForgotPasswordHeaderSection.swift */,
-				5E9E726455E3D0802A533DA2 /* ForgotPasswordOptionsSection.swift */,
-				FCD8109E302FA1EDD995B9B2 /* ForgotPasswordResetButtonSection.swift */,
-				40F91D77F5DC86BC7C2826BF /* PasswordResetOption.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		5BC12155BF94D2FD6A4DC0CB /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1253,15 +1217,6 @@
 			path = Scan;
 			sourceTree = "<group>";
 		};
-		5C0E2560ED46725415C7CBA8 /* Routing */ = {
-			isa = PBXGroup;
-			children = (
-				A6DDCD07E82BEC9752F62D7D /* AuthFlowView.swift */,
-				BE9C40FF2A2DBA2B985D9A98 /* AuthRoute.swift */,
-			);
-			path = Routing;
-			sourceTree = "<group>";
-		};
 		5CED900565685504B6F05E75 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1273,15 +1228,6 @@
 				6603328ACB1EAE678AA1FB36 /* View+Extensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		5ECD610A055F2DAFB3F0D9F7 /* ForgotPassword */ = {
-			isa = PBXGroup;
-			children = (
-				5B6EFBA9DCA2FA5E548CA99D /* Components */,
-				A223A667BC2E4570B0FA7B29 /* ForgotPasswordView.swift */,
-			);
-			path = ForgotPassword;
 			sourceTree = "<group>";
 		};
 		663BCE62E61527B426FB28F9 /* Local */ = {
@@ -1487,15 +1433,6 @@
 			path = EditProfile;
 			sourceTree = "<group>";
 		};
-		738773D48547305FEB017E82 /* Register */ = {
-			isa = PBXGroup;
-			children = (
-				9D239CA7025D7ABF9EC331D5 /* Components */,
-				1C9E1ADE5ACA29CC62837A5D /* RegisterView.swift */,
-			);
-			path = Register;
-			sourceTree = "<group>";
-		};
 		7455061ED38272AC2AE7B339 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -1522,17 +1459,6 @@
 				82273B5CC6A19254740E4B06 /* ScanViewModel.swift */,
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		78081CEC14B45B522276A719 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				D47236C5563ED91CD8C8812E /* Extensions */,
-				5C0E2560ED46725415C7CBA8 /* Routing */,
-				C4797489F904ED3120F3D9C0 /* View */,
-				8770CAE9D65955729BB030A7 /* ViewModel */,
-			);
-			path = Presentation;
 			sourceTree = "<group>";
 		};
 		78EE3CC08B3799EE7FC641E6 /* Extensions */ = {
@@ -1640,16 +1566,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		8770CAE9D65955729BB030A7 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				72EE93342422A2FD121CAED1 /* ForgotPasswordViewModel.swift */,
-				B38EBE7DC33A6187A454AF64 /* LoginViewModel.swift */,
-				B1F22888476A92466A8F7007 /* RegisterViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		89EE14BFE13A13A1D5839F39 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -1695,7 +1611,7 @@
 		8F2EE804300FEE1E00BBC8EE /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				8F2EE805300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift */,
+				8F2EE805300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1771,16 +1687,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		9D239CA7025D7ABF9EC331D5 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				C8B46F7028A8B5A38D8B26BB /* RegisterFormFieldsSection.swift */,
-				DC1D0663CB45E88B8922C022 /* RegisterHeaderSection.swift */,
-				5AEF73EB2F22A216C60FA37D /* RegisterSignUpButtonSection.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		9F31ABFE3005B6AC008CB279 = {
 			isa = PBXGroup;
 			children = (
@@ -1789,6 +1695,7 @@
 				9F31AC243005B6AE008CB279 /* NutriScanUITests */,
 				2C730AFE30092E71004399C5 /* Frameworks */,
 				9F31AC083005B6AC008CB279 /* Products */,
+				C5144D9E30126353007EE884 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1834,14 +1741,6 @@
 			path = NutriScanUITests;
 			sourceTree = "<group>";
 		};
-		A26C862BF1894CF1CC6C5C62 /* Extenstions */ = {
-			isa = PBXGroup;
-			children = (
-				92BED68B04E25EE4F9A8B755 /* OnboardingSemantic.swift */,
-			);
-			path = Extenstions;
-			sourceTree = "<group>";
-		};
 		A2FCC62BF8D4E60E58F59720 /* ScanHistory */ = {
 			isa = PBXGroup;
 			children = (
@@ -1871,10 +1770,8 @@
 			isa = PBXGroup;
 			children = (
 				E4DBD59DA91446C3FEB7620C /* Entity */,
-				A26C862BF1894CF1CC6C5C62 /* Extenstions */,
 				1C98C2307DFC8BFABFD4DAA3 /* Repositories */,
 				E23B5BA659BA806E1EACFB9B /* UseCase */,
-				E07C2073443C9EFB32304CE4 /* Gender.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -1925,14 +1822,34 @@
 			path = Routing;
 			sourceTree = "<group>";
 		};
-		C4797489F904ED3120F3D9C0 /* View */ = {
+		C5144D9E30126353007EE884 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				5ECD610A055F2DAFB3F0D9F7 /* ForgotPassword */,
-				11767042F302820B50A49537 /* Login */,
-				738773D48547305FEB017E82 /* Register */,
+				59C964278B9DAFBBA013037F /* AuthDivider.swift */,
+				A6DDCD07E82BEC9752F62D7D /* AuthFlowView.swift */,
+				F27DF6750D1CF9E78054C52E /* AuthHeaderView.swift */,
+				BE9C40FF2A2DBA2B985D9A98 /* AuthRoute.swift */,
+				043716D22955B0F7A0D3C248 /* Color+ForgotPasswordSemantic.swift */,
+				F4BE1EDF263F1DD64F84F50C /* Color+LoginSemantic.swift */,
+				0BFB2220F1CEECF65D3D48FB /* Color+RegisterSemantic.swift */,
+				AF72C9E98099B83F4DF94FC0 /* ForgotPasswordConfirmationPopup.swift */,
+				91CE37F9D41A1CBC60382710 /* ForgotPasswordHeaderSection.swift */,
+				5E9E726455E3D0802A533DA2 /* ForgotPasswordOptionsSection.swift */,
+				FCD8109E302FA1EDD995B9B2 /* ForgotPasswordResetButtonSection.swift */,
+				A223A667BC2E4570B0FA7B29 /* ForgotPasswordView.swift */,
+				72EE93342422A2FD121CAED1 /* ForgotPasswordViewModel.swift */,
+				631F121BFAE9556EEF81D38C /* LoginFormFieldsSection.swift */,
+				BF7CEEB8AD96A0CE3B26A6ED /* LoginView.swift */,
+				B38EBE7DC33A6187A454AF64 /* LoginViewModel.swift */,
+				40F91D77F5DC86BC7C2826BF /* PasswordResetOption.swift */,
+				C8B46F7028A8B5A38D8B26BB /* RegisterFormFieldsSection.swift */,
+				DC1D0663CB45E88B8922C022 /* RegisterHeaderSection.swift */,
+				5AEF73EB2F22A216C60FA37D /* RegisterSignUpButtonSection.swift */,
+				1C9E1ADE5ACA29CC62837A5D /* RegisterView.swift */,
+				B1F22888476A92466A8F7007 /* RegisterViewModel.swift */,
+				5253B44B0EF73F7315EA85D8 /* SocialLoginButton.swift */,
 			);
-			path = View;
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		C546296A301239330032F885 /* Alerts */ = {
@@ -2083,16 +2000,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D47236C5563ED91CD8C8812E /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				043716D22955B0F7A0D3C248 /* Color+ForgotPasswordSemantic.swift */,
-				F4BE1EDF263F1DD64F84F50C /* Color+LoginSemantic.swift */,
-				0BFB2220F1CEECF65D3D48FB /* Color+RegisterSemantic.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		D48A24443011594B0004D95E /* DI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2146,7 +2053,7 @@
 		E4DBD59DA91446C3FEB7620C /* Entity */ = {
 			isa = PBXGroup;
 			children = (
-				AD9B27B466212BA2DDFFB912 /* ProfileSetupEX4.txt */,
+				E07C2073443C9EFB32304CE4 /* Gender.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
@@ -2496,7 +2403,6 @@
 				DD5F88DE96BDF66BB03E2A21 /* OnboardingFlowView.swift in Sources */,
 				BE1029FD9D62CA2925C46BD0 /* OnboardingPage.swift in Sources */,
 				6E5A5981D510BA1046A20CFC /* OnboardingScreen.swift in Sources */,
-				7EA801DC904BC92E32066C8A /* OnboardingSemantic.swift in Sources */,
 				B16C5CFCB1BD091E1F06D065 /* PersonalInformationView.swift in Sources */,
 				33570EC8047484EFCB7E33B8 /* PersonalInformationViewModel.swift in Sources */,
 				FA2F4A06D344FFC5A371B1F7 /* Product.swift in Sources */,
@@ -2641,7 +2547,7 @@
 				D40DD1DC30102BC0001CF496 /* ProfileChipItem.swift in Sources */,
 				8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */,
 				D40DD1AA300FF912001CF496 /* DateSelectionField.swift in Sources */,
-				8F2EE806300FEE6E00BBC8EE /* Color+HealtProfileSetupSemantic.swift in Sources */,
+				8F2EE806300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift in Sources */,
 				1C6AB4424F02C11E9C662180 /* SocialLoginButton.swift in Sources */,
 				6F1A8DFD3010283800E1ACC5 /* StepHistoryScreen.swift in Sources */,
 				8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */,

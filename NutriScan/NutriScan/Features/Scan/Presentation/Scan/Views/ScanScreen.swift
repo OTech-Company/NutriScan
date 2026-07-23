@@ -8,11 +8,7 @@ struct ScanScreen: View {
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
 
-    init(viewModel: ScanViewModel = ScanViewModel(
-            lookupProductUseCase: LookupProductUseCaseImpl(
-                repository: ProductRepositoryImpl() 
-            )
-        )) {
+    init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
             _viewModel = StateObject(wrappedValue: viewModel)
         }
     var body: some View {
