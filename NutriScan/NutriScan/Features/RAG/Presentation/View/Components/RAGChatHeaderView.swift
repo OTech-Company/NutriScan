@@ -7,6 +7,7 @@ import SwiftUI
 
 struct RAGChatHeaderView: View {
     var onBack: () -> Void
+    var onVoice: () -> Void
 
     var body: some View {
         HStack {
@@ -20,9 +21,13 @@ struct RAGChatHeaderView: View {
 
             Spacer()
 
-            // Placeholder to balance the back button
-            Color.clear
-                .frame(width: 48, height: 48)
+            Button(action: onVoice) {
+                Image(systemName: "waveform.circle.fill")
+                    .font(.system(size: 26, weight: .semibold))
+                    .foregroundStyle(Color.RAGSemantic.sendButton)
+                    .frame(width: 48, height: 48)
+            }
+            .accessibilityLabel("Start voice chat")
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)

@@ -8,6 +8,7 @@ import SwiftUI
 struct RAGChatView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: RAGChatViewModel
+    @State private var showVoiceChat = false
 
     init(viewModel: RAGChatViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -16,9 +17,10 @@ struct RAGChatView: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            RAGChatHeaderView {
-                dismiss()
-            }
+            RAGChatHeaderView(
+                onBack: { dismiss() },
+                onVoice: { showVoiceChat = true }
+            )
 
             Divider()
                 .background(Color.RAGSemantic.inputBorder)
@@ -36,28 +38,16 @@ struct RAGChatView: View {
                             RAGMessageBubbleView(message: message)
                                 .id(message.id)
                         }
-
-                        if viewModel.isLoading {
-                            RAGLoadingIndicator()
-                                .id("loading")
-                        }
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
                     .padding(.bottom, 8)
                 }
                 .scrollDismissesKeyboard(.interactively)
-                .onChange(of: viewModel.messages.count) { _, _ in
+                .onChange(of: viewModel.messages) { _, _ in
                     withAnimation {
                         if let last = viewModel.messages.last {
                             proxy.scrollTo(last.id, anchor: .bottom)
-                        }
-                    }
-                }
-                .onChange(of: viewModel.isLoading) { _, loading in
-                    if loading {
-                        withAnimation {
-                            proxy.scrollTo("loading", anchor: .bottom)
                         }
                     }
                 }
@@ -77,9 +67,14 @@ struct RAGChatView: View {
                 text: $viewModel.inputText,
                 canSend: viewModel.canSend,
                 isLoading: viewModel.isLoading,
-                onSend: { viewModel.send() }
+                isDictating: viewModel.isDictating,
+                onSend: { viewModel.send() },
+                onToggleDictation: { viewModel.toggleDictation() }
             )
         }
         .background(Color.RAGSemantic.chatBackground.ignoresSafeArea())
+        .fullScreenCover(isPresented: $showVoiceChat) {
+            RAGVoiceChatView(queryUseCase: viewModel.queryUseCase)
+        }
     }
 }

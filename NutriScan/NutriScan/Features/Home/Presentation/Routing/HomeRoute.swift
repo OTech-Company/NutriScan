@@ -20,5 +20,4 @@ enum HomeRoute: Route {
         }
     }
 }
-    }
-}
+
