@@ -19,3 +19,7 @@ struct PersonalInformationView: View {
             .navigationTitle("Personal Information")
     }
 }
+
+#Preview {
+    PersonalInformationView()
+}
