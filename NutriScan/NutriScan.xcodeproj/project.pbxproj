@@ -1441,6 +1441,53 @@
 			path = News;
 			sourceTree = "<group>";
 		};
+		6F1A8E963012AF6400E1ACC5 /* RAG */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E993012AF8C00E1ACC5 /* Data */,
+				6F1A8E983012AF8300E1ACC5 /* Domain */,
+				6F1A8E973012AF6E00E1ACC5 /* Presentation */,
+			);
+			path = RAG;
+			sourceTree = "<group>";
+		};
+		6F1A8E973012AF6E00E1ACC5 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E9B3012AFB800E1ACC5 /* ViewModels */,
+				6F1A8E9A3012AFAA00E1ACC5 /* Views */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		6F1A8E983012AF8300E1ACC5 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6F1A8E993012AF8C00E1ACC5 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6F1A8E9A3012AFAA00E1ACC5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6F1A8E9B3012AFB800E1ACC5 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -2335,6 +2382,7 @@
 		F00E8B813AF1AA6E29087914 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8E963012AF6400E1ACC5 /* RAG */,
 				6F1A8E7C3012AAE100E1ACC5 /* News */,
 				265F4ED484729374FE40D080 /* Settings */,
 				A2FCC62BF8D4E60E58F59720 /* ScanHistory */,
