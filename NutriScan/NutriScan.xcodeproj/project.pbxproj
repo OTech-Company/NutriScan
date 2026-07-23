@@ -171,6 +171,9 @@
 		8AF84F34F54E67BF22F7D65F /* SelectableChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82473C387EA528660B19437A /* SelectableChip.swift */; };
 		8B1CCB85BBC6DE8D1DEAAFA1 /* HeaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */; };
 		8CD9D0857AD632D1C2677DE7 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */; };
+		8F029F49301271C3008B6CB1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
+		8F029F4A301271C3008B6CB1 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
+		8F029F4B301271C3008B6CB1 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
 		8F2EE806300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2EE805300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift */; };
 		8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F729C18301145C900094C23 /* ExploreSectionHeader.swift */; };
 		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
@@ -585,6 +588,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F029F4B301271C3008B6CB1 /* AppAuth in Frameworks */,
+				8F029F4A301271C3008B6CB1 /* Shimmer in Frameworks */,
+				8F029F49301271C3008B6CB1 /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,7 +657,6 @@
 			isa = PBXGroup;
 			children = (
 				FD60BB56546246FBDBA25FAD /* NetworkProfileRepository.swift */,
-				D40DD1CC301022CD001CF496 /* ProfileRepositoryProtocol.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -664,15 +669,6 @@
 				25ED3C4402183D1BB951F61B /* UseCase */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		17E0E1FF66C3F506CEF0998B /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				6F9B935997CCD64D48B73AE1 /* Components */,
-				8AC717A10CA7B6C26DF85C58 /* ProfileView.swift */,
-			);
-			path = Profile;
 			sourceTree = "<group>";
 		};
 		18E13455D867D41D2F3E7DE4 /* Scan */ = {
@@ -734,9 +730,6 @@
 				70E3F47BE0D97360F9B4EFE0 /* UserMeResponse.swift */,
 				AB9D9BB5E949F1F4CD2B85AB /* UserProfile.swift */,
 				FAB096DFD174CB43990237AD /* UserProfileResponse.swift */,
-				D40DD1C5301020B6001CF496 /* ProfileUpdateRequestDTO.swift */,
-				D40DD1C3301020A0001CF496 /* ProfileResponseDTO.swift */,
-				D40DD1C13010208D001CF496 /* ReferenceItemDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -752,9 +745,7 @@
 		265F4ED484729374FE40D080 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				860765E2A7DB4D76DFFE893F /* Components */,
-				D40B87DBD85ED851869C73C2 /* Extensions */,
-				4C355FBC4995FFA1F19C6DC5 /* SettingsView.swift */,
+				8F029F4C301274E3008B6CB1 /* Presentation */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1092,7 +1083,6 @@
 		475E106CC4995269100B544E /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				D40DD1CE301023AA001CF496 /* ProfileRepository.swift */,
 				67C8974CE83749E4BFB66635 /* ProfileRepositoryOsama.swift */,
 			);
 			path = Repositories;
@@ -1373,9 +1363,9 @@
 		719B4CACACDAFD373485C365 /* EditProfile */ = {
 			isa = PBXGroup;
 			children = (
-				5BC12155BF94D2FD6A4DC0CB /* Components */,
-				78EE3CC08B3799EE7FC641E6 /* Extensions */,
-				F86378F78C6791B773584B5E /* EditProfileView.swift */,
+				8F029F5930127734008B6CB1 /* Domain */,
+				8F029F5830127724008B6CB1 /* Data */,
+				8F029F5530127684008B6CB1 /* Presentation */,
 			);
 			path = EditProfile;
 			sourceTree = "<group>";
@@ -1489,7 +1479,6 @@
 			children = (
 				24046376CBC9E4FDA61DF08C /* DTOs */,
 				475E106CC4995269100B544E /* Repositories */,
-				D40DD1C7301020D3001CF496 /* Network */,
 				D40DD1BE30102047001CF496 /* Mappers */,
 			);
 			path = Data;
@@ -1530,10 +1519,6 @@
 		8AD06DE6859F0EED750F93AF /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
-				D48A243D3011560F0004D95E /* UpdateProfileUseCaseProtocol .swift */,
-				D48A243B301155F60004D95E /* GetProfileDataUseCase.swift */,
-				D48A2439301155DA0004D95E /* GetProfileDataUseCaseProtocol .swift */,
-				D48A2437301154A20004D95E /* UpdateProfileUseCase.swift */,
 				24ACD0B280ED1202C3C08448 /* GetProfileUseCase.swift */,
 			);
 			path = UseCase;
@@ -1553,6 +1538,176 @@
 				F33E22EE84C6F8AC335CE4B0 /* empty80.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		8F029F4C301274E3008B6CB1 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				8F029F4E301275C9008B6CB1 /* ViewModel */,
+				8F029F4D30127500008B6CB1 /* View */,
+				D40B87DBD85ED851869C73C2 /* Extensions */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		8F029F4D30127500008B6CB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				860765E2A7DB4D76DFFE893F /* Components */,
+				4C355FBC4995FFA1F19C6DC5 /* SettingsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8F029F4E301275C9008B6CB1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE3E799F631DC0569701B9C0 /* SettingsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F029F4F301275E9008B6CB1 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				8F029F5130127602008B6CB1 /* ViewModel */,
+				8F029F50301275F6008B6CB1 /* View */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		8F029F50301275F6008B6CB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				12136D0B2752F32060AF75AB /* ScanHistoryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8F029F5130127602008B6CB1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F029F523012765D008B6CB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				081DDE6D02EB16410BAEFF56 /* PersonalInformationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8F029F5330127663008B6CB1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				47E0A8B48B7E14DA096AF99C /* PersonalInformationViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F029F5530127684008B6CB1 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				78EE3CC08B3799EE7FC641E6 /* Extensions */,
+				8F029F5730127694008B6CB1 /* ViewModel */,
+				8F029F563012768C008B6CB1 /* View */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		8F029F563012768C008B6CB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F86378F78C6791B773584B5E /* EditProfileView.swift */,
+				5BC12155BF94D2FD6A4DC0CB /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8F029F5730127694008B6CB1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		8F029F5830127724008B6CB1 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				8F029F5D3012778D008B6CB1 /* Repository */,
+				8F029F5B3012774D008B6CB1 /* DataSource */,
+				8F029F5A3012773E008B6CB1 /* DTOs */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		8F029F5930127734008B6CB1 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				8F029F60301277C9008B6CB1 /* Entities */,
+				8F029F5F301277C1008B6CB1 /* UseCases */,
+				8F029F5E301277B5008B6CB1 /* Repository */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		8F029F5A3012773E008B6CB1 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				D40DD1C5301020B6001CF496 /* ProfileUpdateRequestDTO.swift */,
+				D40DD1C3301020A0001CF496 /* ProfileResponseDTO.swift */,
+				D40DD1C13010208D001CF496 /* ReferenceItemDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		8F029F5B3012774D008B6CB1 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				D40DD1C8301020D8001CF496 /* ProfileEndpoint.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		8F029F5D3012778D008B6CB1 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				D40DD1CE301023AA001CF496 /* ProfileRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		8F029F5E301277B5008B6CB1 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				D40DD1CC301022CD001CF496 /* ProfileRepositoryProtocol.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		8F029F5F301277C1008B6CB1 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				D48A243D3011560F0004D95E /* UpdateProfileUseCaseProtocol .swift */,
+				D48A2437301154A20004D95E /* UpdateProfileUseCase.swift */,
+				D48A2439301155DA0004D95E /* GetProfileDataUseCaseProtocol .swift */,
+				D48A243B301155F60004D95E /* GetProfileDataUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		8F029F60301277C9008B6CB1 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				D40DD1BC3010202A001CF496 /* Profile.swift */,
+				D40DD1BA30101FEC001CF496 /* ReferenceItem.swift */,
+				D40DD1CA301022AE001CF496 /* ProfileUpdate.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		8F2EE804300FEE1E00BBC8EE /* Extensions */ = {
@@ -1691,7 +1846,7 @@
 		A2FCC62BF8D4E60E58F59720 /* ScanHistory */ = {
 			isa = PBXGroup;
 			children = (
-				12136D0B2752F32060AF75AB /* ScanHistoryView.swift */,
+				8F029F4F301275E9008B6CB1 /* Presentation */,
 			);
 			path = ScanHistory;
 			sourceTree = "<group>";
@@ -1751,11 +1906,7 @@
 		BC35895CA2ED5CA2CCE855A5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */,
-				47E0A8B48B7E14DA096AF99C /* PersonalInformationViewModel.swift */,
 				CCBD8AEC4FBCD32615BCD314 /* ProfileViewModel.swift */,
-				6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */,
-				DE3E799F631DC0569701B9C0 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1853,7 +2004,8 @@
 		D309EEA21A50FB4243A30823 /* PersonalInformation */ = {
 			isa = PBXGroup;
 			children = (
-				081DDE6D02EB16410BAEFF56 /* PersonalInformationView.swift */,
+				8F029F5330127663008B6CB1 /* ViewModel */,
+				8F029F523012765D008B6CB1 /* View */,
 			);
 			path = PersonalInformation;
 			sourceTree = "<group>";
@@ -1883,30 +2035,12 @@
 			path = DateSelectionField;
 			sourceTree = "<group>";
 		};
-		D40DD1B930101FE4001CF496 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				D40DD1CA301022AE001CF496 /* ProfileUpdate.swift */,
-				D40DD1BC3010202A001CF496 /* Profile.swift */,
-				D40DD1BA30101FEC001CF496 /* ReferenceItem.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
 		D40DD1BE30102047001CF496 /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
 				D40DD1BF3010204D001CF496 /* ProfileMapper.swift */,
 			);
 			path = Mappers;
-			sourceTree = "<group>";
-		};
-		D40DD1C7301020D3001CF496 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				D40DD1C8301020D8001CF496 /* ProfileEndpoint.swift */,
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		D40DD1DA30102BB9001CF496 /* Models */ = {
@@ -1991,6 +2125,10 @@
 		F00E8B813AF1AA6E29087914 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				265F4ED484729374FE40D080 /* Settings */,
+				A2FCC62BF8D4E60E58F59720 /* ScanHistory */,
+				D309EEA21A50FB4243A30823 /* PersonalInformation */,
+				719B4CACACDAFD373485C365 /* EditProfile */,
 				086CE7E1A1C755FF6BCCB4FE /* Auth */,
 				20D947D1CB6B4B3A738328CC /* Home */,
 				87472DC8E6BB934DABBED0FF /* Onboarding */,
@@ -2006,11 +2144,8 @@
 		F6265E5F624A0A3011E3CCF3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				719B4CACACDAFD373485C365 /* EditProfile */,
-				D309EEA21A50FB4243A30823 /* PersonalInformation */,
-				17E0E1FF66C3F506CEF0998B /* Profile */,
-				A2FCC62BF8D4E60E58F59720 /* ScanHistory */,
-				265F4ED484729374FE40D080 /* Settings */,
+				6F9B935997CCD64D48B73AE1 /* Components */,
+				8AC717A10CA7B6C26DF85C58 /* ProfileView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2030,7 +2165,6 @@
 			children = (
 				10C73D0CFF5CD458CDF25398 /* Repositories */,
 				8AD06DE6859F0EED750F93AF /* UseCase */,
-				D40DD1B930101FE4001CF496 /* Entities */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
