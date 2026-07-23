@@ -34,7 +34,7 @@ struct HomeView: View {
                         // Add action when news button pressed
                     }
                     SettingsNavRow(icon: "home_chat_with_AI", title: "Chat with AI") {
-                        // Add action when AI button pressed
+                        router.push(HomeRoute.rag)
                     }
                 }
 
