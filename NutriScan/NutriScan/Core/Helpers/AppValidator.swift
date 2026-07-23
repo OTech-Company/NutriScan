@@ -19,6 +19,26 @@ struct AppValidator {
         return nil
     }
 
+    static func firstNameValidator(_ name: String?) -> String? {
+        guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return "First name is required"
+        }
+        if name.count < 2 || name.count > 50 {
+            return "First name must be between 2 and 50 characters"
+        }
+        return nil
+    }
+
+    static func lastNameValidator(_ name: String?) -> String? {
+        guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return "Last name is required"
+        }
+        if name.count < 2 || name.count > 50 {
+            return "Last name must be between 2 and 50 characters"
+        }
+        return nil
+    }
+
     static func validateMobile(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
             return "Mobile number is required"
@@ -56,8 +76,8 @@ struct AppValidator {
         guard let value = value, !value.isEmpty else {
             return "Password is required"
         }
-        if value.count < 6 {
-            return "Password must be at least 6 characters"
+        if value.count < 8 {
+            return "Password must be at least 8 characters"
         }
         return nil
     }
@@ -87,6 +107,28 @@ struct AppValidator {
     static func validateRequiredTextField(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
             return "This field is required"
+        }
+        return nil
+    }
+    
+    // MARK: - New Physical Measurement Validators
+    
+    static func heightValidator(_ value: String?) -> String? {
+        guard let value = value, !value.isEmpty else {
+            return "Height is required"
+        }
+        guard let h = Double(value), h >= 50, h <= 300 else {
+            return "Invalid height"
+        }
+        return nil
+    }
+    
+    static func weightValidator(_ value: String?) -> String? {
+        guard let value = value, !value.isEmpty else {
+            return "Weight is required"
+        }
+        guard let w = Double(value), w >= 20, w <= 500 else {
+            return "Invalid weight"
         }
         return nil
     }

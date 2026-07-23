@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NetworkProfileRepository: ProfileRepository {
+class NetworkProfileRepository: ProfileRepositoryOsama {
     private let session: URLSession
     private let baseURL = URL(string: "https://localhost:8080/api")!
     

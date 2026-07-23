@@ -21,7 +21,11 @@ struct CustomTextFieldInput: View {
     
     // Adaptive Colors
     private var placeholderColor: Color {
-        colorScheme == .light ? Color.Teal.teal300 : Color.Teal.teal200
+        if isTyping {
+            return colorScheme == .light ? Color.Teal.teal1500 : Color.Teal.teal400
+        } else {
+            return Color.Teal.teal1000
+        }
     }
     
     private var fieldBackgroundColor: Color {
@@ -80,6 +84,9 @@ struct CustomTextFieldInput: View {
             .foregroundColor(inputValueColor)
             .focused($isTyping)
             .textFieldStyle(.plain)
+            .textInputAutocapitalization(isPassword || leadingIcon == "envelope" ? .never : nil)
+            .autocorrectionDisabled(isPassword || leadingIcon == "envelope")
+            .keyboardType(leadingIcon == "envelope" ? .emailAddress : .default)
             
             Spacer()
             
@@ -94,7 +101,7 @@ struct CustomTextFieldInput: View {
             }
         }
         .padding(.horizontal, 16)
-        .frame(height: 68)
+        .frame(height: 60)
         .background(fieldBackgroundColor)
         .cornerRadius(12)
         .background(

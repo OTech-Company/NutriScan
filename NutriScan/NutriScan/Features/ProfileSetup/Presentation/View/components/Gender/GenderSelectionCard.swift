@@ -101,3 +101,15 @@ private struct SelectedCardShadow: ViewModifier {
     .background(Color.Teal.teal1600)
     .preferredColorScheme(.dark)
 }
+
+extension Gender {
+    func imageName(for colorScheme: ColorScheme) -> String {
+        switch (self, colorScheme) {
+        case (.male, .light):   return "maleLight"
+        case (.male, .dark):    return "maleDark"
+        case (.female, .light): return "femaleLight"
+        case (.female, .dark):  return "femaleDark"
+        default:                return "maleLight"
+        }
+    }
+}

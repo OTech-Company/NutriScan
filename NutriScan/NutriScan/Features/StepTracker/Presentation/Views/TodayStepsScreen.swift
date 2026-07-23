@@ -5,11 +5,10 @@ struct TodayStepsScreen: View {
     @StateObject private var viewModel: StepCounterViewModel
 
     init() {
-        let repository: StepRepositoryProtocol = StepRepositoryImpl()
         let viewModel = StepCounterViewModel(
-            observeStepsUseCase: ObserveDailyStepsUseCase(repository: repository),
-            requestAuthUseCase: RequestStepAuthorizationUseCase(repository: repository),
-            fetchHistoryUseCase: FetchStepsHistoryUseCase(repository: repository)
+            observeStepsUseCase: DIContainer.shared.resolve(type: ObserveDailyStepsUseCase.self),
+            requestAuthUseCase: DIContainer.shared.resolve(type: RequestStepAuthorizationUseCase.self),
+            fetchHistoryUseCase: DIContainer.shared.resolve(type: FetchStepsHistoryUseCase.self)
         )
         _viewModel = StateObject(wrappedValue: viewModel)
     }

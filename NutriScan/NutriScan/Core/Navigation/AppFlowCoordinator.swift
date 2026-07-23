@@ -14,6 +14,16 @@ import SwiftUI
 final class AppFlowCoordinator: ObservableObject {
     @Published private(set) var flow: AppFlow = .splash
 
+    init() {
+        NotificationCenter.default.addObserver(
+            forName: .userDidSessionExpire,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.logout()
+        }
+    }
+
     // Replace these with real checks (Keychain token, UserDefaults flag, etc.)
     // NOTE: key matches @AppStorage("hasSeenOnboarding") used in OnboardingScreen —
     // keep these in sync, or better, centralize the key name as a constant.
@@ -22,8 +32,12 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private var isAuthenticated: Bool {
-        // e.g. check Keychain for a valid session token
-        false
+        do {
+            _ = try KeychainManager.shared.get(key: .accessToken)
+            return true
+        } catch {
+            return false
+        }
     }
 
     private var hasCompletedProfileSetup: Bool {
@@ -62,6 +76,8 @@ final class AppFlowCoordinator: ObservableObject {
     }
     
     func logout() {
+        try? KeychainManager.shared.delete(key: .accessToken)
+        try? KeychainManager.shared.delete(key: .refreshToken)
         flow = .auth
     }
 }

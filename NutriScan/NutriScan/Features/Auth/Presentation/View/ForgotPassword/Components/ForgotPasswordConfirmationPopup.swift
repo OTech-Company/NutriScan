@@ -9,9 +9,10 @@ import SwiftUI
 
 struct ForgotPasswordConfirmationPopup: View {
     @Environment(\.colorScheme) var colorScheme
+    @Bindable var viewModel: ForgotPasswordViewModel
 
-    var recipient: String
-    var onResend: () -> Void
+    var onSendLink: () -> Void
+    var onResendLink: () -> Void
     var onClose: () -> Void
 
     var body: some View {
@@ -27,33 +28,73 @@ struct ForgotPasswordConfirmationPopup: View {
                 
                 // MARK: - Popup Card
                 VStack(alignment: .leading, spacing: 0) {
+                    if viewModel.popupState == .enterEmail {
+                        // MARK: Title
+                        Text("Reset Password")
+                            .font(Font.AppFont.title1)
+                            .foregroundColor(Color.ForgotPasswordSemantic.confirmationTitle)
+                            .padding(.top, 8)
 
-                    // MARK: Illustration
-                    Image(colorScheme == .light ? "forgot_pass_confirm" : "forgot_pass_confirm_dark")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: .infinity)
-                        .padding(.all, -26) 
-                        .customTealShadow()
-                    
-                    // MARK: Title
-                    Text("Password Sent!")
-                        .font(Font.AppFont.title1)
-                        .foregroundColor(Color.ForgotPasswordSemantic.confirmationTitle)
-                        .padding(.top, 12)
+                        // MARK: Description
+                        Text("Enter the email address associated with your account. We will send you a secure link to reset your password on our web portal.")
+                            .font(Font.AppFont.textSecondary)
+                            .foregroundColor(Color.ForgotPasswordSemantic.confirmationSubtitle)
+                            .lineSpacing(4)
+                            .padding(.top, 8)
 
-                    // MARK: Subtitle
-                    Text("We've sent the password to\n\(recipient)")
-                        .font(Font.AppFont.textPrimary)
-                        .foregroundColor(Color.ForgotPasswordSemantic.confirmationSubtitle)
-                        .lineSpacing(4)
-                        .padding(.top, 8)
-
-                    // MARK: Resend Button
-                    CustomPuffedButton(title: "Resend code", action: onResend)
+                        // MARK: Email Input Field
+                        CustomTextField(
+                            title: "Email Address",
+                            leadingIcon: "envelope",
+                            errorMessage: viewModel.email.error,
+                            placeHolder: "please enter your email",
+                            textFieldValue: $viewModel.email.value,
+                            state: $viewModel.email.state
+                        )
                         .padding(.top, 20)
-                 }
-                .padding(16)
+                        .onChange(of: viewModel.email.value) {
+                            viewModel.validateEmail()
+                        }
+
+                        // MARK: Action Button
+                        CustomPuffedButton(
+                            title: "Send Reset Link",
+                            action: onSendLink,
+                            isLoading: viewModel.isLoading
+                        )
+                        .padding(.top, 24)
+                    } else if viewModel.popupState == .emailSent {
+                        // MARK: Illustration
+                        Image(colorScheme == .light ? "forgot_pass_confirm" : "forgot_pass_confirm_dark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: .infinity)
+                            .padding(.all, -26) 
+                            .customTealShadow()
+                        
+                        // MARK: Title
+                        Text("Reset Link Sent!")
+                            .font(Font.AppFont.title1)
+                            .foregroundColor(Color.ForgotPasswordSemantic.confirmationTitle)
+                            .padding(.top, 12)
+
+                        // MARK: Subtitle
+                        Text("We've sent a secure password reset link to:\n\(viewModel.email.value)\n\nPlease check your inbox and click the link to reset your password on the web.")
+                            .font(Font.AppFont.textPrimary)
+                            .foregroundColor(Color.ForgotPasswordSemantic.confirmationSubtitle)
+                            .lineSpacing(4)
+                            .padding(.top, 8)
+
+                        // MARK: Resend Button
+                        CustomPuffedButton(
+                            title: "Resend Link",
+                            action: onResendLink,
+                            isLoading: viewModel.isLoading
+                        )
+                        .padding(.top, 20)
+                    }
+                }
+                .padding(20)
                 .background(Color.ForgotPasswordSemantic.confirmationCardBackground)
                 .cornerRadius(24)
                 .padding(.horizontal, 24)
@@ -71,7 +112,7 @@ struct ForgotPasswordConfirmationPopup: View {
                             .foregroundColor(Color.Teal.teal1000)
                     }
                 }
-                .padding(.top, 44)
+                .padding(.top, 32)
 
             }
         }
@@ -80,8 +121,9 @@ struct ForgotPasswordConfirmationPopup: View {
 
 #Preview {
     ForgotPasswordConfirmationPopup(
-        recipient: "elem*******221b@gmail.com",
-        onResend: {},
+        viewModel: ForgotPasswordViewModel(),
+        onSendLink: {},
+        onResendLink: {},
         onClose: {}
     )
 }

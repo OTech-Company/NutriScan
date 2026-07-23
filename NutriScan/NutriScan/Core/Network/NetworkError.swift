@@ -12,7 +12,9 @@ enum NetworkError: Error, LocalizedError {
     case invalidURL
     case noInternet
     case decodingFailed
-    case serverError(statusCode: Int, apiError: APIErrorResponse?)
+    case serverError(statusCode: Int)
+    case apiError(APIErrorResponse)
+    case unauthorized
     case unknown(Error)
     case rateLimited
     case requestFailed(statusCode: Int)
@@ -29,7 +31,10 @@ enum NetworkError: Error, LocalizedError {
             return "You've hit the daily request limit. Please try again later."
         case .requestFailed(let statusCode):
             return "The server responded with an error (code \(statusCode))."
-        
+        case .apiError(let response): return response.userFriendlyMessage
+        case .unauthorized:           return "Session expired. Please log in again."
+        case .unknown(let error):     return error.localizedDescription
+
         }
     }
 }
