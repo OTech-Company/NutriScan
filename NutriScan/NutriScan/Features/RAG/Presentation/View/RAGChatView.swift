@@ -81,6 +81,6 @@ struct RAGChatView: View {
             )
         }
         .background(Color.RAGSemantic.chatBackground.ignoresSafeArea())
-        .navigationBarHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
