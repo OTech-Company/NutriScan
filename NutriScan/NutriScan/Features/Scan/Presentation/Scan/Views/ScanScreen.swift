@@ -47,18 +47,18 @@ struct ScanScreen: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
-        .alert(
-            "Couldn't find that product",
+        .customAlert(
             isPresented: Binding(
                 get: { viewModel.errorMessage != nil },
                 set: { if !$0 { viewModel.dismissError() } }
             ),
-            presenting: viewModel.errorMessage
-        ) { _ in
-            Button("OK") { viewModel.dismissError() }
-        } message: { message in
-            Text(message)
-        }
+            type: .error,
+            title: "Couldn't find that product",
+            description: viewModel.errorMessage ?? "Unknown error",
+            primaryButtonTitle: "OK",
+            primaryButtonColor: Color.Red.red500,
+            primaryAction: { viewModel.dismissError() }
+        )
     }
 
     // MARK: Top bar

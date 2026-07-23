@@ -230,6 +230,15 @@
 		C09B288237090A279F688D6B /* NutriScanUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4ABEA6E74E1CC871EDCF7 /* NutriScanUITests.swift */; };
 		C10F7BA4E82DDB3682B14C75 /* ProfileRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A8BBC806A619EE5F59B978 /* ProfileRoute.swift */; };
 		C1F764871DD899EA687F7389 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBD8AEC4FBCD32615BCD314 /* ProfileViewModel.swift */; };
+		C546296B301239330032F885 /* ActiveAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462961301239330032F885 /* ActiveAlert.swift */; };
+		C546296C301239330032F885 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462962301239330032F885 /* CustomAlert.swift */; };
+		C546296D301239330032F885 /* CustomAlertCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462963301239330032F885 /* CustomAlertCard.swift */; };
+		C546296E301239330032F885 /* CustomAlertConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462964301239330032F885 /* CustomAlertConfig.swift */; };
+		C546296F301239330032F885 /* CustomAlertMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462965301239330032F885 /* CustomAlertMetrics.swift */; };
+		C5462970301239330032F885 /* CustomAlertPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462967301239330032F885 /* CustomAlertPreviews.swift */; };
+		C5462971301239330032F885 /* CustomAlertModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462966301239330032F885 /* CustomAlertModifiers.swift */; };
+		C5462972301239330032F885 /* CustomAlertSemanticColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462968301239330032F885 /* CustomAlertSemanticColors.swift */; };
+		C5462973301239330032F885 /* CustomAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462969301239330032F885 /* CustomAlertType.swift */; };
 		C56FF9E6BA6CD1FB3836D77A /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9E1ADE5ACA29CC62837A5D /* RegisterView.swift */; };
 		C6258CFEBBA3A67A4EDDF5FC /* RegisterHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1D0663CB45E88B8922C022 /* RegisterHeaderSection.swift */; };
 		C6B8F51A77F8958D0EA813CB /* Color+LoginSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BE1EDF263F1DD64F84F50C /* Color+LoginSemantic.swift */; };
@@ -546,6 +555,15 @@
 		BF7CEEB8AD96A0CE3B26A6ED /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C29B6E4A1E5F31C5C67384BF /* PlusJakartaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Medium.ttf"; sourceTree = "<group>"; };
 		C2D8F87E335CE8A51061854D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		C5462961301239330032F885 /* ActiveAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAlert.swift; sourceTree = "<group>"; };
+		C5462962301239330032F885 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
+		C5462963301239330032F885 /* CustomAlertCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertCard.swift; sourceTree = "<group>"; };
+		C5462964301239330032F885 /* CustomAlertConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertConfig.swift; sourceTree = "<group>"; };
+		C5462965301239330032F885 /* CustomAlertMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertMetrics.swift; sourceTree = "<group>"; };
+		C5462966301239330032F885 /* CustomAlertModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertModifiers.swift; sourceTree = "<group>"; };
+		C5462967301239330032F885 /* CustomAlertPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertPreviews.swift; sourceTree = "<group>"; };
+		C5462968301239330032F885 /* CustomAlertSemanticColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertSemanticColors.swift; sourceTree = "<group>"; };
+		C5462969301239330032F885 /* CustomAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertType.swift; sourceTree = "<group>"; };
 		C568CEE0F7C4BBAC76C6E80E /* SelectableChipConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableChipConstants.swift; sourceTree = "<group>"; };
 		C620F9C76E0073412A856961 /* ProfileSetupStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupStepView.swift; sourceTree = "<group>"; };
 		C6DCA189DBCCC73BD3A975CA /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -1277,6 +1295,7 @@
 		680237359DE65C4471FA56CE /* Shared Components */ = {
 			isa = PBXGroup;
 			children = (
+				C546296A301239330032F885 /* Alerts */,
 				2ED8094DD0D46A250F423525 /* Back */,
 				E8E6CBB40F86F2B7D097EF94 /* Chip */,
 				1E0E3123820E383C837D6A20 /* TextField */,
@@ -1916,6 +1935,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		C546296A301239330032F885 /* Alerts */ = {
+			isa = PBXGroup;
+			children = (
+				C5462961301239330032F885 /* ActiveAlert.swift */,
+				C5462962301239330032F885 /* CustomAlert.swift */,
+				C5462963301239330032F885 /* CustomAlertCard.swift */,
+				C5462964301239330032F885 /* CustomAlertConfig.swift */,
+				C5462965301239330032F885 /* CustomAlertMetrics.swift */,
+				C5462966301239330032F885 /* CustomAlertModifiers.swift */,
+				C5462967301239330032F885 /* CustomAlertPreviews.swift */,
+				C5462968301239330032F885 /* CustomAlertSemanticColors.swift */,
+				C5462969301239330032F885 /* CustomAlertType.swift */,
+			);
+			path = Alerts;
+			sourceTree = "<group>";
+		};
 		C587477207AF141CE28207AA /* DI */ = {
 			isa = PBXGroup;
 			children = (
@@ -2410,6 +2445,15 @@
 				4DA1E76BDC41B5C5F5C4EEEC /* MenuOptionRowComponent.swift in Sources */,
 				8238AC66C0339A16DACC9CF4 /* NetworkProfileRepository.swift in Sources */,
 				D48A2438301154AB0004D95E /* UpdateProfileUseCase.swift in Sources */,
+				C546296B301239330032F885 /* ActiveAlert.swift in Sources */,
+				C546296C301239330032F885 /* CustomAlert.swift in Sources */,
+				C546296D301239330032F885 /* CustomAlertCard.swift in Sources */,
+				C546296E301239330032F885 /* CustomAlertConfig.swift in Sources */,
+				C546296F301239330032F885 /* CustomAlertMetrics.swift in Sources */,
+				C5462970301239330032F885 /* CustomAlertPreviews.swift in Sources */,
+				C5462971301239330032F885 /* CustomAlertModifiers.swift in Sources */,
+				C5462972301239330032F885 /* CustomAlertSemanticColors.swift in Sources */,
+				C5462973301239330032F885 /* CustomAlertType.swift in Sources */,
 				2C78ED0F300E6C7E0092E6B2 /* RegisterViewModel.swift in Sources */,
 				2C78ED10300E6C7E0092E6B2 /* ForgotPasswordViewModel.swift in Sources */,
 				2C78ED11300E6C7E0092E6B2 /* RegisterRequest.swift in Sources */,

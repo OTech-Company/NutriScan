@@ -47,7 +47,7 @@ struct ForgotPasswordConfirmationPopup: View {
                             title: "Email Address",
                             leadingIcon: "envelope",
                             errorMessage: viewModel.email.error,
-                            placeHolder: "elementary221b@gmail.com",
+                            placeHolder: "please enter your email",
                             textFieldValue: $viewModel.email.value,
                             state: $viewModel.email.state
                         )

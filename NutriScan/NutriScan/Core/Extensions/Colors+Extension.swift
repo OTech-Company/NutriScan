@@ -81,4 +81,8 @@ extension Color {
         static let red500 = Color(
             red: 250 / 255.0, green: 77 / 255.0, blue: 94 / 255.0)
     }
+    
+    struct Yellow {
+        static let yellow500 = Color(red: 255 / 255.0, green: 204 / 255.0, blue: 0 / 255.0)
+    }
 }

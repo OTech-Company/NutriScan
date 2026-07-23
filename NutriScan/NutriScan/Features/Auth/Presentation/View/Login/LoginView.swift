@@ -11,7 +11,7 @@ struct LoginView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
-    @State private var showFailureDialog = false
+    @State private var activeAlert: ActiveAlert = .none
     @State private var errorMessage = ""
     @State private var viewModel = LoginViewModel()
 
@@ -76,26 +76,29 @@ struct LoginView: View {
             .navigationBarHidden(true)
             .ignoresSafeArea(edges: .top)
             
-            // Failure Dialog Overlay
-            if showFailureDialog {
-                FailureDialog(
-                    title: "Login Failed",
-                    subtitle: errorMessage
-                ) {
-                    showFailureDialog = false
-                }
-                .transition(.opacity)
-                .zIndex(1)
-            }
         }
         .onChange(of: viewModel.generalError) { _, error in
             if let error = error {
                 errorMessage = error
-                withAnimation {
-                    showFailureDialog = true
-                }
+                activeAlert = .error
             }
         }
+        .customAlert(activeAlert: $activeAlert, config: { alert in
+            switch alert {
+            case .error:
+                return CustomAlertConfig(
+                    type: .error,
+                    title: "Login Failed",
+                    description: errorMessage,
+                    primaryButtonTitle: "Try Again",
+                    primaryButtonColor: Color.Red.red500
+                )
+            default:
+                return CustomAlertConfig(type: .error, title: "Error", description: errorMessage)
+            }
+        }, primaryAction: { _ in
+            viewModel.generalError = nil
+        })
     }
 
     private func handleSignIn() {
