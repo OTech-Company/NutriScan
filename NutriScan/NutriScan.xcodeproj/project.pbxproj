@@ -256,6 +256,8 @@
 		D48A2441301158DA0004D95E /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2440301158D80004D95E /* Assembly.swift */; };
 		D48A2443301158FF0004D95E /* CoreAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2442301158FC0004D95E /* CoreAssembly.swift */; };
 		D48A24463011595F0004D95E /* ProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A24453011595C0004D95E /* ProfileAssembly.swift */; };
+		D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */; };
+		D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */; };
 		D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4F9FEF57E05BD25284EF02 /* BackButtonSemantics.swift */; };
 		D84A1824E923C92FD27A3051 /* UpdateProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F910C10E63D03A92A12BA055 /* UpdateProfileRequest.swift */; };
 		D8622591DADC3E1B3935454A /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD33FDD93A63C48269C13F5 /* AppRouter.swift */; };
@@ -556,6 +558,8 @@
 		D48A2440301158D80004D95E /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		D48A2442301158FC0004D95E /* CoreAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAssembly.swift; sourceTree = "<group>"; };
 		D48A24453011595C0004D95E /* ProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAssembly.swift; sourceTree = "<group>"; };
+		D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
+		D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSource.swift; sourceTree = "<group>"; };
 		D4E5DE6B86999459A4937187 /* HomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSummaryView.swift; sourceTree = "<group>"; };
 		DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderComponent.swift; sourceTree = "<group>"; };
 		DE3E799F631DC0569701B9C0 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -1668,6 +1672,8 @@
 		8F029F5B3012774D008B6CB1 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */,
+				D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */,
 				D40DD1C8301020D8001CF496 /* ProfileEndpoint.swift */,
 			);
 			path = DataSource;
@@ -2467,6 +2473,7 @@
 				0D9FA09D05984ED4E4C4117F /* ProfileSetupFlowView.swift in Sources */,
 				D48A2443301158FF0004D95E /* CoreAssembly.swift in Sources */,
 				9A9ADDF48A3BBC4320C3738F /* ProfileSetupFlowViewModel.swift in Sources */,
+				D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */,
 				CEB84D551C8D8247FA542164 /* ProfileSetupRoute.swift in Sources */,
 				F47A8EBA6FF78D365DE46055 /* ProfileSetupStep.swift in Sources */,
 				E703F74B90B7FD260A877B20 /* ProfileSetupStepView.swift in Sources */,
@@ -2538,6 +2545,7 @@
 				CCF4587EDFAE74FE820308CF /* empty99.swift in Sources */,
 				D40DD1D5301026F0001CF496 /* DIContainer.swift in Sources */,
 				D40DD1AC300FFE92001CF496 /* DateSelectionFieldSemantics.swift in Sources */,
+				D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */,
 				D40DD1CB301022B0001CF496 /* ProfileUpdate.swift in Sources */,
 				D40DD1C9301020DB001CF496 /* ProfileEndpoint.swift in Sources */,
 				8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */,

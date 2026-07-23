@@ -8,30 +8,30 @@
 import Foundation
 
 final class ProfileRepository: ProfileRepositoryProtocol {
-    private let networkService: NetworkServiceProtocol
+    private let remoteDataSource: ProfileRemoteDataSourceProtocol
 
-    init(networkService: NetworkServiceProtocol = DIContainer.shared.resolve(type: NetworkServiceProtocol.self)) {
-            self.networkService = networkService
-        }
+    init(remoteDataSource: ProfileRemoteDataSourceProtocol = DIContainer.shared.resolve(type: ProfileRemoteDataSourceProtocol.self)) {
+        self.remoteDataSource = remoteDataSource
+    }
 
     func getProfile() async throws -> Profile {
-        let dto: ProfileResponseDTO = try await networkService.request(ProfileEndpoint.getProfile)
+        let dto = try await remoteDataSource.getProfile()
         return ProfileMapper.map(dto: dto)
     }
 
     func updateProfile(update: ProfileUpdate) async throws -> Profile {
         let requestDTO = ProfileMapper.map(update: update)
-        let responseDTO: ProfileResponseDTO = try await networkService.request(ProfileEndpoint.updateProfile(requestDTO))
+        let responseDTO = try await remoteDataSource.updateProfile(requestDTO: requestDTO)
         return ProfileMapper.map(dto: responseDTO)
     }
 
     func getAllergies() async throws -> [ReferenceItem] {
-        let dtos: [ReferenceItemDTO] = try await networkService.request(ProfileEndpoint.getAllergies)
+        let dtos = try await remoteDataSource.getAllergies()
         return dtos.map { ProfileMapper.map(dto: $0) }
     }
 
     func getDiseases() async throws -> [ReferenceItem] {
-        let dtos: [ReferenceItemDTO] = try await networkService.request(ProfileEndpoint.getDiseases)
+        let dtos = try await remoteDataSource.getDiseases()
         return dtos.map { ProfileMapper.map(dto: $0) }
     }
 }
