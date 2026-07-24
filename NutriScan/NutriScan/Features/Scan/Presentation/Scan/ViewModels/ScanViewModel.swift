@@ -1,74 +1,163 @@
 import Foundation
 import SwiftUI
+import PhotosUI
 
 @MainActor
 final class ScanViewModel: ObservableObject {
 
-    // MARK: - Published state consumed by ScanScreen
+    enum State: Equatable {
+        case idle
+        case capturing
+        case uploading
+        case processing
+        case result
+    }
 
-    @Published private(set) var detectedProduct: Product?
-    @Published private(set) var isLookingUp: Bool = false
+    @Published var state: State = .idle
+    @Published var capturedImage: UIImage?
+    @Published var scanResult: ScanResult?
     @Published var errorMessage: String?
-
-    private let lookupProductUseCase: LookupProductUseCase
-    private var lastSubmittedBarcode: String?
-
-    nonisolated init(lookupProductUseCase: LookupProductUseCase) {
-        self.lookupProductUseCase = lookupProductUseCase
-    }
-    
-    nonisolated static func makeDefault() -> ScanViewModel {
-        ScanViewModel(lookupProductUseCase: DIContainer.shared.resolve(type: LookupProductUseCase.self))
-    }
-    // MARK: - Intents (called by the View)
-
-    /// Called every time the camera layer detects a barcode string.
-    func onBarcodeDetected(_ barcode: String) {
-        // Avoid re-triggering a lookup for the same code while one is in flight,
-        // and avoid re-fetching if we already matched this exact barcode.
-        guard !isLookingUp, barcode != lastSubmittedBarcode else { return }
-        lastSubmittedBarcode = barcode
-
-        Task {
-            await lookupProduct(barcode: barcode)
+    @Published var showGallery = false
+    @Published var gallerySelection: PhotosPickerItem? {
+        didSet {
+            guard let item = gallerySelection else { return }
+            Task { await loadGalleryImage(item) }
         }
     }
 
-    func addTapped() {
-        guard let product = detectedProduct else { return }
-        // TODO: call an AddProductToLogUseCase here, following the same
-        // pattern as LookupProductUseCase, when you build that flow.
-        print("Added \(product.brand) - \(product.name)")
+    let cameraManager = CameraManager()
+
+    private let uploadScanUseCase: UploadScanUseCase
+    private let observeScanResultUseCase: ObserveScanResultUseCase
+    private var currentScanId: String?
+
+    nonisolated init(
+        uploadScanUseCase: UploadScanUseCase,
+        observeScanResultUseCase: ObserveScanResultUseCase
+    ) {
+        self.uploadScanUseCase = uploadScanUseCase
+        self.observeScanResultUseCase = observeScanResultUseCase
+    }
+
+    nonisolated static func makeDefault() -> ScanViewModel {
+        let repository = ScanRepositoryImpl()
+        return ScanViewModel(
+            uploadScanUseCase: UploadScanUseCaseImpl(repository: repository),
+            observeScanResultUseCase: ObserveScanResultUseCaseImpl(repository: repository)
+        )
+    }
+
+    func startCamera() {
+        cameraManager.checkAuthorization()
+    }
+
+    func stopCamera() {
+        cameraManager.stopSession()
+    }
+
+    func capturePhoto() {
+        guard state == .idle else { return }
+        state = .capturing
+        cameraManager.capturePhoto()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self, let data = self.cameraManager.capturedImageData else {
+                self?.state = .idle
+                return
+            }
+            self.uploadAndObserve(imageData: data)
+        }
+    }
+
+    func retake() {
+        state = .idle
+        capturedImage = nil
+        scanResult = nil
+        errorMessage = nil
+        currentScanId = nil
+        cameraManager.capturedImageData = nil
+        cameraManager.startSession()
     }
 
     func dismissError() {
         errorMessage = nil
     }
 
-    /// Reset so the next distinct barcode can trigger a fresh lookup
-    /// (e.g. call this when the user taps "scan again" or the card is dismissed).
-    func reset() {
-        detectedProduct = nil
-        lastSubmittedBarcode = nil
+    private func loadGalleryImage(_ item: PhotosPickerItem) async {
+        guard state == .idle else { return }
+        state = .capturing
+
+        guard let data = try? await item.loadTransferable(type: Data.self) else {
+            errorMessage = ScanError.emptyImage.userMessage
+            state = .idle
+            return
+        }
+
+        if let uiImage = UIImage(data: data) {
+            capturedImage = uiImage
+            cameraManager.stopSession()
+        }
+
+        uploadAndObserve(imageData: data)
     }
 
-    // MARK: - Private
+    private func uploadAndObserve(imageData: Data) {
+        state = .uploading
+        capturedImage = UIImage(data: imageData)
 
-    private func lookupProduct(barcode: String) async {
-        isLookingUp = true
-        defer { isLookingUp = false }
-
-        do {
-            let product = try await lookupProductUseCase.execute(barcode: barcode)
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                detectedProduct = product
+        Task {
+            do {
+                let scanId = try await uploadScanUseCase.execute(
+                    imageData: imageData,
+                    filename: "scan_\(UUID().uuidString).jpg"
+                )
+                currentScanId = scanId
+                state = .processing
+                observeResult(scanId: scanId)
+            } catch {
+                errorMessage = error.localizedDescription
+                state = .idle
             }
-        } catch let error as ProductError {
-            errorMessage = error.userMessage
-            lastSubmittedBarcode = nil // allow retry on the same code
-        } catch {
-            errorMessage = ProductError.unknown.userMessage
-            lastSubmittedBarcode = nil
         }
+    }
+
+    private func observeResult(scanId: String) {
+        Task {
+            do {
+                for try await result in observeScanResultUseCase.execute(scanId: scanId) {
+                    if result.verdict != .caution || result.nutritionFacts != nil {
+                        withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+                            scanResult = result
+                            state = .result
+                        }
+                        return
+                    }
+                }
+            } catch {
+                await fetchResultPolling(scanId: scanId)
+            }
+        }
+    }
+
+    private func fetchResultPolling(scanId: String) async {
+        let repository = DIContainer.shared.resolve(type: ScanRepository.self)
+        let maxAttempts = 30
+        let interval: UInt64 = 2_000_000_000
+
+        for _ in 0..<maxAttempts {
+            do {
+                let result = try await repository.fetchScanResult(scanId: scanId)
+                withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
+                    scanResult = result
+                    state = .result
+                }
+                return
+            } catch {
+                try? await Task.sleep(nanoseconds: interval)
+            }
+        }
+
+        errorMessage = ScanError.scanFailed("Timed out waiting for results.").userMessage
+        state = .idle
     }
 }
