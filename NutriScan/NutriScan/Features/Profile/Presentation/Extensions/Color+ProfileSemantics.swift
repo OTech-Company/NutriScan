@@ -11,10 +11,10 @@ extension Color {
     struct ProfileSemantics {
         static let background = Color(light: .white, dark: Color.Teal.teal1500)
 
-        static let headerBackground = Color(light: Color.Teal.teal800, dark: Color.Teal.teal1500)
+        static let headerBackground = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal1500)
         static let headerDecoration = Color(light: Color.Teal.teal1200, dark: Color.Teal.teal1400)
 
-        static let containerBackground = Color(light: .white, dark: Color.Teal.teal1500)
+        static let containerBackground = Color(light: .white, dark: Color.Teal.teal1600)
 
         static let sectionTitle = Color.Teal.teal1000 // static both modes per spec
 

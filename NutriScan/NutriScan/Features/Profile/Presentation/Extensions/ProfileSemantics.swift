@@ -28,7 +28,7 @@ enum ProfileSemantics {
     }
 
     enum Radius {
-        static let containerTop: CGFloat = 24
+        static let containerTop: CGFloat = 42
         static let streakBadge: CGFloat = 8
         static let familyMembersContainerLight: CGFloat = 16
         static let familyMembersContainerDark: CGFloat = 22
@@ -52,5 +52,8 @@ enum ProfileSemantics {
     enum Animation {
         static let navigationTransition: SwiftUI.Animation = .easeInOut(duration: 0.3)
         static let scrollTransition: SwiftUI.Animation = .easeInOut(duration: 0.25)
+    }
+    enum HeaderLayout {
+        static let headerHeight: CGFloat = 140
     }
 }

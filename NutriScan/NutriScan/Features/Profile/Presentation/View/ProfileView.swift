@@ -12,39 +12,47 @@ struct ProfileView: View {
     var viewModel: ProfileViewModel
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 0) {
+        ZStack(alignment: .top) {
+            
+                Color.ProfileSemantics.headerBackground
+                    .ignoresSafeArea()
+
+                ProfileHeaderDecoration()
+
                 ProfileHeaderView(
-                    userName: viewModel.state.fullName,   // was: viewModel.state.userName
-                    avatarURL: nil,                        // no avatar field in this scoped response — pending confirmation if needed
-                    streakDays: 15,                         // not part of this contract — flag below
+                    userName: viewModel.state.fullName,
+                    avatarURL: nil,
+                    streakDays: 15, // TODO: not part of the current contract — flagged previously
                     onEdit: { router.push(ProfileRoute.editProfile) }
-                )
+                ).padding(.top, 42)
+            
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.sectionSpacing) {
+                        FamilyMembersSectionView(
+                            members: viewModel.state.familyMembers,
+                            onAddMember: { /* TODO: router.push(ProfileRoute.addFamilyMember) once that route exists */ },
+                            onShowDetails: { _ in /* TODO: router.push(ProfileRoute.familyMemberDetails(member)) */ }
+                        )
 
-                VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.sectionSpacing) {
-                    FamilyMembersSectionView(
-                        members: viewModel.state.familyMembers,
-                        onAddMember: { /* TODO: router.push(ProfileRoute.addFamilyMember) once that route exists */ },
-                        onShowDetails: { _ in /* TODO: router.push(ProfileRoute.familyMemberDetails(member)) */ }
-                    )
-
-                    SettingsSectionView(
-                        onScanHistory: { router.push(ProfileRoute.scanHistory) },
-                        onNotifications: { /* TODO: no ProfileRoute case for notifications yet */ },
-                        onSettings: { router.push(ProfileRoute.settings) }
-                    )
+                        SettingsSectionView(
+                            onScanHistory: { router.push(ProfileRoute.scanHistory) },
+                            onNotifications: { /* TODO: no ProfileRoute case for notifications yet */ },
+                            onSettings: { router.push(ProfileRoute.settings) }
+                        )
+                    }
+                    .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
+                    .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
+                    .padding(.bottom, 100) // clearance above bottom tab bar
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
-                .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
-                .padding(.bottom, 100) // clearance above bottom tab bar
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color.ProfileSemantics.containerBackground)
-                .clipShape(RoundedCorner(radius: ProfileSemantics.Radius.containerTop, corners: [.topLeft, .topRight]))
-                .offset(y: -ProfileSemantics.Radius.containerTop) // pulls container up to overlap header's bottom edge
             }
+            .background(Color.ProfileSemantics.containerBackground)
+            .clipShape(RoundedCorner(radius: ProfileSemantics.Radius.containerTop, corners: [.topLeft, .topRight]))
+            .padding(.top, 180)
+            .ignoresSafeArea(edges: .bottom)
         }
         .ignoresSafeArea()
-        .background(Color.ProfileSemantics.background)
         .navigationBarHidden(true)
         .task {
             await viewModel.loadProfile()
