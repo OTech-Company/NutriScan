@@ -17,7 +17,11 @@ struct RAGAPIService: RAGAPIServicing {
     }
 
     func query(_ question: String, language: RAGLanguage) async throws -> RAGResponseDTO {
-        let dto = RAGQueryDTO(query: question, language: language.rawValue)
+        let prefix = language == .english
+            ? "Answer in English. "
+            : "أجب بالعربية فقط. "
+        let instructedQuery = prefix + question
+        let dto = RAGQueryDTO(query: instructedQuery, language: language.rawValue)
         return try await network.request(RAGEndpoint.query(dto))
     }
 }

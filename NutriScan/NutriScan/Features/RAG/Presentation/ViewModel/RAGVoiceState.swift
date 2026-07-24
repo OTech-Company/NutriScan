@@ -76,6 +76,9 @@ final class RAGVoiceChatViewModel: NSObject {
             speechService.stop()
             submit(liveTranscript)
         case .speaking:
+            // Set state before stopping so the delegate's didFinish guard fails
+            // and doesn't schedule a duplicate listen().
+            state = .idle
             synthesizer.stopSpeaking(at: .immediate)
             speechService.deactivateSession()
             listen()
@@ -101,6 +104,7 @@ final class RAGVoiceChatViewModel: NSObject {
         }
         speechService.onFinish = { [weak self] transcript in
             print("submitted trans \(transcript)")
+            guard !transcript.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
             self?.submit(transcript)
         }
         speechService.onError = { [weak self] error in
@@ -112,10 +116,7 @@ final class RAGVoiceChatViewModel: NSObject {
 
     private func submit(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty, !hasSubmittedCurrentTurn else {
-            if trimmed.isEmpty { listen() }
-            return
-        }
+        guard !trimmed.isEmpty, !hasSubmittedCurrentTurn else { return }
         hasSubmittedCurrentTurn = true
         speechService.stop()
         state = .thinking
@@ -182,8 +183,12 @@ final class RAGVoiceChatViewModel: NSObject {
 extension RAGVoiceChatViewModel: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         guard state == .speaking else { return }
-        // Deactivate playback session so the next listen() can set up .record
+        // Deactivate playback session, then wait for iOS to fully release it
+        // before setting up the record session for the next listen.
         speechService.deactivateSession()
-        listen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+            guard let self, self.state != .listening else { return }
+            self.listen()
+        }
     }
 }

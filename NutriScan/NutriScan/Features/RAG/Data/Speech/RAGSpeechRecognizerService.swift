@@ -158,7 +158,7 @@ final class RAGSpeechRecognizerService {
             if let result {
                 let text = result.bestTranscription.formattedString
                 self.lastTranscript = text
-                self.onTranscriptUpdate?(text)
+                DispatchQueue.main.async { self.onTranscriptUpdate?(text) }
 
                 // Mark that we've heard real speech so the silence timer
                 // is allowed to arm itself from now on.
@@ -167,8 +167,10 @@ final class RAGSpeechRecognizerService {
                 }
 
                 if result.isFinal {
-                    self.onFinish?(text)
                     self.stop()
+                    if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        DispatchQueue.main.async { self.onFinish?(text) }
+                    }
                 }
             }
 
