@@ -68,15 +68,20 @@ final class RAGVoiceChatViewModel: NSObject {
         }
     }
 
-    /// Tapping the waveform: stop early while listening, or restart after an error/idle state.
-    func toggleListening() {
+    /// Tapping the waveform or the action button.
+    /// Listening → stop & submit. Speaking → interrupt & go back to listening.
+    func toggleAction() {
         switch state {
         case .listening:
             speechService.stop()
             submit(liveTranscript)
+        case .speaking:
+            synthesizer.stopSpeaking(at: .immediate)
+            speechService.deactivateSession()
+            listen()
         case .idle, .error:
             listen()
-        case .thinking, .speaking:
+        case .thinking:
             break
         }
     }

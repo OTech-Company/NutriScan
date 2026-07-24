@@ -25,21 +25,29 @@ struct RAGVoiceChatView: View {
             RAGVoiceWaveformView(state: viewModel.state)
                 .frame(height: 150)
                 .padding(.horizontal, 24)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    viewModel.toggleListening()
-                }
 
-            Spacer(minLength: 24)
+            Spacer(minLength: 16)
 
-            // Only a short status word is ever shown here — never the user's
-            // spoken question or the assistant's answer. The answer is spoken aloud.
             Text(viewModel.statusLabel)
                 .font(Font.AppFont.subtitle2)
                 .foregroundStyle(viewModel.state == .error ? Color.RAGSemantic.errorText : Color.RAGSemantic.aiText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
                 .animation(.easeInOut(duration: 0.2), value: viewModel.statusLabel)
+
+            Spacer(minLength: 16)
+
+            // Action button — different icon per state
+            Button(action: { viewModel.toggleAction() }) {
+                Image(systemName: actionButtonIcon)
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 72, height: 72)
+                    .background(actionButtonColor)
+                    .clipShape(Circle())
+                    .shadow(color: actionButtonColor.opacity(0.4), radius: 12, y: 4)
+            }
+            .accessibilityLabel(actionButtonLabel)
 
             Spacer(minLength: 24)
 
@@ -52,6 +60,37 @@ struct RAGVoiceChatView: View {
         .onAppear { viewModel.start() }
         .onDisappear { viewModel.stop() }
     }
+
+    // MARK: - Action Button Helpers
+
+    private var actionButtonIcon: String {
+        switch viewModel.state {
+        case .listening:  return "stop.fill"
+        case .speaking:   return "forward.fill"
+        case .thinking:   return "hourglass"
+        case .idle, .error: return "mic.fill"
+        }
+    }
+
+    private var actionButtonColor: Color {
+        switch viewModel.state {
+        case .listening:  return Color.RAGSemantic.errorText
+        case .speaking:   return Color.RAGSemantic.sendButton
+        case .thinking:   return Color.RAGSemantic.sendButtonDisabled
+        case .idle, .error: return Color.RAGSemantic.sendButton
+        }
+    }
+
+    private var actionButtonLabel: String {
+        switch viewModel.state {
+        case .listening:  return "Stop listening"
+        case .speaking:   return "Skip answer"
+        case .thinking:   return "Loading"
+        case .idle, .error: return "Start speaking"
+        }
+    }
+
+    // MARK: - Header / Footer
 
     private var header: some View {
         HStack {
