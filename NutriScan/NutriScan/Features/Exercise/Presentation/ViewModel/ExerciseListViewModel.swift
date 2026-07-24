@@ -10,79 +10,48 @@ import Observation
 final class ExerciseListViewModel {
 
     // MARK: - State
-    var searchQuery: String = ""
-    var selectedCategory: ExerciseCategory = .all
+    var searchQuery: String = "" {
+        didSet {
+            onSearchQueryChanged()
+        }
+    }
+
+    var selectedCategory: ExerciseCategory = .all {
+        didSet {
+            if oldValue != selectedCategory {
+                onCategorySelected()
+            }
+        }
+    }
+
     var selectedExercise: Exercise? = nil  // drives bottom sheet
     var isLoadingCategories: Bool = false
     var categoryError: String? = nil
 
+    // MARK: - Exercises Pagination State
+    var exercises: [Exercise] = []
+    var isLoadingExercises: Bool = false
+    var isLoadingMore: Bool = false
+    var hasNextPage: Bool = true
+    var currentPage: Int = 1
+    var exercisesError: String? = nil
+
     // MARK: - Data
     var categories: [ExerciseCategory] = [.all]
 
-    var allExercises: [Exercise] = [
-        Exercise(
-            id: "1",
-            name: "Full Body Warm Up",
-            equipment: "equipment",
-            target: "target",
-            category: "Warm Up",
-            imageName: "figure.walk",
-            instructions: "Stand with your feet shoulder-width apart. Perform slow arm circles, leg swings, and torso rotations to gradually raise your heart rate and loosen your joints before a workout. Repeat each movement 10–15 times."
-        ),
-        Exercise(
-            id: "2",
-            name: "Strength Exercise",
-            equipment: "dumbbells",
-            target: "full body",
-            category: "Strength",
-            imageName: "figure.strengthtraining.traditional",
-            instructions: "Hold a dumbbell in each hand at shoulder height. Press both weights overhead until your arms are fully extended, then slowly lower them back to the starting position. Keep your core tight throughout the movement. Perform 3 sets of 12 repetitions."
-        ),
-        Exercise(
-            id: "3",
-            name: "Both Side Plank",
-            equipment: "body weight",
-            target: "core",
-            category: "Strength",
-            imageName: "figure.core.training",
-            instructions: "Start in a standard plank position. Shift your weight onto your right forearm and rotate your body sideways, stacking your feet and raising your left arm toward the ceiling. Hold for 20–30 seconds, then switch sides. Keep your hips lifted throughout."
-        ),
-        Exercise(
-            id: "4",
-            name: "Abs Workout",
-            equipment: "body weight",
-            target: "abs",
-            category: "Core",
-            imageName: "figure.core.training",
-            instructions: "Lie flat on your back with your knees bent and feet flat on the ground. Place your hands behind your head with your elbows pointing outwards. Engaging your abs, slowly lift your upper body off the ground, curling forward until your torso is at a 45-degree angle. Pause for a moment at the top, then slowly lower your upper body back down to the starting position. Repeat for the desired number of repetitions."
-        ),
-        Exercise(
-            id: "5",
-            name: "Torso and Trap Workout",
-            equipment: "resistance band",
-            target: "trapezius",
-            category: "Strength",
-            imageName: "figure.rowing",
-            instructions: "Sit upright on a bench or chair with a resistance band looped around your feet. Hold one end in each hand. Pull the band toward your torso, driving your elbows back and squeezing your shoulder blades together. Slowly release and repeat for 3 sets of 15 reps."
-        ),
-        Exercise(
-            id: "6",
-            name: "Lower Back Exercise",
-            equipment: "body weight",
-            target: "lower back",
-            category: "Warm Up",
-            imageName: "figure.flexibility",
-            instructions: "Lie face down on a mat with your arms extended in front of you. Simultaneously lift your arms, chest, and legs off the ground, squeezing your glutes and lower back muscles. Hold for 2–3 seconds at the top, then slowly lower down. Perform 3 sets of 12 repetitions."
-        )
-    ]
-
     private let fetchCategoriesUseCase: FetchExerciseCategoriesUseCase
+    private let fetchExercisesUseCase: FetchExercisesUseCase
+    private var searchTask: Task<Void, Never>? = nil
 
-    init(fetchCategoriesUseCase: FetchExerciseCategoriesUseCase = FetchExerciseCategoriesUseCase()) {
+    init(
+        fetchCategoriesUseCase: FetchExerciseCategoriesUseCase = FetchExerciseCategoriesUseCase(),
+        fetchExercisesUseCase: FetchExercisesUseCase = FetchExercisesUseCase()
+    ) {
         self.fetchCategoriesUseCase = fetchCategoriesUseCase
+        self.fetchExercisesUseCase = fetchExercisesUseCase
     }
 
-    // MARK: - Async Networking
+    // MARK: - Categories Networking
 
     func loadCategories() async {
         isLoadingCategories = true
@@ -95,14 +64,77 @@ final class ExerciseListViewModel {
         }
     }
 
-    // MARK: - Computed
-    var filteredExercises: [Exercise] {
-        allExercises.filter { exercise in
-            let matchesCategory = selectedCategory == .all ||
-                                  exercise.category.localizedCaseInsensitiveContains(selectedCategory.name) ||
-                                  exercise.category.localizedCaseInsensitiveContains(selectedCategory.id)
-            let matchesSearch = searchQuery.isEmpty || exercise.name.localizedCaseInsensitiveContains(searchQuery)
-            return matchesCategory && matchesSearch
+    // MARK: - Exercises Networking & Pagination
+
+    func loadInitialExercises() async {
+        currentPage = 1
+        hasNextPage = true
+        isLoadingExercises = true
+        exercisesError = nil
+
+        defer { isLoadingExercises = false }
+
+        do {
+            let bodyPartFilter = (selectedCategory == .all) ? nil : selectedCategory.id
+            let queryFilter = searchQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+
+            let request = FetchExercisesRequest(
+                page: 1,
+                limit: 20,
+                bodyPart: bodyPartFilter,
+                searchQuery: queryFilter.isEmpty ? nil : queryFilter
+            )
+
+            let result = try await fetchExercisesUseCase.execute(request: request)
+
+            self.exercises = result.exercises
+            self.hasNextPage = result.hasNext
+            self.currentPage = result.currentPage
+        } catch {
+            self.exercisesError = error.localizedDescription
+        }
+    }
+
+    func loadNextPage() async {
+        guard !isLoadingMore, !isLoadingExercises, hasNextPage else { return }
+
+        isLoadingMore = true
+        defer { isLoadingMore = false }
+
+        let nextPage = currentPage + 1
+        let bodyPartFilter = (selectedCategory == .all) ? nil : selectedCategory.id
+        let queryFilter = searchQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        do {
+            let request = FetchExercisesRequest(
+                page: nextPage,
+                limit: 20,
+                bodyPart: bodyPartFilter,
+                searchQuery: queryFilter.isEmpty ? nil : queryFilter
+            )
+
+            let result = try await fetchExercisesUseCase.execute(request: request)
+
+            self.exercises.append(contentsOf: result.exercises)
+            self.hasNextPage = result.hasNext
+            self.currentPage = result.currentPage
+        } catch {
+            // Silently handle page load errors or keep state
+        }
+    }
+
+    private func onCategorySelected() {
+        Task { @MainActor in
+            await loadInitialExercises()
+        }
+    }
+
+    private func onSearchQueryChanged() {
+        searchTask?.cancel()
+        searchTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 400_000_000) // 400ms debounce
+            guard !Task.isCancelled else { return }
+            await loadInitialExercises()
         }
     }
 }

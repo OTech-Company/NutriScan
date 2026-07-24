@@ -3,7 +3,9 @@
 //  NutriScan
 //
 
+import Foundation
+
 protocol ExerciseRepositoryProtocol {
-    func fetchExercises() async throws -> [Exercise]
+    func fetchExercises(request: FetchExercisesRequest) async throws -> PaginatedExercisesResult
     func fetchCategories() async throws -> [ExerciseCategory]
 }

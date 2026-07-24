@@ -3,6 +3,8 @@
 //  NutriScan
 //
 
+import Foundation
+
 final class ExerciseRepositoryImpl: ExerciseRepositoryProtocol {
     private let service: ExerciseService
 
@@ -10,9 +12,18 @@ final class ExerciseRepositoryImpl: ExerciseRepositoryProtocol {
         self.service = service
     }
 
-    func fetchExercises() async throws -> [Exercise] {
-        let dtos = try await service.fetchExercises()
-        return dtos.map { $0.toDomain() }
+    func fetchExercises(request: FetchExercisesRequest) async throws -> PaginatedExercisesResult {
+        let response = try await service.fetchExercises(request: request)
+
+        let exercises = response.data.map { $0.toDomain() }
+        let pagination = response.meta.pagination
+
+        return PaginatedExercisesResult(
+            exercises: exercises,
+            hasNext: pagination.hasNext,
+            currentPage: pagination.currentPage,
+            totalPages: pagination.totalPages
+        )
     }
 
     func fetchCategories() async throws -> [ExerciseCategory] {

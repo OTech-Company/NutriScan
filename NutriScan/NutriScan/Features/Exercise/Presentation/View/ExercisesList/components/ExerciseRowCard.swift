@@ -14,7 +14,12 @@ struct ExerciseRowCard: View {
             HStack(spacing: 12) {
 
                 // MARK: Thumbnail
-                exerciseThumbnail
+                CachedImage(
+                    urlString: exercise.fullImageUrlString,
+                    failureImageName: "figure.mixed.cardio",
+                    contentMode: .fit
+                )
+                .frame(width: 64, height: 64)
                     .frame(width: 64, height: 64)
                     .background(
                         RoundedRectangle(cornerRadius: 12)
@@ -49,22 +54,6 @@ struct ExerciseRowCard: View {
         }
         .buttonStyle(.plain)
     }
-
-    // MARK: - Thumbnail
-    @ViewBuilder
-    private var exerciseThumbnail: some View {
-        if let sfSymbol = exercise.imageName {
-            Image(systemName: sfSymbol)
-                .font(.system(size: 28, weight: .medium))
-                .foregroundColor(Color.Teal.teal800)
-                .frame(width: 64, height: 64)
-        } else {
-            Image(systemName: "figure.mixed.cardio")
-                .font(.system(size: 28, weight: .medium))
-                .foregroundColor(Color.Teal.teal800)
-                .frame(width: 64, height: 64)
-        }
-    }
 }
 
 #Preview {
@@ -72,11 +61,12 @@ struct ExerciseRowCard: View {
         exercise: Exercise(
             id: "1",
             name: "Full Body Warm Up",
-            equipment: "equipment",
-            target: "target",
             category: "Warm Up",
-            imageName: "figure.walk",
-            instructions: "Sample instructions here."
+            bodyPart: "full body",
+            equipment: "equipment",
+            instructions: ExerciseInstructionText(en: "Sample instructions here.", ar: ""),
+            instructionSteps: ExerciseInstructionSteps(en: ["Sample step 1"], ar: []),
+            target: "target"
         ),
         onTap: {}
     )

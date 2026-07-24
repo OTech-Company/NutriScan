@@ -35,26 +35,36 @@ struct ExerciseWorkoutPlayerView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
-                .padding(.bottom, 24)
+                .padding(.bottom, 20)
 
-                // MARK: Exercise Title
-                Text(viewModel.exercise.name)
-                    .font(Font.AppFont.title3)
-                    .foregroundColor(Color.ExerciseSemantic.rowTitle)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 20)
+                // MARK: Exercise Title & Info
+                VStack(spacing: 4) {
+                    Text(viewModel.exercise.name)
+                        .font(Font.AppFont.title3)
+                        .foregroundColor(Color.ExerciseSemantic.rowTitle)
+                        .multilineTextAlignment(.center)
+
+                    Text("\(viewModel.exercise.equipment.capitalized)  •  \(viewModel.exercise.target.capitalized)")
+                        .font(Font.AppFont.textSecondary)
+                        .foregroundColor(Color.ExerciseSemantic.rowSubtitle)
+                }
+                .padding(.horizontal, 20)
 
                 Spacer()
 
-                // MARK: Illustration Circle
+                // MARK: Illustration Circle & GIF Player
                 ZStack {
                     Circle()
                         .fill(Color.ExerciseSemantic.playerCircleBg)
                         .frame(width: 260, height: 260)
 
-                    Image(systemName: viewModel.exercise.imageName ?? "figure.cross.training")
-                        .font(.system(size: 100, weight: .light))
-                        .foregroundColor(Color.Teal.teal800)
+                    CachedAnimatedImage(
+                        urlString: viewModel.exercise.fullGifUrlString ?? viewModel.exercise.fullImageUrlString,
+                        failureImageName: "figure.cross.training",
+                        contentMode: .fit
+                    )
+                    .frame(width: 220, height: 220)
+                    .clipShape(Circle())
                 }
 
                 Spacer()
@@ -74,7 +84,7 @@ struct ExerciseWorkoutPlayerView: View {
                 .padding(.bottom, 32)
 
                 // MARK: Action Controls
-                if viewModel.isPaused {
+                if viewModel.hasStarted && viewModel.isPaused {
                     WorkoutPausedControlsView(viewModel: viewModel)
                 } else {
                     WorkoutActiveControlsView(viewModel: viewModel) {
@@ -86,20 +96,21 @@ struct ExerciseWorkoutPlayerView: View {
             .navigationBarHidden(true)
             .toolbar(.hidden, for: .tabBar)
             .hideCustomTabBar(true)
-
-            // MARK: - Success Completion Dialog
-            if viewModel.showSuccessDialog {
-                SuccessDialog(
-                    title: "Workout Completed!",
-                    subtitle: "Great job! You completed \(viewModel.exercise.name) in \(viewModel.formattedTime) with \(viewModel.setsCount) set\(viewModel.setsCount > 1 ? "s" : "") and \(viewModel.repsCount) rep\(viewModel.repsCount > 1 ? "s" : "")."
-                ) {
-                    viewModel.showSuccessDialog = false
-                    router.pop()
-                }
-                .transition(.opacity.combined(with: .scale))
-                .zIndex(200)
-            }
         }
+        // MARK: - Success Completion Alert
+        .customAlert(
+            isPresented: $viewModel.showSuccessDialog,
+            type: .success,
+            title: "Workout Completed!",
+            description: "Great job! You completed \(viewModel.exercise.name) (\(viewModel.setsCount) sets x \(viewModel.repsCount) reps) in \(viewModel.formattedTime) and burned \(viewModel.formattedCalories) kcal.",
+            primaryButtonTitle: "Done",
+            primaryButtonColor: Color.Teal.teal1000,
+            primaryAction: {
+                viewModel.stopTimer()
+                viewModel.showSuccessDialog = false
+                router.pop()
+            }
+        )
         // MARK: - Cancel Confirmation Alert
         .customAlert(
             isPresented: $viewModel.showCancelAlert,
@@ -143,11 +154,14 @@ struct ExerciseWorkoutPlayerView: View {
         exercise: Exercise(
             id: "1",
             name: "Full Body Warm Up",
-            equipment: "equipment",
-            target: "target",
             category: "Warm Up",
-            imageName: "figure.walk",
-            instructions: "Sample instructions."
+            bodyPart: "full body",
+            equipment: "equipment",
+            instructions: ExerciseInstructionText(en: "Sample instructions.", ar: ""),
+            instructionSteps: ExerciseInstructionSteps(en: ["Sample step 1"], ar: []),
+            target: "target",
+            image: "figure.walk",
+            gifUrl: "figure.walk"
         )
     )
     .environmentObject(AppRouter())
@@ -159,11 +173,14 @@ struct ExerciseWorkoutPlayerView: View {
         exercise: Exercise(
             id: "1",
             name: "Full Body Warm Up",
-            equipment: "equipment",
-            target: "target",
             category: "Warm Up",
-            imageName: "figure.walk",
-            instructions: "Sample instructions."
+            bodyPart: "full body",
+            equipment: "equipment",
+            instructions: ExerciseInstructionText(en: "Sample instructions.", ar: ""),
+            instructionSteps: ExerciseInstructionSteps(en: ["Sample step 1"], ar: []),
+            target: "target",
+            image: "figure.walk",
+            gifUrl: "figure.walk"
         )
     )
     .environmentObject(AppRouter())

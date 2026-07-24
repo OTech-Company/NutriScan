@@ -12,40 +12,46 @@ struct WorkoutActiveControlsView: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack(spacing: 16) {
-                // Restart Button
+                // Start / Restart Button
                 Button {
-                    viewModel.showRestartAlert = true
+                    if viewModel.hasStarted {
+                        viewModel.showRestartAlert = true
+                    } else {
+                        viewModel.startWorkout()
+                    }
                 } label: {
-                    Text("Restart")
+                    Text(viewModel.hasStarted ? "Restart" : "Start")
                         .font(Font.AppFont.subtitle2)
-                        .foregroundColor(Color.ExerciseSemantic.outlineButtonText)
+                        .foregroundColor(viewModel.hasStarted ? Color.ExerciseSemantic.outlineButtonText : .white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 52)
-                        .background(Color.ExerciseSemantic.screenBackground)
+                        .background(viewModel.hasStarted ? Color.ExerciseSemantic.screenBackground : Color.Teal.teal1000)
                         .overlay(
                             RoundedRectangle(cornerRadius: 14)
-                                .strokeBorder(Color.ExerciseSemantic.outlineButtonBorder, lineWidth: 1)
+                                .strokeBorder(viewModel.hasStarted ? Color.ExerciseSemantic.outlineButtonBorder : Color.clear, lineWidth: 1)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
 
-                // Pause Button
-                Button {
-                    viewModel.pauseTimer()
-                } label: {
-                    Text("Pause")
-                        .font(Font.AppFont.subtitle2)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(Color.Teal.teal1000)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                // Pause Button (visible once started)
+                if viewModel.hasStarted {
+                    Button {
+                        viewModel.pauseTimer()
+                    } label: {
+                        Text("Pause")
+                            .font(Font.AppFont.subtitle2)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(Color.Teal.teal1000)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                    }
                 }
             }
 
             // Cancel Workout Text Link
             Button {
-                viewModel.showCancelAlert = true
+                onCancelWorkout()
             } label: {
                 Text("Cancel workout")
                     .font(Font.AppFont.textSecondary)

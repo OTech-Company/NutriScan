@@ -26,12 +26,12 @@ extension APIEndpoint {
     var requiresAuth: Bool { true }
 
     var keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy {
-        let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL]
+        let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL, AppNetworkConfig.exercises.baseURL]
         return snakeCaseURLs.contains(baseURL) ? .convertFromSnakeCase : .useDefaultKeys
     }
 
     var keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy {
-        let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL]
+        let snakeCaseURLs = [AppNetworkConfig.auth.baseURL, AppNetworkConfig.openFoodFacts.baseURL, AppNetworkConfig.exercises.baseURL]
         return snakeCaseURLs.contains(baseURL) ? .convertToSnakeCase : .useDefaultKeys
     }
 

@@ -11,7 +11,8 @@ final class ExerciseWorkoutPlayerViewModel {
     let exercise: Exercise
 
     var elapsedSeconds: Int = 0
-    var isPaused: Bool = false
+    var hasStarted: Bool = false
+    var isPaused: Bool = true
     var setsCount: Int = 1
     var repsCount: Int = 1
 
@@ -24,7 +25,8 @@ final class ExerciseWorkoutPlayerViewModel {
 
     init(exercise: Exercise) {
         self.exercise = exercise
-        startTimer()
+        self.hasStarted = false
+        self.isPaused = true
     }
 
     deinit {
@@ -32,6 +34,12 @@ final class ExerciseWorkoutPlayerViewModel {
     }
 
     // MARK: - Timer Logic
+
+    func startWorkout() {
+        hasStarted = true
+        isPaused = false
+        startTimer()
+    }
 
     func startTimer() {
         isPaused = false
@@ -63,7 +71,9 @@ final class ExerciseWorkoutPlayerViewModel {
 
     func restartTimer() {
         elapsedSeconds = 0
+        hasStarted = true
         isPaused = false
+        startTimer()
     }
 
     func stopTimer() {
@@ -77,6 +87,24 @@ final class ExerciseWorkoutPlayerViewModel {
         let minutes = elapsedSeconds / 60
         let seconds = elapsedSeconds % 60
         return String(format: "%02d:%02d", minutes, seconds)
+    }
+
+    // MARK: - Calories Calculation
+
+    /// Total burned calories: (sets * reps) * repKcal, or elapsed minutes * minKcal
+    var totalCaloriesBurned: Double {
+        let totalReps = Double(setsCount * repsCount)
+        if let repKcal = exercise.repKcal {
+            return totalReps * repKcal
+        } else if let minKcal = exercise.minKcal {
+            let minutes = Double(elapsedSeconds) / 60.0
+            return minutes * minKcal
+        }
+        return 0.0
+    }
+
+    var formattedCalories: String {
+        String(format: "%.1f", totalCaloriesBurned)
     }
 
     // MARK: - Stepper Counters

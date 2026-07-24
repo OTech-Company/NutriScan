@@ -32,9 +32,13 @@ struct ExerciseDetailSheet: View {
                         .fill(Color.Teal.teal200.opacity(0.5))
                         .frame(width: 72, height: 72)
 
-                    Image(systemName: exercise.imageName ?? "figure.mixed.cardio")
-                        .font(.system(size: 32, weight: .medium))
-                        .foregroundColor(Color.Teal.teal800)
+                    CachedImage(
+                        urlString: exercise.fullGifUrlString ?? exercise.fullImageUrlString,
+                        failureImageName: "figure.mixed.cardio",
+                        contentMode: .fit
+                    )
+                    .frame(width: 72, height: 72)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
 
                 // Name + subtitle
@@ -66,12 +70,13 @@ struct ExerciseDetailSheet: View {
                     .foregroundColor(Color.ExerciseSemantic.instructionHead)
 
                 VStack(alignment: .leading, spacing: 8) {
+                    let text = exercise.instructions.localizedText.isEmpty ? exercise.formattedInstructions : exercise.instructions.localizedText
                     HStack(alignment: .top, spacing: 8) {
                         Text("•")
                             .font(Font.AppFont.textDefault)
                             .foregroundColor(Color.ExerciseSemantic.instructionText)
 
-                        Text(exercise.instructions)
+                        Text(text)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.ExerciseSemantic.instructionText)
                             .lineLimit(isExpanded ? nil : collapsedLineLimit)
@@ -79,7 +84,7 @@ struct ExerciseDetailSheet: View {
                     }
 
                     // Read more / read less toggle
-                    if !isExpanded {
+                    if !isExpanded && text.count > 150 {
                         Button {
                             withAnimation(.easeInOut(duration: 0.25)) {
                                 isExpanded = true
@@ -104,52 +109,4 @@ struct ExerciseDetailSheet: View {
         .frame(maxWidth: .infinity)
         .background(Color.ExerciseSemantic.sheetBackground)
     }
-}
-
-// MARK: - Previews
-
-#Preview("Light") {
-    Color.gray.opacity(0.3)
-        .ignoresSafeArea()
-        .sheet(isPresented: .constant(true)) {
-            ExerciseDetailSheet(
-                exercise: Exercise(
-                    id: "4",
-                    name: "3/4 sit-up",
-                    equipment: "body weight",
-                    target: "waist",
-                    category: "Core",
-                    imageName: "figure.core.training",
-                    instructions: "Lie flat on your back with your knees bent and feet flat on the ground. Place your hands behind your head with your elbows pointing outwards. Engaging your abs, slowly lift your upper body off the ground, curling forward until your torso is at a 45-degree angle. Pause for a moment at the top, then slowly lower your upper body back down to the starting position. Repeat for the desired number of repetitions."
-                )
-            )
-            .presentationDetents([.medium, .large])
-            .presentationDragIndicator(.hidden)
-            .presentationCornerRadius(24)
-            .presentationBackground(Color.ExerciseSemantic.sheetBackground)
-        }
-        .preferredColorScheme(.light)
-}
-
-#Preview("Dark") {
-    Color.gray.opacity(0.3)
-        .ignoresSafeArea()
-        .sheet(isPresented: .constant(true)) {
-            ExerciseDetailSheet(
-                exercise: Exercise(
-                    id: "4",
-                    name: "3/4 sit-up",
-                    equipment: "body weight",
-                    target: "waist",
-                    category: "Core",
-                    imageName: "figure.core.training",
-                    instructions: "Lie flat on your back with your knees bent and feet flat on the ground. Place your hands behind your head with your elbows pointing outwards. Engaging your abs, slowly lift your upper body off the ground, curling forward until your torso is at a 45-degree angle. Pause for a moment at the top, then slowly lower your upper body back down to the starting position. Repeat for the desired number of repetitions."
-                )
-            )
-            .presentationDetents([.medium, .large])
-            .presentationDragIndicator(.hidden)
-            .presentationCornerRadius(24)
-            .presentationBackground(Color.ExerciseSemantic.sheetBackground)
-        }
-        .preferredColorScheme(.dark)
 }

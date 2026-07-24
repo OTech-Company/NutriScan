@@ -4,33 +4,47 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct ExerciseListView: View {
-    let exercises: [Exercise]
-    let onSelect: (Exercise) -> Void
+    var viewModel: ExerciseListViewModel
 
     var body: some View {
         ScrollView(showsIndicators: false) {
             LazyVStack(spacing: 12) {
-                if exercises.isEmpty {
-                    emptyState
-                        .padding(.top, 60)
-                } else {
-                    ForEach(exercises) { exercise in
-                        ExerciseRowCard(exercise: exercise) {
-                            onSelect(exercise)
-                        }
-                    }
-                }
+                listContent
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
         }
     }
 
-    // MARK: - Empty State
+    // MARK: - State Router
 
-    private var emptyState: some View {
+    @ViewBuilder
+    private var listContent: some View {
+        if viewModel.isLoadingExercises && viewModel.exercises.isEmpty {
+            loadingStateView
+        } else if viewModel.exercises.isEmpty {
+            emptyStateView
+        } else {
+            contentListView
+        }
+    }
+
+    // MARK: - Subviews
+
+    private var loadingStateView: some View {
+        VStack(spacing: 12) {
+            ForEach(Exercise.dummyList) { dummyExercise in
+                ExerciseRowCard(exercise: dummyExercise, onTap: {})
+                    .redacted(reason: .placeholder)
+                    .shimmering()
+            }
+        }
+    }
+
+    private var emptyStateView: some View {
         VStack(spacing: 16) {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: 44, weight: .light))
@@ -45,24 +59,39 @@ struct ExerciseListView: View {
                 .foregroundColor(Color.ExerciseSemantic.rowSubtitle)
                 .multilineTextAlignment(.center)
         }
+        .padding(.top, 60)
+    }
+
+    private var contentListView: some View {
+        Group {
+            ForEach(viewModel.exercises) { exercise in
+                ExerciseRowCard(exercise: exercise) {
+                    viewModel.selectedExercise = exercise
+                }
+                .onAppear {
+                    if exercise == viewModel.exercises.last {
+                        Task {
+                            await viewModel.loadNextPage()
+                        }
+                    }
+                }
+            }
+
+            if viewModel.isLoadingMore {
+                paginationFooterView
+            }
+        }
+    }
+
+    private var paginationFooterView: some View {
+        ProgressView()
+            .tint(Color.Teal.teal1000)
+            .padding(.vertical, 16)
     }
 }
 
 // MARK: - Preview
 
 #Preview {
-    ExerciseListView(
-        exercises: [
-            Exercise(
-                id: "1",
-                name: "Full Body Warm Up",
-                equipment: "equipment",
-                target: "target",
-                category: "Warm Up",
-                imageName: "figure.walk",
-                instructions: "Sample instructions."
-            )
-        ],
-        onSelect: { _ in }
-    )
+    ExerciseListView(viewModel: ExerciseListViewModel())
 }

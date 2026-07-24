@@ -14,10 +14,18 @@ struct ExercisesView: View {
         VStack(spacing: 0) {
 
             // MARK: Navigation Bar
-            navigationBar
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 16)
+            HStack(spacing: 16) {
+                BackButton {
+                    router.pop()
+                }
+                Text("Exercises")
+                    .font(Font.AppFont.subtitle1)
+                    .foregroundColor(Color.ExerciseSemantic.rowTitle)
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 16)
+            .padding(.bottom, 16)
 
             // MARK: Search Bar
             ExerciseSearchBar(text: $viewModel.searchQuery)
@@ -32,17 +40,13 @@ struct ExercisesView: View {
             .padding(.bottom, 16)
 
             // MARK: Exercise List
-            ExerciseListView(
-                exercises: viewModel.filteredExercises,
-                onSelect: { exercise in
-                    viewModel.selectedExercise = exercise
-                }
-            )
+            ExerciseListView(viewModel: viewModel)
         }
         .background(Color.ExerciseSemantic.screenBackground.ignoresSafeArea())
         .navigationBarHidden(true)
         .task {
             await viewModel.loadCategories()
+            await viewModel.loadInitialExercises()
         }
         // MARK: Bottom Sheet
         .sheet(item: $viewModel.selectedExercise) { exercise in
@@ -55,22 +59,6 @@ struct ExercisesView: View {
             .presentationDragIndicator(.hidden)
             .presentationCornerRadius(24)
             .presentationBackground(Color.ExerciseSemantic.sheetBackground)
-        }
-    }
-
-    // MARK: - Navigation Bar
-
-    private var navigationBar: some View {
-        HStack(spacing: 16) {
-            BackButton {
-                router.pop()
-            }
-
-            Text("Exercises")
-                .font(Font.AppFont.subtitle1)
-                .foregroundColor(Color.ExerciseSemantic.rowTitle)
-
-            Spacer()
         }
     }
 }
