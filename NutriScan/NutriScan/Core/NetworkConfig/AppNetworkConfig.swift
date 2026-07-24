@@ -12,6 +12,7 @@ enum AppNetworkConfig {
     case core
     case auth
     case openFoodFacts
+    case exercises
     
     var baseURL: String {
         switch self {
@@ -23,6 +24,8 @@ enum AppNetworkConfig {
             return "https://auth.nutriscan.dev/"
         case .openFoodFacts:
             return "https://world.openfoodfacts.org/api/v2/product"
+        case .exercises:
+            return "https://exercises-dataset-mu.vercel.app"
         }
     }
 }

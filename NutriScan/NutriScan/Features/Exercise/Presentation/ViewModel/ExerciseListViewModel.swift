@@ -11,11 +11,13 @@ final class ExerciseListViewModel {
 
     // MARK: - State
     var searchQuery: String = ""
-    var selectedCategory: String = "All"
+    var selectedCategory: ExerciseCategory = .all
     var selectedExercise: Exercise? = nil  // drives bottom sheet
+    var isLoadingCategories: Bool = false
+    var categoryError: String? = nil
 
     // MARK: - Data
-    let categories: [String] = ["All", "Warm Up", "Strength", "Core"]
+    var categories: [ExerciseCategory] = [.all]
 
     var allExercises: [Exercise] = [
         Exercise(
@@ -74,10 +76,31 @@ final class ExerciseListViewModel {
         )
     ]
 
+    private let fetchCategoriesUseCase: FetchExerciseCategoriesUseCase
+
+    init(fetchCategoriesUseCase: FetchExerciseCategoriesUseCase = FetchExerciseCategoriesUseCase()) {
+        self.fetchCategoriesUseCase = fetchCategoriesUseCase
+    }
+
+    // MARK: - Async Networking
+
+    func loadCategories() async {
+        isLoadingCategories = true
+        categoryError = nil
+        defer { isLoadingCategories = false }
+        do {
+            self.categories = try await fetchCategoriesUseCase.execute()
+        } catch {
+            self.categoryError = error.localizedDescription
+        }
+    }
+
     // MARK: - Computed
     var filteredExercises: [Exercise] {
         allExercises.filter { exercise in
-            let matchesCategory = selectedCategory == "All" || exercise.category == selectedCategory
+            let matchesCategory = selectedCategory == .all ||
+                                  exercise.category.localizedCaseInsensitiveContains(selectedCategory.name) ||
+                                  exercise.category.localizedCaseInsensitiveContains(selectedCategory.id)
             let matchesSearch = searchQuery.isEmpty || exercise.name.localizedCaseInsensitiveContains(searchQuery)
             return matchesCategory && matchesSearch
         }

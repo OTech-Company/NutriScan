@@ -8,15 +8,15 @@ import SwiftUI
 // MARK: - Category Chip Bar
 
 struct ExerciseCategoryChipBar: View {
-    let categories: [String]
-    @Binding var selectedCategory: String
+    let categories: [ExerciseCategory]
+    @Binding var selectedCategory: ExerciseCategory
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(categories, id: \.self) { category in
+                ForEach(categories) { category in
                     ExerciseCategoryChip(
-                        title: category,
+                        title: category.name,
                         isSelected: selectedCategory == category
                     ) {
                         withAnimation(.easeInOut(duration: 0.2)) {
@@ -32,10 +32,6 @@ struct ExerciseCategoryChipBar: View {
 }
 
 // MARK: - Exercise Category Chip
-// Custom chip — bg is always white; only text & border color change on selection.
-// Unselected : text Gray/700  · border Gray/400
-// Selected   : text Teal/1000 · border Teal/1000
-
 private struct ExerciseCategoryChip: View {
     let title: String
     let isSelected: Bool
@@ -68,12 +64,12 @@ private struct ExerciseCategoryChip: View {
 #Preview {
     VStack(spacing: 20) {
         ExerciseCategoryChipBar(
-            categories: ["All", "Warm Up", "Strength", "Core"],
-            selectedCategory: .constant("All")
+            categories: [.all, ExerciseCategory(id: "warm up", name: "Warm Up"), ExerciseCategory(id: "strength", name: "Strength")],
+            selectedCategory: .constant(.all)
         )
         ExerciseCategoryChipBar(
-            categories: ["All", "Warm Up", "Strength", "Core"],
-            selectedCategory: .constant("Warm Up")
+            categories: [.all, ExerciseCategory(id: "warm up", name: "Warm Up"), ExerciseCategory(id: "strength", name: "Strength")],
+            selectedCategory: .constant(ExerciseCategory(id: "warm up", name: "Warm Up"))
         )
     }
     .padding()

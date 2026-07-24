@@ -6,6 +6,15 @@
 /// Returns static mock exercises.
 /// Replace this implementation with a real network call when the API is ready.
 struct ExerciseService {
+    private let networkService: NetworkServiceProtocol
+
+    init(networkService: NetworkServiceProtocol = NetworkService.shared) {
+        self.networkService = networkService
+    }
+
+    func fetchCategories() async throws -> CategoryResponseDTO {
+        try await networkService.request(ExerciseEndpoint.getCategories)
+    }
 
     func fetchExercises() async throws -> [ExerciseDTO] {
         [

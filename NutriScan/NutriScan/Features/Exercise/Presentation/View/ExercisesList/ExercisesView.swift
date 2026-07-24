@@ -41,6 +41,9 @@ struct ExercisesView: View {
         }
         .background(Color.ExerciseSemantic.screenBackground.ignoresSafeArea())
         .navigationBarHidden(true)
+        .task {
+            await viewModel.loadCategories()
+        }
         // MARK: Bottom Sheet
         .sheet(item: $viewModel.selectedExercise) { exercise in
             ExerciseDetailSheet(exercise: exercise) {

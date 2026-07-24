@@ -14,4 +14,9 @@ final class ExerciseRepositoryImpl: ExerciseRepositoryProtocol {
         let dtos = try await service.fetchExercises()
         return dtos.map { $0.toDomain() }
     }
+
+    func fetchCategories() async throws -> [ExerciseCategory] {
+        let dto = try await service.fetchCategories()
+        return dto.toDomain()
+    }
 }
