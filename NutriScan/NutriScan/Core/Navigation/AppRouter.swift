@@ -18,7 +18,14 @@ final class AppRouter: ObservableObject {
 
     // MARK: - Push navigation (NavigationStack)
 
-    @Published var path = NavigationPath()
+    @Published var path = NavigationPath() {
+        didSet {
+            DispatchQueue.main.async {
+                // If path is not empty, hide tab bar. If empty, show it.
+                AppTabBarVisibility.shared.isHidden = !self.path.isEmpty
+            }
+        }
+    }
 
     func push<R: Route>(_ route: R) {
         path.append(AnyRoute(route))

@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct StepHistoryScreen: View {
-    @ObservedObject var viewModel: StepCounterViewModel
+    let viewModel: StepCounterViewModel
     @State private var selectedRange: StepHistoryRange = .lastWeek
 
     var body: some View {
         ZStack {
-            Color(.systemBackground)
+            Color.CaloriesSemantic.background
                 .ignoresSafeArea()
 
             VStack(spacing: 20) {
