@@ -130,6 +130,62 @@
 		6E5A5981D510BA1046A20CFC /* OnboardingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 390FE4B62133192972ABD71A /* OnboardingScreen.swift */; };
 		6F1A8DFB301027F800E1ACC5 /* StepHistoryBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8DFA301027F800E1ACC5 /* StepHistoryBarChartView.swift */; };
 		6F1A8DFD3010283800E1ACC5 /* StepHistoryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8DFC3010283800E1ACC5 /* StepHistoryScreen.swift */; };
+		6F1A8E7D3012AAE100E1ACC5 /* NewsFeedPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E6E3012AAE100E1ACC5 /* NewsFeedPalette.swift */; };
+		6F1A8E7E3012AAE100E1ACC5 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E773012AAE100E1ACC5 /* SearchBarView.swift */; };
+		6F1A8E7F3012AAE100E1ACC5 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E5F3012AAE100E1ACC5 /* Article.swift */; };
+		6F1A8E803012AAE100E1ACC5 /* NewsRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E633012AAE100E1ACC5 /* NewsRepositoryProtocol.swift */; };
+		6F1A8E813012AAE100E1ACC5 /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E6A3012AAE100E1ACC5 /* SafariView.swift */; };
+		6F1A8E823012AAE100E1ACC5 /* NewsFeedMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E6D3012AAE100E1ACC5 /* NewsFeedMetrics.swift */; };
+		6F1A8E833012AAE100E1ACC5 /* NewsFeedCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E603012AAE100E1ACC5 /* NewsFeedCategory.swift */; };
+		6F1A8E843012AAE100E1ACC5 /* NewsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E5A3012AAE100E1ACC5 /* NewsEndpoint.swift */; };
+		6F1A8E853012AAE100E1ACC5 /* ArticleCardSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E733012AAE100E1ACC5 /* ArticleCardSkeletonView.swift */; };
+		6F1A8E863012AAE100E1ACC5 /* NewsAPIConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E593012AAE100E1ACC5 /* NewsAPIConfig.swift */; };
+		6F1A8E873012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E653012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift */; };
+		6F1A8E883012AAE100E1ACC5 /* NewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E713012AAE100E1ACC5 /* NewsViewModel.swift */; };
+		6F1A8E893012AAE100E1ACC5 /* NewsResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E553012AAE100E1ACC5 /* NewsResponseDTO.swift */; };
+		6F1A8E8A3012AAE100E1ACC5 /* SearchArticlesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E663012AAE100E1ACC5 /* SearchArticlesUseCase.swift */; };
+		6F1A8E8B3012AAE100E1ACC5 /* ArticleCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E743012AAE100E1ACC5 /* ArticleCardView.swift */; };
+		6F1A8E8C3012AAE100E1ACC5 /* NewsRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E533012AAE100E1ACC5 /* NewsRemoteDataSource.swift */; };
+		6F1A8E8D3012AAE100E1ACC5 /* NewsSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E613012AAE100E1ACC5 /* NewsSource.swift */; };
+		6F1A8E8E3012AAE100E1ACC5 /* NewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E793012AAE100E1ACC5 /* NewsView.swift */; };
+		6F1A8E8F3012AAE100E1ACC5 /* NewsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E5C3012AAE100E1ACC5 /* NewsRepository.swift */; };
+		6F1A8E903012AAE100E1ACC5 /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E6B3012AAE100E1ACC5 /* ShimmerModifier.swift */; };
+		6F1A8E913012AAE100E1ACC5 /* CategoryChipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E753012AAE100E1ACC5 /* CategoryChipView.swift */; };
+		6F1A8E923012AAE100E1ACC5 /* FeedStateViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E763012AAE100E1ACC5 /* FeedStateViews.swift */; };
+		6F1A8E933012AAE100E1ACC5 /* ArticleMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E573012AAE100E1ACC5 /* ArticleMapper.swift */; };
+		6F1A8E943012AAE100E1ACC5 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E693012AAE100E1ACC5 /* Date+Formatting.swift */; };
+		6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E6F3012AAE100E1ACC5 /* NewsFeedTypography.swift */; };
+		6F1A8EC03012BE2100E1ACC5 /* RAGChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EBD3012BE2100E1ACC5 /* RAGChatViewModel.swift */; };
+		6F1A8EC13012BE2100E1ACC5 /* RAGRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA93012BE2100E1ACC5 /* RAGRepository.swift */; };
+		6F1A8EC23012BE2100E1ACC5 /* RAGAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E9F3012BE2100E1ACC5 /* RAGAPIService.swift */; };
+		6F1A8EC33012BE2100E1ACC5 /* RAGSourceCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB83012BE2100E1ACC5 /* RAGSourceCardView.swift */; };
+		6F1A8EC43012BE2100E1ACC5 /* RAGRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA23012BE2100E1ACC5 /* RAGRepositoryImpl.swift */; };
+		6F1A8EC53012BE2100E1ACC5 /* RAGQueryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E9C3012BE2100E1ACC5 /* RAGQueryDTO.swift */; };
+		6F1A8EC63012BE2100E1ACC5 /* RAGResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8E9D3012BE2100E1ACC5 /* RAGResponseDTO.swift */; };
+		6F1A8EC73012BE2100E1ACC5 /* RAGLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB63012BE2100E1ACC5 /* RAGLoadingIndicator.swift */; };
+		6F1A8EC83012BE2100E1ACC5 /* RAGSourcesSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB93012BE2100E1ACC5 /* RAGSourcesSection.swift */; };
+		6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB43012BE2100E1ACC5 /* RAGChatInputView.swift */; };
+		6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB73012BE2100E1ACC5 /* RAGMessageBubbleView.swift */; };
+		6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EBB3012BE2100E1ACC5 /* RAGChatView.swift */; };
+		6F1A8ECC3012BE2100E1ACC5 /* RAGEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA03012BE2100E1ACC5 /* RAGEndpoint.swift */; };
+		6F1A8ECD3012BE2100E1ACC5 /* RAGRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB13012BE2100E1ACC5 /* RAGRoute.swift */; };
+		6F1A8ECE3012BE2100E1ACC5 /* RAGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */; };
+		6F1A8ECF3012BE2100E1ACC5 /* RAGFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB03012BE2100E1ACC5 /* RAGFlowView.swift */; };
+		6F1A8ED03012BE2100E1ACC5 /* QueryRAGUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EAB3012BE2100E1ACC5 /* QueryRAGUseCase.swift */; };
+		6F1A8ED13012BE2100E1ACC5 /* RAGEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB53012BE2100E1ACC5 /* RAGEmptyStateView.swift */; };
+		6F1A8ED23012BE2100E1ACC5 /* Color+RAGSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */; };
+		6F1A8ED33012BE2100E1ACC5 /* RAGMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */; };
+		6F1A8ED43012BE2100E1ACC5 /* RAGSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */; };
+		6F1A8ED53012BE2100E1ACC5 /* RAGChatHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EB33012BE2100E1ACC5 /* RAGChatHeaderView.swift */; };
+		6F1A8ED83012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8ED73012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift */; };
+		6F1A8EDA3012C5A600E1ACC5 /* RAGVoiceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8ED93012C5A600E1ACC5 /* RAGVoiceState.swift */; };
+		6F1A8EDC3012C5BB00E1ACC5 /* RAGVoiceChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EDB3012C5BB00E1ACC5 /* RAGVoiceChatView.swift */; };
+		6F1A8EDE3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EDD3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift */; };
+		6F1A8EE03012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EDF3012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift */; };
+		6F1A8EE23012C5EB00E1ACC5 /* RAGTypingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE13012C5EB00E1ACC5 /* RAGTypingDotsView.swift */; };
+		6F1A8EE430138F1B00E1ACC5 /* RAGLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */; };
+		6F1A8EE630138F7700E1ACC5 /* RAGLanguage+LayoutDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */; };
+		6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */; };
 		6F1E4C26B29F085597C11899 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */; };
 		6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */; };
 		6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */; };
@@ -439,6 +495,62 @@
 		6EE2AB21FB9BAAC693D7FCBB /* GenderSelectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectionCard.swift; sourceTree = "<group>"; };
 		6F1A8DFA301027F800E1ACC5 /* StepHistoryBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryBarChartView.swift; sourceTree = "<group>"; };
 		6F1A8DFC3010283800E1ACC5 /* StepHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryScreen.swift; sourceTree = "<group>"; };
+		6F1A8E533012AAE100E1ACC5 /* NewsRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRemoteDataSource.swift; sourceTree = "<group>"; };
+		6F1A8E553012AAE100E1ACC5 /* NewsResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsResponseDTO.swift; sourceTree = "<group>"; };
+		6F1A8E573012AAE100E1ACC5 /* ArticleMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMapper.swift; sourceTree = "<group>"; };
+		6F1A8E593012AAE100E1ACC5 /* NewsAPIConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsAPIConfig.swift; sourceTree = "<group>"; };
+		6F1A8E5A3012AAE100E1ACC5 /* NewsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsEndpoint.swift; sourceTree = "<group>"; };
+		6F1A8E5C3012AAE100E1ACC5 /* NewsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRepository.swift; sourceTree = "<group>"; };
+		6F1A8E5F3012AAE100E1ACC5 /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
+		6F1A8E603012AAE100E1ACC5 /* NewsFeedCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedCategory.swift; sourceTree = "<group>"; };
+		6F1A8E613012AAE100E1ACC5 /* NewsSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsSource.swift; sourceTree = "<group>"; };
+		6F1A8E633012AAE100E1ACC5 /* NewsRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsRepositoryProtocol.swift; sourceTree = "<group>"; };
+		6F1A8E653012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTopHeadlinesUseCase.swift; sourceTree = "<group>"; };
+		6F1A8E663012AAE100E1ACC5 /* SearchArticlesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchArticlesUseCase.swift; sourceTree = "<group>"; };
+		6F1A8E693012AAE100E1ACC5 /* Date+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Formatting.swift"; sourceTree = "<group>"; };
+		6F1A8E6A3012AAE100E1ACC5 /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
+		6F1A8E6B3012AAE100E1ACC5 /* ShimmerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerModifier.swift; sourceTree = "<group>"; };
+		6F1A8E6D3012AAE100E1ACC5 /* NewsFeedMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedMetrics.swift; sourceTree = "<group>"; };
+		6F1A8E6E3012AAE100E1ACC5 /* NewsFeedPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedPalette.swift; sourceTree = "<group>"; };
+		6F1A8E6F3012AAE100E1ACC5 /* NewsFeedTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedTypography.swift; sourceTree = "<group>"; };
+		6F1A8E713012AAE100E1ACC5 /* NewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewModel.swift; sourceTree = "<group>"; };
+		6F1A8E733012AAE100E1ACC5 /* ArticleCardSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCardSkeletonView.swift; sourceTree = "<group>"; };
+		6F1A8E743012AAE100E1ACC5 /* ArticleCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCardView.swift; sourceTree = "<group>"; };
+		6F1A8E753012AAE100E1ACC5 /* CategoryChipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryChipView.swift; sourceTree = "<group>"; };
+		6F1A8E763012AAE100E1ACC5 /* FeedStateViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStateViews.swift; sourceTree = "<group>"; };
+		6F1A8E773012AAE100E1ACC5 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		6F1A8E793012AAE100E1ACC5 /* NewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsView.swift; sourceTree = "<group>"; };
+		6F1A8E9C3012BE2100E1ACC5 /* RAGQueryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGQueryDTO.swift; sourceTree = "<group>"; };
+		6F1A8E9D3012BE2100E1ACC5 /* RAGResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGResponseDTO.swift; sourceTree = "<group>"; };
+		6F1A8E9F3012BE2100E1ACC5 /* RAGAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGAPIService.swift; sourceTree = "<group>"; };
+		6F1A8EA03012BE2100E1ACC5 /* RAGEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGEndpoint.swift; sourceTree = "<group>"; };
+		6F1A8EA23012BE2100E1ACC5 /* RAGRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGRepositoryImpl.swift; sourceTree = "<group>"; };
+		6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGError.swift; sourceTree = "<group>"; };
+		6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGMessage.swift; sourceTree = "<group>"; };
+		6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSource.swift; sourceTree = "<group>"; };
+		6F1A8EA93012BE2100E1ACC5 /* RAGRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGRepository.swift; sourceTree = "<group>"; };
+		6F1A8EAB3012BE2100E1ACC5 /* QueryRAGUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryRAGUseCase.swift; sourceTree = "<group>"; };
+		6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+RAGSemantic.swift"; sourceTree = "<group>"; };
+		6F1A8EB03012BE2100E1ACC5 /* RAGFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGFlowView.swift; sourceTree = "<group>"; };
+		6F1A8EB13012BE2100E1ACC5 /* RAGRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGRoute.swift; sourceTree = "<group>"; };
+		6F1A8EB33012BE2100E1ACC5 /* RAGChatHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatHeaderView.swift; sourceTree = "<group>"; };
+		6F1A8EB43012BE2100E1ACC5 /* RAGChatInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatInputView.swift; sourceTree = "<group>"; };
+		6F1A8EB53012BE2100E1ACC5 /* RAGEmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGEmptyStateView.swift; sourceTree = "<group>"; };
+		6F1A8EB63012BE2100E1ACC5 /* RAGLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGLoadingIndicator.swift; sourceTree = "<group>"; };
+		6F1A8EB73012BE2100E1ACC5 /* RAGMessageBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGMessageBubbleView.swift; sourceTree = "<group>"; };
+		6F1A8EB83012BE2100E1ACC5 /* RAGSourceCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSourceCardView.swift; sourceTree = "<group>"; };
+		6F1A8EB93012BE2100E1ACC5 /* RAGSourcesSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSourcesSection.swift; sourceTree = "<group>"; };
+		6F1A8EBB3012BE2100E1ACC5 /* RAGChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatView.swift; sourceTree = "<group>"; };
+		6F1A8EBD3012BE2100E1ACC5 /* RAGChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGChatViewModel.swift; sourceTree = "<group>"; };
+		6F1A8ED73012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGSpeechRecognizerService.swift; sourceTree = "<group>"; };
+		6F1A8ED93012C5A600E1ACC5 /* RAGVoiceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVoiceState.swift; sourceTree = "<group>"; };
+		6F1A8EDB3012C5BB00E1ACC5 /* RAGVoiceChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVoiceChatView.swift; sourceTree = "<group>"; };
+		6F1A8EDD3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVoiceWaveformView.swift; sourceTree = "<group>"; };
+		6F1A8EDF3012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVoiceSourcesHeader.swift; sourceTree = "<group>"; };
+		6F1A8EE13012C5EB00E1ACC5 /* RAGTypingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGTypingDotsView.swift; sourceTree = "<group>"; };
+		6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGLanguage.swift; sourceTree = "<group>"; };
+		6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAGLanguage+LayoutDirection.swift"; sourceTree = "<group>"; };
+		6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGStrings.swift; sourceTree = "<group>"; };
 		6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
@@ -1229,6 +1341,324 @@
 				5D3A86A27775A323C19D441F /* WeightSelectionView.swift */,
 			);
 			path = screens;
+			sourceTree = "<group>";
+		};
+		6F1A8E543012AAE100E1ACC5 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E533012AAE100E1ACC5 /* NewsRemoteDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		6F1A8E563012AAE100E1ACC5 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E553012AAE100E1ACC5 /* NewsResponseDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		6F1A8E583012AAE100E1ACC5 /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E573012AAE100E1ACC5 /* ArticleMapper.swift */,
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
+		6F1A8E5B3012AAE100E1ACC5 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E593012AAE100E1ACC5 /* NewsAPIConfig.swift */,
+				6F1A8E5A3012AAE100E1ACC5 /* NewsEndpoint.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		6F1A8E5D3012AAE100E1ACC5 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E5C3012AAE100E1ACC5 /* NewsRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		6F1A8E5E3012AAE100E1ACC5 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E543012AAE100E1ACC5 /* DataSources */,
+				6F1A8E563012AAE100E1ACC5 /* DTOs */,
+				6F1A8E583012AAE100E1ACC5 /* Mappers */,
+				6F1A8E5B3012AAE100E1ACC5 /* Network */,
+				6F1A8E5D3012AAE100E1ACC5 /* Repositories */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6F1A8E623012AAE100E1ACC5 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E5F3012AAE100E1ACC5 /* Article.swift */,
+				6F1A8E603012AAE100E1ACC5 /* NewsFeedCategory.swift */,
+				6F1A8E613012AAE100E1ACC5 /* NewsSource.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		6F1A8E643012AAE100E1ACC5 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E633012AAE100E1ACC5 /* NewsRepositoryProtocol.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		6F1A8E673012AAE100E1ACC5 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E653012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift */,
+				6F1A8E663012AAE100E1ACC5 /* SearchArticlesUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		6F1A8E683012AAE100E1ACC5 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E623012AAE100E1ACC5 /* Entities */,
+				6F1A8E643012AAE100E1ACC5 /* Repositories */,
+				6F1A8E673012AAE100E1ACC5 /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6F1A8E6C3012AAE100E1ACC5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E693012AAE100E1ACC5 /* Date+Formatting.swift */,
+				6F1A8E6A3012AAE100E1ACC5 /* SafariView.swift */,
+				6F1A8E6B3012AAE100E1ACC5 /* ShimmerModifier.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6F1A8E703012AAE100E1ACC5 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E6D3012AAE100E1ACC5 /* NewsFeedMetrics.swift */,
+				6F1A8E6E3012AAE100E1ACC5 /* NewsFeedPalette.swift */,
+				6F1A8E6F3012AAE100E1ACC5 /* NewsFeedTypography.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		6F1A8E723012AAE100E1ACC5 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E713012AAE100E1ACC5 /* NewsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6F1A8E783012AAE100E1ACC5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E733012AAE100E1ACC5 /* ArticleCardSkeletonView.swift */,
+				6F1A8E743012AAE100E1ACC5 /* ArticleCardView.swift */,
+				6F1A8E753012AAE100E1ACC5 /* CategoryChipView.swift */,
+				6F1A8E763012AAE100E1ACC5 /* FeedStateViews.swift */,
+				6F1A8E773012AAE100E1ACC5 /* SearchBarView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6F1A8E7A3012AAE100E1ACC5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E783012AAE100E1ACC5 /* Components */,
+				6F1A8E793012AAE100E1ACC5 /* NewsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6F1A8E7B3012AAE100E1ACC5 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E6C3012AAE100E1ACC5 /* Extensions */,
+				6F1A8E703012AAE100E1ACC5 /* Theme */,
+				6F1A8E723012AAE100E1ACC5 /* ViewModels */,
+				6F1A8E7A3012AAE100E1ACC5 /* Views */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		6F1A8E7C3012AAE100E1ACC5 /* News */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E5E3012AAE100E1ACC5 /* Data */,
+				6F1A8E683012AAE100E1ACC5 /* Domain */,
+				6F1A8E7B3012AAE100E1ACC5 /* Presentation */,
+			);
+			path = News;
+			sourceTree = "<group>";
+		};
+		6F1A8E963012AF6400E1ACC5 /* RAG */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EA43012BE2100E1ACC5 /* Data */,
+				6F1A8EAD3012BE2100E1ACC5 /* Domain */,
+				6F1A8EBF3012BE2100E1ACC5 /* Presentation */,
+			);
+			path = RAG;
+			sourceTree = "<group>";
+		};
+		6F1A8E9E3012BE2100E1ACC5 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E9C3012BE2100E1ACC5 /* RAGQueryDTO.swift */,
+				6F1A8E9D3012BE2100E1ACC5 /* RAGResponseDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		6F1A8EA13012BE2100E1ACC5 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8E9F3012BE2100E1ACC5 /* RAGAPIService.swift */,
+				6F1A8EA03012BE2100E1ACC5 /* RAGEndpoint.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		6F1A8EA33012BE2100E1ACC5 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EA23012BE2100E1ACC5 /* RAGRepositoryImpl.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		6F1A8EA43012BE2100E1ACC5 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8ED63012C57C00E1ACC5 /* Speech */,
+				6F1A8E9E3012BE2100E1ACC5 /* DTOs */,
+				6F1A8EA13012BE2100E1ACC5 /* Network */,
+				6F1A8EA33012BE2100E1ACC5 /* Repositories */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		6F1A8EA83012BE2100E1ACC5 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */,
+				6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */,
+				6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */,
+				6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		6F1A8EAA3012BE2100E1ACC5 /* RepositoryInterfaces */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EA93012BE2100E1ACC5 /* RAGRepository.swift */,
+			);
+			path = RepositoryInterfaces;
+			sourceTree = "<group>";
+		};
+		6F1A8EAC3012BE2100E1ACC5 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EAB3012BE2100E1ACC5 /* QueryRAGUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		6F1A8EAD3012BE2100E1ACC5 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EA83012BE2100E1ACC5 /* Entities */,
+				6F1A8EAA3012BE2100E1ACC5 /* RepositoryInterfaces */,
+				6F1A8EAC3012BE2100E1ACC5 /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		6F1A8EAF3012BE2100E1ACC5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */,
+				6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */,
+				6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6F1A8EB23012BE2100E1ACC5 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EB03012BE2100E1ACC5 /* RAGFlowView.swift */,
+				6F1A8EB13012BE2100E1ACC5 /* RAGRoute.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		6F1A8EBA3012BE2100E1ACC5 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EE13012C5EB00E1ACC5 /* RAGTypingDotsView.swift */,
+				6F1A8EDF3012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift */,
+				6F1A8EDD3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift */,
+				6F1A8EB33012BE2100E1ACC5 /* RAGChatHeaderView.swift */,
+				6F1A8EB43012BE2100E1ACC5 /* RAGChatInputView.swift */,
+				6F1A8EB53012BE2100E1ACC5 /* RAGEmptyStateView.swift */,
+				6F1A8EB63012BE2100E1ACC5 /* RAGLoadingIndicator.swift */,
+				6F1A8EB73012BE2100E1ACC5 /* RAGMessageBubbleView.swift */,
+				6F1A8EB83012BE2100E1ACC5 /* RAGSourceCardView.swift */,
+				6F1A8EB93012BE2100E1ACC5 /* RAGSourcesSection.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		6F1A8EBC3012BE2100E1ACC5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EDB3012C5BB00E1ACC5 /* RAGVoiceChatView.swift */,
+				6F1A8EBA3012BE2100E1ACC5 /* Components */,
+				6F1A8EBB3012BE2100E1ACC5 /* RAGChatView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		6F1A8EBE3012BE2100E1ACC5 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8ED93012C5A600E1ACC5 /* RAGVoiceState.swift */,
+				6F1A8EBD3012BE2100E1ACC5 /* RAGChatViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		6F1A8EBF3012BE2100E1ACC5 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8EAF3012BE2100E1ACC5 /* Extensions */,
+				6F1A8EB23012BE2100E1ACC5 /* Routing */,
+				6F1A8EBC3012BE2100E1ACC5 /* View */,
+				6F1A8EBE3012BE2100E1ACC5 /* ViewModel */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		6F1A8ED63012C57C00E1ACC5 /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+				6F1A8ED73012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift */,
+			);
+			path = Speech;
 			sourceTree = "<group>";
 		};
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
@@ -2125,6 +2555,8 @@
 		F00E8B813AF1AA6E29087914 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8E963012AF6400E1ACC5 /* RAG */,
+				6F1A8E7C3012AAE100E1ACC5 /* News */,
 				265F4ED484729374FE40D080 /* Settings */,
 				A2FCC62BF8D4E60E58F59720 /* ScanHistory */,
 				D309EEA21A50FB4243A30823 /* PersonalInformation */,
@@ -2320,6 +2752,29 @@
 				2C78F008300E6D180092E6B3 /* ForgotPasswordResponseDTO+Domain.swift in Sources */,
 				2C78F00A300E6D180092E6B3 /* ForgotPasswordUseCase.swift in Sources */,
 				26E0850BA11B06E6A75AA2C5 /* AnyRoute.swift in Sources */,
+				6F1A8ED83012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift in Sources */,
+				6F1A8EC03012BE2100E1ACC5 /* RAGChatViewModel.swift in Sources */,
+				6F1A8EC13012BE2100E1ACC5 /* RAGRepository.swift in Sources */,
+				6F1A8EC23012BE2100E1ACC5 /* RAGAPIService.swift in Sources */,
+				6F1A8EC33012BE2100E1ACC5 /* RAGSourceCardView.swift in Sources */,
+				6F1A8EC43012BE2100E1ACC5 /* RAGRepositoryImpl.swift in Sources */,
+				6F1A8EC53012BE2100E1ACC5 /* RAGQueryDTO.swift in Sources */,
+				6F1A8EC63012BE2100E1ACC5 /* RAGResponseDTO.swift in Sources */,
+				6F1A8EC73012BE2100E1ACC5 /* RAGLoadingIndicator.swift in Sources */,
+				6F1A8EC83012BE2100E1ACC5 /* RAGSourcesSection.swift in Sources */,
+				6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */,
+				6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */,
+				6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */,
+				6F1A8ECC3012BE2100E1ACC5 /* RAGEndpoint.swift in Sources */,
+				6F1A8ECD3012BE2100E1ACC5 /* RAGRoute.swift in Sources */,
+				6F1A8ECE3012BE2100E1ACC5 /* RAGError.swift in Sources */,
+				6F1A8ECF3012BE2100E1ACC5 /* RAGFlowView.swift in Sources */,
+				6F1A8ED03012BE2100E1ACC5 /* QueryRAGUseCase.swift in Sources */,
+				6F1A8ED13012BE2100E1ACC5 /* RAGEmptyStateView.swift in Sources */,
+				6F1A8ED23012BE2100E1ACC5 /* Color+RAGSemantic.swift in Sources */,
+				6F1A8ED33012BE2100E1ACC5 /* RAGMessage.swift in Sources */,
+				6F1A8ED43012BE2100E1ACC5 /* RAGSource.swift in Sources */,
+				6F1A8ED53012BE2100E1ACC5 /* RAGChatHeaderView.swift in Sources */,
 				8662866AF69309468A360A6B /* AppAuthBackgroundModifier.swift in Sources */,
 				AFAB7C51A451F18FC9FED121 /* AppFlow.swift in Sources */,
 				19A50853F5FFD8DA0A42CE8A /* AppFlowCoordinator.swift in Sources */,
@@ -2339,6 +2794,7 @@
 				5190CD659C9CDE9928D88D48 /* Color+EditProfileSemantics.swift in Sources */,
 				3E8463A20AFA905AFCCABD44 /* Color+HomeSemantic.swift in Sources */,
 				77343C2892B0D7DD403F50F5 /* Color+OnboardingSemantic.swift in Sources */,
+				6F1A8EDC3012C5BB00E1ACC5 /* RAGVoiceChatView.swift in Sources */,
 				83BCED67AF3D310ED2A792A7 /* Color+SettingsSemantic.swift in Sources */,
 				87CDFD7A6B4A9E03D3672A78 /* Colors+Extension.swift in Sources */,
 				901C9D543FA7B839A1109594 /* CornerBracketsShape.swift in Sources */,
@@ -2364,6 +2820,31 @@
 				532DB767C9AAD8B87AC0F264 /* EditProfileView.swift in Sources */,
 				6F1E4C26B29F085597C11899 /* EditProfileViewModel.swift in Sources */,
 				6D605F369E76307405311A42 /* EditableFieldView.swift in Sources */,
+				6F1A8E7D3012AAE100E1ACC5 /* NewsFeedPalette.swift in Sources */,
+				6F1A8E7E3012AAE100E1ACC5 /* SearchBarView.swift in Sources */,
+				6F1A8E7F3012AAE100E1ACC5 /* Article.swift in Sources */,
+				6F1A8E803012AAE100E1ACC5 /* NewsRepositoryProtocol.swift in Sources */,
+				6F1A8E813012AAE100E1ACC5 /* SafariView.swift in Sources */,
+				6F1A8E823012AAE100E1ACC5 /* NewsFeedMetrics.swift in Sources */,
+				6F1A8E833012AAE100E1ACC5 /* NewsFeedCategory.swift in Sources */,
+				6F1A8E843012AAE100E1ACC5 /* NewsEndpoint.swift in Sources */,
+				6F1A8E853012AAE100E1ACC5 /* ArticleCardSkeletonView.swift in Sources */,
+				6F1A8E863012AAE100E1ACC5 /* NewsAPIConfig.swift in Sources */,
+				6F1A8E873012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift in Sources */,
+				6F1A8E883012AAE100E1ACC5 /* NewsViewModel.swift in Sources */,
+				6F1A8E893012AAE100E1ACC5 /* NewsResponseDTO.swift in Sources */,
+				6F1A8E8A3012AAE100E1ACC5 /* SearchArticlesUseCase.swift in Sources */,
+				6F1A8E8B3012AAE100E1ACC5 /* ArticleCardView.swift in Sources */,
+				6F1A8E8C3012AAE100E1ACC5 /* NewsRemoteDataSource.swift in Sources */,
+				6F1A8E8D3012AAE100E1ACC5 /* NewsSource.swift in Sources */,
+				6F1A8E8E3012AAE100E1ACC5 /* NewsView.swift in Sources */,
+				6F1A8E8F3012AAE100E1ACC5 /* NewsRepository.swift in Sources */,
+				6F1A8E903012AAE100E1ACC5 /* ShimmerModifier.swift in Sources */,
+				6F1A8E913012AAE100E1ACC5 /* CategoryChipView.swift in Sources */,
+				6F1A8E923012AAE100E1ACC5 /* FeedStateViews.swift in Sources */,
+				6F1A8E933012AAE100E1ACC5 /* ArticleMapper.swift in Sources */,
+				6F1A8E943012AAE100E1ACC5 /* Date+Formatting.swift in Sources */,
+				6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */,
 				D48A243C301155F90004D95E /* GetProfileDataUseCase.swift in Sources */,
 				5BDFB387E5C37B41261F67A8 /* FloatingTabButton.swift in Sources */,
 				2C78ED33300E6D080092E6B2 /* APIErrorResponse.swift in Sources */,
@@ -2413,6 +2894,7 @@
 				2C78ED11300E6C7E0092E6B2 /* RegisterRequest.swift in Sources */,
 				2C78ED12300E6C7E0092E6B2 /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */,
+				6F1A8EE23012C5EB00E1ACC5 /* RAGTypingDotsView.swift in Sources */,
 				2C78ED14300E6C7E0092E6B2 /* ForgotPasswordHeaderSection.swift in Sources */,
 				2C78F012300E6D180092E6B3 /* RefreshTokenRequestDTO.swift in Sources */,
 				2C78F014300E6D180092E6B3 /* Notification+Extensions.swift in Sources */,
@@ -2444,6 +2926,7 @@
 				2C78ED25300E6C7E0092E6B2 /* LoginFormFieldsSection.swift in Sources */,
 				2C78ED26300E6C7E0092E6B2 /* RegisterFormFieldsSection.swift in Sources */,
 				2C78ED27300E6C7E0092E6B2 /* LoginViewModel.swift in Sources */,
+				6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */,
 				2C78ED28300E6C7E0092E6B2 /* LoginView.swift in Sources */,
 				2C78ED29300E6C7E0092E6B2 /* RegisterResult.swift in Sources */,
 				8AE05AEC0DCD40A73044A0EA /* NutriScanApp.swift in Sources */,
@@ -2496,9 +2979,11 @@
 				A3139845EAAF0AA019A8AAD3 /* SettingsOptions.swift in Sources */,
 				DF8C799C34206520431D05F1 /* SettingsSegmentRow.swift in Sources */,
 				1D6E84E32F4668FB17E8512E /* SettingsView.swift in Sources */,
+				6F1A8EE630138F7700E1ACC5 /* RAGLanguage+LayoutDirection.swift in Sources */,
 				7656C044D75870646BAEFF96 /* SettingsViewModel.swift in Sources */,
 				13366415059A24108AF1B614 /* SplashScreen.swift in Sources */,
 				AA78F155D98A2E3105D26DEA /* StatusType.swift in Sources */,
+				6F1A8EE03012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift in Sources */,
 				E63165F0244F25ECD64784DB /* StepProgressText.swift in Sources */,
 				A02EC62E58FAD2A7E02BF822 /* TabBarCurveShape.swift in Sources */,
 				44C3CB9EBBBDB24729DAA533 /* TabBarPositionKey.swift in Sources */,
@@ -2542,6 +3027,7 @@
 				D40DD1C9301020DB001CF496 /* ProfileEndpoint.swift in Sources */,
 				8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */,
 				D40DD1D730102706001CF496 /* AppDependencies.swift in Sources */,
+				6F1A8EE430138F1B00E1ACC5 /* RAGLanguage.swift in Sources */,
 				6FC3C2533010187F00ACB5EE /* StepGaugeCardView.swift in Sources */,
 				6F1A8DFB301027F800E1ACC5 /* StepHistoryBarChartView.swift in Sources */,
 				6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */,
@@ -2552,6 +3038,7 @@
 				6FC3C248301003E400ACB5EE /* DailySteps.swift in Sources */,
 				6FC3C249301003E400ACB5EE /* StepRepositoryProtocol.swift in Sources */,
 				6FC3C24A301003E400ACB5EE /* ObserveDailyStepsUseCase.swift in Sources */,
+				6F1A8EDE3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift in Sources */,
 				6FC3C24B301003E400ACB5EE /* TodayStepsScreen.swift in Sources */,
 				6FC3C24C301003E400ACB5EE /* PedometerDataSource.swift in Sources */,
 				D40DD1C03010204F001CF496 /* ProfileMapper.swift in Sources */,
@@ -2567,6 +3054,7 @@
 				D40DD1CF301023AC001CF496 /* ProfileRepository.swift in Sources */,
 				D40DD1C6301020B9001CF496 /* ProfileUpdateRequestDTO.swift in Sources */,
 				D40DD1BD3010202D001CF496 /* Profile.swift in Sources */,
+				6F1A8EDA3012C5A600E1ACC5 /* RAGVoiceState.swift in Sources */,
 				D40DD1C23010208F001CF496 /* ReferenceItemDTO.swift in Sources */,
 				D40DD1DC30102BC0001CF496 /* ProfileChipItem.swift in Sources */,
 				8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */,
