@@ -26,7 +26,7 @@ struct ExerciseListView: View {
         if viewModel.isLoadingExercises && viewModel.exercises.isEmpty {
             loadingStateView
         } else if viewModel.exercises.isEmpty {
-            emptyStateView
+            EmptyExerciseStateView()
         } else {
             contentListView
         }
@@ -42,24 +42,6 @@ struct ExerciseListView: View {
                     .shimmering()
             }
         }
-    }
-
-    private var emptyStateView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 44, weight: .light))
-                .foregroundColor(Color.Teal.teal400)
-
-            Text("No exercises found")
-                .font(Font.AppFont.subtitle2)
-                .foregroundColor(Color.ExerciseSemantic.rowTitle)
-
-            Text("Try a different search or category")
-                .font(Font.AppFont.textSecondary)
-                .foregroundColor(Color.ExerciseSemantic.rowSubtitle)
-                .multilineTextAlignment(.center)
-        }
-        .padding(.top, 60)
     }
 
     private var contentListView: some View {
@@ -78,15 +60,11 @@ struct ExerciseListView: View {
             }
 
             if viewModel.isLoadingMore {
-                paginationFooterView
+                ProgressView()
+                    .tint(Color.Teal.teal1000)
+                    .padding(.vertical, 16)
             }
         }
-    }
-
-    private var paginationFooterView: some View {
-        ProgressView()
-            .tint(Color.Teal.teal1000)
-            .padding(.vertical, 16)
     }
 }
 
