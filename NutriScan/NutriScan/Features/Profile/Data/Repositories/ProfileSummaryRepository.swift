@@ -16,12 +16,12 @@ final class ProfileSummaryRepository: ProfileSummaryRepositoryProtocol {
 
     func getProfileSummary() async throws -> ProfileSummary {
         let dto = try await remoteDataSource.getProfileSummary()
-        return ProfileMapper.map(dto: dto)
+        return ProfileSummaryMapper.map(dto: dto)
     }
 
     func updateFamilyMembers(_ members: [FamilyMemberInput]) async throws -> ProfileSummary {
-        let requestDTO = ProfileMapper.map(inputs: members)
+        let requestDTO = ProfileSummaryMapper.map(inputs: members)
         let dto = try await remoteDataSource.updateFamilyMembers(requestDTO)
-        return ProfileMapper.map(dto: dto)
+        return ProfileSummaryMapper.map(dto: dto)
     }
 }

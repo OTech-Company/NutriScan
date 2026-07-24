@@ -229,11 +229,11 @@
 		D40DD1AF301005A5001CF496 /* SearchSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */; };
 		D40DD1BB30101FEE001CF496 /* ReferenceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1BA30101FEC001CF496 /* ReferenceItem.swift */; };
 		D40DD1BD3010202D001CF496 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1BC3010202A001CF496 /* Profile.swift */; };
-		D40DD1C03010204F001CF496 /* ProfileMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1BF3010204D001CF496 /* ProfileMapper.swift */; };
+		D40DD1C03010204F001CF496 /* EditProfileMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1BF3010204D001CF496 /* EditProfileMapper.swift */; };
 		D40DD1C23010208F001CF496 /* ReferenceItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C13010208D001CF496 /* ReferenceItemDTO.swift */; };
 		D40DD1C4301020A2001CF496 /* EditProfileResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C3301020A0001CF496 /* EditProfileResponseDTO.swift */; };
 		D40DD1C6301020B9001CF496 /* EditProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C5301020B6001CF496 /* EditProfileUpdateRequestDTO.swift */; };
-		D40DD1C9301020DB001CF496 /* ProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C8301020D8001CF496 /* ProfileEndpoint.swift */; };
+		D40DD1C9301020DB001CF496 /* EditProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C8301020D8001CF496 /* EditProfileEndpoint.swift */; };
 		D40DD1CB301022B0001CF496 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1CA301022AE001CF496 /* ProfileUpdate.swift */; };
 		D40DD1CD301022DC001CF496 /* EditProfileRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1CC301022CD001CF496 /* EditProfileRepositoryProtocol.swift */; };
 		D40DD1CF301023AC001CF496 /* EditProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1CE301023AA001CF496 /* EditProfileRepository.swift */; };
@@ -259,7 +259,6 @@
 		D49D9F0C3013E36D00ACE567 /* FamilyMemberRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F0B3013E36A00ACE567 /* FamilyMemberRequestDTO.swift */; };
 		D49D9F0E3013E38200ACE567 /* ProfileSummaryResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F0D3013E37F00ACE567 /* ProfileSummaryResponseDTO.swift */; };
 		D49D9F103013E39400ACE567 /* FamilyMembersUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F0F3013E39200ACE567 /* FamilyMembersUpdateRequestDTO.swift */; };
-		D49D9F123013E45B00ACE567 /* ProfileMapper+FamilyMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F113013E42E00ACE567 /* ProfileMapper+FamilyMember.swift */; };
 		D49D9F143013E4AE00ACE567 /* ProfileSummaryEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F133013E4AB00ACE567 /* ProfileSummaryEndpoint.swift */; };
 		D49D9F173013E4FA00ACE567 /* ProfileSummaryRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F163013E4F800ACE567 /* ProfileSummaryRemoteDataSourceProtocol.swift */; };
 		D49D9F193013E51400ACE567 /* ProfileSummaryRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F183013E51200ACE567 /* ProfileSummaryRemoteDataSource.swift */; };
@@ -268,6 +267,7 @@
 		D49D9F1F3014120200ACE567 /* FamilyMemberSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */; };
 		D49D9F213014125500ACE567 /* FamilyMemberSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */; };
 		D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F233014175500ACE567 /* EditProfileAssembly.swift */; };
+		D49D9F2630141B3F00ACE567 /* ProfileSummaryMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F2530141B3B00ACE567 /* ProfileSummaryMapper.swift */; };
 		D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */; };
 		D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
@@ -554,11 +554,11 @@
 		D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSelectionSheet.swift; sourceTree = "<group>"; };
 		D40DD1BA30101FEC001CF496 /* ReferenceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceItem.swift; sourceTree = "<group>"; };
 		D40DD1BC3010202A001CF496 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		D40DD1BF3010204D001CF496 /* ProfileMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileMapper.swift; sourceTree = "<group>"; };
+		D40DD1BF3010204D001CF496 /* EditProfileMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileMapper.swift; sourceTree = "<group>"; };
 		D40DD1C13010208D001CF496 /* ReferenceItemDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceItemDTO.swift; sourceTree = "<group>"; };
 		D40DD1C3301020A0001CF496 /* EditProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileResponseDTO.swift; sourceTree = "<group>"; };
 		D40DD1C5301020B6001CF496 /* EditProfileUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileUpdateRequestDTO.swift; sourceTree = "<group>"; };
-		D40DD1C8301020D8001CF496 /* ProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEndpoint.swift; sourceTree = "<group>"; };
+		D40DD1C8301020D8001CF496 /* EditProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileEndpoint.swift; sourceTree = "<group>"; };
 		D40DD1CA301022AE001CF496 /* ProfileUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
 		D40DD1CC301022CD001CF496 /* EditProfileRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRepositoryProtocol.swift; sourceTree = "<group>"; };
 		D40DD1CE301023AA001CF496 /* EditProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRepository.swift; sourceTree = "<group>"; };
@@ -584,7 +584,6 @@
 		D49D9F0B3013E36A00ACE567 /* FamilyMemberRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberRequestDTO.swift; sourceTree = "<group>"; };
 		D49D9F0D3013E37F00ACE567 /* ProfileSummaryResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryResponseDTO.swift; sourceTree = "<group>"; };
 		D49D9F0F3013E39200ACE567 /* FamilyMembersUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMembersUpdateRequestDTO.swift; sourceTree = "<group>"; };
-		D49D9F113013E42E00ACE567 /* ProfileMapper+FamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileMapper+FamilyMember.swift"; sourceTree = "<group>"; };
 		D49D9F133013E4AB00ACE567 /* ProfileSummaryEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryEndpoint.swift; sourceTree = "<group>"; };
 		D49D9F163013E4F800ACE567 /* ProfileSummaryRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D49D9F183013E51200ACE567 /* ProfileSummaryRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRemoteDataSource.swift; sourceTree = "<group>"; };
@@ -593,6 +592,7 @@
 		D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetViewModel.swift; sourceTree = "<group>"; };
 		D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetView.swift; sourceTree = "<group>"; };
 		D49D9F233014175500ACE567 /* EditProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileAssembly.swift; sourceTree = "<group>"; };
+		D49D9F2530141B3B00ACE567 /* ProfileSummaryMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryMapper.swift; sourceTree = "<group>"; };
 		D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSource.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
@@ -1702,6 +1702,7 @@
 		8F029F5830127724008B6CB1 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				D49D9F2730141BDE00ACE567 /* Mappers */,
 				8F029F5D3012778D008B6CB1 /* Repository */,
 				8F029F5B3012774D008B6CB1 /* DataSource */,
 				8F029F5A3012773E008B6CB1 /* DTOs */,
@@ -1734,7 +1735,7 @@
 			children = (
 				D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */,
 				D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */,
-				D40DD1C8301020D8001CF496 /* ProfileEndpoint.swift */,
+				D40DD1C8301020D8001CF496 /* EditProfileEndpoint.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -2106,8 +2107,7 @@
 		D40DD1BE30102047001CF496 /* Mappers */ = {
 			isa = PBXGroup;
 			children = (
-				D49D9F113013E42E00ACE567 /* ProfileMapper+FamilyMember.swift */,
-				D40DD1BF3010204D001CF496 /* ProfileMapper.swift */,
+				D49D9F2530141B3B00ACE567 /* ProfileSummaryMapper.swift */,
 			);
 			path = Mappers;
 			sourceTree = "<group>";
@@ -2144,6 +2144,14 @@
 				D49D9F233014175500ACE567 /* EditProfileAssembly.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		D49D9F2730141BDE00ACE567 /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				D40DD1BF3010204D001CF496 /* EditProfileMapper.swift */,
+			);
+			path = Mappers;
 			sourceTree = "<group>";
 		};
 		D4BAA2FF30137B2E006EDB11 /* Extensions */ = {
@@ -2676,12 +2684,11 @@
 				D40DD1AC300FFE92001CF496 /* DateSelectionFieldSemantics.swift in Sources */,
 				D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */,
 				D40DD1CB301022B0001CF496 /* ProfileUpdate.swift in Sources */,
-				D40DD1C9301020DB001CF496 /* ProfileEndpoint.swift in Sources */,
+				D40DD1C9301020DB001CF496 /* EditProfileEndpoint.swift in Sources */,
 				8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */,
 				D40DD1D730102706001CF496 /* AppDependencies.swift in Sources */,
 				6FC3C2533010187F00ACB5EE /* StepGaugeCardView.swift in Sources */,
 				6F1A8DFB301027F800E1ACC5 /* StepHistoryBarChartView.swift in Sources */,
-				D49D9F123013E45B00ACE567 /* ProfileMapper+FamilyMember.swift in Sources */,
 				6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */,
 				D48A243E301156120004D95E /* UpdateProfileUseCaseProtocol .swift in Sources */,
 				6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */,
@@ -2692,7 +2699,7 @@
 				6FC3C24A301003E400ACB5EE /* ObserveDailyStepsUseCase.swift in Sources */,
 				6FC3C24B301003E400ACB5EE /* TodayStepsScreen.swift in Sources */,
 				6FC3C24C301003E400ACB5EE /* PedometerDataSource.swift in Sources */,
-				D40DD1C03010204F001CF496 /* ProfileMapper.swift in Sources */,
+				D40DD1C03010204F001CF496 /* EditProfileMapper.swift in Sources */,
 				D40DD1C4301020A2001CF496 /* EditProfileResponseDTO.swift in Sources */,
 				D4BAA31030137DA3006EDB11 /* ProfileHeaderDecoration.swift in Sources */,
 				D40DD1AF301005A5001CF496 /* SearchSelectionSheet.swift in Sources */,
@@ -2707,6 +2714,7 @@
 				D40DD1C6301020B9001CF496 /* EditProfileUpdateRequestDTO.swift in Sources */,
 				D40DD1BD3010202D001CF496 /* Profile.swift in Sources */,
 				D40DD1C23010208F001CF496 /* ReferenceItemDTO.swift in Sources */,
+				D49D9F2630141B3F00ACE567 /* ProfileSummaryMapper.swift in Sources */,
 				D4BAA31630137EB0006EDB11 /* ProfileView.swift in Sources */,
 				D40DD1DC30102BC0001CF496 /* ProfileChipItem.swift in Sources */,
 				8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */,

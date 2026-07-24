@@ -1,19 +1,20 @@
 //
-//  ProfileMapper+FamilyMember.swift
+//  ProfileSummaryMapper.swift
 //  NutriScan
 //
-//  Created by Mina_Wagdy on 24/07/2026.
+//  Created by Mina_Wagdy on 25/07/2026.
 //
 
-extension ProfileMapper {
+enum ProfileSummaryMapper {
 
     static func map(dto: FamilyMemberDTO) -> FamilyMember {
         FamilyMember(
             id: dto.id,
             name: dto.name,
             relation: dto.relation,
-            allergies: dto.allergies.map { map(dto: $0) },
-            diseases: dto.diseases.map { map(dto: $0) }
+            // Assuming ReferenceItem is shared or duplicated locally
+            allergies: dto.allergies.map { EditProfileMapper.map(dto: $0) },
+            diseases: dto.diseases.map { EditProfileMapper.map(dto: $0) }
         )
     }
 
@@ -24,6 +25,7 @@ extension ProfileMapper {
         )
     }
 
+    // MARK: - Entity to Request DTO
     static func map(input: FamilyMemberInput) -> FamilyMemberRequestDTO {
         FamilyMemberRequestDTO(
             name: input.name,

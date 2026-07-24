@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ProfileMapper {
+enum EditProfileMapper {
     
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()

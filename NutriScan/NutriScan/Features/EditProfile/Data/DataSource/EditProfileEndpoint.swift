@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ProfileEndpoint: APIEndpoint {
+enum EditProfileEndpoint: APIEndpoint {
     case getProfile
     case updateProfile(EditProfileUpdateRequestDTO)
     case getAllergies

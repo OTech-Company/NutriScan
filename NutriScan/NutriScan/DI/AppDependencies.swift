@@ -17,6 +17,7 @@ struct AppDependencies {
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
         ProfileAssembly(),
+        EditProfileAssembly(),
         ScanAssembly(),
         StepTrackerAssembly()
         // Teammates: add your feature's Assembly here, e.g.
