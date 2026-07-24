@@ -265,6 +265,8 @@
 		D49D9F193013E51400ACE567 /* ProfileSummaryRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F183013E51200ACE567 /* ProfileSummaryRemoteDataSource.swift */; };
 		D49D9F1B3013E52C00ACE567 /* ProfileSummaryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1A3013E52900ACE567 /* ProfileSummaryRepository.swift */; };
 		D49D9F1D3014092600ACE567 /* OpenRightRoundedRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */; };
+		D49D9F1F3014120200ACE567 /* FamilyMemberSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */; };
+		D49D9F213014125500ACE567 /* FamilyMemberSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */; };
 		D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */; };
 		D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
@@ -587,6 +589,8 @@
 		D49D9F183013E51200ACE567 /* ProfileSummaryRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRemoteDataSource.swift; sourceTree = "<group>"; };
 		D49D9F1A3013E52900ACE567 /* ProfileSummaryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRepository.swift; sourceTree = "<group>"; };
 		D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRightRoundedRect.swift; sourceTree = "<group>"; };
+		D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetViewModel.swift; sourceTree = "<group>"; };
+		D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetView.swift; sourceTree = "<group>"; };
 		D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSource.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
@@ -1283,6 +1287,7 @@
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */,
 				D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */,
 				D4BAA31330137E68006EDB11 /* FamilyMembersSectionView.swift */,
 				D4BAA31130137DC7006EDB11 /* ProfileHeaderView.swift */,
@@ -1963,6 +1968,7 @@
 		BC35895CA2ED5CA2CCE855A5 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */,
 				D4BAA31930137F78006EDB11 /* ProfileViewModel.swift */,
 			);
 			path = ViewModel;
@@ -2436,6 +2442,7 @@
 				D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */,
 				6DD0CE29CC51AFC8DCB6EC03 /* BirthdateSelectionView.swift in Sources */,
 				7E58F658CB993EA71CE8C4D9 /* CachedImage.swift in Sources */,
+				D49D9F213014125500ACE567 /* FamilyMemberSheetView.swift in Sources */,
 				D49D9F103013E39400ACE567 /* FamilyMembersUpdateRequestDTO.swift in Sources */,
 				2C2525F5476C19DF89C6AB28 /* ChipSemantics.swift in Sources */,
 				0B67C8DB9699D804AF73B7B1 /* Color+Dynamic.swift in Sources */,
@@ -2540,6 +2547,7 @@
 				D48A24363011534F0004D95E /* ChipSelectionManager.swift in Sources */,
 				D49D9F143013E4AE00ACE567 /* ProfileSummaryEndpoint.swift in Sources */,
 				2C78ED1E300E6C7E0092E6B2 /* RegisterUseCase.swift in Sources */,
+				D49D9F1F3014120200ACE567 /* FamilyMemberSheetViewModel.swift in Sources */,
 				2C78ED1F300E6C7E0092E6B2 /* AuthFlowView.swift in Sources */,
 				2C78ED20300E6C7E0092E6B2 /* ForgotPasswordView.swift in Sources */,
 				2C78ED21300E6C7E0092E6B2 /* AuthRoute.swift in Sources */,

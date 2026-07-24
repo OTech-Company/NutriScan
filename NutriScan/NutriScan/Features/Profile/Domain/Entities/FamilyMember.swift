@@ -8,7 +8,7 @@
 import Foundation
 
 struct FamilyMember: Identifiable, Hashable {
-    let id: String?          // nil for a not-yet-saved new member
+    let id: String
     let name: String
     let relation: String
     let allergies: [ReferenceItem]

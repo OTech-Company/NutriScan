@@ -93,4 +93,19 @@ final class ProfileViewModel {
 
         state.isLoading = false
     }
+
+    @MainActor
+    func deleteFamilyMember(id: String) async {
+        let remaining = state.familyMembers
+            .filter { $0.id != id }
+            .map {
+                FamilyMemberInput(
+                    name: $0.name,
+                    relation: $0.relation,
+                    allergyIds: $0.allergies.map(\.id),
+                    diseaseIds: $0.diseases.map(\.id)
+                )
+            }
+        await submitFamilyMembers(remaining)
+    }
 }
