@@ -11,7 +11,7 @@ struct ProfileSetupFlowView: View {
     @StateObject private var router = AppRouter()
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
-    @State private var viewModel = ProfileSetupFlowViewModel()
+    @State private var viewModel = ProfileSetupFlowFactory.makeViewModel()
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -62,7 +62,7 @@ struct ProfileSetupFlowView: View {
     private func handleNext() {
         if viewModel.currentStep == .height {
             // Push health profile route
-            router.push(ProfileSetupRoute.healthProfile)
+            router.push(ProfileSetupRoute.healthProfile(viewModel))
         } else {
             viewModel.goNext()
         }

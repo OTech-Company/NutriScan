@@ -1,0 +1,43 @@
+//
+//  ProfileSetupResponseDTO.swift
+//  NutriScan
+//
+
+import Foundation
+
+struct ProfileSetupAllergyDTO: Decodable {
+    let id: Int
+    let name: String
+}
+
+struct ProfileSetupDiseaseDTO: Decodable {
+    let id: Int
+    let name: String
+}
+
+struct ProfileSetupResponseDTO: Decodable {
+    let firstName: String
+    let lastName: String
+    let dateOfBirth: String
+    let gender: String
+    let heightCm: Int
+    let weightKg: Int
+    let allergyIds: [ProfileSetupAllergyDTO]
+    let diseaseIds: [ProfileSetupDiseaseDTO]
+
+    func toDomain() -> ProfileSetupUserProfile {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        return ProfileSetupUserProfile(
+            firstName: firstName,
+            lastName: lastName,
+            dateOfBirth: formatter.date(from: dateOfBirth) ?? Date(),
+            gender: ProfileSetupGender(rawValue: gender) ?? .male,
+            heightCm: heightCm,
+            weightKg: weightKg,
+            allergies: allergyIds.map { ProfileSetupAllergyOption(id: $0.id, name: $0.name) },
+            diseases: diseaseIds.map { ProfileSetupDiseaseOption(id: $0.id, name: $0.name) }
+        )
+    }
+}

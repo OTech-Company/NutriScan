@@ -13,14 +13,7 @@ struct HealthProfileSetupView: View {
 
     @Environment(\.colorScheme) var colorScheme
     
-    @State private var allAllergies = ["Peanuts", "Gluten", "Dairy"]
-    @State private var allConditions = ["Diabetes", "Hypertension", "Celiac Disease"]
-    
-    @State private var selectedConditions: Set<String> = []
-    @State private var selectedAllergies: Set<String> = []
-    
-    @State private var customConditions: [String] = []
-    @State private var customAllergies: [String] = []
+    @Bindable var viewModel: ProfileSetupFlowViewModel
     
     // MARK: - Search Sheet States
     @State private var showConditionSearchSheet = false
@@ -30,16 +23,16 @@ struct HealthProfileSetupView: View {
     @State private var allergySearchQuery = ""
 
     // MARK: - Filtered Results for Search Sheets
-    var filteredConditions: [String] {
-        let unselected = allConditions.filter { !selectedConditions.contains($0) }
+    var filteredConditions: [ProfileSetupDiseaseOption] {
+        let unselected = viewModel.allConditions.filter { !viewModel.selectedConditions.contains($0) }
         if conditionSearchQuery.isEmpty { return unselected }
-        return unselected.filter { $0.localizedCaseInsensitiveContains(conditionSearchQuery) }
+        return unselected.filter { $0.name.localizedCaseInsensitiveContains(conditionSearchQuery) }
     }
     
-    var filteredAllergies: [String] {
-        let unselected = allAllergies.filter { !selectedAllergies.contains($0) }
+    var filteredAllergies: [ProfileSetupAllergyOption] {
+        let unselected = viewModel.allAllergies.filter { !viewModel.selectedAllergies.contains($0) }
         if allergySearchQuery.isEmpty { return unselected }
-        return unselected.filter { $0.localizedCaseInsensitiveContains(allergySearchQuery) }
+        return unselected.filter { $0.name.localizedCaseInsensitiveContains(allergySearchQuery) }
     }
 
     var body: some View {
@@ -88,32 +81,26 @@ struct HealthProfileSetupView: View {
                     VStack(spacing: 24) {
                         SelectableChipsSectionView(
                             title: "Chronic Conditions",
-                            items: allConditions.map { ProfileChipItem(name: $0, isSelected: selectedConditions.contains($0), isNewlyAdded: false) } +
-                                   customConditions.map { ProfileChipItem(name: $0, isSelected: selectedConditions.contains($0), isNewlyAdded: true) },
+                            items: viewModel.allConditions.map { ProfileChipItem(name: $0.name, isSelected: viewModel.selectedConditions.contains($0), isNewlyAdded: false) },
                             onAddOther: { showConditionSearchSheet = true },
-                            onToggle: { condition in
-                                if selectedConditions.contains(condition) {
-                                    selectedConditions.remove(condition)
-                                } else {
-                                    selectedConditions.insert(condition)
+                            onToggle: { conditionName in
+                                if let option = viewModel.allConditions.first(where: { $0.name == conditionName }) {
+                                    viewModel.toggleCondition(option)
                                 }
                             },
-                            onRemove: removeCustomCondition
+                            onRemove: { _ in }
                         )
                         
                         SelectableChipsSectionView(
                             title: "Allergies",
-                            items: allAllergies.map { ProfileChipItem(name: $0, isSelected: selectedAllergies.contains($0), isNewlyAdded: false) } +
-                                   customAllergies.map { ProfileChipItem(name: $0, isSelected: selectedAllergies.contains($0), isNewlyAdded: true) },
+                            items: viewModel.allAllergies.map { ProfileChipItem(name: $0.name, isSelected: viewModel.selectedAllergies.contains($0), isNewlyAdded: false) },
                             onAddOther: { showAllergySearchSheet = true },
-                            onToggle: { allergy in
-                                if selectedAllergies.contains(allergy) {
-                                    selectedAllergies.remove(allergy)
-                                } else {
-                                    selectedAllergies.insert(allergy)
+                            onToggle: { allergyName in
+                                if let option = viewModel.allAllergies.first(where: { $0.name == allergyName }) {
+                                    viewModel.toggleAllergy(option)
                                 }
                             },
-                            onRemove: removeCustomAllergy
+                            onRemove: { _ in }
                         )
                     }
                     .padding(.horizontal, 22)
@@ -124,23 +111,36 @@ struct HealthProfileSetupView: View {
             VStack {
                 Spacer()
                 CustomPuffedButton(
-                    title: "Save",
+                    title: viewModel.isSaving ? "Saving..." : "Save",
                     action: {
-                        flowCoordinator.finishProfileSetup()
+                        Task {
+                            let success = await viewModel.saveProfile()
+                            if success {
+                                flowCoordinator.finishProfileSetup()
+                            }
+                        }
                     }
                 )
+                .disabled(viewModel.isSaving)
                 .padding(.horizontal, 22)
                 .padding(.bottom, 24)
             }
+        }
+        .task {
+            await viewModel.loadHealthProfileOptions()
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showConditionSearchSheet) {
             SearchSelectionSheet(
                 title: "Search Conditions",
                 searchQuery: $conditionSearchQuery,
-                results: filteredConditions,
-                onSelect: { selectedCondition in
-                    selectCondition(selectedCondition)
+                results: filteredConditions.map(\.name),
+                onSelect: { selectedConditionName in
+                    if let cond = viewModel.allConditions.first(where: { $0.name == selectedConditionName }) {
+                        viewModel.toggleCondition(cond)
+                        conditionSearchQuery = ""
+                        showConditionSearchSheet = false
+                    }
                 }
             )
         }
@@ -148,45 +148,19 @@ struct HealthProfileSetupView: View {
             SearchSelectionSheet(
                 title: "Search Allergies",
                 searchQuery: $allergySearchQuery,
-                results: filteredAllergies,
-                onSelect: { selectedAllergy in
-                    selectAllergy(selectedAllergy)
+                results: filteredAllergies.map(\.name),
+                onSelect: { selectedAllergyName in
+                    if let allg = viewModel.allAllergies.first(where: { $0.name == selectedAllergyName }) {
+                        viewModel.toggleAllergy(allg)
+                        allergySearchQuery = ""
+                        showAllergySearchSheet = false
+                    }
                 }
             )
         }
     }
-    
-    // MARK: - Actions: Conditions
-    private func selectCondition(_ condition: String) {
-        if !allConditions.contains(condition) && !customConditions.contains(condition) {
-            customConditions.append(condition)
-        }
-        selectedConditions.insert(condition)
-        conditionSearchQuery = ""
-        showConditionSearchSheet = false
-    }
-
-    private func removeCustomCondition(_ condition: String) {
-        customConditions.removeAll { $0 == condition }
-        selectedConditions.remove(condition)
-    }
-
-    // MARK: - Actions: Allergies
-    private func selectAllergy(_ allergy: String) {
-        if !allAllergies.contains(allergy) && !customAllergies.contains(allergy) {
-            customAllergies.append(allergy)
-        }
-        selectedAllergies.insert(allergy)
-        allergySearchQuery = ""
-        showAllergySearchSheet = false
-    }
-
-    private func removeCustomAllergy(_ allergy: String) {
-        customAllergies.removeAll { $0 == allergy }
-        selectedAllergies.remove(allergy)
-    }
 }
 
 #Preview {
-    HealthProfileSetupView()
+    HealthProfileSetupView(viewModel: ProfileSetupFlowFactory.makeViewModel())
 }

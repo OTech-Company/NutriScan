@@ -7,7 +7,7 @@
 
 import SwiftUI
 struct GenderSelectionRow: View {
-    @Binding var selectedGender: Gender
+    @Binding var selectedGender: ProfileSetupGender
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 22) {
@@ -17,7 +17,7 @@ struct GenderSelectionRow: View {
     }
 
     @ViewBuilder
-    private func genderCard(for gender: Gender) -> some View {
+    private func genderCard(for gender: ProfileSetupGender) -> some View {
         VStack(spacing: 8) {
             if selectedGender == gender {
                 SelectionIndicatorView()
