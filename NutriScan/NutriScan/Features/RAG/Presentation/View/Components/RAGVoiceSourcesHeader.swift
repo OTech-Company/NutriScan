@@ -8,8 +8,8 @@ import SwiftUI
 struct RAGVoiceSourcesHeader: View {
     let language: RAGLanguage
 
-    // Swap these for your official source logos (e.g. WHO, NFSA, MOHP) when available.
-    private let symbols = ["cross.case.fill", "leaf.fill", "heart.text.square.fill"]
+    // Asset catalog image names (in Assets.xcassets)
+    private let symbols = ["world-health-organization", "wezaret_elseha", "elhaya_elkawmeya"]
 
     var body: some View {
         VStack(spacing: 14) {
@@ -20,12 +20,13 @@ struct RAGVoiceSourcesHeader: View {
 
             HStack(spacing: 20) {
                 ForEach(symbols, id: \.self) { symbol in
-                    Image(systemName: symbol)
-                        .font(.system(size: 24, weight: .medium))
-                        .foregroundStyle(Color.RAGSemantic.sendButton)
-                        .frame(width: 52, height: 52)
-                        .background(Color.RAGSemantic.aiBubble)
-                        .clipShape(Circle())
+                    Image(symbol)
+                        .resizable()
+                        .scaledToFit()
+//                        .padding(10)
+                        .frame(width: 82, height: 82)
+//                        .background(Color.RAGSemantic.aiBubble)
+//                        .clipShape(Circle())
                 }
             }
         }
