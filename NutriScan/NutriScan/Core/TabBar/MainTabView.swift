@@ -20,6 +20,8 @@ struct MainTabView: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var selectedTab: AppTab = .home
     
+    @State private var isTabBarHidden: Bool = false
+    
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -47,9 +49,17 @@ struct MainTabView: View {
                 ProfileFlowView()
                     .tag(AppTab.profile)
             }
+            .onPreferenceChange(HideTabBarKey.self) { hidden in
+                withAnimation(.easeInOut(duration: 0.25)) {
+                    isTabBarHidden = hidden
+                }
+            }
             
-            CustomAnimatedTabBar(selectedTab: $selectedTab)
-                .customTealShadow()
+            if !isTabBarHidden {
+                CustomAnimatedTabBar(selectedTab: $selectedTab)
+                    .customTealShadow()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
     }

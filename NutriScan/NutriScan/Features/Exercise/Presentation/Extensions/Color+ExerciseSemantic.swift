@@ -43,5 +43,16 @@ extension Color {
         static let readMoreText      = Color(light: Color.Teal.teal500,  dark: Color.Teal.teal400)
         static let ctaBackground     = Color(light: Color.Teal.teal800,  dark: Color.Teal.teal700)
         static let ctaText: Color    = .white
+
+        // MARK: Workout Player
+        static let playerCircleBg       = Color(light: Color.Teal.teal100,  dark: Color.Teal.teal1500)
+        static let playerTimerText      = Color(light: Color.Gray.gray1600, dark: Color.Teal.teal100)
+        static let playerTimerLabel     = Color(light: Color.Gray.gray700,  dark: Color.Teal.teal400)
+        static let stepperBg            = Color(light: Color.Teal.teal200,  dark: Color.Teal.teal1400)
+        static let stepperText          = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400)
+        static let stepperButton        = Color(light: Color.Teal.teal600,  dark: Color.Teal.teal400)
+        static let outlineButtonBorder  = Color(light: Color.Teal.teal700,  dark: Color.Teal.teal500)
+        static let outlineButtonText    = Color(light: Color.Teal.teal900,  dark: Color.Teal.teal400)
+        static let cancelWorkoutText    = Color(light: Color.Gray.gray600,  dark: Color.Teal.teal400)
     }
 }

@@ -6,11 +6,13 @@
 import SwiftUI
 
 enum ExerciseRoute: Route {
-    // No push-destinations yet; detail is presented as a sheet.
-    // Add push cases here as the feature grows (e.g. .workoutPlayer).
+    case workoutPlayer(exercise: Exercise)
 
     @ViewBuilder
     var destination: some View {
-        EmptyView()
+        switch self {
+        case .workoutPlayer(let exercise):
+            ExerciseWorkoutPlayerView(exercise: exercise)
+        }
     }
 }

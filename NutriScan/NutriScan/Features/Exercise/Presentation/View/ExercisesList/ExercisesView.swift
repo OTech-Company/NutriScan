@@ -44,8 +44,9 @@ struct ExercisesView: View {
         // MARK: Bottom Sheet
         .sheet(item: $viewModel.selectedExercise) { exercise in
             ExerciseDetailSheet(exercise: exercise) {
-                // TODO: Navigate to workout player
+                let activeExercise = exercise
                 viewModel.selectedExercise = nil
+                router.push(ExerciseRoute.workoutPlayer(exercise: activeExercise))
             }
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.hidden)
