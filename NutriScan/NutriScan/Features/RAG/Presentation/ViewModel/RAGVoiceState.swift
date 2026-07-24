@@ -31,7 +31,6 @@ final class RAGVoiceChatViewModel: NSObject {
     // spoken question nor the assistant's answer is ever shown on screen — only spoken.
     private var liveTranscript: String = ""
     private var hasSubmittedCurrentTurn = false
-    private var silenceTimer: Timer?
 
     init(queryUseCase: QueryRAGUseCase, language: RAGLanguage = .deviceDefault) {
         self.queryUseCase = queryUseCase
@@ -57,7 +56,6 @@ final class RAGVoiceChatViewModel: NSObject {
     }
 
     func stop() {
-        silenceTimer?.invalidate()
         speechService.stop()
         synthesizer.stopSpeaking(at: .immediate)
         state = .idle
@@ -74,7 +72,6 @@ final class RAGVoiceChatViewModel: NSObject {
     func toggleListening() {
         switch state {
         case .listening:
-            silenceTimer?.invalidate()
             speechService.stop()
             submit(liveTranscript)
         case .idle, .error:
@@ -94,9 +91,7 @@ final class RAGVoiceChatViewModel: NSObject {
 
     private func configureSpeechService() {
         speechService.onTranscriptUpdate = { [weak self] transcript in
-            guard let self else { return }
-            self.liveTranscript = transcript
-            self.resetSilenceTimer()
+            self?.liveTranscript = transcript
         }
         speechService.onFinish = { [weak self] transcript in
             self?.submit(transcript)
@@ -108,17 +103,6 @@ final class RAGVoiceChatViewModel: NSObject {
         }
     }
 
-    /// Speech recognition doesn't always mark a result as "final" quickly, so we
-    /// treat ~1.4s of silence (no new partial transcript) as the end of the turn.
-    private func resetSilenceTimer() {
-        silenceTimer?.invalidate()
-        silenceTimer = Timer.scheduledTimer(withTimeInterval: 1.4, repeats: false) { [weak self] _ in
-            guard let self else { return }
-            self.speechService.stop()
-            self.submit(self.liveTranscript)
-        }
-    }
-
     private func submit(_ text: String) {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty, !hasSubmittedCurrentTurn else {
@@ -126,7 +110,6 @@ final class RAGVoiceChatViewModel: NSObject {
             return
         }
         hasSubmittedCurrentTurn = true
-        silenceTimer?.invalidate()
         speechService.stop()
         state = .thinking
 
@@ -152,6 +135,19 @@ final class RAGVoiceChatViewModel: NSObject {
     /// answer as text — only the spoken result.
     private func speak(_ text: String) {
         state = .speaking
+
+        // Switch audio session from .record to .playback so the synthesizer
+        // can actually output audio through the speaker.
+        let session = AVAudioSession.sharedInstance()
+        do {
+            try session.setCategory(.playback, mode: .default, options: .defaultToSpeaker)
+            try session.setActive(true)
+        } catch {
+            self.errorMessage = error.localizedDescription
+            self.state = .error
+            return
+        }
+
         let utterance = AVSpeechUtterance(string: text)
         let spokenLanguage = RAGLanguage.detect(from: text)
         utterance.voice = AVSpeechSynthesisVoice(language: spokenLanguage.speechLocaleIdentifier)
@@ -176,6 +172,8 @@ final class RAGVoiceChatViewModel: NSObject {
 extension RAGVoiceChatViewModel: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         guard state == .speaking else { return }
+        // Deactivate playback session so the next listen() can set up .record
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
         listen()
     }
 }

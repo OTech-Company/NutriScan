@@ -29,6 +29,21 @@ final class RAGSpeechRecognizerService {
     private var audioEngine: AVAudioEngine?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
+    private var lastTranscript: String = ""
+
+    // MARK: - Silence detection
+
+    /// RMS power level (dB) below which we consider the mic "silent".
+    private let silenceThresholdDB: Float = -35.0
+
+    /// How many consecutive seconds of silence before we auto-stop.
+    private let silenceTimeout: TimeInterval = 1.4
+
+    /// Hard cap so a broken recognizer never records forever.
+    private let maxRecordingDuration: TimeInterval = 30
+
+    private var silenceTimer: Timer?
+    private var maxDurationWork: DispatchWorkItem?
 
     func start(language: RAGLanguage) {
         guard !isListening else { return }
@@ -45,6 +60,8 @@ final class RAGSpeechRecognizerService {
     func stop() {
         guard isListening || audioEngine != nil else { return }
 
+        cancelTimers()
+
         audioEngine?.stop()
         audioEngine?.inputNode.removeTap(onBus: 0)
         audioEngine = nil
@@ -57,6 +74,8 @@ final class RAGSpeechRecognizerService {
         isListening = false
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
+
+    // MARK: - Authorization
 
     private func requestAuthorization(completion: @escaping (Bool) -> Void) {
         SFSpeechRecognizer.requestAuthorization { status in
@@ -75,6 +94,8 @@ final class RAGSpeechRecognizerService {
             }
         }
     }
+
+    // MARK: - Recording
 
     private func beginRecording(language: RAGLanguage) {
         stop()
@@ -106,7 +127,9 @@ final class RAGSpeechRecognizerService {
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.removeTap(onBus: 0)
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
-            self?.recognitionRequest?.append(buffer)
+            guard let self else { return }
+            self.recognitionRequest?.append(buffer)
+            self.checkAudioLevel(buffer: buffer, format: recordingFormat)
         }
 
         do {
@@ -118,14 +141,17 @@ final class RAGSpeechRecognizerService {
         }
 
         isListening = true
+        lastTranscript = ""
 
         recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
             guard let self else { return }
 
             if let result {
-                self.onTranscriptUpdate?(result.bestTranscription.formattedString)
+                let text = result.bestTranscription.formattedString
+                self.lastTranscript = text
+                self.onTranscriptUpdate?(text)
                 if result.isFinal {
-                    self.onFinish?(result.bestTranscription.formattedString)
+                    self.onFinish?(text)
                     self.stop()
                 }
             }
@@ -134,5 +160,65 @@ final class RAGSpeechRecognizerService {
                 self.stop()
             }
         }
+
+        // Hard timeout so we never record forever
+        let work = DispatchWorkItem { [weak self] in
+            guard let self, self.isListening else { return }
+            let transcript = self.lastTranscript
+            self.stop()
+            if !transcript.isEmpty {
+                self.onFinish?(transcript)
+            }
+        }
+        maxDurationWork = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + maxRecordingDuration, execute: work)
+    }
+
+    // MARK: - Silence detection via audio power
+
+    /// Called on every audio buffer tap. Computes RMS power and resets / fires
+    /// a silence timer so we stop recording shortly after the user goes quiet.
+    private func checkAudioLevel(buffer: AVAudioPCMBuffer, format: AVAudioFormat) {
+        guard let channelData = buffer.floatChannelData?[0] else { return }
+        let frameLength = Int(buffer.frameLength)
+        guard frameLength > 0 else { return }
+
+        var sumOfSquares: Float = 0
+        for i in 0..<frameLength {
+            let sample = channelData[i]
+            sumOfSquares += sample * sample
+        }
+        let rms = sqrtf(sumOfSquares / Float(frameLength))
+        let db = 20 * log10f(rms + 1e-10) // avoid log(0)
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.isListening else { return }
+            if db > self.silenceThresholdDB {
+                self.resetSilenceTimer()
+            }
+            // If below threshold, let the current timer keep running.
+        }
+    }
+
+    private func resetSilenceTimer() {
+        silenceTimer?.invalidate()
+        silenceTimer = Timer.scheduledTimer(withTimeInterval: silenceTimeout, repeats: false) { [weak self] _ in
+            guard let self else { return }
+            let transcript = self.lastTranscript
+            self.stop()
+            self.onFinish?(transcript)
+        }
+    }
+
+    /// Grabs whatever the recognizer has so far.
+    func liveTranscript() -> String {
+        lastTranscript
+    }
+
+    private func cancelTimers() {
+        silenceTimer?.invalidate()
+        silenceTimer = nil
+        maxDurationWork?.cancel()
+        maxDurationWork = nil
     }
 }
