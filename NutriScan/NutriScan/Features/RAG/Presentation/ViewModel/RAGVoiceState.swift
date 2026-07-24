@@ -142,7 +142,7 @@ final class RAGVoiceChatViewModel: NSObject {
 
         let session = AVAudioSession.sharedInstance()
         do {
-            try session.setCategory(.playback, mode: .default, options: .defaultToSpeaker)
+            try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .duckOthers])
             try session.setActive(true)
         } catch {
             self.errorMessage = error.localizedDescription
