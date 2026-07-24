@@ -29,14 +29,14 @@ extension Color {
 
         static let dashedBorder = Color(light: Color.Teal.teal500, dark: Color.Teal.teal500)
 
-        static let addMemberBackground = Color(light: Color.Gray.gray100, dark: Color.Teal.teal1600)
+        static let addMemberBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600)
         static let addMemberText = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal100)
         static let addMemberIcon = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal100)
         static let addMemberIconBackground = Color(light: .white, dark: Color.Teal.teal100)
         static let addMemberIconStroke = Color.Teal.teal1000 // static both modes
 
-        static let memberCardBackground = Color(light: .white, dark: Color.Teal.teal1500)
+        static let memberCardBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600)
         static let memberCardBorder = Color.Teal.teal1000 // "Primary Teal Border" both modes
-        static let memberName = Color(light: Color.Gray.gray1400, dark: Color.Teal.teal100)
+        static let memberName = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal1000)
     }
 }
