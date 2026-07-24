@@ -12,6 +12,7 @@ struct RAGMessage: Identifiable, Equatable {
     var sources: [RAGSource]
     let timestamp: Date
     var isFailed: Bool
+    let language: RAGLanguage
 
     init(
         id: UUID = UUID(),
@@ -19,7 +20,8 @@ struct RAGMessage: Identifiable, Equatable {
         answer: String? = nil,
         sources: [RAGSource] = [],
         timestamp: Date = .init(),
-        isFailed: Bool = false
+        isFailed: Bool = false,
+        language: RAGLanguage = .english
     ) {
         self.id = id
         self.query = query
@@ -27,6 +29,7 @@ struct RAGMessage: Identifiable, Equatable {
         self.sources = sources
         self.timestamp = timestamp
         self.isFailed = isFailed
+        self.language = language
     }
 
     /// True while the user's question has been shown but the answer hasn't arrived yet.

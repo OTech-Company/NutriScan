@@ -10,13 +10,14 @@ struct RAGChatInputView: View {
     let canSend: Bool
     let isLoading: Bool
     let isDictating: Bool
+    let language: RAGLanguage
     let onSend: () -> Void
     let onToggleDictation: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
             HStack(spacing: 8) {
-                TextField("", text: $text, prompt: Text(isDictating ? "Listening..." : "Ask about nutrition...")
+                TextField("", text: $text, prompt: Text(isDictating ? RAGStrings.listeningPlaceholder(language) : RAGStrings.inputPlaceholder(language))
                     .font(Font.AppFont.textDefault)
                     .foregroundStyle(Color.RAGSemantic.placeholder))
                     .font(Font.AppFont.textDefault)

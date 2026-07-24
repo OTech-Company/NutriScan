@@ -6,7 +6,7 @@
 import Foundation
 
 protocol RAGAPIServicing {
-    func query(_ question: String) async throws -> RAGResponseDTO
+    func query(_ question: String, language: RAGLanguage) async throws -> RAGResponseDTO
 }
 
 struct RAGAPIService: RAGAPIServicing {
@@ -16,8 +16,8 @@ struct RAGAPIService: RAGAPIServicing {
         self.network = network
     }
 
-    func query(_ question: String) async throws -> RAGResponseDTO {
-        let dto = RAGQueryDTO(query: question)
+    func query(_ question: String, language: RAGLanguage) async throws -> RAGResponseDTO {
+        let dto = RAGQueryDTO(query: question, language: language.rawValue)
         return try await network.request(RAGEndpoint.query(dto))
     }
 }

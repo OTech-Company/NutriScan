@@ -2,30 +2,18 @@
 //  RAGSpeechRecognizerService.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 24/07/2026.
-//
-
 
 import Foundation
 import Speech
 import AVFoundation
 
-/// Wraps SFSpeechRecognizer + AVAudioEngine to provide live speech-to-text.
-/// Shared by the chat input bar (dictation into the text field) and the
-/// full-screen voice chat flow.
+/// Wraps SFSpeechRecognizer + AVAudioEngine to provide live speech-to-text in
+/// either English or Arabic. Shared by the chat input bar (dictation into the
+/// text field) and the full-screen voice chat flow.
 final class RAGSpeechRecognizerService {
-    enum RecognizerError: LocalizedError {
+    enum RecognizerError: Error {
         case notAuthorized
         case recognizerUnavailable
-
-        var errorDescription: String? {
-            switch self {
-            case .notAuthorized:
-                return "Please allow microphone and speech recognition access to use voice input."
-            case .recognizerUnavailable:
-                return "Speech recognition isn't available right now."
-            }
-        }
     }
 
     /// Called with the latest partial (or final) transcript.
@@ -37,12 +25,12 @@ final class RAGSpeechRecognizerService {
 
     private(set) var isListening = false
 
-    private let speechRecognizer = SFSpeechRecognizer(locale: Locale.current)
+    private var speechRecognizer: SFSpeechRecognizer?
     private var audioEngine: AVAudioEngine?
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
 
-    func start() {
+    func start(language: RAGLanguage) {
         guard !isListening else { return }
         requestAuthorization { [weak self] granted in
             guard let self else { return }
@@ -50,7 +38,7 @@ final class RAGSpeechRecognizerService {
                 self.onError?(RecognizerError.notAuthorized)
                 return
             }
-            self.beginRecording()
+            self.beginRecording(language: language)
         }
     }
 
@@ -88,13 +76,15 @@ final class RAGSpeechRecognizerService {
         }
     }
 
-    private func beginRecording() {
-        guard let speechRecognizer, speechRecognizer.isAvailable else {
+    private func beginRecording(language: RAGLanguage) {
+        stop()
+
+        let locale = Locale(identifier: language.speechLocaleIdentifier)
+        guard let recognizer = SFSpeechRecognizer(locale: locale), recognizer.isAvailable else {
             onError?(RecognizerError.recognizerUnavailable)
             return
         }
-
-        stop()
+        speechRecognizer = recognizer
 
         let session = AVAudioSession.sharedInstance()
         do {
@@ -129,7 +119,7 @@ final class RAGSpeechRecognizerService {
 
         isListening = true
 
-        recognitionTask = speechRecognizer.recognitionTask(with: request) { [weak self] result, error in
+        recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
             guard let self else { return }
 
             if let result {

@@ -2,9 +2,6 @@
 //  RAGVoiceChatView.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 24/07/2026.
-//
-
 
 import SwiftUI
 
@@ -12,13 +9,15 @@ struct RAGVoiceChatView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: RAGVoiceChatViewModel
 
-    init(queryUseCase: QueryRAGUseCase) {
-        _viewModel = State(initialValue: RAGVoiceChatViewModel(queryUseCase: queryUseCase))
+    init(queryUseCase: QueryRAGUseCase, language: RAGLanguage = .deviceDefault) {
+        _viewModel = State(initialValue: RAGVoiceChatViewModel(queryUseCase: queryUseCase, language: language))
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            RAGVoiceSourcesHeader()
+            header
+
+            RAGVoiceSourcesHeader(language: viewModel.language)
                 .padding(.top, 12)
 
             Spacer(minLength: 24)
@@ -33,17 +32,14 @@ struct RAGVoiceChatView: View {
 
             Spacer(minLength: 24)
 
-            transcriptCard
+            // Only a short status word is ever shown here — never the user's
+            // spoken question or the assistant's answer. The answer is spoken aloud.
+            Text(viewModel.statusLabel)
+                .font(Font.AppFont.subtitle2)
+                .foregroundStyle(viewModel.state == .error ? Color.RAGSemantic.errorText : Color.RAGSemantic.aiText)
+                .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
-
-            if let error = viewModel.errorMessage, viewModel.state == .error {
-                Text(error)
-                    .font(Font.AppFont.textCaption)
-                    .foregroundStyle(Color.RAGSemantic.errorText)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-                    .padding(.top, 8)
-            }
+                .animation(.easeInOut(duration: 0.2), value: viewModel.statusLabel)
 
             Spacer(minLength: 24)
 
@@ -52,33 +48,32 @@ struct RAGVoiceChatView: View {
                 .padding(.bottom, 16)
         }
         .background(Color.RAGSemantic.chatBackground.ignoresSafeArea())
-        .overlay(alignment: .topLeading) {
-            BackButton(action: {
-                viewModel.stop()
-                dismiss()
-            })
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-        }
+        .environment(\.layoutDirection, viewModel.language.layoutDirection)
         .onAppear { viewModel.start() }
         .onDisappear { viewModel.stop() }
     }
 
-    private var transcriptCard: some View {
-        Text(viewModel.displayedText)
-            .font(Font.AppFont.subtitle2)
-            .foregroundStyle(Color.RAGSemantic.aiText)
-            .multilineTextAlignment(.center)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
-            .frame(maxWidth: .infinity)
-            .background(Color.RAGSemantic.aiBubble)
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(Color.RAGSemantic.inputBorder, lineWidth: 1)
-            )
-            .animation(.easeInOut(duration: 0.2), value: viewModel.displayedText)
+    private var header: some View {
+        HStack {
+            BackButton(action: {
+                viewModel.stop()
+                dismiss()
+            })
+
+            Spacer()
+
+            Button(action: { viewModel.toggleLanguage() }) {
+                Text(viewModel.language.toggleLabel)
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Color.RAGSemantic.sendButton)
+                    .frame(width: 36, height: 36)
+                    .background(Color.RAGSemantic.aiBubble)
+                    .clipShape(Circle())
+            }
+            .accessibilityLabel("Switch language")
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
     }
 
     private var switchToTextButton: some View {
@@ -86,7 +81,7 @@ struct RAGVoiceChatView: View {
             viewModel.stop()
             dismiss()
         } label: {
-            Text("Switch to Text Chat")
+            Text(RAGStrings.switchToTextChat(viewModel.language))
                 .font(Font.AppFont.subtitle2)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)

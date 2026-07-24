@@ -6,7 +6,7 @@
 import Foundation
 
 protocol QueryRAGUseCase {
-    func execute(question: String) async throws -> RAGMessage
+    func execute(question: String, language: RAGLanguage) async throws -> RAGMessage
 }
 
 final class QueryRAGUseCaseImpl: QueryRAGUseCase {
@@ -16,11 +16,11 @@ final class QueryRAGUseCaseImpl: QueryRAGUseCase {
         self.repository = repository
     }
 
-    func execute(question: String) async throws -> RAGMessage {
+    func execute(question: String, language: RAGLanguage) async throws -> RAGMessage {
         let trimmed = question.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else {
             throw RAGError.emptyQuery
         }
-        return try await repository.query(trimmed)
+        return try await repository.query(trimmed, language: language)
     }
 }

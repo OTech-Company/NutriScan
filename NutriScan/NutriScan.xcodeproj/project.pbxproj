@@ -183,6 +183,9 @@
 		6F1A8EDE3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EDD3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift */; };
 		6F1A8EE03012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EDF3012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift */; };
 		6F1A8EE23012C5EB00E1ACC5 /* RAGTypingDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE13012C5EB00E1ACC5 /* RAGTypingDotsView.swift */; };
+		6F1A8EE430138F1B00E1ACC5 /* RAGLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */; };
+		6F1A8EE630138F7700E1ACC5 /* RAGLanguage+LayoutDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */; };
+		6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */; };
 		6F1E4C26B29F085597C11899 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */; };
 		6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */; };
 		6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */; };
@@ -545,6 +548,9 @@
 		6F1A8EDD3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVoiceWaveformView.swift; sourceTree = "<group>"; };
 		6F1A8EDF3012C5DD00E1ACC5 /* RAGVoiceSourcesHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVoiceSourcesHeader.swift; sourceTree = "<group>"; };
 		6F1A8EE13012C5EB00E1ACC5 /* RAGTypingDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGTypingDotsView.swift; sourceTree = "<group>"; };
+		6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGLanguage.swift; sourceTree = "<group>"; };
+		6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAGLanguage+LayoutDirection.swift"; sourceTree = "<group>"; };
+		6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGStrings.swift; sourceTree = "<group>"; };
 		6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
@@ -1547,6 +1553,7 @@
 		6F1A8EA83012BE2100E1ACC5 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */,
 				6F1A8EA53012BE2100E1ACC5 /* RAGError.swift */,
 				6F1A8EA63012BE2100E1ACC5 /* RAGMessage.swift */,
 				6F1A8EA73012BE2100E1ACC5 /* RAGSource.swift */,
@@ -1583,6 +1590,8 @@
 		6F1A8EAF3012BE2100E1ACC5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */,
+				6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */,
 				6F1A8EAE3012BE2100E1ACC5 /* Color+RAGSemantic.swift */,
 			);
 			path = Extensions;
@@ -2917,6 +2926,7 @@
 				2C78ED25300E6C7E0092E6B2 /* LoginFormFieldsSection.swift in Sources */,
 				2C78ED26300E6C7E0092E6B2 /* RegisterFormFieldsSection.swift in Sources */,
 				2C78ED27300E6C7E0092E6B2 /* LoginViewModel.swift in Sources */,
+				6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */,
 				2C78ED28300E6C7E0092E6B2 /* LoginView.swift in Sources */,
 				2C78ED29300E6C7E0092E6B2 /* RegisterResult.swift in Sources */,
 				8AE05AEC0DCD40A73044A0EA /* NutriScanApp.swift in Sources */,
@@ -2969,6 +2979,7 @@
 				A3139845EAAF0AA019A8AAD3 /* SettingsOptions.swift in Sources */,
 				DF8C799C34206520431D05F1 /* SettingsSegmentRow.swift in Sources */,
 				1D6E84E32F4668FB17E8512E /* SettingsView.swift in Sources */,
+				6F1A8EE630138F7700E1ACC5 /* RAGLanguage+LayoutDirection.swift in Sources */,
 				7656C044D75870646BAEFF96 /* SettingsViewModel.swift in Sources */,
 				13366415059A24108AF1B614 /* SplashScreen.swift in Sources */,
 				AA78F155D98A2E3105D26DEA /* StatusType.swift in Sources */,
@@ -3016,6 +3027,7 @@
 				D40DD1C9301020DB001CF496 /* ProfileEndpoint.swift in Sources */,
 				8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */,
 				D40DD1D730102706001CF496 /* AppDependencies.swift in Sources */,
+				6F1A8EE430138F1B00E1ACC5 /* RAGLanguage.swift in Sources */,
 				6FC3C2533010187F00ACB5EE /* StepGaugeCardView.swift in Sources */,
 				6F1A8DFB301027F800E1ACC5 /* StepHistoryBarChartView.swift in Sources */,
 				6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */,

@@ -35,7 +35,7 @@ struct RAGMessageBubbleView: View {
                         .foregroundStyle(Color.RAGSemantic.aiText)
                         .fixedSize(horizontal: false, vertical: true)
                 } else if message.isFailed {
-                    Text("Couldn't get a response. Please try again.")
+                    Text(RAGStrings.failedAnswer(message.language))
                         .font(Font.AppFont.textDefault)
                         .foregroundStyle(Color.RAGSemantic.errorText)
                 } else {
@@ -49,9 +49,12 @@ struct RAGMessageBubbleView: View {
 
             // Sources
             if !message.sources.isEmpty {
-                RAGSourcesSection(sources: message.sources)
+                RAGSourcesSection(sources: message.sources, language: message.language)
                     .padding(.leading, 4)
             }
         }
+        // Each bubble follows the natural reading direction of the language it was
+        // actually asked in, so English and Arabic messages can be mixed in one thread.
+        .environment(\.layoutDirection, message.language.layoutDirection)
     }
 }

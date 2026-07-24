@@ -1,8 +1,6 @@
 //
-//  RAGVoiceState.swift
+//  RAGVoiceChatViewModel.swift
 //  NutriScan
-//
-//  Created by Osama Hosam on 24/07/2026.
 //
 
 import Foundation
@@ -24,34 +22,33 @@ final class RAGVoiceChatViewModel: NSObject {
     private let synthesizer = AVSpeechSynthesizer()
 
     var state: RAGVoiceState = .idle
-    var liveTranscript: String = ""
-    var lastAnswer: String = ""
+    /// Controls which locale the recognizer listens in and the initial UI copy.
+    /// The reply is always *spoken* in whichever language the answer is actually in.
+    var language: RAGLanguage
     var errorMessage: String?
 
+    // Kept private on purpose: per the product requirement, neither the user's
+    // spoken question nor the assistant's answer is ever shown on screen — only spoken.
+    private var liveTranscript: String = ""
     private var hasSubmittedCurrentTurn = false
     private var silenceTimer: Timer?
 
-    init(queryUseCase: QueryRAGUseCase) {
+    init(queryUseCase: QueryRAGUseCase, language: RAGLanguage = .deviceDefault) {
         self.queryUseCase = queryUseCase
+        self.language = language
         super.init()
         synthesizer.delegate = self
         configureSpeechService()
     }
 
-    /// Text shown in the transcript card: the live question while listening,
-    /// or the assistant's answer while thinking/speaking.
-    var displayedText: String {
+    /// Short status word only — never the transcript or the answer.
+    var statusLabel: String {
         switch state {
-        case .idle:
-            return "Tap the waveform to ask a question"
-        case .listening:
-            return liveTranscript.isEmpty ? "Listening..." : liveTranscript
-        case .thinking:
-            return liveTranscript.isEmpty ? "Thinking..." : liveTranscript
-        case .speaking:
-            return lastAnswer
-        case .error:
-            return errorMessage ?? "Something went wrong"
+        case .idle: return RAGStrings.voiceIdle(language)
+        case .listening: return RAGStrings.voiceListening(language)
+        case .thinking: return RAGStrings.voiceThinking(language)
+        case .speaking: return RAGStrings.voiceSpeaking(language)
+        case .error: return errorMessage ?? RAGStrings.voiceGenericError(language)
         }
     }
 
@@ -64,6 +61,13 @@ final class RAGVoiceChatViewModel: NSObject {
         speechService.stop()
         synthesizer.stopSpeaking(at: .immediate)
         state = .idle
+    }
+
+    func toggleLanguage() {
+        language = language.next
+        if state == .listening || state == .idle || state == .error {
+            listen()
+        }
     }
 
     /// Tapping the waveform: stop early while listening, or restart after an error/idle state.
@@ -85,7 +89,7 @@ final class RAGVoiceChatViewModel: NSObject {
         liveTranscript = ""
         hasSubmittedCurrentTurn = false
         state = .listening
-        speechService.start()
+        speechService.start(language: language)
     }
 
     private func configureSpeechService() {
@@ -99,7 +103,7 @@ final class RAGVoiceChatViewModel: NSObject {
         }
         speechService.onError = { [weak self] error in
             guard let self else { return }
-            self.errorMessage = error.localizedDescription
+            self.errorMessage = self.localizedErrorMessage(for: error)
             self.state = .error
         }
     }
@@ -126,12 +130,14 @@ final class RAGVoiceChatViewModel: NSObject {
         speechService.stop()
         state = .thinking
 
+        // Route the query in whichever language was actually spoken.
+        let queryLanguage = RAGLanguage.detect(from: trimmed)
+
         Task {
             do {
-                let message = try await queryUseCase.execute(question: trimmed)
+                let message = try await queryUseCase.execute(question: trimmed, language: queryLanguage)
                 await MainActor.run {
-                    self.lastAnswer = message.answer ?? "Sorry, I didn't understand that."
-                    self.speak(self.lastAnswer)
+                    self.speak(message.answer ?? "no answer recieved")
                 }
             } catch {
                 await MainActor.run {
@@ -142,13 +148,28 @@ final class RAGVoiceChatViewModel: NSObject {
         }
     }
 
+    /// Speaks the answer aloud. This screen never displays the question or the
+    /// answer as text — only the spoken result.
     private func speak(_ text: String) {
         state = .speaking
         let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: Locale.current.identifier)
+        let spokenLanguage = RAGLanguage.detect(from: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: spokenLanguage.speechLocaleIdentifier)
             ?? AVSpeechSynthesisVoice(language: "en-US")
         utterance.rate = AVSpeechUtteranceDefaultSpeechRate
         synthesizer.speak(utterance)
+    }
+
+    private func localizedErrorMessage(for error: Error) -> String {
+        if let recognizerError = error as? RAGSpeechRecognizerService.RecognizerError {
+            switch recognizerError {
+            case .notAuthorized:
+                return RAGStrings.micPermissionDenied(language)
+            case .recognizerUnavailable:
+                return RAGStrings.recognizerUnavailable(language)
+            }
+        }
+        return error.localizedDescription
     }
 }
 

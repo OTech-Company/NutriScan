@@ -2,24 +2,18 @@
 //  RAGVoiceSourcesHeader.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 24/07/2026.
-//
-
-
-//
-//  RAGVoiceSourcesHeader.swift
-//  NutriScan
-//
 
 import SwiftUI
 
 struct RAGVoiceSourcesHeader: View {
+    let language: RAGLanguage
+
     // Swap these for your official source logos (e.g. WHO, NFSA, MOHP) when available.
     private let symbols = ["cross.case.fill", "leaf.fill", "heart.text.square.fill"]
 
     var body: some View {
         VStack(spacing: 14) {
-            Text("Sourced from Official Documentation")
+            Text(RAGStrings.sourcedFromOfficialDocumentation(language))
                 .font(Font.AppFont.subtitle2)
                 .foregroundStyle(Color.RAGSemantic.sendButton)
                 .multilineTextAlignment(.center)

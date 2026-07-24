@@ -12,12 +12,12 @@ final class RAGRepositoryImpl: RAGRepository {
         self.apiService = apiService
     }
 
-    func query(_ question: String) async throws -> RAGMessage {
-        let response = try await apiService.query(question)
-        return map(response)
+    func query(_ question: String, language: RAGLanguage) async throws -> RAGMessage {
+        let response = try await apiService.query(question, language: language)
+        return map(response, language: language)
     }
 
-    private func map(_ dto: RAGResponseDTO) -> RAGMessage {
+    private func map(_ dto: RAGResponseDTO, language: RAGLanguage) -> RAGMessage {
         RAGMessage(
             query: dto.query,
             answer: dto.answer,
@@ -28,7 +28,8 @@ final class RAGRepositoryImpl: RAGRepository {
                     score: $0.score,
                     snippet: $0.snippet
                 )
-            }
+            },
+            language: language
         )
     }
 }

@@ -18,8 +18,10 @@ struct RAGChatView: View {
         VStack(spacing: 0) {
             // Header
             RAGChatHeaderView(
+                language: viewModel.language,
                 onBack: { dismiss() },
-                onVoice: { showVoiceChat = true }
+                onVoice: { showVoiceChat = true },
+                onToggleLanguage: { viewModel.toggleLanguage() }
             )
 
             Divider()
@@ -30,7 +32,7 @@ struct RAGChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         if viewModel.messages.isEmpty {
-                            RAGEmptyStateView()
+                            RAGEmptyStateView(language: viewModel.language)
                                 .padding(.top, 80)
                         }
 
@@ -68,13 +70,15 @@ struct RAGChatView: View {
                 canSend: viewModel.canSend,
                 isLoading: viewModel.isLoading,
                 isDictating: viewModel.isDictating,
+                language: viewModel.language,
                 onSend: { viewModel.send() },
                 onToggleDictation: { viewModel.toggleDictation() }
             )
         }
         .background(Color.RAGSemantic.chatBackground.ignoresSafeArea())
+        .environment(\.layoutDirection, viewModel.language.layoutDirection)
         .fullScreenCover(isPresented: $showVoiceChat) {
-            RAGVoiceChatView(queryUseCase: viewModel.queryUseCase)
+            RAGVoiceChatView(queryUseCase: viewModel.queryUseCase, language: viewModel.language)
         }
     }
 }

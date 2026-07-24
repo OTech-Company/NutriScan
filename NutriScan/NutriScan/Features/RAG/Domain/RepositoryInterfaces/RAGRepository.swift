@@ -6,5 +6,5 @@
 import Foundation
 
 protocol RAGRepository {
-    func query(_ question: String) async throws -> RAGMessage
+    func query(_ question: String, language: RAGLanguage) async throws -> RAGMessage
 }
