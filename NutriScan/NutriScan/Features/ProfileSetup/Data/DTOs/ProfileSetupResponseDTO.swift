@@ -22,8 +22,8 @@ struct ProfileSetupResponseDTO: Decodable {
     let gender: String
     let heightCm: Int
     let weightKg: Int
-    let allergyIds: [ProfileSetupAllergyDTO]
-    let diseaseIds: [ProfileSetupDiseaseDTO]
+    let allergies: [ProfileSetupAllergyDTO]
+    let diseases: [ProfileSetupDiseaseDTO]
 
     func toDomain() -> ProfileSetupUserProfile {
         let formatter = DateFormatter()
@@ -36,8 +36,8 @@ struct ProfileSetupResponseDTO: Decodable {
             gender: ProfileSetupGender(rawValue: gender) ?? .male,
             heightCm: heightCm,
             weightKg: weightKg,
-            allergies: allergyIds.map { ProfileSetupAllergyOption(id: $0.id, name: $0.name) },
-            diseases: diseaseIds.map { ProfileSetupDiseaseOption(id: $0.id, name: $0.name) }
+            allergies: allergies.map { ProfileSetupAllergyOption(id: $0.id, name: $0.name) },
+            diseases: diseases.map { ProfileSetupDiseaseOption(id: $0.id, name: $0.name) }
         )
     }
 }

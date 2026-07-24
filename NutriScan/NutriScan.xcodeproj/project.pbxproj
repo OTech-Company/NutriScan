@@ -187,6 +187,7 @@
 		8F16ED243012AA4300CF43B2 /* FetchProfileSetupOptionsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED223012AA4200CF43B2 /* FetchProfileSetupOptionsUseCase.swift */; };
 		8F16ED283012AAF000CF43B2 /* ProfileSetupFlowFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED263012AAF000CF43B2 /* ProfileSetupFlowFactory.swift */; };
 		8F2EE806300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F2EE805300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift */; };
+		8F4132C13013BD29005C482C /* ProfileSetupRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4132C03013BD29005C482C /* ProfileSetupRemoteDataSource.swift */; };
 		8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F729C18301145C900094C23 /* ExploreSectionHeader.swift */; };
 		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
@@ -500,6 +501,7 @@
 		8F16ED223012AA4200CF43B2 /* FetchProfileSetupOptionsUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchProfileSetupOptionsUseCase.swift; sourceTree = "<group>"; };
 		8F16ED263012AAF000CF43B2 /* ProfileSetupFlowFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupFlowFactory.swift; sourceTree = "<group>"; };
 		8F2EE805300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HealthProfileSetupSemantic.swift"; sourceTree = "<group>"; };
+		8F4132C03013BD29005C482C /* ProfileSetupRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupRemoteDataSource.swift; sourceTree = "<group>"; };
 		8F729C18301145C900094C23 /* ExploreSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSectionHeader.swift; sourceTree = "<group>"; };
 		8FA3439F300EB7C20044192A /* ProductEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEndpoint.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 			children = (
 				8F16ED133012A9D900CF43B2 /* ProfileSetupEndpoint.swift */,
 				A7A7FCCCB05EF50A5CC01B7C /* Haptics.swift */,
+				8F4132C03013BD29005C482C /* ProfileSetupRemoteDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -2592,6 +2595,7 @@
 				6FC3C2533010187F00ACB5EE /* StepGaugeCardView.swift in Sources */,
 				6F1A8DFB301027F800E1ACC5 /* StepHistoryBarChartView.swift in Sources */,
 				6FC3C2503010135C00ACB5EE /* HealthKitStepDataSource.swift in Sources */,
+				8F4132C13013BD29005C482C /* ProfileSetupRemoteDataSource.swift in Sources */,
 				8F16ED243012AA4300CF43B2 /* FetchProfileSetupOptionsUseCase.swift in Sources */,
 				D48A243E301156120004D95E /* UpdateProfileUseCaseProtocol .swift in Sources */,
 				6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */,

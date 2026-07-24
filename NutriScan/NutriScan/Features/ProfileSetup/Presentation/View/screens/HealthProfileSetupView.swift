@@ -22,6 +22,8 @@ struct HealthProfileSetupView: View {
     @State private var conditionSearchQuery = ""
     @State private var allergySearchQuery = ""
 
+    @State private var activeAlert: ActiveAlert = .none
+
     // MARK: - Filtered Results for Search Sheets
     var filteredConditions: [ProfileSetupDiseaseOption] {
         let unselected = viewModel.allConditions.filter { !viewModel.selectedConditions.contains($0) }
@@ -59,6 +61,16 @@ struct HealthProfileSetupView: View {
                 }
                 Spacer()
             }
+            
+            VStack {
+                HStack {
+                    BackButton(action: { router.pop() })
+                    Spacer()
+                }
+                .padding(.leading, 22)
+                Spacer()
+            }
+            .zIndex(1)
             
             VStack(alignment: .leading, spacing: 24) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -117,6 +129,8 @@ struct HealthProfileSetupView: View {
                             let success = await viewModel.saveProfile()
                             if success {
                                 flowCoordinator.finishProfileSetup()
+                            } else {
+                                activeAlert = .error
                             }
                         }
                     }
@@ -158,6 +172,19 @@ struct HealthProfileSetupView: View {
                 }
             )
         }
+        .customAlert(activeAlert: $activeAlert, config: { alert in
+            switch alert {
+            case .error:
+                return CustomAlertConfig(
+                    type: .error,
+                    title: "Update Failed",
+                    description: viewModel.saveError ?? "An unknown error occurred while saving your profile.",
+                    primaryButtonTitle: "Dismiss"
+                )
+            default:
+                return CustomAlertConfig(type: .error, title: "", description: "")
+            }
+        }, primaryAction: { _ in })
     }
 }
 
