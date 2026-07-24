@@ -96,9 +96,11 @@ final class RAGVoiceChatViewModel: NSObject {
 
     private func configureSpeechService() {
         speechService.onTranscriptUpdate = { [weak self] transcript in
+            print("live trans \(transcript)")
             self?.liveTranscript = transcript
         }
         speechService.onFinish = { [weak self] transcript in
+            print("submitted trans \(transcript)")
             self?.submit(transcript)
         }
         speechService.onError = { [weak self] error in
@@ -154,7 +156,8 @@ final class RAGVoiceChatViewModel: NSObject {
             self.state = .error
             return
         }
-
+        
+        print(text)
         let utterance = AVSpeechUtterance(string: text)
         let spokenLanguage = RAGLanguage.detect(from: text)
         utterance.voice = AVSpeechSynthesisVoice(language: spokenLanguage.speechLocaleIdentifier)

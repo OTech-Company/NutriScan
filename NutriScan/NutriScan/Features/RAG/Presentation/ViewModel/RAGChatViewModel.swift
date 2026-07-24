@@ -96,6 +96,7 @@ final class RAGChatViewModel {
         guard !isLoading else { return }
         errorMessage = nil
         textBeforeDictation = inputText
+        print(inputText)
         isDictating = true
         speechService.start(language: language)
     }
