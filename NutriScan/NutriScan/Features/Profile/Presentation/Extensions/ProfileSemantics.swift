@@ -28,7 +28,7 @@ enum ProfileSemantics {
     }
 
     enum Radius {
-        static let containerTop: CGFloat = 42
+        static let containerTop: CGFloat = 24
         static let streakBadge: CGFloat = 8
         static let familyMembersContainerLight: CGFloat = 16
         static let familyMembersContainerDark: CGFloat = 22
