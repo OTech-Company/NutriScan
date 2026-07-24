@@ -16,11 +16,8 @@ final class RAGSpeechRecognizerService {
         case recognizerUnavailable
     }
 
-    /// Called with the latest partial (or final) transcript.
     var onTranscriptUpdate: ((String) -> Void)?
-    /// Called once the recognizer reports a final transcript.
     var onFinish: ((String) -> Void)?
-    /// Called when recognition fails or authorization is denied.
     var onError: ((Error) -> Void)?
 
     private(set) var isListening = false
@@ -33,17 +30,21 @@ final class RAGSpeechRecognizerService {
 
     // MARK: - Silence detection
 
-    /// RMS power level (dB) below which we consider the mic "silent".
-    private let silenceThresholdDB: Float = -35.0
+    /// dB threshold — only silence quieter than this counts.
+    private let silenceThresholdDB: Float = -42.0
 
-    /// How many consecutive seconds of silence before we auto-stop.
-    private let silenceTimeout: TimeInterval = 1.4
+    /// Seconds of sustained silence after speech before we auto-stop.
+    private let silenceTimeout: TimeInterval = 2.0
 
     /// Hard cap so a broken recognizer never records forever.
     private let maxRecordingDuration: TimeInterval = 30
 
     private var silenceTimer: Timer?
     private var maxDurationWork: DispatchWorkItem?
+    /// True once we've received at least one transcript with actual content.
+    /// The silence timer is only armed after speech has been heard, so ambient
+    /// noise at the start never triggers a premature stop.
+    private var hasHeardSpeech = false
 
     func start(language: RAGLanguage) {
         guard !isListening else { return }
@@ -72,10 +73,9 @@ final class RAGSpeechRecognizerService {
         recognitionTask = nil
 
         isListening = false
+        hasHeardSpeech = false
     }
 
-    /// Safely deactivates the shared audio session. Call this from the
-    /// ViewModel when transitioning between STT and TTS.
     func deactivateSession() {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
@@ -131,10 +131,13 @@ final class RAGSpeechRecognizerService {
         let inputNode = engine.inputNode
         let recordingFormat = inputNode.outputFormat(forBus: 0)
         inputNode.removeTap(onBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { [weak self] buffer, _ in
+        inputNode.installTap(onBus: 0, bufferSize: 2048, format: recordingFormat) { [weak self] buffer, _ in
             guard let self else { return }
+            // Guard against zero-length buffers that can occur during engine
+            // start/stop transitions.
+            guard buffer.frameLength > 0 else { return }
             self.recognitionRequest?.append(buffer)
-            self.checkAudioLevel(buffer: buffer, format: recordingFormat)
+            self.checkAudioLevel(buffer: buffer)
         }
 
         do {
@@ -147,6 +150,7 @@ final class RAGSpeechRecognizerService {
 
         isListening = true
         lastTranscript = ""
+        hasHeardSpeech = false
 
         recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
             guard let self else { return }
@@ -155,6 +159,13 @@ final class RAGSpeechRecognizerService {
                 let text = result.bestTranscription.formattedString
                 self.lastTranscript = text
                 self.onTranscriptUpdate?(text)
+
+                // Mark that we've heard real speech so the silence timer
+                // is allowed to arm itself from now on.
+                if !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    self.hasHeardSpeech = true
+                }
+
                 if result.isFinal {
                     self.onFinish?(text)
                     self.stop()
@@ -166,7 +177,7 @@ final class RAGSpeechRecognizerService {
             }
         }
 
-        // Hard timeout so we never record forever
+        // Hard timeout
         let work = DispatchWorkItem { [weak self] in
             guard let self, self.isListening else { return }
             let transcript = self.lastTranscript
@@ -181,9 +192,7 @@ final class RAGSpeechRecognizerService {
 
     // MARK: - Silence detection via audio power
 
-    /// Called on every audio buffer tap. Computes RMS power and resets / fires
-    /// a silence timer so we stop recording shortly after the user goes quiet.
-    private func checkAudioLevel(buffer: AVAudioPCMBuffer, format: AVAudioFormat) {
+    private func checkAudioLevel(buffer: AVAudioPCMBuffer) {
         guard let channelData = buffer.floatChannelData?[0] else { return }
         let frameLength = Int(buffer.frameLength)
         guard frameLength > 0 else { return }
@@ -194,14 +203,17 @@ final class RAGSpeechRecognizerService {
             sumOfSquares += sample * sample
         }
         let rms = sqrtf(sumOfSquares / Float(frameLength))
-        let db = 20 * log10f(rms + 1e-10) // avoid log(0)
+        let db = 20 * log10f(rms + 1e-10)
 
         DispatchQueue.main.async { [weak self] in
             guard let self, self.isListening else { return }
+            // Only arm / reset the silence timer AFTER we've actually heard
+            // speech.  This prevents ambient noise at the start from starting
+            // a countdown that would cut the user off before they even speak.
+            guard self.hasHeardSpeech else { return }
             if db > self.silenceThresholdDB {
                 self.resetSilenceTimer()
             }
-            // If below threshold, let the current timer keep running.
         }
     }
 
@@ -213,11 +225,6 @@ final class RAGSpeechRecognizerService {
             self.stop()
             self.onFinish?(transcript)
         }
-    }
-
-    /// Grabs whatever the recognizer has so far.
-    func liveTranscript() -> String {
-        lastTranscript
     }
 
     private func cancelTimers() {

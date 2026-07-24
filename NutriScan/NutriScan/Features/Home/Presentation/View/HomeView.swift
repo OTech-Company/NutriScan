@@ -31,10 +31,10 @@ struct HomeView: View {
                 ExploreSectionHeader()
                 
                 VStack {
-                    SettingsNavRow(icon: "home_news", title: "Health News") {
+                    SettingsNavRow(icon: "newspaper.fill", title: "Health News") {
                         // Add action when news button pressed
                     }
-                    SettingsNavRow(icon: "home_chat_with_AI", title: "Chat with AI") {
+                    SettingsNavRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
                         showRAGChat = true
                     }
                 }
