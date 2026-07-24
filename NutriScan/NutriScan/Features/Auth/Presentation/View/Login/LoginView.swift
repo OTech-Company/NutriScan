@@ -105,7 +105,8 @@ struct LoginView: View {
         Task {
             let success = await viewModel.signIn()
             if success {
-                flowCoordinator.didAuthenticate()
+                let isPending = UserDefaults.standard.bool(forKey: "isPendingProfileSetup_\(viewModel.email.value)")
+                flowCoordinator.didAuthenticate(isPendingSetup: isPending, email: viewModel.email.value)
             } else if viewModel.isEmailUnverified {
                 router.push(AuthRoute.verificationPending(email: viewModel.email.value))
                 viewModel.isEmailUnverified = false

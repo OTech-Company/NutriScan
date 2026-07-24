@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GenderSelectionCard: View {
-    let gender: Gender
+    let gender: ProfileSetupGender
     let isSelected: Bool
     let action: () -> Void
 
@@ -102,14 +102,13 @@ private struct SelectedCardShadow: ViewModifier {
     .preferredColorScheme(.dark)
 }
 
-extension Gender {
+extension ProfileSetupGender {
     func imageName(for colorScheme: ColorScheme) -> String {
         switch (self, colorScheme) {
         case (.male, .light):   return "maleLight"
         case (.male, .dark):    return "maleDark"
         case (.female, .light): return "femaleLight"
         case (.female, .dark):  return "femaleDark"
-        default:                return "maleLight"
         }
     }
 }
