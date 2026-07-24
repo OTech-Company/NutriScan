@@ -103,6 +103,7 @@ final class RAGChatViewModel {
     private func stopDictation() {
         isDictating = false
         speechService.stop()
+        speechService.deactivateSession()
     }
 
     private func configureSpeechService() {
@@ -113,6 +114,7 @@ final class RAGChatViewModel {
         }
         speechService.onFinish = { [weak self] _ in
             self?.isDictating = false
+            self?.speechService.deactivateSession()
         }
         speechService.onError = { [weak self] error in
             guard let self else { return }

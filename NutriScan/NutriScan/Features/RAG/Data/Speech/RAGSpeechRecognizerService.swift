@@ -72,6 +72,11 @@ final class RAGSpeechRecognizerService {
         recognitionTask = nil
 
         isListening = false
+    }
+
+    /// Safely deactivates the shared audio session. Call this from the
+    /// ViewModel when transitioning between STT and TTS.
+    func deactivateSession() {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 

@@ -136,8 +136,10 @@ final class RAGVoiceChatViewModel: NSObject {
     private func speak(_ text: String) {
         state = .speaking
 
-        // Switch audio session from .record to .playback so the synthesizer
-        // can actually output audio through the speaker.
+        // Ensure the session is fully inactive before changing category.
+        // deactivateSession() is safe to call even if already inactive.
+        speechService.deactivateSession()
+
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playback, mode: .default, options: .defaultToSpeaker)
@@ -173,7 +175,7 @@ extension RAGVoiceChatViewModel: AVSpeechSynthesizerDelegate {
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
         guard state == .speaking else { return }
         // Deactivate playback session so the next listen() can set up .record
-        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        speechService.deactivateSession()
         listen()
     }
 }
