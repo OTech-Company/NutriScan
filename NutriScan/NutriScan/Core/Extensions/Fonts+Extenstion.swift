@@ -17,6 +17,7 @@ extension Font {
         static let title4 = Font.custom("PlusJakartaSans-SemiBold", size: 22)
         
         static let subtitle1 = Font.custom("PlusJakartaSans-Medium", size: 20)
+        static let numbers = Font.custom("PlusJakartaSans-Bold", size: 20)
         static let subtitle2 = Font.custom("PlusJakartaSans-Medium", size: 18)
         
         static let textPrimary = Font.custom("LexendDeca-Medium", size: 16)

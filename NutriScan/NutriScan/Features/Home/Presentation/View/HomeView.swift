@@ -49,6 +49,7 @@ struct HomeView: View {
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
+            Spacer(minLength: 60)
         }
         .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
         .navigationBarHidden(true)

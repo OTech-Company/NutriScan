@@ -24,8 +24,8 @@ extension Color {
         static let tipLabel = Color(light: Color.Teal.teal800, dark: Color.Teal.teal400)
         static let tipMessage = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal200)
         static let tipBorder = Color(light: Color.Teal.teal400, dark: Color.Teal.teal800)
-        static let tipBackgroundStart = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1400)
-        static let tipBackgroundEnd = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1500)
+        static let tipBackgroundStart = Color(light: Color.white, dark: Color.Teal.teal1400)
+        static let tipBackgroundEnd = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1500)
         
         // Ready To Scan Section
         static let scanCardBackground = Color(light: .white, dark: Color.Teal.teal1400)

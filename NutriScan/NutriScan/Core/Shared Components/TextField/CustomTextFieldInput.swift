@@ -87,6 +87,10 @@ struct CustomTextFieldInput: View {
             .textInputAutocapitalization(isPassword || leadingIcon == "envelope" ? .never : nil)
             .autocorrectionDisabled(isPassword || leadingIcon == "envelope")
             .keyboardType(leadingIcon == "envelope" ? .emailAddress : .default)
+            .submitLabel(.done)
+            .onSubmit {
+                isTyping = false
+            }
             
             Spacer()
             
