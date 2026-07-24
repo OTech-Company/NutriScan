@@ -9,6 +9,7 @@ struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
 
     @State private var viewModel = HomeViewModel()
+    @State private var showRAGChat = false
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -30,11 +31,11 @@ struct HomeView: View {
                 ExploreSectionHeader()
                 
                 VStack {
-                    SettingsNavRow(icon: "home_news", title: "Health News") {
+                    SettingsNavRow(icon: "newspaper.fill", title: "Health News") {
                         // Add action when news button pressed
                     }
-                    SettingsNavRow(icon: "home_chat_with_AI", title: "Chat with AI") {
-                        // Add action when AI button pressed
+                    SettingsNavRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
+                        showRAGChat = true
                     }
                 }
 
@@ -52,6 +53,13 @@ struct HomeView: View {
         }
         .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $showRAGChat) {
+            RAGChatView(
+                viewModel: RAGChatViewModel(
+                    queryUseCase: DIContainer.shared.resolve(type: QueryRAGUseCase.self)
+                )
+            )
+        }
     }
 }
 
