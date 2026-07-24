@@ -264,6 +264,7 @@
 		D49D9F173013E4FA00ACE567 /* ProfileSummaryRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F163013E4F800ACE567 /* ProfileSummaryRemoteDataSourceProtocol.swift */; };
 		D49D9F193013E51400ACE567 /* ProfileSummaryRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F183013E51200ACE567 /* ProfileSummaryRemoteDataSource.swift */; };
 		D49D9F1B3013E52C00ACE567 /* ProfileSummaryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1A3013E52900ACE567 /* ProfileSummaryRepository.swift */; };
+		D49D9F1D3014092600ACE567 /* OpenRightRoundedRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */; };
 		D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */; };
 		D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
@@ -585,6 +586,7 @@
 		D49D9F163013E4F800ACE567 /* ProfileSummaryRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D49D9F183013E51200ACE567 /* ProfileSummaryRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRemoteDataSource.swift; sourceTree = "<group>"; };
 		D49D9F1A3013E52900ACE567 /* ProfileSummaryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSummaryRepository.swift; sourceTree = "<group>"; };
+		D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRightRoundedRect.swift; sourceTree = "<group>"; };
 		D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSource.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
@@ -1281,6 +1283,7 @@
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */,
 				D4BAA31330137E68006EDB11 /* FamilyMembersSectionView.swift */,
 				D4BAA31130137DC7006EDB11 /* ProfileHeaderView.swift */,
 				D4BAA30F30137D9F006EDB11 /* ProfileHeaderDecoration.swift */,
@@ -2461,6 +2464,7 @@
 				2C78ED6F300E6D180092E6B3 /* VerificationPendingActionsSection.swift in Sources */,
 				2C78ED49300E6D180092E6B3 /* ResendVerificationUseCase.swift in Sources */,
 				2C78ED4A300E6D180092E6B3 /* VerificationPendingViewModel.swift in Sources */,
+				D49D9F1D3014092600ACE567 /* OpenRightRoundedRect.swift in Sources */,
 				2C78ED4C300E6D180092E6B3 /* VerificationPendingView.swift in Sources */,
 				2C78ED37300E6D180092E6B3 /* FailureDialog.swift in Sources */,
 				532DB767C9AAD8B87AC0F264 /* EditProfileView.swift in Sources */,
