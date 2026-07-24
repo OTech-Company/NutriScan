@@ -27,7 +27,7 @@ extension Color {
 
         static let editIcon = Color(light: .white, dark: Color.Teal.teal300)
 
-        static let dashedBorder = Color(light: Color.Teal.teal300, dark: Color.Teal.teal500)
+        static let dashedBorder = Color(light: Color.Teal.teal500, dark: Color.Teal.teal500)
 
         static let addMemberBackground = Color(light: Color.Gray.gray100, dark: Color.Teal.teal1600)
         static let addMemberText = Color(light: Color.Teal.teal1600, dark: Color.Teal.teal100)

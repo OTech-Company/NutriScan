@@ -17,7 +17,7 @@ struct ProfileView: View {
                 ProfileHeaderView(
                     userName: viewModel.state.fullName,   // was: viewModel.state.userName
                     avatarURL: nil,                        // no avatar field in this scoped response — pending confirmation if needed
-                    streakDays: 0,                         // not part of this contract — flag below
+                    streakDays: 15,                         // not part of this contract — flag below
                     onEdit: { router.push(ProfileRoute.editProfile) }
                 )
 
@@ -43,7 +43,8 @@ struct ProfileView: View {
                 .offset(y: -ProfileSemantics.Radius.containerTop) // pulls container up to overlap header's bottom edge
             }
         }
-        .background(Color.ProfileSemantics.background.ignoresSafeArea())
+        .ignoresSafeArea()
+        .background(Color.ProfileSemantics.background)
         .navigationBarHidden(true)
         .task {
             await viewModel.loadProfile()

@@ -19,7 +19,7 @@ enum ProfileSemantics {
     }
 
     enum Spacing {
-        static let horizontalPadding: CGFloat = 16
+        static let horizontalPadding: CGFloat = 22
         static let sectionSpacing: CGFloat = 24
         static let streakPaddingHorizontal: CGFloat = 8
         static let streakPaddingVertical: CGFloat = 2
