@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol UpdateProfileUseCaseProtocol {
+protocol UpdateEditProfileUseCaseProtocol {
     /// Sends the updated profile data to the backend.
     func execute(update: ProfileUpdate) async throws -> Profile
 }

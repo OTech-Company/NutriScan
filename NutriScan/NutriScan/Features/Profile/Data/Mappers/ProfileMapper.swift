@@ -24,7 +24,7 @@ enum ProfileMapper {
         return ReferenceItem(id: dto.id, name: dto.name)
     }
 
-    static func map(dto: ProfileResponseDTO) -> Profile {
+    static func map(dto: EditProfileResponseDTO) -> Profile {
         return Profile(
             id: dto.id,
             email: dto.email,
@@ -43,8 +43,8 @@ enum ProfileMapper {
 
     // MARK: - Entity to Request DTO
     
-    static func map(update: ProfileUpdate) -> ProfileUpdateRequestDTO {
-        return ProfileUpdateRequestDTO(
+    static func map(update: ProfileUpdate) -> EditProfileUpdateRequestDTO {
+        return EditProfileUpdateRequestDTO(
             firstName: update.firstName,
             lastName: update.lastName,
             dateOfBirth: dateFormatter.string(from: update.dateOfBirth),

@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ProfileRepository: ProfileRepositoryProtocol {
+final class EditProfileRepository: EditProfileRepositoryProtocol {
     private let remoteDataSource: ProfileRemoteDataSourceProtocol
 
     init(remoteDataSource: ProfileRemoteDataSourceProtocol = DIContainer.shared.resolve(type: ProfileRemoteDataSourceProtocol.self)) {

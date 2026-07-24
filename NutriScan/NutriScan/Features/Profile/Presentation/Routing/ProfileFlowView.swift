@@ -9,18 +9,10 @@ import SwiftUI
 
 struct ProfileFlowView: View {
     @StateObject private var router = AppRouter()
-    
-    @State private var profileViewModel: ProfileViewModel
-    
-    init() {
-        let repository = NetworkProfileRepository()
-        let useCase = GetProfileUseCase(repository: repository)
-        self._profileViewModel = State(initialValue: ProfileViewModel(getProfileUseCase: useCase))
-    }
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ProfileView(viewModel: profileViewModel)
+            ProfileView(viewModel: ProfileViewModel())   // uses DIContainer defaults now
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }

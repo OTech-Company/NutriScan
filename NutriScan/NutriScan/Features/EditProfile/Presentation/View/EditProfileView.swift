@@ -40,7 +40,7 @@ struct EditProfileView: View {
                             .bottom,
                             EditProfileSemantics.Spacing.sectionVertical)
 
-                        ProfileHeaderView(
+                        EditProfileHeaderView(
                             name: viewModel.firstName.value + " "
                                 + viewModel.lastName.value,
                             email: viewModel.email,

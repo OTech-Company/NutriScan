@@ -2,100 +2,49 @@
 //  ProfileView.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 14/07/2026.
+//  Created by Mina_Wagdy on 24/07/2026.
 //
 
 import SwiftUI
 
-// MARK: - Profile Screen
 struct ProfileView: View {
-    @State private var viewModel: ProfileViewModel
-    @State private var notificationsEnabled = true
     @EnvironmentObject private var router: AppRouter
-    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
+    var viewModel: ProfileViewModel
 
-    init(viewModel: ProfileViewModel) {
-        _viewModel = State(initialValue: viewModel)
-    }
-    
     var body: some View {
-        VStack(spacing: 0) {
-            switch viewModel.uiState {
-            case .loading:
-                ProgressView()
-                    .frame(maxHeight: .infinity)
-            case .success(let profile, let streak, let badges):
-                ScrollView {
-                    VStack(spacing: 20) {
-                        // Header Component
-                        HeaderComponent(
-                            fullName: profile.fullName,
-                            streakCount: streak,
-                            badgesCount: badges
-                        )
-                        
-                        VStack(spacing: 16) {
-                            // Health Card Component
-                            HealthProfileCardComponent(
-                                completionPercentage: profile.completionPercentage,
-                                onEditClicked: {
-                                    print("Edit profile")
-                                    router.push(ProfileRoute.editProfile)
-                                }
-                            )
-                            
-                            // Navigation Menu Options
-                            VStack(spacing: 12) {
-                                MenuOptionRowComponent(icon: "person", title: "Personal Information") {
-                                    print("Go to personal info")
-                                    router.push(ProfileRoute.personalInformation)
-                                }
-                                MenuOptionRowComponent(icon: "clock.arrow.circlepath", title: "Scan History") {
-                                    print("Go to history")
-                                    router.push(ProfileRoute.scanHistory)
-                                }
-                                MenuOptionRowComponent(icon: "gearshape", title: "Settings") {
-                                    print("Go to settings")
-                                    router.push(ProfileRoute.settings)
-                                }
-                                // Toggle Option
-                                ToggleOptionRowComponent(
-                                    icon: "bell",
-                                    title: "Notifications",
-                                    isOn: $notificationsEnabled
-                                )
-                                .onChange(of: notificationsEnabled) { _, newValue in
-                                    viewModel.toggleNotifications(isEnabled: newValue)
-                                }
-                            }
-                            
-                            // Destructive CTA
-                            Button(action: { print("Logout") }) {
-                                Text("Log Out")
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.red)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(
-                                        Capsule()
-                                            .stroke(Color.red.opacity(0.3), lineWidth: 1)
-                                    )
-                            }
-                            .padding(.top, 20)
-                        }
-                        .padding(.horizontal, 20)
-                    }
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 0) {
+                ProfileHeaderView(
+                    userName: viewModel.state.fullName,   // was: viewModel.state.userName
+                    avatarURL: nil,                        // no avatar field in this scoped response — pending confirmation if needed
+                    streakDays: 0,                         // not part of this contract — flag below
+                    onEdit: { router.push(ProfileRoute.editProfile) }
+                )
+
+                VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.sectionSpacing) {
+                    FamilyMembersSectionView(
+                        members: viewModel.state.familyMembers,
+                        onAddMember: { /* TODO: router.push(ProfileRoute.addFamilyMember) once that route exists */ },
+                        onShowDetails: { _ in /* TODO: router.push(ProfileRoute.familyMemberDetails(member)) */ }
+                    )
+
+                    SettingsSectionView(
+                        onScanHistory: { router.push(ProfileRoute.scanHistory) },
+                        onNotifications: { /* TODO: no ProfileRoute case for notifications yet */ },
+                        onSettings: { router.push(ProfileRoute.settings) }
+                    )
                 }
-            case .error(let message):
-                VStack {
-                    Text(message).foregroundColor(.red)
-                    Button("Retry") {
-                        Task { await viewModel.loadProfile() }
-                    }
-                }
+                .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
+                .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
+                .padding(.bottom, 100) // clearance above bottom tab bar
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color.ProfileSemantics.containerBackground)
+                .clipShape(RoundedCorner(radius: ProfileSemantics.Radius.containerTop, corners: [.topLeft, .topRight]))
+                .offset(y: -ProfileSemantics.Radius.containerTop) // pulls container up to overlap header's bottom edge
             }
         }
-        .edgesIgnoringSafeArea(.top)
+        .background(Color.ProfileSemantics.background.ignoresSafeArea())
+        .navigationBarHidden(true)
         .task {
             await viewModel.loadProfile()
         }

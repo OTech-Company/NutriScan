@@ -12,8 +12,8 @@ import SwiftUI
 final class EditProfileViewModel {
 
     // MARK: - Dependencies
-    private let getProfileDataUseCase: GetProfileDataUseCaseProtocol
-    private let updateProfileUseCase: UpdateProfileUseCaseProtocol
+    private let getProfileDataUseCase: GetEditProfileUseCaseProtocol
+    private let updateProfileUseCase: UpdateEditProfileUseCaseProtocol
 
     // MARK: - Validated Fields
     var firstName = ValidatedField(value: "")
@@ -38,8 +38,8 @@ final class EditProfileViewModel {
     private var revertAction: (() -> Void)?
 
     init(
-        getProfileDataUseCase: GetProfileDataUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileDataUseCaseProtocol.self),
-        updateProfileUseCase: UpdateProfileUseCaseProtocol = DIContainer.shared.resolve(type: UpdateProfileUseCaseProtocol.self)
+        getProfileDataUseCase: GetEditProfileUseCaseProtocol = DIContainer.shared.resolve(type: GetEditProfileUseCaseProtocol.self),
+        updateProfileUseCase: UpdateEditProfileUseCaseProtocol = DIContainer.shared.resolve(type: UpdateEditProfileUseCaseProtocol.self)
     ) {
         self.getProfileDataUseCase = getProfileDataUseCase
         self.updateProfileUseCase = updateProfileUseCase

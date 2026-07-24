@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ProfileRepositoryProtocol {
+protocol EditProfileRepositoryProtocol {
     func getProfile() async throws -> Profile
     
     func updateProfile(update: ProfileUpdate) async throws -> Profile

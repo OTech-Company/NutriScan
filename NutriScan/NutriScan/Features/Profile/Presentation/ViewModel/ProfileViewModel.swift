@@ -2,39 +2,95 @@
 //  ProfileViewModel.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 16/07/2026.
+//  Created by Mina_Wagdy on 24/07/2026.
+//
+//
+//  ProfileViewModel.swift
+//  NutriScan
+//
+//  Features/Profile/Presentation/ViewModel/
 //
 
 import Foundation
-import Observation
-
-enum ProfileUiState {
-    case loading
-    case success(UserProfile, streakCount: Int, badgesCount: Int)
-    case error(String)
-}
 
 @Observable
 final class ProfileViewModel {
-    var uiState: ProfileUiState = .loading
-    private let getProfileUseCase: GetProfileUseCase
-    
-    init(getProfileUseCase: GetProfileUseCase) {
-        self.getProfileUseCase = getProfileUseCase
+    var state = ProfileState()
+
+    private let getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol
+    private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
+
+    init(
+        getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileSummaryUseCaseProtocol.self),
+        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self)
+    ) {
+        self.getProfileSummaryUseCase = getProfileSummaryUseCase
+        self.updateFamilyMembersUseCase = updateFamilyMembersUseCase
     }
-    
+
+    @MainActor
     func loadProfile() async {
-        uiState = .loading
+        state.isLoading = true
+        state.errorMessage = nil
+
         do {
-            let profile = try await getProfileUseCase.execute()
-            // In a real app, streak and badges would come from a gamification domain/use case
-            uiState = .success(profile, streakCount: 15, badgesCount: 5)
+            let summary = try await getProfileSummaryUseCase.execute()
+            state.fullName = summary.fullName
+            state.familyMembers = summary.familyMembers
         } catch {
-            uiState = .error(error.localizedDescription)
+            state.errorMessage = error.localizedDescription
         }
+
+        state.isLoading = false
     }
-    
-    func toggleNotifications(isEnabled: Bool) {
-        // Notification toggle integration logic
+
+    /// Adds a new family member by sending the full desired list
+    /// (existing members + the new one) to the PATCH endpoint.
+    @MainActor
+    func addFamilyMember(_ newMember: FamilyMemberInput) async {
+        let existing = state.familyMembers.map {
+            FamilyMemberInput(
+                name: $0.name,
+                relation: $0.relation,
+                allergyIds: $0.allergies.map(\.id),
+                diseaseIds: $0.diseases.map(\.id)
+            )
+        }
+        await submitFamilyMembers(existing + [newMember])
+    }
+
+    /// Updates one existing member in place, then resubmits the full list.
+    @MainActor
+    func updateFamilyMember(id: String, with updated: FamilyMemberInput) async {
+        var updatedList: [FamilyMemberInput] = []
+        for member in state.familyMembers {
+            if member.id == id {
+                updatedList.append(updated)
+            } else {
+                updatedList.append(FamilyMemberInput(
+                    name: member.name,
+                    relation: member.relation,
+                    allergyIds: member.allergies.map(\.id),
+                    diseaseIds: member.diseases.map(\.id)
+                ))
+            }
+        }
+        await submitFamilyMembers(updatedList)
+    }
+
+    @MainActor
+    private func submitFamilyMembers(_ members: [FamilyMemberInput]) async {
+        state.isLoading = true
+        state.errorMessage = nil
+
+        do {
+            let summary = try await updateFamilyMembersUseCase.execute(members: members)
+            state.fullName = summary.fullName
+            state.familyMembers = summary.familyMembers
+        } catch {
+            state.errorMessage = error.localizedDescription
+        }
+
+        state.isLoading = false
     }
 }

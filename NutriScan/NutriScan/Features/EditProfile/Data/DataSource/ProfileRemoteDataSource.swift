@@ -12,11 +12,11 @@ final class ProfileRemoteDataSource: ProfileRemoteDataSourceProtocol {
         self.networkService = networkService
     }
 
-    func getProfile() async throws -> ProfileResponseDTO {
+    func getProfile() async throws -> EditProfileResponseDTO {
         return try await networkService.request(ProfileEndpoint.getProfile)
     }
 
-    func updateProfile(requestDTO: ProfileUpdateRequestDTO) async throws -> ProfileResponseDTO {
+    func updateProfile(requestDTO: EditProfileUpdateRequestDTO) async throws -> EditProfileResponseDTO {
         return try await networkService.request(ProfileEndpoint.updateProfile(requestDTO))
     }
 

@@ -8,8 +8,8 @@
 import Foundation
 
 protocol ProfileRemoteDataSourceProtocol {
-    func getProfile() async throws -> ProfileResponseDTO
-    func updateProfile(requestDTO: ProfileUpdateRequestDTO) async throws -> ProfileResponseDTO
+    func getProfile() async throws -> EditProfileResponseDTO
+    func updateProfile(requestDTO: EditProfileUpdateRequestDTO) async throws -> EditProfileResponseDTO
     func getAllergies() async throws -> [ReferenceItemDTO]
     func getDiseases() async throws -> [ReferenceItemDTO]
 }
