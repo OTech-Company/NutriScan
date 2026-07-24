@@ -267,6 +267,7 @@
 		D49D9F1D3014092600ACE567 /* OpenRightRoundedRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */; };
 		D49D9F1F3014120200ACE567 /* FamilyMemberSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */; };
 		D49D9F213014125500ACE567 /* FamilyMemberSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */; };
+		D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F233014175500ACE567 /* EditProfileAssembly.swift */; };
 		D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */; };
 		D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
@@ -591,6 +592,7 @@
 		D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRightRoundedRect.swift; sourceTree = "<group>"; };
 		D49D9F1E301411FE00ACE567 /* FamilyMemberSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetViewModel.swift; sourceTree = "<group>"; };
 		D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetView.swift; sourceTree = "<group>"; };
+		D49D9F233014175500ACE567 /* EditProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileAssembly.swift; sourceTree = "<group>"; };
 		D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSource.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
@@ -1671,9 +1673,11 @@
 		8F029F5530127684008B6CB1 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D49D9F223014174900ACE567 /* DI */,
 				78EE3CC08B3799EE7FC641E6 /* Extensions */,
 				8F029F5730127694008B6CB1 /* ViewModel */,
 				8F029F563012768C008B6CB1 /* View */,
+				D40DD1DA30102BB9001CF496 /* Models */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -2019,7 +2023,6 @@
 				BEA4A8D11A6E357B33EB2ED0 /* Routing */,
 				F6265E5F624A0A3011E3CCF3 /* View */,
 				BC35895CA2ED5CA2CCE855A5 /* ViewModel */,
-				D40DD1DA30102BB9001CF496 /* Models */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -2133,6 +2136,14 @@
 				D49D9F133013E4AB00ACE567 /* ProfileSummaryEndpoint.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		D49D9F223014174900ACE567 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				D49D9F233014175500ACE567 /* EditProfileAssembly.swift */,
+			);
+			path = DI;
 			sourceTree = "<group>";
 		};
 		D4BAA2FF30137B2E006EDB11 /* Extensions */ = {
@@ -2575,6 +2586,7 @@
 				FA2F4A06D344FFC5A371B1F7 /* Product.swift in Sources */,
 				D48A24463011595F0004D95E /* ProfileAssembly.swift in Sources */,
 				2305D7797A178FEA10CFD101 /* ProductAPIService.swift in Sources */,
+				D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */,
 				D4BAA30630137BE9006EDB11 /* ProfileState.swift in Sources */,
 				85654F7CAAE9DC89449BC875 /* ProductDetailView.swift in Sources */,
 				9BF9BFBA75D2836ADE31A716 /* ProductDetailViewModel.swift in Sources */,

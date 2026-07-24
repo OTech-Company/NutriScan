@@ -12,7 +12,7 @@ struct ProfileFlowView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ProfileView(viewModel: ProfileViewModel())   // uses DIContainer defaults now
+            ProfileView(viewModel: ProfileViewModel())
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }
