@@ -55,10 +55,6 @@ struct ExercisesView: View {
                 viewModel.selectedExercise = nil
                 router.push(ExerciseRoute.workoutPlayer(exercise: activeExercise))
             }
-            .presentationDetents([.medium, .large])
-            .presentationDragIndicator(.hidden)
-            .presentationCornerRadius(24)
-            .presentationBackground(Color.ExerciseSemantic.sheetBackground)
         }
     }
 }
