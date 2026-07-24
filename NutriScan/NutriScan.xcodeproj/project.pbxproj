@@ -110,7 +110,6 @@
 		44C3CB9EBBBDB24729DAA533 /* TabBarPositionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D2AB502606B6BC4CFDDDAD /* TabBarPositionKey.swift */; };
 		45E5D5A05F6C75F74E3B69D0 /* UiStateHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632AAB52A693BBA06BFD985C /* UiStateHistoryItem.swift */; };
 		4D803C8562BBF94E95931A60 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7A7FCCCB05EF50A5CC01B7C /* Haptics.swift */; };
-		4DA1E76BDC41B5C5F5C4EEEC /* MenuOptionRowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62508E063571853852C3CF26 /* MenuOptionRowComponent.swift */; };
 		5190CD659C9CDE9928D88D48 /* Color+EditProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C63AB70C4F0752F711F6D8 /* Color+EditProfileSemantics.swift */; };
 		526136CC5A7326A6B5784EC2 /* CustomTextFieldError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD0249CD6268F0B198FA3A14 /* CustomTextFieldError.swift */; };
 		532DB767C9AAD8B87AC0F264 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86378F78C6791B773584B5E /* EditProfileView.swift */; };
@@ -163,13 +162,10 @@
 		8662866AF69309468A360A6B /* AppAuthBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E7AFEE788A78ABBC1820F5 /* AppAuthBackgroundModifier.swift */; };
 		86F696F90C6E8D924E3BC4C5 /* LexendDeca-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DD54334992BD48AB4A96A34 /* LexendDeca-Regular.ttf */; };
 		87CDFD7A6B4A9E03D3672A78 /* Colors+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17F082499900C257CEE1D16 /* Colors+Extension.swift */; };
-		88BEF9AF22B21863DD00B229 /* ToggleOptionRowComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68068F9E9BAE87CF877B5B88 /* ToggleOptionRowComponent.swift */; };
 		88CAD96BC98D8EBCC6D9CBC3 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F009A2660B7E5BFF43D3F04 /* KeychainManager.swift */; };
 		88CC3382C6A545FA3E93E2F5 /* AppValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74CE7AA6DA9192F3E981FBD6 /* AppValidator.swift */; };
 		8AE05AEC0DCD40A73044A0EA /* NutriScanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F36DFF397A26263538A993 /* NutriScanApp.swift */; };
 		8AF84F34F54E67BF22F7D65F /* SelectableChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82473C387EA528660B19437A /* SelectableChip.swift */; };
-		8B1CCB85BBC6DE8D1DEAAFA1 /* HeaderComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */; };
-		8CD9D0857AD632D1C2677DE7 /* BadgeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */; };
 		8F029F49301271C3008B6CB1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
 		8F029F4A301271C3008B6CB1 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
 		8F029F4B301271C3008B6CB1 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
@@ -208,7 +204,6 @@
 		B16F2A5C959730F159477E02 /* Fonts+Extenstion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB075B7B5D7CDD44B4F7A1E6 /* Fonts+Extenstion.swift */; };
 		B8DBAA8CA2936027B3ABD2BE /* TitleBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35B7BC11A762DD5B1F419A5 /* TitleBlock.swift */; };
 		B9DEF23EAEAEE40811334D58 /* ProductRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14CD05BDD0AC71DFBA15C562 /* ProductRepositoryImpl.swift */; };
-		BA695E17644DBFE598700558 /* HealthProfileCardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FDD05CC431BE61EDD5AFBA1 /* HealthProfileCardComponent.swift */; };
 		BBD42B4C6E57463852D77802 /* Color+ProfileSetupSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C83A6DF63D1AC8151D4F8BA /* Color+ProfileSetupSemantic.swift */; };
 		BE1029FD9D62CA2925C46BD0 /* OnboardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7152B246043D48F88D62F29B /* OnboardingPage.swift */; };
 		C09B288237090A279F688D6B /* NutriScanUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4ABEA6E74E1CC871EDCF7 /* NutriScanUITests.swift */; };
@@ -335,7 +330,6 @@
 		0AE4ABEA6E74E1CC871EDCF7 /* NutriScanUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanUITests.swift; sourceTree = "<group>"; };
 		0B0A193EB7A8F9016AC25A3B /* ScanRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanRoute.swift; sourceTree = "<group>"; };
 		0D867200C8CDFD59D244B37E /* NutriScanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanTests.swift; sourceTree = "<group>"; };
-		0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeLabel.swift; sourceTree = "<group>"; };
 		0DC479CD22A1728C7E9B9A57 /* Color+SettingsSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+SettingsSemantic.swift"; sourceTree = "<group>"; };
 		0F2002489FC565C9985DC20C /* FlowChipsLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowChipsLayout.swift; sourceTree = "<group>"; };
 		10D2AB502606B6BC4CFDDDAD /* TabBarPositionKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarPositionKey.swift; sourceTree = "<group>"; };
@@ -429,7 +423,6 @@
 		3B2D54BA8F765B703F78148A /* CustomTextFieldTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldTitle.swift; sourceTree = "<group>"; };
 		3C681B4E695FF6B1D8BADF4B /* ProfileSetupFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupFlowView.swift; sourceTree = "<group>"; };
 		3DDF6D11618FF7B0E6E8422E /* Color+Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Dynamic.swift"; sourceTree = "<group>"; };
-		3FDD05CC431BE61EDD5AFBA1 /* HealthProfileCardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthProfileCardComponent.swift; sourceTree = "<group>"; };
 		450281863B01847150CC5B1E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		47E0A8B48B7E14DA096AF99C /* PersonalInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationViewModel.swift; sourceTree = "<group>"; };
 		489B4B74B5B8660DFD7052B3 /* SelectableChipsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableChipsSectionView.swift; sourceTree = "<group>"; };
@@ -446,14 +439,12 @@
 		5D4A4277A981858B216A6242 /* SettingsLogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLogoutButton.swift; sourceTree = "<group>"; };
 		5DCC3D24B114E0EF78A9700D /* BirthdateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdateSelectionView.swift; sourceTree = "<group>"; };
 		60B69FDD807126F49EF22F8D /* SettingsHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderSection.swift; sourceTree = "<group>"; };
-		62508E063571853852C3CF26 /* MenuOptionRowComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOptionRowComponent.swift; sourceTree = "<group>"; };
 		627DA9F7A0302DB0ABA0E337 /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
 		632AAB52A693BBA06BFD985C /* UiStateHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UiStateHistoryItem.swift; sourceTree = "<group>"; };
 		6419F570A090F42902A21606 /* empty77.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty77.swift; sourceTree = "<group>"; };
 		64C59700EAB18C1BCB9CF4B9 /* MealDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailViewModel.swift; sourceTree = "<group>"; };
 		651834F26A09F62E6D38A689 /* AppNetworkConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNetworkConfig.swift; sourceTree = "<group>"; };
 		6603328ACB1EAE678AA1FB36 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
-		68068F9E9BAE87CF877B5B88 /* ToggleOptionRowComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleOptionRowComponent.swift; sourceTree = "<group>"; };
 		68146A2418CAE3F883AE3FF3 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		6889262410D99B8CB26D3B3E /* FloatingTabButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabButton.swift; sourceTree = "<group>"; };
 		689F579C25C1E5F957B2B222 /* AppFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlow.swift; sourceTree = "<group>"; };
@@ -610,7 +601,6 @@
 		D4BAA31930137F78006EDB11 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		D4BAA31C30138586006EDB11 /* FamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMember.swift; sourceTree = "<group>"; };
 		D4E5DE6B86999459A4937187 /* HomeSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSummaryView.swift; sourceTree = "<group>"; };
-		DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderComponent.swift; sourceTree = "<group>"; };
 		DE3E799F631DC0569701B9C0 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		DE460834D961C79AD9C40263 /* LexendDeca-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LexendDeca-Light.ttf"; sourceTree = "<group>"; };
 		E07C2073443C9EFB32304CE4 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
@@ -1297,11 +1287,6 @@
 				D4BAA30D30137D54006EDB11 /* SettingsSectionView.swift */,
 				D4BAA30930137C7E006EDB11 /* FamilyMemberCardView.swift */,
 				D4BAA30730137C4D006EDB11 /* AddMemberCardView.swift */,
-				0D94E0B0A1D9CD6947AE4F89 /* BadgeLabel.swift */,
-				DA68B726B0AEDAEC5C2DBAB8 /* HeaderComponent.swift */,
-				3FDD05CC431BE61EDD5AFBA1 /* HealthProfileCardComponent.swift */,
-				62508E063571853852C3CF26 /* MenuOptionRowComponent.swift */,
-				68068F9E9BAE87CF877B5B88 /* ToggleOptionRowComponent.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2444,7 +2429,6 @@
 				D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */,
 				9C90AFAEDCF85BFBCA64A9B1 /* BackButton.swift in Sources */,
 				D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */,
-				8CD9D0857AD632D1C2677DE7 /* BadgeLabel.swift in Sources */,
 				0BD259136AB8037FE9FE20E3 /* BarcodeScannerView.swift in Sources */,
 				D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */,
 				6DD0CE29CC51AFC8DCB6EC03 /* BirthdateSelectionView.swift in Sources */,
@@ -2497,8 +2481,6 @@
 				D4BAA31230137DCA006EDB11 /* ProfileHeaderView.swift in Sources */,
 				42F9D647511ABEAC2701E34B /* GenderSelectionRow.swift in Sources */,
 				4D803C8562BBF94E95931A60 /* Haptics.swift in Sources */,
-				8B1CCB85BBC6DE8D1DEAAFA1 /* HeaderComponent.swift in Sources */,
-				BA695E17644DBFE598700558 /* HealthProfileCardComponent.swift in Sources */,
 				D4BAA31830137EE1006EDB11 /* RoundedCorner.swift in Sources */,
 				2BC592097A4BD79EE1563895 /* HealthProfileSetupView.swift in Sources */,
 				798F73F8C4294B7D1351D17D /* HeightSelectionView.swift in Sources */,
@@ -2520,7 +2502,6 @@
 				D49D9F0E3013E38200ACE567 /* ProfileSummaryResponseDTO.swift in Sources */,
 				A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */,
 				E819F50A7311DC9A0B9515CB /* MealDetailViewModel.swift in Sources */,
-				4DA1E76BDC41B5C5F5C4EEEC /* MenuOptionRowComponent.swift in Sources */,
 				D48A2438301154AB0004D95E /* UpdateEditProfileUseCase.swift in Sources */,
 				C546296B301239330032F885 /* ActiveAlert.swift in Sources */,
 				C546296C301239330032F885 /* CustomAlert.swift in Sources */,
@@ -2636,7 +2617,6 @@
 				9897EA3C11AE497DBF27AB1A /* TabIconButton.swift in Sources */,
 				AFB411ED2CFE7F83B5139A2E /* TextFieldState.swift in Sources */,
 				B8DBAA8CA2936027B3ABD2BE /* TitleBlock.swift in Sources */,
-				88BEF9AF22B21863DD00B229 /* ToggleOptionRowComponent.swift in Sources */,
 				45E5D5A05F6C75F74E3B69D0 /* UiStateHistoryItem.swift in Sources */,
 				D84A1824E923C92FD27A3051 /* UpdateProfileRequest.swift in Sources */,
 				5AEDC00A82E13C4C47B74861 /* UserMeResponse.swift in Sources */,
