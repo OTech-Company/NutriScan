@@ -70,7 +70,9 @@ struct CaloriesScreen: View {
                     ExerciseCardView(
                         exerciseKcal: caloriesViewModel.exerciseKcal,
                         exerciseMinutes: caloriesViewModel.exerciseMinutes,
-                        onAddTap: { caloriesViewModel.addExercise() }
+                        onAddTap: {
+                            router.push(CaloriesRoute.exercises)
+                        }
                     )
                 }
                 .opacity(showStepsAndExercise ? 1 : 0)

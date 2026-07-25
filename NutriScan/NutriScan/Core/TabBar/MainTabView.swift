@@ -41,7 +41,9 @@ struct MainTabView: View {
                     .background(colorScheme == .light ? .white : Color.Teal.teal1600)
                     .tag(AppTab.scan)
                 
-                ExerciseFlowView()
+                Text("Bookmark Flow")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(colorScheme == .light ? .white : Color.Teal.teal1600)
                     .tag(AppTab.bookmark)
 
                 ProfileFlowView()
