@@ -18,5 +18,5 @@ extension Color {
 }
 
 #Preview {
-    HealthProfileSetupView()
+    HealthProfileSetupView(viewModel: ProfileSetupFlowFactory.makeViewModel())
 }
