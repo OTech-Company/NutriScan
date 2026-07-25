@@ -15,6 +15,7 @@ enum ProfileSemantics {
         static let memberCardWidth: CGFloat = 90
         static let memberCardHeight: CGFloat = 95
         static let addMemberIconSize: CGFloat = 24
+        static let familyMemberImageSize: CGFloat = 24
         static let addMemberIconCornerRadius: CGFloat = 7
         static let showDetailsButtonWidth: CGFloat = 75
         static let showDetailsButtonHeight: CGFloat = 25

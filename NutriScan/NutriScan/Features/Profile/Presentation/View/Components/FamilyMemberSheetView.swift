@@ -7,23 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Custom Button Style
-/// Handles both pointer hover (iPadOS/macOS) and touch press (iOS) states
-struct DeleteTextButtonStyle: ButtonStyle {
-    @State private var isHovering = false
-    
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            // Applies the requested red color on either touch or pointer hover
-            .foregroundColor(configuration.isPressed || isHovering ? Color.red : Color.Gray.gray400)
-            .onHover { hovering in
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    isHovering = hovering
-                }
-            }
-    }
-}
-
 // MARK: - View
 struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
@@ -116,7 +99,6 @@ struct FamilyMemberSheetView: View {
                     isLoading: viewModel.isLoading
                 )
 
-                // Delete button — only present when viewing an existing member.
                 if onDelete != nil {
                     Button(action: {
                         activeAlert = .warning

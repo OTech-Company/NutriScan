@@ -381,6 +381,7 @@
 		D49D9F213014125500ACE567 /* FamilyMemberSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */; };
 		D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F233014175500ACE567 /* EditProfileAssembly.swift */; };
 		D49E8BFF3015300C0043F8D4 /* ShowDetailsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */; };
+		D49E8C01301538F00043F8D4 /* DeleteTextButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */; };
 		D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */; };
 		D4A945573012AD0900A88F56 /* ProfileRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
@@ -814,6 +815,7 @@
 		D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberSheetView.swift; sourceTree = "<group>"; };
 		D49D9F233014175500ACE567 /* EditProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileAssembly.swift; sourceTree = "<group>"; };
 		D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailsButton.swift; sourceTree = "<group>"; };
+		D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTextButtonStyle.swift; sourceTree = "<group>"; };
 		D4A945543012AC5000A88F56 /* ProfileRemoteDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D4A945563012AD0600A88F56 /* ProfileRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRemoteDataSource.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
@@ -2010,6 +2012,7 @@
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */,
 				D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */,
 				D49D9F203014125200ACE567 /* FamilyMemberSheetView.swift */,
 				D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */,
@@ -3309,6 +3312,7 @@
 				6F1A8E843012AAE100E1ACC5 /* NewsEndpoint.swift in Sources */,
 				6F1A8E853012AAE100E1ACC5 /* ArticleCardSkeletonView.swift in Sources */,
 				6F1A8E863012AAE100E1ACC5 /* NewsAPIConfig.swift in Sources */,
+				D49E8C01301538F00043F8D4 /* DeleteTextButtonStyle.swift in Sources */,
 				6F1A8E873012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift in Sources */,
 				6F1A8E883012AAE100E1ACC5 /* NewsViewModel.swift in Sources */,
 				6F1A8E893012AAE100E1ACC5 /* NewsResponseDTO.swift in Sources */,
