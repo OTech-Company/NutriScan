@@ -1,6 +1,6 @@
 import Foundation
 
-struct ScanListItem: Identifiable {
+struct ScanListItem: Identifiable, Hashable {
     let id: String
     let scanId: String
     let imageUrl: String?
@@ -8,7 +8,7 @@ struct ScanListItem: Identifiable {
     let scannedAt: Date
 }
 
-struct ScanDetail: Identifiable {
+struct ScanDetail: Identifiable, Hashable {
     let id: String
     let scanId: String
     let status: ScanStatus
@@ -18,20 +18,20 @@ struct ScanDetail: Identifiable {
     let nutritionFacts: ScanNutritionFacts?
 }
 
-struct ScanFoodSafetyResponse {
+struct ScanFoodSafetyResponse: Hashable {
     let verdict: ScanResultVerdict
     let flaggedIngredients: [ScanFlaggedIngredient]
     let summary: String
 }
 
-struct ScanFlaggedIngredient {
+struct ScanFlaggedIngredient: Hashable {
     let ingredient: String
     let reason: String
     let type: ScanFlagType
     let name: [String]
 }
 
-struct ScanNutritionFacts {
+struct ScanNutritionFacts: Hashable {
     let calories: Int
     let proteinGrams: Double
     let carbsGrams: Double
@@ -41,7 +41,7 @@ struct ScanNutritionFacts {
     let sodiumMg: Double
 }
 
-struct ScanPage {
+struct ScanPage: Hashable {
     let totalElements: Int
     let totalPages: Int
     let page: Int
@@ -52,19 +52,19 @@ struct ScanPage {
     let content: [ScanListItem]
 }
 
-struct ScanSubmission {
+struct ScanSubmission: Hashable {
     let scanId: String
     let status: ScanStatus
 }
 
-enum ScanResultVerdict: String, Decodable {
+enum ScanResultVerdict: String, Decodable, Hashable {
     case safe = "SAFE"
     case unsafe = "UNSAFE"
     case caution = "CAUTION"
     case unknown = "UNKNOWN"
 }
 
-enum ScanFlagType: String, Decodable {
+enum ScanFlagType: String, Decodable, Hashable {
     case allergy = "ALLERGY"
     case additive = "ADDITIVE"
     case dietary = "DIETARY"
