@@ -69,7 +69,7 @@ struct HistoryRowView: View {
         .frame(height: 96)
         .background(Color.HomeSemantic.historyCardBackground)
         .cornerRadius(22)
-        .customTealShadow()
+        .customLightShadow()
     }
     
     // MARK: - Helpers

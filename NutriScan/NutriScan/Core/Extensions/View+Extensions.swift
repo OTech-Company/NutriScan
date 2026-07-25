@@ -14,4 +14,7 @@ extension View {
     func customAlertShadow() -> some View {
         self.shadow(color: Color.Teal.teal1000, radius: 100, x: 0, y: 10)
     }
+    func customLightShadow() -> some View {
+        self.shadow(color: Color.Teal.teal1000.opacity(0.2), radius: 20, x: 0, y: 10)
+    }
 }

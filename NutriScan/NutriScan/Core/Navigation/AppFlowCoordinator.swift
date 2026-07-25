@@ -13,6 +13,7 @@ import SwiftUI
 /// a logout button inside Profile).
 final class AppFlowCoordinator: ObservableObject {
     @Published private(set) var flow: AppFlow = .splash
+    @Published var selectedTab: AppTab = .home
 
     init() {
         NotificationCenter.default.addObserver(
@@ -66,11 +67,24 @@ final class AppFlowCoordinator: ObservableObject {
         flow = .auth
     }
 
-    func didAuthenticate() {
-        flow = hasCompletedProfileSetup ? .main : .profileSetup
+    func didAuthenticate(isPendingSetup: Bool = false, email: String? = nil) {
+        if isPendingSetup {
+            UserDefaults.standard.set(false, forKey: "hasCompletedProfileSetup")
+            if let email = email {
+                UserDefaults.standard.set(email, forKey: "currentSetupEmail")
+            }
+            flow = .profileSetup
+        } else {
+            UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
+            flow = .main
+        }
     }
     
     func finishProfileSetup() {
+        if let email = UserDefaults.standard.string(forKey: "currentSetupEmail") {
+            UserDefaults.standard.removeObject(forKey: "isPendingProfileSetup_\(email)")
+            UserDefaults.standard.removeObject(forKey: "currentSetupEmail")
+        }
         UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
         flow = .main
     }

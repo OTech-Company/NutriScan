@@ -98,6 +98,7 @@ final class RegisterViewModel {
         
         do {
             let result = try await registerUseCase.execute(request: request)
+            UserDefaults.standard.set(true, forKey: "isPendingProfileSetup_\(email.value)")
             return true
         } catch let error as NetworkError {
             switch error {
