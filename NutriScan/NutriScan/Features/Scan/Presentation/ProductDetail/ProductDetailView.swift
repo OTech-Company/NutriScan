@@ -166,7 +166,7 @@ struct ProductDetailView: View {
                 .font(.subheadline.bold())
         }
         .padding(.vertical, 2)
-        Divider()
+        return Divider()
     }
 }
 

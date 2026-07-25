@@ -186,6 +186,12 @@
 		6F1A8EE630138F7700E1ACC5 /* RAGLanguage+LayoutDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */; };
 		6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */; };
 		6F1E4C26B29F085597C11899 /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B8D0A4279306F1A688102E /* EditProfileViewModel.swift */; };
+		6F8C4E9A30145586000067BC /* ScanDetailDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9930145586000067BC /* ScanDetailDTO.swift */; };
+		6F8C4E9C301455AC000067BC /* ScanPageDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9B301455AC000067BC /* ScanPageDTO.swift */; };
+		6F8C4E9E301455B5000067BC /* ScanSubmissionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9D301455B5000067BC /* ScanSubmissionDTO.swift */; };
+		6F8C4EA0301455BD000067BC /* FoodSafetyResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */; };
+		6F8C4EA2301455C4000067BC /* ScanFlaggedIngredientDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */; };
+		6F8C4EA4301455CA000067BC /* ScanNutritionFactsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */; };
 		6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */; };
 		6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */; };
 		6FC3C247301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */; };
@@ -563,6 +569,12 @@
 		6F1A8EE330138F1B00E1ACC5 /* RAGLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGLanguage.swift; sourceTree = "<group>"; };
 		6F1A8EE530138F7200E1ACC5 /* RAGLanguage+LayoutDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAGLanguage+LayoutDirection.swift"; sourceTree = "<group>"; };
 		6F1A8EE730138FAE00E1ACC5 /* RAGStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGStrings.swift; sourceTree = "<group>"; };
+		6F8C4E9930145586000067BC /* ScanDetailDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDetailDTO.swift; sourceTree = "<group>"; };
+		6F8C4E9B301455AC000067BC /* ScanPageDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanPageDTO.swift; sourceTree = "<group>"; };
+		6F8C4E9D301455B5000067BC /* ScanSubmissionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanSubmissionDTO.swift; sourceTree = "<group>"; };
+		6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSafetyResponseDTO.swift; sourceTree = "<group>"; };
+		6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlaggedIngredientDTO.swift; sourceTree = "<group>"; };
+		6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNutritionFactsDTO.swift; sourceTree = "<group>"; };
 		6FC3C232301003E400ACB5EE /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
@@ -1262,6 +1274,7 @@
 		5903463C67FB29E151911A08 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4E9830145572000067BC /* DTO */,
 				6DAB456398873903411DEB89 /* Network */,
 				4414966580B5856255044E69 /* Repositories */,
 			);
@@ -1684,6 +1697,19 @@
 				6F1A8ED73012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift */,
 			);
 			path = Speech;
+			sourceTree = "<group>";
+		};
+		6F8C4E9830145572000067BC /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */,
+				6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */,
+				6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */,
+				6F8C4E9D301455B5000067BC /* ScanSubmissionDTO.swift */,
+				6F8C4E9B301455AC000067BC /* ScanPageDTO.swift */,
+				6F8C4E9930145586000067BC /* ScanDetailDTO.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
@@ -2880,6 +2906,7 @@
 				6F1A8E8D3012AAE100E1ACC5 /* NewsSource.swift in Sources */,
 				6F1A8E8E3012AAE100E1ACC5 /* NewsView.swift in Sources */,
 				6F1A8E8F3012AAE100E1ACC5 /* NewsRepository.swift in Sources */,
+				6F8C4EA4301455CA000067BC /* ScanNutritionFactsDTO.swift in Sources */,
 				6F1A8E903012AAE100E1ACC5 /* ShimmerModifier.swift in Sources */,
 				6F1A8E913012AAE100E1ACC5 /* CategoryChipView.swift in Sources */,
 				6F1A8E923012AAE100E1ACC5 /* FeedStateViews.swift in Sources */,
@@ -2910,6 +2937,7 @@
 				EEC0C0F7B84E3B39F14FAEE7 /* HomeSummaryView.swift in Sources */,
 				CD69B359FF5E093173E1137D /* HomeView.swift in Sources */,
 				D48A2441301158DA0004D95E /* Assembly.swift in Sources */,
+				6F8C4E9C301455AC000067BC /* ScanPageDTO.swift in Sources */,
 				9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */,
 				0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */,
 				88CAD96BC98D8EBCC6D9CBC3 /* KeychainManager.swift in Sources */,
@@ -2941,6 +2969,7 @@
 				2C78F014300E6D180092E6B3 /* Notification+Extensions.swift in Sources */,
 				2C78F016300E6D180092E6B3 /* TokenRefresher.swift in Sources */,
 				2C78ED15300E6C7E0092E6B2 /* ForgotPasswordResetButtonSection.swift in Sources */,
+				6F8C4E9E301455B5000067BC /* ScanSubmissionDTO.swift in Sources */,
 				2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */,
 				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
 				2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */,
@@ -2990,6 +3019,7 @@
 				B149458D7ECAA1D19E709E9C /* ProductRepository.swift in Sources */,
 				B9DEF23EAEAEE40811334D58 /* ProductRepositoryImpl.swift in Sources */,
 				31F5A64521573EE429D9D849 /* ProfileFlowView.swift in Sources */,
+				6F8C4EA2301455C4000067BC /* ScanFlaggedIngredientDTO.swift in Sources */,
 				ECA0DCAA247501DBCFBFAE6E /* ProfileHeaderView.swift in Sources */,
 				C10F7BA4E82DDB3682B14C75 /* ProfileRoute.swift in Sources */,
 				0D9FA09D05984ED4E4C4117F /* ProfileSetupFlowView.swift in Sources */,
@@ -3009,6 +3039,7 @@
 				3A7ADD5DB2C3107BE0C8CC3A /* ScanHistoryView.swift in Sources */,
 				70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */,
 				1F04C92E935902D164B10D67 /* ScanMask.swift in Sources */,
+				6F8C4E9A30145586000067BC /* ScanDetailDTO.swift in Sources */,
 				61727915CCEC0E896C301DCC /* ScanResponse.swift in Sources */,
 				1CF0FECD5C51B56D371796BD /* ScanRoute.swift in Sources */,
 				9D9C81A6E59C4C4B064D367D /* ScanScreen.swift in Sources */,
@@ -3084,6 +3115,7 @@
 				8F4132C13013BD29005C482C /* ProfileSetupRemoteDataSource.swift in Sources */,
 				8F16ED243012AA4300CF43B2 /* FetchProfileSetupOptionsUseCase.swift in Sources */,
 				D48A243E301156120004D95E /* UpdateProfileUseCaseProtocol .swift in Sources */,
+				6F8C4EA0301455BD000067BC /* FoodSafetyResponseDTO.swift in Sources */,
 				6FC3C245301003E400ACB5EE /* StepCounterViewModel.swift in Sources */,
 				6FC3C246301003E400ACB5EE /* StepRepositoryImpl.swift in Sources */,
 				6FC3C247301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift in Sources */,
