@@ -33,6 +33,7 @@ struct ProfileView: View {
                     ) {
                         FamilyMembersSectionView(
                             members: viewModel.state.familyMembers,
+                            isLoading: isFetchingProfile,
                             onAddMember: { isAddingNewMember = true },
                             onShowDetails: { member in sheetMember = member }
                         )

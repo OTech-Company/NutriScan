@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct FamilyMembersSectionView: View {
     let members: [FamilyMember]
+    var isLoading: Bool = false
     var onAddMember: () -> Void
     var onShowDetails: (FamilyMember) -> Void
 
@@ -20,12 +22,23 @@ struct FamilyMembersSectionView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: ProfileSemantics.Spacing.familyMembersGap) {
-                    ForEach(members) { member in
-                        FamilyMemberCardView(
-                            member: member,
-                            onShowDetails: { onShowDetails(member) })
+                    if isLoading {
+                        ForEach(FamilyMember.dummyList) { member in
+                            FamilyMemberCardView(
+                                member: member,
+                                onShowDetails: {}
+                            )
+                            .redacted(reason: .placeholder)
+                            .shimmering()
+                        }
+                    } else {
+                        ForEach(members) { member in
+                            FamilyMemberCardView(
+                                member: member,
+                                onShowDetails: { onShowDetails(member) })
+                        }
+                        AddMemberCardView(action: onAddMember)
                     }
-                    AddMemberCardView(action: onAddMember)
                 }
                 // Applies the padding inside the scroll view so the background encompasses it
                 .padding(.leading, ProfileSemantics.Spacing.horizontalPadding)
