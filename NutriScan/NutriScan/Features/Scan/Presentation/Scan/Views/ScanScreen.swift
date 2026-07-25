@@ -61,18 +61,7 @@ struct ScanScreen: View {
 
     private var topBar: some View {
         HStack {
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.teal)
-                    .frame(width: 44, height: 44)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.teal, lineWidth: 1.5)
-                    )
-            }
+            BackButton(action: { dismiss() }, style: .onTeal)
             Spacer()
         }
         .padding(.horizontal, 16)

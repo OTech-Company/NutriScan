@@ -15,10 +15,6 @@ extension Color {
         static let headerTitle = Color.Teal.teal200
         static let headerSubtitle = Color.white.opacity(0.8)
         
-        static let backButtonBackground = Color.white.opacity(0.08)
-        static let backButtonBorder = Color.white.opacity(0.5)
-        static let backButtonIcon = Color.white
-
         // MARK: Content Icon
         static let iconCircleOuter = Color.Teal.teal1000.opacity(0.1)
         static let iconCircleMiddle = Color.Teal.teal1000.opacity(0.2)

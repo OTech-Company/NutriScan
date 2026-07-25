@@ -19,10 +19,6 @@ extension Color {
         static let headerBackground = Color.Teal.teal800
         static let headerTitle = Color(light: Color.Teal.teal300, dark: Color.Teal.teal200)
         static let headerSubtitle = Color(light: Color.Gray.gray100, dark: Color.Gray.gray200)
-        static let backButtonBackground = Color(light: Color.white.opacity(0.08), dark: Color.white.opacity(0.12))
-        static let backButtonBorder = Color(light: Color.white.opacity(0.5), dark: Color.white.opacity(0.4))
-        static let backButtonIcon = Color.white
-
         // MARK: - Section Row
         static let rowBackground = Color(light: Color.Gray.gray100, dark: Color.Teal.teal1500)
         static let rowTitle = Color(light: Color.Gray.gray500, dark: Color.Teal.teal1200)
