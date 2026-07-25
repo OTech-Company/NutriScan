@@ -34,15 +34,9 @@ struct AppDependencies {
 // MARK: - Inline Assemblies (to avoid pbxproj conflicts)
 struct ScanAssembly: Assembly {
     func assemble(container: DIContainer) {
-        let repository = ScanRepositoryImpl()
-        container.register(type: ScanRepository.self, component: repository)
         container.register(
-            type: UploadScanUseCase.self,
-            component: UploadScanUseCaseImpl(repository: repository)
-        )
-        container.register(
-            type: ObserveScanResultUseCase.self,
-            component: ObserveScanResultUseCaseImpl(repository: repository)
+            type: LookupProductUseCase.self,
+            component: LookupProductUseCaseImpl(repository: ProductRepositoryImpl())
         )
     }
 }
