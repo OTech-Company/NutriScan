@@ -13,6 +13,7 @@ import SwiftUI
 /// a logout button inside Profile).
 final class AppFlowCoordinator: ObservableObject {
     @Published private(set) var flow: AppFlow = .splash
+    @Published var selectedTab: AppTab = .home
 
     init() {
         NotificationCenter.default.addObserver(

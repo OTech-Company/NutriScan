@@ -6,13 +6,14 @@
 import Foundation
 import Combine
 
+@Observable
 @MainActor
-final class StepCounterViewModel: ObservableObject {
-    @Published private(set) var todaySteps: Int = 0
-    @Published private(set) var isAuthorized: Bool = false
-    @Published private(set) var errorMessage: String?
-    @Published private(set) var history: [DailySteps] = []
-    @Published private(set) var isLoadingHistory: Bool = false
+final class StepCounterViewModel {
+    private(set) var todaySteps: Int = 0
+    private(set) var isAuthorized: Bool = false
+    private(set) var errorMessage: String?
+    private(set) var history: [DailySteps] = []
+    private(set) var isLoadingHistory: Bool = false
 
     private let observeStepsUseCase: ObserveDailyStepsUseCaseProtocol
     private let requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol

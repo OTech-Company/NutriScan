@@ -13,15 +13,7 @@ struct StepHistoryBarChartView: View {
     let goalSteps: Int
     let range: StepHistoryRange
 
-    @Environment(\.colorScheme) private var colorScheme
 
-    private var cardBackground: Color {
-        colorScheme == .dark ? Color.Gray.gray1600 : .white
-    }
-
-    private var axisTextColor: Color {
-        colorScheme == .dark ? Color.Gray.gray600 : Color.Gray.gray800
-    }
 
     /// How many days between two consecutive x-axis labels, chosen so
     /// labels never overlap regardless of how wide the date range is.
@@ -49,7 +41,7 @@ struct StepHistoryBarChartView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Step History")
                 .font(.custom("PlusJakartaSans-SemiBold", size: 18))
-                .foregroundColor(colorScheme == .dark ? .white : Color.Gray.gray1400)
+                .foregroundColor(Color.CaloriesSemantic.chartTitle)
 
             if history.isEmpty {
                 emptyState
@@ -60,7 +52,7 @@ struct StepHistoryBarChartView: View {
         .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(cardBackground)
+                .fill(Color.CaloriesSemantic.chartCardBackground)
                 .customTealShadow()
         )
     }
@@ -84,7 +76,7 @@ struct StepHistoryBarChartView: View {
                     .foregroundStyle(Color.Gray.gray300.opacity(0.5))
                 AxisValueLabel()
                     .font(.custom("LexendDeca-Regular", size: 11))
-                    .foregroundStyle(axisTextColor)
+                    .foregroundStyle(Color.CaloriesSemantic.axisText)
             }
         }
         .chartXAxis {
@@ -93,7 +85,7 @@ struct StepHistoryBarChartView: View {
                     .foregroundStyle(Color.Gray.gray300.opacity(0.3))
                 AxisValueLabel(format: axisDateFormat)
                     .font(.custom("LexendDeca-Regular", size: 10))
-                    .foregroundStyle(axisTextColor)
+                    .foregroundStyle(Color.CaloriesSemantic.axisText)
             }
         }
         .frame(height: 220)
@@ -112,7 +104,7 @@ struct StepHistoryBarChartView: View {
                 .foregroundColor(Color.Teal.teal400)
             Text("No step history yet")
                 .font(.custom("LexendDeca-Regular", size: 14))
-                .foregroundColor(axisTextColor)
+                .foregroundColor(Color.CaloriesSemantic.axisText)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 40)

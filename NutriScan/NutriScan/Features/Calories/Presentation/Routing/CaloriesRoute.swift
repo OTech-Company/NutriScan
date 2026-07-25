@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum StepRoute: Route {
+enum CaloriesRoute: Route {
     case stepHistory(viewModel: StepCounterViewModel)
 
     @ViewBuilder
@@ -19,7 +19,7 @@ enum StepRoute: Route {
     }
 
     // MARK: - Equatable Conformance
-    static func == (lhs: StepRoute, rhs: StepRoute) -> Bool {
+    static func == (lhs: CaloriesRoute, rhs: CaloriesRoute) -> Bool {
         switch (lhs, rhs) {
         case (.stepHistory(let lhsVM), .stepHistory(let rhsVM)):
             return lhsVM === rhsVM // Checks if both reference the same ViewModel instance
