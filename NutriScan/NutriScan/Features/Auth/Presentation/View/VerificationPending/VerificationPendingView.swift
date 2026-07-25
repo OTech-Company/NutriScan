@@ -36,7 +36,7 @@ struct VerificationPendingView: View {
                         countdown: viewModel.countdown,
                         isLoading: viewModel.isLoading,
                         onSignIn: {
-                            router.pop()
+                            router.popToRoot()
                         },
                         onResend: handleResend
                     )

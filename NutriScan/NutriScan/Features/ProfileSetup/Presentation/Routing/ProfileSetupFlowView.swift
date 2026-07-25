@@ -11,7 +11,8 @@ struct ProfileSetupFlowView: View {
     @StateObject private var router = AppRouter()
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
-    @State private var viewModel = ProfileSetupFlowViewModel()
+    @State private var viewModel = ProfileSetupFlowFactory.makeViewModel()
+    @State private var activeAlert: ActiveAlert = .none
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -33,6 +34,19 @@ struct ProfileSetupFlowView: View {
             .navigationBarHidden(true)
         }
         .environmentObject(router)
+        .customAlert(activeAlert: $activeAlert, config: { alert in
+            switch alert {
+            case .error:
+                return CustomAlertConfig(
+                    type: .error,
+                    title: "Invalid Age",
+                    description: "Your age must be at least 6 years.",
+                    primaryButtonTitle: "OK"
+                )
+            default:
+                return CustomAlertConfig(type: .error, title: "", description: "")
+            }
+        }, primaryAction: { _ in })
     }
 
     @ViewBuilder
@@ -60,9 +74,18 @@ struct ProfileSetupFlowView: View {
     }
 
     private func handleNext() {
+        if viewModel.currentStep == .birthdate {
+            let ageComponents = Calendar.current.dateComponents([.year], from: viewModel.birthdate, to: Date())
+            let age = ageComponents.year ?? 0
+            if age < 6 {
+                activeAlert = .error
+                return
+            }
+        }
+        
         if viewModel.currentStep == .height {
             // Push health profile route
-            router.push(ProfileSetupRoute.healthProfile)
+            router.push(ProfileSetupRoute.healthProfile(viewModel))
         } else {
             viewModel.goNext()
         }
