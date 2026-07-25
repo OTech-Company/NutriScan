@@ -4,10 +4,12 @@ import SwiftUI
 @MainActor
 final class ScanViewModel: ObservableObject {
 
+    @Published private(set) var capturedImageData: Data?
     @Published private(set) var latestScan: ScanSubmission?
     @Published private(set) var scanDetail: ScanDetail?
     @Published private(set) var isSubmitting: Bool = false
     @Published private(set) var isLoadingDetail: Bool = false
+    @Published private(set) var isSaved: Bool = false
     @Published var errorMessage: String?
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
@@ -30,7 +32,9 @@ final class ScanViewModel: ObservableObject {
 
     func onPhotoCaptured(_ imageData: Data) {
         guard !isSubmitting else { return }
+        capturedImageData = imageData
         isSubmitting = true
+        isSaved = false
 
         Task {
             do {
@@ -50,6 +54,11 @@ final class ScanViewModel: ObservableObject {
         }
     }
 
+    func toggleSaveFavorite() {
+        isSaved.toggle()
+        // TODO: Implement save to favorites API call
+    }
+
     func loadScanDetail(scanId: String) {
         guard scanDetail == nil, !isLoadingDetail else { return }
         Task {
@@ -62,8 +71,10 @@ final class ScanViewModel: ObservableObject {
     }
 
     func reset() {
+        capturedImageData = nil
         latestScan = nil
         scanDetail = nil
+        isSaved = false
     }
 
     private func pollScanDetail(scanId: String) async {

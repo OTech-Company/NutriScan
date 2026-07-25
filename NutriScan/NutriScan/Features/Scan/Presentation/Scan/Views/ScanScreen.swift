@@ -61,9 +61,7 @@ struct ScanScreen: View {
             Rectangle()
                 .stroke(Color.white.opacity(0.8), lineWidth: 2)
                 .frame(height: 260)
-                .overlay(
-                    cornerBrackets
-                )
+                .overlay(cornerBrackets)
             Spacer()
         }
     }
@@ -76,25 +74,21 @@ struct ScanScreen: View {
             let h = geo.size.height
 
             Path { path in
-                // Top-left
                 path.move(to: CGPoint(x: 0, y: cornerLength))
                 path.addArc(center: CGPoint(x: cornerRadius, y: cornerRadius),
                            radius: cornerRadius, startAngle: .degrees(180), endAngle: .degrees(270), clockwise: false)
                 path.addLine(to: CGPoint(x: cornerLength, y: 0))
 
-                // Top-right
                 path.move(to: CGPoint(x: w - cornerLength, y: 0))
                 path.addArc(center: CGPoint(x: w - cornerRadius, y: cornerRadius),
                            radius: cornerRadius, startAngle: .degrees(270), endAngle: .degrees(0), clockwise: false)
                 path.addLine(to: CGPoint(x: w, y: cornerLength))
 
-                // Bottom-right
                 path.move(to: CGPoint(x: w, y: h - cornerLength))
                 path.addArc(center: CGPoint(x: w - cornerRadius, y: h - cornerRadius),
                            radius: cornerRadius, startAngle: .degrees(0), endAngle: .degrees(90), clockwise: false)
                 path.addLine(to: CGPoint(x: w - cornerLength, y: h))
 
-                // Bottom-left
                 path.move(to: CGPoint(x: cornerLength, y: h))
                 path.addArc(center: CGPoint(x: cornerRadius, y: h - cornerRadius),
                            radius: cornerRadius, startAngle: .degrees(90), endAngle: .degrees(180), clockwise: false)
@@ -104,40 +98,38 @@ struct ScanScreen: View {
         }
     }
 
-    // MARK: - Scan State Card (changes based on load state)
+    // MARK: - Scan State Card
 
     @ViewBuilder
     private var scanStateCard: some View {
-        if viewModel.isSubmitting {
-            processingCard
-        } else if let scan = viewModel.latestScan {
-            if viewModel.isLoadingDetail {
-                processingCard
-            } else if let detail = viewModel.scanDetail {
-                if detail.status == .completed {
-                    resultCard(detail: detail, scanId: scan.scanId)
-                } else if detail.status == .failed {
-                    failedCard
+        if let imageData = viewModel.capturedImageData {
+            if viewModel.isSubmitting {
+                processingCard(imageData: imageData)
+            } else if let scan = viewModel.latestScan {
+                if viewModel.isLoadingDetail {
+                    processingCard(imageData: imageData)
+                } else if let detail = viewModel.scanDetail {
+                    if detail.status == .completed {
+                        resultCard(detail: detail, imageData: imageData, scanId: scan.scanId)
+                    } else if detail.status == .failed {
+                        failedCard(imageData: imageData)
+                    } else {
+                        processingCard(imageData: imageData)
+                    }
                 } else {
-                    processingCard
+                    processingCard(imageData: imageData)
                 }
             } else {
-                processingCard
+                processingCard(imageData: imageData)
             }
         }
     }
 
-    // MARK: - Processing Card (spinner)
+    // MARK: - Processing Card
 
-    private var processingCard: some View {
+    private func processingCard(imageData: Data) -> some View {
         HStack(spacing: 12) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color(.systemGray5))
-                .frame(width: 48, height: 48)
-                .overlay(
-                    Image(systemName: "photo")
-                        .foregroundColor(.secondary)
-                )
+            capturedImageThumbnail(imageData)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("FANMILK")
@@ -147,6 +139,7 @@ struct ScanScreen: View {
                 Text("Analyzing...")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundColor(.white)
+                badge(text: "Processing", color: .orange)
             }
 
             Spacer()
@@ -160,97 +153,58 @@ struct ScanScreen: View {
         .shadow(color: .black.opacity(0.2), radius: 10, y: 4)
     }
 
-    // MARK: - Result Card (safe/unsafe)
+    // MARK: - Result Card
 
-    private func resultCard(detail: ScanDetail, scanId: String) -> some View {
-        Button {
-            router.path.append(AnyRoute(ScanRoute.scanDetail(scanId: scanId)))
-        } label: {
-            HStack(spacing: 12) {
-                if let url = detail.imageUrl, let imageURL = URL(string: url) {
-                    AsyncImage(url: imageURL) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image.resizable().scaledToFit()
-                        default:
-                            Color(.systemGray5)
-                        }
-                    }
-                    .frame(width: 48, height: 48)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                } else {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color(.systemGray5))
-                        .frame(width: 48, height: 48)
-                        .overlay(
-                            Image(systemName: "photo")
-                                .foregroundColor(.secondary)
-                        )
+    private func resultCard(detail: ScanDetail, imageData: Data, scanId: String) -> some View {
+        HStack(spacing: 12) {
+            capturedImageThumbnail(imageData)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text("FANMILK")
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white.opacity(0.7))
+                Text(detail.foodSafetyResponse?.summary ?? "Scan complete")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+
+                if let verdict = detail.foodSafetyResponse?.verdict {
+                    badge(text: verdict.rawValue.capitalized, color: verdict == .safe ? .teal : .red)
                 }
+            }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("FANMILK")
-                        .font(.caption2)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white.opacity(0.7))
-                    Text(detail.foodSafetyResponse?.summary ?? "Scan complete")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                }
+            Spacer()
 
-                Spacer()
-
-                if detail.foodSafetyResponse?.verdict == .safe {
-                    Image(systemName: "bookmark.fill")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.white)
-                } else {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(.yellow)
-                }
+            Button {
+                viewModel.toggleSaveFavorite()
+            } label: {
+                Image(systemName: viewModel.isSaved ? "bookmark.fill" : "bookmark")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(.white)
             }
         }
         .padding(12)
-        .background(cardBackground(for: detail))
+        .background(Color.Teal.teal800.opacity(0.9))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.2), radius: 10, y: 4)
     }
 
-    private func cardBackground(for detail: ScanDetail) -> Color {
-        switch detail.foodSafetyResponse?.verdict {
-        case .safe:
-            return Color.Teal.teal800.opacity(0.9)
-        case .unsafe:
-            return Color.Red.red500.opacity(0.9)
-        case .caution:
-            return Color.orange.opacity(0.9)
-        default:
-            return Color.Teal.teal800.opacity(0.9)
-        }
-    }
-
     // MARK: - Failed Card
 
-    private var failedCard: some View {
+    private func failedCard(imageData: Data) -> some View {
         HStack(spacing: 12) {
-            RoundedRectangle(cornerRadius: 8)
-                .fill(Color.Red.red500.opacity(0.3))
-                .frame(width: 48, height: 48)
-                .overlay(
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.white)
-                )
+            capturedImageThumbnail(imageData)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text("Scan Failed")
+                Text("FANMILK")
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundColor(.white.opacity(0.7))
-                Text("Tap to retry")
+                Text("Scan Failed")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundColor(.white)
+                badge(text: "Failed", color: .red)
             }
 
             Spacer()
@@ -260,12 +214,40 @@ struct ScanScreen: View {
                 .foregroundColor(.white)
         }
         .padding(12)
-        .background(Color.Red.red500.opacity(0.8))
+        .background(Color.Teal.teal800.opacity(0.9))
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .shadow(color: .black.opacity(0.2), radius: 10, y: 4)
         .onTapGesture {
             viewModel.reset()
         }
+    }
+
+    // MARK: - Helpers
+
+    private func capturedImageThumbnail(_ imageData: Data) -> some View {
+        Group {
+            if let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Color(.systemGray5)
+                    .overlay(Image(systemName: "photo").foregroundColor(.secondary))
+            }
+        }
+        .frame(width: 48, height: 48)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+
+    private func badge(text: String, color: Color) -> some View {
+        Text(text)
+            .font(.caption2)
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3)
+            .background(color)
+            .clipShape(Capsule())
     }
 
     // MARK: - Top bar
