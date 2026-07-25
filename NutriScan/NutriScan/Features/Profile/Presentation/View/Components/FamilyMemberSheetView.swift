@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+// MARK: - Custom Button Style
+/// Handles both pointer hover (iPadOS/macOS) and touch press (iOS) states
+struct DeleteTextButtonStyle: ButtonStyle {
+    @State private var isHovering = false
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            // Applies the requested red color on either touch or pointer hover
+            .foregroundColor(configuration.isPressed || isHovering ? Color.red : Color.Gray.gray400)
+            .onHover { hovering in
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isHovering = hovering
+                }
+            }
+    }
+}
+
+// MARK: - View
 struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
@@ -100,17 +118,15 @@ struct FamilyMemberSheetView: View {
 
                 // Delete button — only present when viewing an existing member.
                 if onDelete != nil {
-                    Button(role: .destructive, action: {
+                    Button(action: {
                         activeAlert = .warning
                     }) {
-                        Text("Delete Member")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 52)
-                            .background(Color.Red.red500)
-                            .clipShape(RoundedRectangle(cornerRadius: 14))
+                        Text("Delete")
+                            .font(.system(size: 16, weight: .medium))
                     }
+                    // Apply the custom interactive style
+                    .buttonStyle(DeleteTextButtonStyle())
+                    .padding(.top, 4)
                 }
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
@@ -142,13 +158,12 @@ struct FamilyMemberSheetView: View {
             config: { alert in
                 switch alert {
                 case .warning:
-                    // Configure the delete confirmation warning[cite: 30]
                     return CustomAlertConfig(
                         type: .warning,
                         title: "Delete Member",
                         description: "Are you sure you want to delete this family member? This action cannot be undone.",
                         primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500,
+                        primaryButtonColor: Color.Red.red500, // Or swap to Color.red if preferred
                         secondaryButtonTitle: "Cancel"
                     )
                 default:
@@ -157,14 +172,11 @@ struct FamilyMemberSheetView: View {
             },
             primaryAction: { alert in
                 if alert == .warning {
-                    // Execute the deletion and dismiss the sheet if confirmed[cite: 31]
                     onDelete?()
                     dismiss()
                 }
             },
-            secondaryAction: { _ in
-                // Alert dismisses automatically on Cancel[cite: 30]
-            }
+            secondaryAction: { _ in }
         )
     }
 }

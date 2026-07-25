@@ -25,15 +25,7 @@ struct FamilyMemberCardView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
 
-            Button(action: onShowDetails) {
-                Text("Show Details")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(Color.Teal.teal1000)
-                    .clipShape(Capsule())
-            }
+            ShowDetailsButton(action: onShowDetails)
         }
         .padding(8)
         .frame(width: ProfileSemantics.Sizes.memberCardWidth,
