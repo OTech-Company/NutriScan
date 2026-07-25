@@ -107,13 +107,14 @@ final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputO
         guard let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
               let stringValue = object.stringValue else { return }
 
-        // Convert barcode bounding box to view coordinates
+        // Convert normalized metadata coordinates (0-1) to layer coordinates.
+        // Works correctly with .resizeAspectFill since the video fills the layer.
+        let bounds = object.bounds
         let center: CGPoint
         if let previewLayer = previewLayer {
-            let transformed = previewLayer.layerMetadataConvertedRect(for: object)
             center = CGPoint(
-                x: transformed.midX,
-                y: transformed.midY
+                x: bounds.midX * previewLayer.bounds.width,
+                y: bounds.midY * previewLayer.bounds.height
             )
         } else {
             center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
