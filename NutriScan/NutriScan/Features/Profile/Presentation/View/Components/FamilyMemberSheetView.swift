@@ -11,8 +11,11 @@ struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
 
+    // MARK: - Alert State
+    @State private var activeAlert: ActiveAlert = .none
+
     let onSave: (FamilyMemberInput) -> Void
-    let onDelete: (() -> Void)?   // nil in Add mode, provided in View mode
+    let onDelete: (() -> Void)?
 
     init(
         existingMember: FamilyMember?,
@@ -28,7 +31,6 @@ struct FamilyMemberSheetView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: EditProfileSemantics.Spacing.sectionVertical) {
 
-                // Drag handle + circular avatar/plus icon per mock
                 RoundedRectangle(cornerRadius: 3)
                     .fill(Color.Gray.gray400)
                     .frame(width: 40, height: 5)
@@ -97,10 +99,9 @@ struct FamilyMemberSheetView: View {
                 )
 
                 // Delete button — only present when viewing an existing member.
-                if let onDelete {
+                if onDelete != nil {
                     Button(role: .destructive, action: {
-                        onDelete()
-                        dismiss()
+                        activeAlert = .warning
                     }) {
                         Text("Delete Member")
                             .font(.system(size: 16, weight: .semibold))
@@ -135,5 +136,35 @@ struct FamilyMemberSheetView: View {
                 onSelect: { viewModel.allergies.select($0) }
             )
         }
+        // MARK: - Custom Alert Modifier
+        .customAlert(
+            activeAlert: $activeAlert,
+            config: { alert in
+                switch alert {
+                case .warning:
+                    // Configure the delete confirmation warning[cite: 30]
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Delete Member",
+                        description: "Are you sure you want to delete this family member? This action cannot be undone.",
+                        primaryButtonTitle: "Delete",
+                        primaryButtonColor: Color.Red.red500,
+                        secondaryButtonTitle: "Cancel"
+                    )
+                default:
+                    return CustomAlertConfig(type: .warning, title: "", description: "")
+                }
+            },
+            primaryAction: { alert in
+                if alert == .warning {
+                    // Execute the deletion and dismiss the sheet if confirmed[cite: 31]
+                    onDelete?()
+                    dismiss()
+                }
+            },
+            secondaryAction: { _ in
+                // Alert dismisses automatically on Cancel[cite: 30]
+            }
+        )
     }
 }
