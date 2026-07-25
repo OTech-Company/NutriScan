@@ -25,12 +25,12 @@ final class ExerciseListViewModel {
     }
 
     var selectedExercise: Exercise? = nil  // drives bottom sheet
-    var isLoadingCategories: Bool = false
+    var isLoadingCategories: Bool = true
     var categoryError: String? = nil
 
     // MARK: - Exercises Pagination State
     var exercises: [Exercise] = []
-    var isLoadingExercises: Bool = false
+    var isLoadingExercises: Bool = true
     var isLoadingMore: Bool = false
     var hasNextPage: Bool = true
     var currentPage: Int = 1
