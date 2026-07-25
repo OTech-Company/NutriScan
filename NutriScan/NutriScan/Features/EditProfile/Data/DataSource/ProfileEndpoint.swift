@@ -9,7 +9,7 @@ import Foundation
 
 enum ProfileEndpoint: APIEndpoint {
     case getProfile
-    case updateProfile(ProfileUpdateRequestDTO)
+    case updateProfile(EditProfileUpdateRequestDTO)
     case getAllergies
     case getDiseases
     

@@ -30,8 +30,5 @@ extension Color {
         // Section titles
         static let sectionTitle = titlePrimary
 
-        // Back button
-        static let backButtonBorder = Color(light: Color.Teal.teal700, dark: Color.Teal.teal1200)
-        static let backButtonIcon = backButtonBorder
     }
 }

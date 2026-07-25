@@ -88,6 +88,11 @@ struct CustomAnimatedTabBar: View {
             .onAppear {
                 animatedCurveTab = selectedTab
             }
+            .onChange(of: selectedTab) { _, newValue in
+                withAnimation(Self.tabSpring) {
+                    animatedCurveTab = newValue
+                }
+            }
         }
         .frame(height: Self.barHeight)
     }

@@ -8,13 +8,19 @@ import SwiftUI
 
 extension Color {
     struct BackButtonSemantics {
-        static let backButtonBorder = Color(
-            light: Color.Teal.teal700,
-            dark: Color.Teal.teal500
+        // MARK: - .onWhite variant
+        // Icon & Border: teal1000 in both light and dark
+        static let onWhiteBackground = Color(
+            light: .white,
+            dark: Color.Teal.teal1600
         )
-        static let backButtonIcon = Color(
-            light: Color.Teal.teal900,
-            dark: Color.Teal.teal500
-        )
+        static let onWhiteBorder = Color.Teal.teal1000
+        static let onWhiteIcon   = Color.Teal.teal1000
+
+        // MARK: - .onTeal variant
+        // Icon & Border: white in both light and dark
+        static let onTealBackground = Color.white
+        static let onTealBorder     = Color.white
+        static let onTealIcon       = Color.white
     }
 }

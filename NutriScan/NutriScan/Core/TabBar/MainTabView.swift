@@ -18,22 +18,22 @@ import SwiftUI
 /// place in the other tab's navigation.
 struct MainTabView: View {
     @Environment(\.colorScheme) private var colorScheme
-    @State private var selectedTab: AppTab = .home
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
+    @StateObject private var tabBarVisibility = AppTabBarVisibility.shared
     
+
     init() {
         UITabBar.appearance().isHidden = true
     }
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selectedTab) {
+            TabView(selection: $flowCoordinator.selectedTab) {
                 
                 HomeFlowView()
                     .tag(AppTab.home)
                 
-                TodayStepsScreen()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(colorScheme == .light ? .white : Color.Teal.teal1600)
+                CaloriesFlowView()
                     .tag(AppTab.calories)
                 
                 ScanFlowView()
@@ -49,11 +49,17 @@ struct MainTabView: View {
                 ProfileFlowView()
                     .tag(AppTab.profile)
             }
-            
-            CustomAnimatedTabBar(selectedTab: $selectedTab)
-                .customTealShadow()
+            if !tabBarVisibility.isHidden {
+                CustomAnimatedTabBar(selectedTab: $flowCoordinator.selectedTab)
+                    .customTealShadow()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
+        .animation(.easeInOut(duration: 0.3), value: tabBarVisibility.isHidden)
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onAppear {
+            tabBarVisibility.isHidden = false
+        }
     }
 }
 

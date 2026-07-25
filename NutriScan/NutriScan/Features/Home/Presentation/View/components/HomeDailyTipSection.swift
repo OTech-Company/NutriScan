@@ -46,20 +46,18 @@ struct HomeDailyTipSection: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.HomeSemantic.tipBorder, lineWidth: 1)
         )
-        .customTealShadow()
+        .customLightShadow()
     }
 }
 
 #Preview("Light") {
     HomeDailyTipSection(tipMessage: "Stay hydrated! Drink at least 8 glasses of water today.")
         .padding(20)
-        .background(Color.Teal.teal100)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
     HomeDailyTipSection(tipMessage: "Stay hydrated! Drink at least 8 glasses of water today.")
         .padding(20)
-        .background(Color.Teal.teal1600)
         .preferredColorScheme(.dark)
 }

@@ -36,6 +36,7 @@ struct RegisterView: View {
                 }
             }
             .appAuthBackground()
+            .scrollDismissesKeyboard(.interactively)
             .navigationBarHidden(true)
             .ignoresSafeArea(edges: .top)
         }
