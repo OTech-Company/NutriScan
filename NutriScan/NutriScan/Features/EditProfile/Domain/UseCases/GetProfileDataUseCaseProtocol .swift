@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol GetProfileDataUseCaseProtocol {
+protocol GetEditProfileUseCaseProtocol {
     /// Concurrently fetches the user's profile and the master lists for allergies and diseases.
     func execute() async throws -> (profile: Profile, allergies: [ReferenceItem], diseases: [ReferenceItem])
 }

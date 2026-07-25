@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct ProfileUpdateRequestDTO: Codable {
+struct EditProfileUpdateRequestDTO: Codable {
     let firstName: String
     let lastName: String
     let dateOfBirth: String

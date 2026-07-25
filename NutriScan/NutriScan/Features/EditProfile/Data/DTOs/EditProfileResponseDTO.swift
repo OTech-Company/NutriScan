@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileResponseDTO: Codable {
+struct EditProfileResponseDTO: Codable {
     let id: String
     let email: String
     let username: String

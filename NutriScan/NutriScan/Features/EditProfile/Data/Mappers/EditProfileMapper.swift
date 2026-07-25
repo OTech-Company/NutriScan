@@ -1,30 +1,28 @@
 //
-//  ProfileMapper.swift
+//  EditProfileMapper.swift
 //  NutriScan
 //
-//  Created by Mina_Wagdy on 22/07/2026.
+//  Created by Mina_Wagdy on 25/07/2026.
 //
 
 import Foundation
 
-enum ProfileMapper {
+enum EditProfileMapper {
     
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        
         return formatter
     }()
     
     private static let isoFormatter = ISO8601DateFormatter()
 
     // MARK: - DTO to Entity
-    
     static func map(dto: ReferenceItemDTO) -> ReferenceItem {
         return ReferenceItem(id: dto.id, name: dto.name)
     }
 
-    static func map(dto: ProfileResponseDTO) -> Profile {
+    static func map(dto: EditProfileResponseDTO) -> Profile {
         return Profile(
             id: dto.id,
             email: dto.email,
@@ -42,9 +40,8 @@ enum ProfileMapper {
     }
 
     // MARK: - Entity to Request DTO
-    
-    static func map(update: ProfileUpdate) -> ProfileUpdateRequestDTO {
-        return ProfileUpdateRequestDTO(
+    static func map(update: ProfileUpdate) -> EditProfileUpdateRequestDTO {
+        return EditProfileUpdateRequestDTO(
             firstName: update.firstName,
             lastName: update.lastName,
             dateOfBirth: dateFormatter.string(from: update.dateOfBirth),

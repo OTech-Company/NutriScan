@@ -7,10 +7,10 @@
 
 import Foundation
 
-final class UpdateProfileUseCase: UpdateProfileUseCaseProtocol {
-    private let repository: ProfileRepositoryProtocol
+final class UpdateEditProfileUseCase: UpdateEditProfileUseCaseProtocol {
+    private let repository: EditProfileRepositoryProtocol
 
-    init(repository: ProfileRepositoryProtocol = DIContainer.shared.resolve(type: ProfileRepositoryProtocol.self)) {
+    init(repository: EditProfileRepositoryProtocol = DIContainer.shared.resolve(type: EditProfileRepositoryProtocol.self)) {
         self.repository = repository
     }
 

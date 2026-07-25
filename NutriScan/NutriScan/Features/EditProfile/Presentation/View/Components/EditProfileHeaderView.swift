@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct ProfileHeaderView: View {
+struct EditProfileHeaderView: View {
     let name: String
     let email: String
     let avatarImage: Image
