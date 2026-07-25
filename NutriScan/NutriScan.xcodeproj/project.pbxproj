@@ -37,6 +37,9 @@
 		2C753183300F888C00DAC0BA /* KeychainKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C753182300F888C00DAC0BA /* KeychainKey.swift */; };
 		2C7708ED3015513D00A8FCCE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708EC3015513D00A8FCCE /* AppConstants.swift */; };
 		2C7708EF30156B4500A8FCCE /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708EE30156B4500A8FCCE /* NetworkLogger.swift */; };
+		2C7708F1301573D400A8FCCE /* ProfileHeaderSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F0301573D400A8FCCE /* ProfileHeaderSuccessView.swift */; };
+		2C7708F3301573DC00A8FCCE /* ProfileHeaderLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F2301573DC00A8FCCE /* ProfileHeaderLoadingView.swift */; };
+		2C7708F5301573EF00A8FCCE /* ProfileHeaderFailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F4301573EF00A8FCCE /* ProfileHeaderFailureView.swift */; };
 		2C78ECDE300E6C700092E6B2 /* AuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECDA300E6C700092E6B2 /* AuthEndpoint.swift */; };
 		2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */; };
 		2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */; };
@@ -478,6 +481,9 @@
 		2C753182300F888C00DAC0BA /* KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainKey.swift; sourceTree = "<group>"; };
 		2C7708EC3015513D00A8FCCE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		2C7708EE30156B4500A8FCCE /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
+		2C7708F0301573D400A8FCCE /* ProfileHeaderSuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderSuccessView.swift; sourceTree = "<group>"; };
+		2C7708F2301573DC00A8FCCE /* ProfileHeaderLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderLoadingView.swift; sourceTree = "<group>"; };
+		2C7708F4301573EF00A8FCCE /* ProfileHeaderFailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderFailureView.swift; sourceTree = "<group>"; };
 		2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequestDTO.swift; sourceTree = "<group>"; };
 		2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResponseDTO.swift; sourceTree = "<group>"; };
 		2C78ECD5300E6C700092E6B2 /* RegisterRequest+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterRequest+DTO.swift"; sourceTree = "<group>"; };
@@ -2045,6 +2051,9 @@
 				D4BAA30D30137D54006EDB11 /* SettingsSectionView.swift */,
 				D4BAA30930137C7E006EDB11 /* FamilyMemberCardView.swift */,
 				D4BAA30730137C4D006EDB11 /* AddMemberCardView.swift */,
+				2C7708F0301573D400A8FCCE /* ProfileHeaderSuccessView.swift */,
+				2C7708F2301573DC00A8FCCE /* ProfileHeaderLoadingView.swift */,
+				2C7708F4301573EF00A8FCCE /* ProfileHeaderFailureView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3362,6 +3371,7 @@
 				6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */,
 				D48A243C301155F90004D95E /* GetEditProfileUseCase.swift in Sources */,
 				5BDFB387E5C37B41261F67A8 /* FloatingTabButton.swift in Sources */,
+				2C7708F3301573DC00A8FCCE /* ProfileHeaderLoadingView.swift in Sources */,
 				D4BAA31430137E6C006EDB11 /* FamilyMembersSectionView.swift in Sources */,
 				2C78ED33300E6D080092E6B2 /* APIErrorResponse.swift in Sources */,
 				D23B9A10476F5F3583F0220D /* FlowChipsLayout.swift in Sources */,
@@ -3569,6 +3579,7 @@
 				D84A1824E923C92FD27A3051 /* UpdateProfileRequest.swift in Sources */,
 				5AEDC00A82E13C4C47B74861 /* UserMeResponse.swift in Sources */,
 				79EA97A78D936D64209AA706 /* UserProfile.swift in Sources */,
+				2C7708F5301573EF00A8FCCE /* ProfileHeaderFailureView.swift in Sources */,
 				3959FAD5A59880EB19F4CE1A /* UserProfileResponse.swift in Sources */,
 				2C753183300F888C00DAC0BA /* KeychainKey.swift in Sources */,
 				0BC07D1A2158156E63F8F947 /* ValidatedField.swift in Sources */,
@@ -3619,6 +3630,7 @@
 				2C93916F3012D45800287FF2 /* ExercisesView.swift in Sources */,
 				6F1A8EE430138F1B00E1ACC5 /* RAGLanguage.swift in Sources */,
 				8F4132C13013BD29005C482C /* ProfileSetupRemoteDataSource.swift in Sources */,
+				2C7708F1301573D400A8FCCE /* ProfileHeaderSuccessView.swift in Sources */,
 				8F16ED243012AA4300CF43B2 /* FetchProfileSetupOptionsUseCase.swift in Sources */,
 				D48A243E301156120004D95E /* UpdateProfileUseCaseProtocol .swift in Sources */,
 				6F1A8EDE3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift in Sources */,
