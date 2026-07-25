@@ -28,10 +28,9 @@ final class ScanViewModel: ObservableObject {
         )
     }
 
-    func submitImage(_ imageData: Data) {
+    func onPhotoCaptured(_ imageData: Data) {
         guard !isSubmitting else { return }
         isSubmitting = true
-        defer { isSubmitting = false }
 
         Task {
             do {
@@ -39,10 +38,13 @@ final class ScanViewModel: ObservableObject {
                 withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
                     latestScan = submission
                 }
+                isSubmitting = false
                 await pollScanDetail(scanId: submission.scanId)
             } catch let error as ScanError {
+                isSubmitting = false
                 errorMessage = error.userMessage
             } catch {
+                isSubmitting = false
                 errorMessage = ScanError.unknown.userMessage
             }
         }

@@ -67,9 +67,13 @@ struct CustomAnimatedTabBar: View {
 
                 // ── 3. Floating button ──────────────────────────────────────
                 Button {
-                    withAnimation(Self.tabSpring) {
-                        selectedTab = .scan
-                        animatedCurveTab = .scan
+                    if selectedTab == .scan {
+                        NotificationCenter.default.post(name: .captureScanPhoto, object: nil)
+                    } else {
+                        withAnimation(Self.tabSpring) {
+                            selectedTab = .scan
+                            animatedCurveTab = .scan
+                        }
                     }
                 } label: {
                     FloatingTabButton(selectedTab: selectedTab)
