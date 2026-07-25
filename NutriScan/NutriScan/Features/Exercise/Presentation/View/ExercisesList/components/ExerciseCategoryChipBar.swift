@@ -4,58 +4,37 @@
 //
 
 import SwiftUI
-
-// MARK: - Category Chip Bar
+import Shimmer
 
 struct ExerciseCategoryChipBar: View {
     let categories: [ExerciseCategory]
     @Binding var selectedCategory: ExerciseCategory
+    var isLoading: Bool = false
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(categories) { category in
-                    ExerciseCategoryChip(
-                        title: category.name,
-                        isSelected: selectedCategory == category
-                    ) {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            selectedCategory = category
+                if isLoading {
+                    ForEach(ExerciseCategory.dummyList) { dummy in
+                        ExerciseCategoryChip(title: dummy.name, isSelected: false, action: {})
+                            .redacted(reason: .placeholder)
+                            .shimmering()
+                    }
+                } else {
+                    ForEach(categories) { category in
+                        ExerciseCategoryChip(
+                            title: category.name,
+                            isSelected: selectedCategory == category
+                        ) {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                selectedCategory = category
+                            }
                         }
                     }
                 }
             }
-            .padding(.leading, 20)   // aligns with screen leading edge
-            .padding(.trailing, 20)
+            .padding(.horizontal, 20)
         }
-    }
-}
-
-// MARK: - Exercise Category Chip
-private struct ExerciseCategoryChip: View {
-    let title: String
-    let isSelected: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(Font.AppFont.textSecondary)
-                .foregroundColor(isSelected ? Color.ExerciseSemantic.categoryChipTextSelected : Color.ExerciseSemantic.categoryChipTextUnselected)
-                .padding(.vertical, 8)
-                .padding(.horizontal, 16)
-                .frame(height: 34)
-                .background(Color.ExerciseSemantic.categoryChipBg)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 32)
-                        .strokeBorder(
-                            isSelected ? Color.ExerciseSemantic.categoryChipBorderSelected : Color.ExerciseSemantic.categoryChipBorderUnselected,
-                            lineWidth: 1
-                        )
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 32))
-        }
-        .buttonStyle(.plain)
     }
 }
 
@@ -68,9 +47,10 @@ private struct ExerciseCategoryChip: View {
             selectedCategory: .constant(.all)
         )
         ExerciseCategoryChipBar(
-            categories: [.all, ExerciseCategory(id: "warm up", name: "Warm Up"), ExerciseCategory(id: "strength", name: "Strength")],
-            selectedCategory: .constant(ExerciseCategory(id: "warm up", name: "Warm Up"))
+            categories: [],
+            selectedCategory: .constant(.all),
+            isLoading: true
         )
     }
-    .padding()
+    .padding(.vertical)
 }

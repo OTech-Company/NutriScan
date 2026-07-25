@@ -215,6 +215,7 @@
 		909DF67C3792378F84AA70EA /* RulerDial.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D223E8294229110E9CCF7F /* RulerDial.swift */; };
 		9897EA3C11AE497DBF27AB1A /* TabIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027B3159563301F48A196427 /* TabIconButton.swift */; };
 		9A223F7CA1474E3455C90D3E /* empty8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767D29E0507222B45914A81D /* empty8.swift */; };
+		9A96495CC03D3508095101CC /* ExerciseCategoryChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6166CE3ED7EEACEC61C07E /* ExerciseCategoryChip.swift */; };
 		9A9ADDF48A3BBC4320C3738F /* ProfileSetupFlowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78423DDD3A920A593CB66209 /* ProfileSetupFlowViewModel.swift */; };
 		9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D8F87E335CE8A51061854D /* HomeViewModel.swift */; };
 		9BD6E452E70098B5D58D11A9 /* NutriScanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D867200C8CDFD59D244B37E /* NutriScanTests.swift */; };
@@ -340,6 +341,7 @@
 		02F36DFF397A26263538A993 /* NutriScanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanApp.swift; sourceTree = "<group>"; };
 		081DDE6D02EB16410BAEFF56 /* PersonalInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInformationView.swift; sourceTree = "<group>"; };
 		0960094E6BE79800F24754AA /* empty4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty4.swift; sourceTree = "<group>"; };
+		0A6166CE3ED7EEACEC61C07E /* ExerciseCategoryChip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExerciseCategoryChip.swift; sourceTree = "<group>"; };
 		0AE4ABEA6E74E1CC871EDCF7 /* NutriScanUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanUITests.swift; sourceTree = "<group>"; };
 		0B0A193EB7A8F9016AC25A3B /* ScanRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanRoute.swift; sourceTree = "<group>"; };
 		0D867200C8CDFD59D244B37E /* NutriScanTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanTests.swift; sourceTree = "<group>"; };
@@ -1189,6 +1191,7 @@
 				2C93915D3012D45800287FF2 /* ExerciseListView.swift */,
 				2C93915E3012D45800287FF2 /* ExerciseRowCard.swift */,
 				2C93915F3012D45800287FF2 /* ExerciseSearchBar.swift */,
+				0A6166CE3ED7EEACEC61C07E /* ExerciseCategoryChip.swift */,
 			);
 			path = components;
 			sourceTree = "<group>";
@@ -2863,6 +2866,7 @@
 				B49BAEB1C362A98534221370 /* ExerciseInstructionText.swift in Sources */,
 				29E6FFE6D51D73455CEF2EE0 /* CategoryResponseDTO+Domain.swift in Sources */,
 				AA2E315D86B04818C34E2293 /* ExerciseDTO+Domain.swift in Sources */,
+				9A96495CC03D3508095101CC /* ExerciseCategoryChip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -35,7 +35,8 @@ struct ExercisesView: View {
             // MARK: Category Chips
             ExerciseCategoryChipBar(
                 categories: viewModel.categories,
-                selectedCategory: $viewModel.selectedCategory
+                selectedCategory: $viewModel.selectedCategory,
+                isLoading: viewModel.isLoadingCategories
             )
             .padding(.bottom, 16)
 
