@@ -16,23 +16,18 @@ struct ProfileHeaderView: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             HStack(spacing: 14) {
-                AsyncImage(url: avatarURL.flatMap(URL.init)) { image in
-                    image.resizable().scaledToFill()
-                } placeholder: {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .foregroundColor(.white.opacity(0.6))
-                }
-                .frame(
-                    width: ProfileSemantics.Sizes.avatarDiameter,
-                    height: ProfileSemantics.Sizes.avatarDiameter
+                CachedImage(
+                    urlString: avatarURL ?? AppConstants.defaultUserAvatarURL,
+                    failureImageName: "person.circle.fill",
+                    contentMode: .fill
                 )
+                .frame(width: 56, height: 56)
                 .clipShape(Circle())
                 .overlay(
-                    Circle().stroke(
-                        Color.ProfileSemantics.avatarBorder,
-                        lineWidth: ProfileSemantics.Border.avatarBorderWidth)
+                    Circle()
+                        .stroke(Color.Teal.teal1400, lineWidth: 1)
                 )
+                .opacity(1)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(userName)
@@ -60,8 +55,10 @@ struct ProfileHeaderView: View {
                 Spacer()
 
                 Button(action: onEdit) {
-                    Image(systemName: "square.and.pencil")
-                        .font(.system(size: 24, weight: .medium))
+                    Image("edit_profile")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
                         .foregroundColor(Color.ProfileSemantics.editIcon)
                         .frame(
                             width: ProfileSemantics.Sizes.editIconSize,

@@ -17,9 +17,9 @@ extension Color {
         static let onWhiteBorder = Color.Teal.teal1000
         static let onWhiteIcon   = Color.Teal.teal1000
 
-        // MARK: - .onTeal variant
-        // Icon & Border: white in both light and dark
-        static let onTealBackground = Color.white
+        // MARK: - .onTeal variant (teal header background)
+        // Background: translucent white 15%, Icon & Border: white
+        static let onTealBackground = Color.white.opacity(0.15)
         static let onTealBorder     = Color.white
         static let onTealIcon       = Color.white
     }

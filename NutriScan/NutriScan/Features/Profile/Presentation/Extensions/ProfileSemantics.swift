@@ -40,7 +40,7 @@ enum ProfileSemantics {
     }
 
     enum Border {
-        static let dashedWidthLight: CGFloat = 1
+        static let dashedWidthLight: CGFloat = 2
         static let dashedWidthDark: CGFloat = 2
         static let dashPattern: [CGFloat] = [6, 4]
         static let avatarBorderWidth: CGFloat = 1

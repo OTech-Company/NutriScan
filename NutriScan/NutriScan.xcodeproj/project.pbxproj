@@ -35,6 +35,8 @@
 		2BC592097A4BD79EE1563895 /* HealthProfileSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F25C79EFAFB31585AC7B4E37 /* HealthProfileSetupView.swift */; };
 		2C2525F5476C19DF89C6AB28 /* ChipSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84487153C1FC6580C23A07A5 /* ChipSemantics.swift */; };
 		2C753183300F888C00DAC0BA /* KeychainKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C753182300F888C00DAC0BA /* KeychainKey.swift */; };
+		2C7708ED3015513D00A8FCCE /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708EC3015513D00A8FCCE /* AppConstants.swift */; };
+		2C7708EF30156B4500A8FCCE /* NetworkLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708EE30156B4500A8FCCE /* NetworkLogger.swift */; };
 		2C78ECDE300E6C700092E6B2 /* AuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECDA300E6C700092E6B2 /* AuthEndpoint.swift */; };
 		2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */; };
 		2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */; };
@@ -474,6 +476,8 @@
 		22164FCF23242F77F47B8A13 /* AppTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTab.swift; sourceTree = "<group>"; };
 		2714BF2FC328678F2D078A5D /* HeightSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightSelectionView.swift; sourceTree = "<group>"; };
 		2C753182300F888C00DAC0BA /* KeychainKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainKey.swift; sourceTree = "<group>"; };
+		2C7708EC3015513D00A8FCCE /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		2C7708EE30156B4500A8FCCE /* NetworkLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLogger.swift; sourceTree = "<group>"; };
 		2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequestDTO.swift; sourceTree = "<group>"; };
 		2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResponseDTO.swift; sourceTree = "<group>"; };
 		2C78ECD5300E6C700092E6B2 /* RegisterRequest+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterRequest+DTO.swift"; sourceTree = "<group>"; };
@@ -1509,6 +1513,7 @@
 				2C78ED2D300E6CC50092E6B2 /* NetworkService.swift */,
 				8FC42A92300EAC0300A2B876 /* RequestBody.swift */,
 				8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */,
+				2C7708EE30156B4500A8FCCE /* NetworkLogger.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -2561,6 +2566,7 @@
 			isa = PBXGroup;
 			children = (
 				1FA3B0A131167AD469B64998 /* empty1.swift */,
+				2C7708EC3015513D00A8FCCE /* AppConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -3438,6 +3444,7 @@
 				2C78ED1C300E6C7E0092E6B2 /* Color+LoginSemantic.swift in Sources */,
 				8F16ED123012A9C500CF43B2 /* ProfileSetupRepository.swift in Sources */,
 				2C78ED1D300E6C7E0092E6B2 /* RegisterSignUpButtonSection.swift in Sources */,
+				2C7708EF30156B4500A8FCCE /* NetworkLogger.swift in Sources */,
 				D48A24363011534F0004D95E /* ChipSelectionManager.swift in Sources */,
 				D49D9F143013E4AE00ACE567 /* ProfileSummaryEndpoint.swift in Sources */,
 				8F16ED1A3012AA0700CF43B2 /* ProfileSetupAllergyOption.swift in Sources */,
@@ -3637,6 +3644,7 @@
 				D4BAA31630137EB0006EDB11 /* ProfileView.swift in Sources */,
 				D40DD1DC30102BC0001CF496 /* ProfileChipItem.swift in Sources */,
 				8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */,
+				2C7708ED3015513D00A8FCCE /* AppConstants.swift in Sources */,
 				D40DD1AA300FF912001CF496 /* DateSelectionField.swift in Sources */,
 				8F2EE806300FEE6E00BBC8EE /* Color+HealthProfileSetupSemantic.swift in Sources */,
 				8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */,

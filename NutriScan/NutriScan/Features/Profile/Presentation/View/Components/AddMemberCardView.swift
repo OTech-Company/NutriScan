@@ -15,10 +15,6 @@ struct AddMemberCardView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: ProfileSemantics.Sizes.addMemberIconCornerRadius)
                         .fill(Color.ProfileSemantics.addMemberIconBackground)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: ProfileSemantics.Sizes.addMemberIconCornerRadius)
-                                .stroke(Color.ProfileSemantics.addMemberIconStroke, lineWidth: 1)
-                        )
                         .frame(width: ProfileSemantics.Sizes.addMemberIconSize,
                                height: ProfileSemantics.Sizes.addMemberIconSize)
 
@@ -36,6 +32,7 @@ struct AddMemberCardView: View {
                    height: ProfileSemantics.Sizes.memberCardHeight)
             .background(Color.ProfileSemantics.addMemberBackground)
             .clipShape(RoundedRectangle(cornerRadius: ProfileSemantics.Radius.memberCardRadius))
+            .opacity(1)
         }
         .buttonStyle(.plain)
     }
