@@ -33,15 +33,15 @@ struct ProductHeaderSection: View {
                 Spacer()
                 VStack(alignment: .center, spacing: 0) {
                     Text("Scanned at")
-                        .foregroundStyle(Color(light: Color.Gray.gray500, dark: Color.Teal.teal700))
+                        .foregroundStyle(Color(light: Color.Gray.gray500, dark: Color.Teal.teal1300))
                         .font(Font.AppFont.textSecondary.weight(.bold))
                     Text(state.scannedAt)
-                        .foregroundStyle(Color(light: Color.Teal.teal800, dark: Color.Teal.teal1400))
+                        .foregroundStyle(Color.Teal.teal800)
                         .font(Font.AppFont.textSecondary.weight(.bold))
                         .padding(.horizontal, 4)
                         .background {
                             RoundedRectangle(cornerRadius: 6)
-                                .foregroundStyle(Color(light: Color.Teal.teal200, dark: Color.Teal.teal100))
+                                .foregroundStyle(Color.Teal.teal200)
                         }
                 }
             }
