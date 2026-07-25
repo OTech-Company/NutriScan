@@ -12,7 +12,6 @@ struct ExerciseCardView: View {
     let exerciseMinutes: Int
     var onAddTap: () -> Void = {}
     
-    @State private var isTapped = false
     @State private var showContent = false
     
     var body: some View {
@@ -61,17 +60,6 @@ struct ExerciseCardView: View {
                 .foregroundStyle(Color.CaloriesSemantic.cardBackground)
         }
         .customLightShadow()
-        .scaleEffect(isTapped ? 0.95 : 1.0)
-        .onTapGesture {
-            withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
-                isTapped = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    isTapped = false
-                }
-            }
-        }
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.2)) {
                 showContent = true

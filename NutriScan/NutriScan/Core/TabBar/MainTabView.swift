@@ -21,6 +21,7 @@ struct MainTabView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @StateObject private var tabBarVisibility = AppTabBarVisibility.shared
     
+
     init() {
         UITabBar.appearance().isHidden = true
     }
@@ -48,7 +49,6 @@ struct MainTabView: View {
                 ProfileFlowView()
                     .tag(AppTab.profile)
             }
-            
             if !tabBarVisibility.isHidden {
                 CustomAnimatedTabBar(selectedTab: $flowCoordinator.selectedTab)
                     .customTealShadow()

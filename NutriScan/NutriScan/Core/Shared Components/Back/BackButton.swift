@@ -17,11 +17,13 @@ struct BackButton: View {
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(Color.BackButtonSemantics.backButtonIcon)
                 .frame(width: 48, height: 48)
-                .background(
+                .background(Color.BackButtonSemantics.backButtonBackground)
+                .cornerRadius(10)
+                .overlay(
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(
                             Color.BackButtonSemantics.backButtonBorder,
-                            lineWidth: 1.5
+                            lineWidth: 1
                         )
                 )
         }
