@@ -28,6 +28,9 @@ struct ScanScreen: View {
             }
         }
         .toolbar(.hidden, for: .navigationBar)
+        .onDisappear {
+            viewModel.reset()
+        }
         .customAlert(
             isPresented: Binding(
                 get: { viewModel.errorMessage != nil },
@@ -156,25 +159,31 @@ struct ScanScreen: View {
     // MARK: - Result Card
 
     private func resultCard(detail: ScanDetail, imageData: Data, scanId: String) -> some View {
-        HStack(spacing: 12) {
-            capturedImageThumbnail(imageData)
+        ZStack(alignment: .trailing) {
+            Button {
+                router.path.append(AnyRoute(ScanRoute.scanDetail(scanId: scanId, imageData: imageData)))
+            } label: {
+                HStack(spacing: 12) {
+                    capturedImageThumbnail(imageData)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text("FANMILK")
-                    .font(.caption2)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white.opacity(0.7))
-                Text(detail.foodSafetyResponse?.summary ?? "Scan complete")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("FANMILK")
+                            .font(.caption2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white.opacity(0.7))
+                        Text(detail.foodSafetyResponse?.summary ?? "Scan complete")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(.white)
+                            .lineLimit(1)
 
-                if let verdict = detail.foodSafetyResponse?.verdict {
-                    badge(text: verdict.rawValue.capitalized, color: verdict == .safe ? .teal : .red)
+                        if let verdict = detail.foodSafetyResponse?.verdict {
+                            badge(text: verdict.rawValue.capitalized, color: verdict == .safe ? .teal : .red)
+                        }
+                    }
+
+                    Spacer()
                 }
             }
-
-            Spacer()
 
             Button {
                 viewModel.toggleSaveFavorite()
@@ -183,6 +192,7 @@ struct ScanScreen: View {
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.white)
             }
+            .padding(.trailing, 4)
         }
         .padding(12)
         .background(Color.Teal.teal800.opacity(0.9))

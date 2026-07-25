@@ -4,8 +4,12 @@ struct ProductDetailView: View {
 
     @StateObject private var viewModel: ProductDetailViewModel
 
-    init(scanId: String) {
-        _viewModel = StateObject(wrappedValue: ProductDetailViewModel(scanId: scanId))
+    init(detail: ScanDetail, imageData: Data) {
+        _viewModel = StateObject(wrappedValue: ProductDetailViewModel(detail: detail, imageData: imageData))
+    }
+
+    init(scanId: String, imageData: Data) {
+        _viewModel = StateObject(wrappedValue: ProductDetailViewModel(scanId: scanId, imageData: imageData))
     }
 
     var body: some View {
@@ -16,11 +20,9 @@ struct ProductDetailView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
                         headerSection(detail: detail)
-
                         if let safety = detail.foodSafetyResponse {
                             safetySection(safety)
                         }
-
                         if let nutrition = detail.nutritionFacts {
                             nutritionSection(nutrition)
                         }
@@ -33,6 +35,7 @@ struct ProductDetailView: View {
             }
         }
         .navigationTitle("Scan Result")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear { viewModel.loadIfNeeded() }
     }
 
@@ -40,7 +43,14 @@ struct ProductDetailView: View {
 
     private func headerSection(detail: ScanDetail) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            if let url = detail.imageUrl, let imageURL = URL(string: url) {
+            if let uiImage = UIImage(data: viewModel.capturedImageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 200)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+            } else if let url = detail.imageUrl, let imageURL = URL(string: url) {
                 AsyncImage(url: imageURL) { phase in
                     switch phase {
                     case .success(let image):
@@ -69,6 +79,16 @@ struct ProductDetailView: View {
                 if let date = detail.scannedAt {
                     Text(date, style: .date)
                         .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                Button {
+                    viewModel.toggleSaveFavorite()
+                } label: {
+                    Image(systemName: "bookmark")
+                        .font(.title3)
                         .foregroundColor(.secondary)
                 }
             }
@@ -146,12 +166,12 @@ struct ProductDetailView: View {
                 .font(.subheadline.bold())
         }
         .padding(.vertical, 2)
-        return Divider()
+        Divider()
     }
 }
 
 #Preview {
     NavigationStack {
-        ProductDetailView(scanId: "3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        ProductDetailView(scanId: "3fa85f64", imageData: Data())
     }
 }
