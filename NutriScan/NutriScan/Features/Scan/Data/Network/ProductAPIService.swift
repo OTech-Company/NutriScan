@@ -49,23 +49,23 @@ struct ScanDetailDTO: Decodable {
     let scannedAt: String?
     let imageUrl: String?
     let foodSafetyResponse: FoodSafetyResponseDTO?
-    let nutritionFacts: NutritionFactsDTO?
+    let nutritionFacts: ScanNutritionFactsDTO?
 }
 
 struct FoodSafetyResponseDTO: Decodable {
     let verdict: String?
-    let flaggedIngredients: [FlaggedIngredientDTO]?
+    let flaggedIngredients: [ScanFlaggedIngredientDTO]?
     let summary: String?
 }
 
-struct FlaggedIngredientDTO: Decodable {
+struct ScanFlaggedIngredientDTO: Decodable {
     let ingredient: String?
     let reason: String?
     let type: String?
     let name: [String]?
 }
 
-struct NutritionFactsDTO: Decodable {
+struct ScanNutritionFactsDTO: Decodable {
     let calories: Int?
     let proteinGrams: Double?
     let carbsGrams: Double?
@@ -110,18 +110,7 @@ final class ScanAPIService: ScanAPIServicing {
     }
 
     func submitScan(imageData: Data) async throws -> ScanSubmissionDTO {
-        var form = MultipartFormData()
-        form.files.append(
-            MultipartFormData.FilePart(
-                name: "image",
-                filename: "scan.jpg",
-                mimeType: "image/jpeg",
-                data: imageData
-            )
-        )
-
-        var endpoint = ScanEndpoint.submitScan
-        endpoint = ScanSubmitEndpoint(imageData: imageData)
+        let endpoint = ScanSubmitEndpoint(imageData: imageData)
 
         do {
             return try await networkService.request(endpoint)

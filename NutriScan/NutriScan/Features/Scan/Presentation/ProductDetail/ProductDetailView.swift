@@ -77,7 +77,7 @@ struct ProductDetailView: View {
 
     // MARK: - Safety
 
-    private func safetySection(_ safety: FoodSafetyResponse) -> some View {
+    private func safetySection(_ safety: ScanFoodSafetyResponse) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Safety")
                 .font(.headline)
@@ -119,7 +119,7 @@ struct ProductDetailView: View {
 
     // MARK: - Nutrition
 
-    private func nutritionSection(_ nutrition: NutritionFacts) -> some View {
+    private func nutritionSection(_ nutrition: ScanNutritionFacts) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Nutrition Facts")
                 .font(.headline)

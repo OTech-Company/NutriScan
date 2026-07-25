@@ -46,7 +46,7 @@ final class ScanRepositoryImpl: ScanRepository {
             id: dto.scanId,
             scanId: dto.scanId,
             imageUrl: dto.imageUrl,
-            verdict: Verdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
+            verdict: ScanVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
             scannedAt: ISO8601DateFormatter().date(from: dto.scannedAt ?? "") ?? Date()
         )
     }
@@ -63,25 +63,25 @@ final class ScanRepositoryImpl: ScanRepository {
         )
     }
 
-    private func mapSafety(_ dto: FoodSafetyResponseDTO) -> FoodSafetyResponse {
-        FoodSafetyResponse(
-            verdict: Verdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
+    private func mapSafety(_ dto: FoodSafetyResponseDTO) -> ScanFoodSafetyResponse {
+        ScanFoodSafetyResponse(
+            verdict: ScanVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
             flaggedIngredients: dto.flaggedIngredients?.map(mapIngredient) ?? [],
             summary: dto.summary ?? ""
         )
     }
 
-    private func mapIngredient(_ dto: FlaggedIngredientDTO) -> FlaggedIngredient {
-        FlaggedIngredient(
+    private func mapIngredient(_ dto: ScanFlaggedIngredientDTO) -> ScanFlaggedIngredient {
+        ScanFlaggedIngredient(
             ingredient: dto.ingredient ?? "",
             reason: dto.reason ?? "",
-            type: FlagType(rawValue: dto.type ?? "OTHER") ?? .other,
+            type: ScanFlagType(rawValue: dto.type ?? "OTHER") ?? .other,
             name: dto.name ?? []
         )
     }
 
-    private func mapNutrition(_ dto: NutritionFactsDTO) -> NutritionFacts {
-        NutritionFacts(
+    private func mapNutrition(_ dto: ScanNutritionFactsDTO) -> ScanNutritionFacts {
+        ScanNutritionFacts(
             calories: dto.calories ?? 0,
             proteinGrams: dto.proteinGrams ?? 0,
             carbsGrams: dto.carbsGrams ?? 0,
