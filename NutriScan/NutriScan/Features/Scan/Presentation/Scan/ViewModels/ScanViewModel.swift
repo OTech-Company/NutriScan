@@ -10,6 +10,7 @@ final class ScanViewModel: ObservableObject {
     @Published private(set) var isSubmitting: Bool = false
     @Published private(set) var isLoadingDetail: Bool = false
     @Published private(set) var isSaved: Bool = false
+    @Published private(set) var detectedBarcode: String?
     @Published var errorMessage: String?
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
@@ -30,11 +31,36 @@ final class ScanViewModel: ObservableObject {
         )
     }
 
+    // MARK: - Barcode Detection
+
+    func onBarcodeDetected(_ barcode: String) {
+        guard !isSubmitting else { return }
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+            detectedBarcode = barcode
+        }
+    }
+
+    func lookupByBarcode() {
+        guard let barcode = detectedBarcode, !isSubmitting else { return }
+        // TODO: Implement barcode lookup API call
+        // This will be called when the user taps the barcode pill button
+        print("Looking up barcode: \(barcode)")
+    }
+
+    func dismissBarcode() {
+        withAnimation {
+            detectedBarcode = nil
+        }
+    }
+
+    // MARK: - Photo Capture
+
     func onPhotoCaptured(_ imageData: Data) {
         guard !isSubmitting else { return }
         capturedImageData = imageData
         isSubmitting = true
         isSaved = false
+        detectedBarcode = nil
 
         Task {
             do {
@@ -75,6 +101,7 @@ final class ScanViewModel: ObservableObject {
         latestScan = nil
         scanDetail = nil
         isSaved = false
+        detectedBarcode = nil
     }
 
     private func pollScanDetail(scanId: String) async {

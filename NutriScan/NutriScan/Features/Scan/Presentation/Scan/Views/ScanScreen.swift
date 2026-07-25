@@ -26,8 +26,16 @@ struct ScanScreen: View {
                     .padding(.horizontal, 16)
                     .padding(.bottom, 100)
             }
+
+            // Barcode detected pill button
+            if let barcode = viewModel.detectedBarcode {
+                barcodePillButton(barcode: barcode)
+                    .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height * 0.55)
+                    .transition(.scale.combined(with: .opacity))
+            }
         }
         .toolbar(.hidden, for: .navigationBar)
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.detectedBarcode)
         .onDisappear {
             viewModel.reset()
         }
@@ -49,7 +57,9 @@ struct ScanScreen: View {
 
     private var cameraBackground: some View {
         BarcodeScannerView(
-            onDetect: { _ in },
+            onDetect: { code in
+                viewModel.onBarcodeDetected(code)
+            },
             onPhotoCapture: { imageData in
                 viewModel.onPhotoCaptured(imageData)
             }
@@ -269,6 +279,25 @@ struct ScanScreen: View {
     }
 
     // MARK: - Helpers
+
+    private func barcodePillButton(barcode: String) -> some View {
+        Button {
+            viewModel.lookupByBarcode()
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 16, weight: .semibold))
+                Text(barcode)
+                    .font(.system(size: 16, weight: .medium))
+            }
+            .foregroundColor(.white)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(Color.black.opacity(0.7))
+            .clipShape(Capsule())
+            .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
+        }
+    }
 
     private func capturedImageThumbnail(_ imageData: Data) -> some View {
         Group {
