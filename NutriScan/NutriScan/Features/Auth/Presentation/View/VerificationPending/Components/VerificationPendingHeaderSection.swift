@@ -13,19 +13,8 @@ struct VerificationPendingHeaderSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             // Back Button
-            Button(action: onBack) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(Color.VerificationPendingSemantic.backButtonIcon)
-                    .frame(width: 44, height: 44)
-                    .background(Color.VerificationPendingSemantic.backButtonBackground)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.VerificationPendingSemantic.backButtonBorder, lineWidth: 1)
-                    )
-            }
-            .padding(.top, 64)
+            BackButton(action: onBack, style: .onTeal)
+                .padding(.top, 64)
             
             // Text Block
             VStack(alignment: .leading, spacing: 8) {
