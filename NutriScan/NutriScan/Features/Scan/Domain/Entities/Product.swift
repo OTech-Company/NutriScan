@@ -4,7 +4,7 @@ struct ScanListItem: Identifiable {
     let id: String
     let scanId: String
     let imageUrl: String?
-    let verdict: ScanVerdict
+    let verdict: ScanResultVerdict
     let scannedAt: Date
 }
 
@@ -19,7 +19,7 @@ struct ScanDetail: Identifiable {
 }
 
 struct ScanFoodSafetyResponse {
-    let verdict: ScanVerdict
+    let verdict: ScanResultVerdict
     let flaggedIngredients: [ScanFlaggedIngredient]
     let summary: String
 }
@@ -57,7 +57,7 @@ struct ScanSubmission {
     let status: ScanStatus
 }
 
-enum ScanVerdict: String, Decodable {
+enum ScanResultVerdict: String, Decodable {
     case safe = "SAFE"
     case unsafe = "UNSAFE"
     case caution = "CAUTION"

@@ -46,7 +46,7 @@ final class ScanRepositoryImpl: ScanRepository {
             id: dto.scanId,
             scanId: dto.scanId,
             imageUrl: dto.imageUrl,
-            verdict: ScanVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
+            verdict: ScanResultVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
             scannedAt: ISO8601DateFormatter().date(from: dto.scannedAt ?? "") ?? Date()
         )
     }
@@ -65,7 +65,7 @@ final class ScanRepositoryImpl: ScanRepository {
 
     private func mapSafety(_ dto: FoodSafetyResponseDTO) -> ScanFoodSafetyResponse {
         ScanFoodSafetyResponse(
-            verdict: ScanVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
+            verdict: ScanResultVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
             flaggedIngredients: dto.flaggedIngredients?.map(mapIngredient) ?? [],
             summary: dto.summary ?? ""
         )
