@@ -11,6 +11,7 @@ final class ScanViewModel: ObservableObject {
     @Published private(set) var isLoadingDetail: Bool = false
     @Published private(set) var isSaved: Bool = false
     @Published private(set) var detectedBarcode: String?
+    @Published private(set) var barcodePosition: CGPoint?
     @Published var errorMessage: String?
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
@@ -33,11 +34,10 @@ final class ScanViewModel: ObservableObject {
 
     // MARK: - Barcode Detection
 
-    func onBarcodeDetected(_ barcode: String) {
+    func onBarcodeDetected(_ barcode: String, at position: CGPoint) {
         guard !isSubmitting else { return }
-        withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-            detectedBarcode = barcode
-        }
+        detectedBarcode = barcode
+        barcodePosition = position
     }
 
     func lookupByBarcode() {
@@ -48,9 +48,8 @@ final class ScanViewModel: ObservableObject {
     }
 
     func dismissBarcode() {
-        withAnimation {
-            detectedBarcode = nil
-        }
+        detectedBarcode = nil
+        barcodePosition = nil
     }
 
     // MARK: - Photo Capture
@@ -102,6 +101,7 @@ final class ScanViewModel: ObservableObject {
         scanDetail = nil
         isSaved = false
         detectedBarcode = nil
+        barcodePosition = nil
     }
 
     private func pollScanDetail(scanId: String) async {

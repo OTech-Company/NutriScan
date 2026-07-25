@@ -28,14 +28,15 @@ struct ScanScreen: View {
             }
 
             // Barcode detected pill button
-            if let barcode = viewModel.detectedBarcode {
+            if let barcode = viewModel.detectedBarcode, let position = viewModel.barcodePosition {
                 barcodePillButton(barcode: barcode)
-                    .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height * 0.55)
+                    .position(x: position.x, y: position.y + 40)
                     .transition(.scale.combined(with: .opacity))
             }
         }
         .toolbar(.hidden, for: .navigationBar)
         .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.detectedBarcode)
+        .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
         .onDisappear {
             viewModel.reset()
         }
@@ -57,8 +58,8 @@ struct ScanScreen: View {
 
     private var cameraBackground: some View {
         BarcodeScannerView(
-            onDetect: { code in
-                viewModel.onBarcodeDetected(code)
+            onDetect: { code, position in
+                viewModel.onBarcodeDetected(code, at: position)
             },
             onPhotoCapture: { imageData in
                 viewModel.onPhotoCaptured(imageData)

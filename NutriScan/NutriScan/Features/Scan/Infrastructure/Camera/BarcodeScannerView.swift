@@ -5,7 +5,7 @@ import AVFoundation
 
 final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, AVCapturePhotoCaptureDelegate {
 
-    var onDetect: ((String) -> Void)?
+    var onDetect: ((String, CGPoint) -> Void)?
     var onPhotoCapture: ((Data) -> Void)?
 
     private let session = AVCaptureSession()
@@ -107,17 +107,31 @@ final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputO
         guard let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
               let stringValue = object.stringValue else { return }
 
-        let now = Date()
-        if stringValue == lastDetectedCode && now.timeIntervalSince(lastDetectionTime) < 2.0 {
-            return
+        // Convert barcode bounding box to view coordinates
+        let center: CGPoint
+        if let previewLayer = previewLayer {
+            let transformed = previewLayer.layerMetadataConvertedRect(for: object)
+            center = CGPoint(
+                x: transformed.midX,
+                y: transformed.midY
+            )
+        } else {
+            center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
         }
-        lastDetectedCode = stringValue
-        lastDetectionTime = now
 
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
+        let now = Date()
+        let isFirstDetection = stringValue != lastDetectedCode || lastDetectedCode == nil
 
-        onDetect?(stringValue)
+        if isFirstDetection {
+            lastDetectedCode = stringValue
+            lastDetectionTime = now
+
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+        }
+
+        // Always update position so the pill follows the barcode
+        onDetect?(stringValue, center)
     }
 
     func stop() {
@@ -134,7 +148,7 @@ final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputO
 }
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
-    var onDetect: (String) -> Void
+    var onDetect: (String, CGPoint) -> Void
     var onPhotoCapture: ((Data) -> Void)?
 
     func makeUIViewController(context: Context) -> BarcodeScannerController {
