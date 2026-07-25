@@ -4,71 +4,89 @@ import SwiftUI
 @MainActor
 final class ScanViewModel: ObservableObject {
 
-    // MARK: - Published state consumed by ScanScreen
-
-    @Published private(set) var detectedProduct: Product?
-    @Published private(set) var isLookingUp: Bool = false
+    @Published private(set) var latestScan: ScanSubmission?
+    @Published private(set) var scanDetail: ScanDetail?
+    @Published private(set) var isSubmitting: Bool = false
+    @Published private(set) var isLoadingDetail: Bool = false
     @Published var errorMessage: String?
 
-    private let lookupProductUseCase: LookupProductUseCase
-    private var lastSubmittedBarcode: String?
+    private let submitScanImageUseCase: SubmitScanImageUseCase
+    private let fetchScanDetailUseCase: FetchScanDetailUseCase
 
-    nonisolated init(lookupProductUseCase: LookupProductUseCase) {
-        self.lookupProductUseCase = lookupProductUseCase
+    nonisolated init(
+        submitScanImageUseCase: SubmitScanImageUseCase,
+        fetchScanDetailUseCase: FetchScanDetailUseCase
+    ) {
+        self.submitScanImageUseCase = submitScanImageUseCase
+        self.fetchScanDetailUseCase = fetchScanDetailUseCase
     }
-    
+
     nonisolated static func makeDefault() -> ScanViewModel {
-        ScanViewModel(lookupProductUseCase: DIContainer.shared.resolve(type: LookupProductUseCase.self))
+        ScanViewModel(
+            submitScanImageUseCase: DIContainer.shared.resolve(type: SubmitScanImageUseCase.self),
+            fetchScanDetailUseCase: DIContainer.shared.resolve(type: FetchScanDetailUseCase.self)
+        )
     }
-    // MARK: - Intents (called by the View)
 
-    /// Called every time the camera layer detects a barcode string.
-    func onBarcodeDetected(_ barcode: String) {
-        // Avoid re-triggering a lookup for the same code while one is in flight,
-        // and avoid re-fetching if we already matched this exact barcode.
-        guard !isLookingUp, barcode != lastSubmittedBarcode else { return }
-        lastSubmittedBarcode = barcode
+    func submitImage(_ imageData: Data) {
+        guard !isSubmitting else { return }
+        isSubmitting = true
+        defer { isSubmitting = false }
 
         Task {
-            await lookupProduct(barcode: barcode)
+            do {
+                let submission = try await submitScanImageUseCase.execute(imageData: imageData)
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                    latestScan = submission
+                }
+                await pollScanDetail(scanId: submission.scanId)
+            } catch let error as ScanError {
+                errorMessage = error.userMessage
+            } catch {
+                errorMessage = ScanError.unknown.userMessage
+            }
         }
     }
 
-    func addTapped() {
-        guard let product = detectedProduct else { return }
-        // TODO: call an AddProductToLogUseCase here, following the same
-        // pattern as LookupProductUseCase, when you build that flow.
-        print("Added \(product.brand) - \(product.name)")
+    func loadScanDetail(scanId: String) {
+        guard scanDetail == nil, !isLoadingDetail else { return }
+        Task {
+            await pollScanDetail(scanId: scanId)
+        }
     }
 
     func dismissError() {
         errorMessage = nil
     }
 
-    /// Reset so the next distinct barcode can trigger a fresh lookup
-    /// (e.g. call this when the user taps "scan again" or the card is dismissed).
     func reset() {
-        detectedProduct = nil
-        lastSubmittedBarcode = nil
+        latestScan = nil
+        scanDetail = nil
     }
 
-    // MARK: - Private
+    private func pollScanDetail(scanId: String) async {
+        isLoadingDetail = true
+        defer { isLoadingDetail = false }
 
-    private func lookupProduct(barcode: String) async {
-        isLookingUp = true
-        defer { isLookingUp = false }
+        var attempts = 0
+        let maxAttempts = 30
 
-        do {
-            let product = try await lookupProductUseCase.execute(barcode: barcode)
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
-                detectedProduct = product
+        while attempts < maxAttempts {
+            do {
+                let detail = try await fetchScanDetailUseCase.execute(scanId: scanId)
+                if detail.status == .completed || detail.status == .failed {
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                        scanDetail = detail
+                    }
+                    return
+                }
+            } catch {
+                break
             }
-        } catch let error as ProductError {
-            errorMessage = error.userMessage
-            lastSubmittedBarcode = nil // allow retry on the same code
-        } catch {
-            errorMessage = ProductError.unknown.userMessage
-            lastSubmittedBarcode = nil
+            attempts += 1
+            try? await Task.sleep(for: .seconds(1))
         }
+
+        errorMessage = ScanError.unknown.userMessage
     }
 }

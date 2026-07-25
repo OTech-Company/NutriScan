@@ -1,33 +1,25 @@
-//
-//  ProductDetailViewModel.swift
-//  NutriScan
-//
-//  Created by Osama Hosam on 19/07/2026.
-//
-
-
 import Foundation
 
 @MainActor
 final class ProductDetailViewModel: ObservableObject {
 
-    @Published private(set) var product: Product?
+    @Published private(set) var scanDetail: ScanDetail?
     @Published private(set) var isLoading = false
     @Published var errorMessage: String?
 
-    let barcode: String
-    private let lookupProductUseCase: LookupProductUseCase
+    let scanId: String
+    private let fetchScanDetailUseCase: FetchScanDetailUseCase
 
     nonisolated init(
-        barcode: String,
-        lookupProductUseCase: LookupProductUseCase = DIContainer.shared.resolve(type: LookupProductUseCase.self)
+        scanId: String,
+        fetchScanDetailUseCase: FetchScanDetailUseCase = DIContainer.shared.resolve(type: FetchScanDetailUseCase.self)
     ) {
-        self.barcode = barcode
-        self.lookupProductUseCase = lookupProductUseCase
+        self.scanId = scanId
+        self.fetchScanDetailUseCase = fetchScanDetailUseCase
     }
 
     func loadIfNeeded() {
-        guard product == nil, !isLoading else { return }
+        guard scanDetail == nil, !isLoading else { return }
         Task { await load() }
     }
 
@@ -35,11 +27,11 @@ final class ProductDetailViewModel: ObservableObject {
         isLoading = true
         defer { isLoading = false }
         do {
-            product = try await lookupProductUseCase.execute(barcode: barcode)
-        } catch let error as ProductError {
+            scanDetail = try await fetchScanDetailUseCase.execute(scanId: scanId)
+        } catch let error as ScanError {
             errorMessage = error.userMessage
         } catch {
-            errorMessage = ProductError.unknown.userMessage
+            errorMessage = ScanError.unknown.userMessage
         }
     }
 }

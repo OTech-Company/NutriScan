@@ -1,22 +1,16 @@
-//
-//  ScanRoute.swift
-//  NutriScan
-//
-//  Created by Osama Hosam on 14/07/2026.
-//
 import SwiftUI
 
 enum ScanRoute: Route {
     case scan
-    case productDetail(barcode: String)
+    case scanDetail(scanId: String)
 
     @ViewBuilder
     var destination: some View {
         switch self {
         case .scan:
             ScanScreen()
-        case .productDetail(let barcode):
-            ProductDetailView(barcode: barcode)
+        case .scanDetail(let scanId):
+            ProductDetailView(scanId: scanId)
         }
     }
 }
