@@ -1,12 +1,14 @@
 //
-//  SettingsIconBadge.swift
+//  MenuIconBadge.swift
 //  NutriScan
+//
+//  Created by Ahmed Nageh on 26/07/2026.
 //
 
 import SwiftUI
 
 // MARK: - Icon Badge (circular teal container)
-struct SettingsIconBadge: View {
+struct MenuIconBadge: View {
     let icon: String
 
     var body: some View {
@@ -20,7 +22,7 @@ struct SettingsIconBadge: View {
 }
 
 #Preview {
-    SettingsIconBadge(icon: "person.crop.circle.badge.pencil")
+    MenuIconBadge(icon: "person.crop.circle.badge.pencil")
         .padding()
         .background(Color.SettingsSemantic.screenBackground)
 }
