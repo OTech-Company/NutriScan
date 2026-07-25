@@ -38,8 +38,9 @@ struct ProfileView: View {
                 ProfileHeaderView(
                     userName: viewModel.state.fullName,
                     avatarURL: nil,
-                    streakDays: 15,  // TODO: not part of the current contract — flagged previously
-                    onEdit: { router.push(ProfileRoute.editProfile) }
+                    streakDays:viewModel.state.streakDays,
+                    onEdit: { router.push(ProfileRoute.editProfile)
+                    }
                 ).padding(.top, 42)
 
                 VStack(spacing: 0) {
