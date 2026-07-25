@@ -2,102 +2,118 @@
 //  ProfileView.swift
 //  NutriScan
 //
-//  Created by Osama Hosam on 14/07/2026.
+//  Created by Mina_Wagdy on 24/07/2026.
 //
 
 import SwiftUI
 
-// MARK: - Profile Screen
 struct ProfileView: View {
-    @State private var viewModel: ProfileViewModel
-    @State private var notificationsEnabled = true
     @EnvironmentObject private var router: AppRouter
-    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
-
-    init(viewModel: ProfileViewModel) {
-        _viewModel = State(initialValue: viewModel)
-    }
-    
+    var viewModel: ProfileViewModel
+    @State private var isFetchingProfile = true
+    @State private var sheetMember: FamilyMember?      // nil sentinel for "not shown"
+    @State private var isAddingNewMember = false
     var body: some View {
-        VStack(spacing: 0) {
-            switch viewModel.uiState {
-            case .loading:
-                ProgressView()
-                    .frame(maxHeight: .infinity)
-            case .success(let profile, let streak, let badges):
-                ScrollView {
-                    VStack(spacing: 20) {
-                        // Header Component
-                        HeaderComponent(
-                            fullName: profile.fullName,
-                            streakCount: streak,
-                            badgesCount: badges
-                        )
-                        
-                        VStack(spacing: 16) {
-                            // Health Card Component
-                            HealthProfileCardComponent(
-                                completionPercentage: profile.completionPercentage,
-                                onEditClicked: {
-                                    print("Edit profile")
-                                    router.push(ProfileRoute.editProfile)
-                                }
+        ZStack(alignment: .top) {
+            Color.ProfileSemantics.headerBackground
+                .ignoresSafeArea()
+            if isFetchingProfile {
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .tint(.white)
+
+                    Text("Loading Profile...")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                }
+
+                .frame(
+                    maxWidth: .infinity, maxHeight: .infinity,
+                    alignment: .center)
+            } else {
+
+                ProfileHeaderDecoration()
+
+                ProfileHeaderView(
+                    userName: viewModel.state.fullName,
+                    avatarURL: nil,
+                    streakDays: 15,  // TODO: not part of the current contract — flagged previously
+                    onEdit: { router.push(ProfileRoute.editProfile) }
+                ).padding(.top, 42)
+
+                VStack(spacing: 0) {
+                    ScrollView(showsIndicators: false) {
+                        VStack(
+                            alignment: .leading,
+                            spacing: ProfileSemantics.Spacing.sectionSpacing
+                        ) {
+                            FamilyMembersSectionView(
+                                members: viewModel.state.familyMembers,
+                                onAddMember: { isAddingNewMember = true },
+                                onShowDetails: { member in sheetMember = member }
                             )
-                            
-                            // Navigation Menu Options
-                            VStack(spacing: 12) {
-                                MenuOptionRowComponent(icon: "person", title: "Personal Information") {
-                                    print("Go to personal info")
-                                    router.push(ProfileRoute.personalInformation)
-                                }
-                                MenuOptionRowComponent(icon: "clock.arrow.circlepath", title: "Scan History") {
-                                    print("Go to history")
+
+                            SettingsSectionView(
+                                onScanHistory: {
                                     router.push(ProfileRoute.scanHistory)
-                                }
-                                MenuOptionRowComponent(icon: "gearshape", title: "Settings") {
-                                    print("Go to settings")
+                                },
+                                onNotifications: { /* TODO: no ProfileRoute case for notifications yet */
+                                },
+                                onSettings: {
                                     router.push(ProfileRoute.settings)
                                 }
-                                // Toggle Option
-                                ToggleOptionRowComponent(
-                                    icon: "bell",
-                                    title: "Notifications",
-                                    isOn: $notificationsEnabled
-                                )
-                                .onChange(of: notificationsEnabled) { _, newValue in
-                                    viewModel.toggleNotifications(isEnabled: newValue)
-                                }
-                            }
-                            
-                            // Destructive CTA
-                            Button(action: { print("Logout") }) {
-                                Text("Log Out")
-                                    .fontWeight(.semibold)
-                                    .foregroundColor(.red)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(
-                                        Capsule()
-                                            .stroke(Color.red.opacity(0.3), lineWidth: 1)
-                                    )
-                            }
-                            .padding(.top, 20)
+                            )
                         }
-                        .padding(.horizontal, 20)
+                        .padding(
+                            .horizontal,
+                            ProfileSemantics.Spacing.horizontalPadding
+                        )
+                        .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
+                        .padding(.bottom, 100)  // clearance above bottom tab bar
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-            case .error(let message):
-                VStack {
-                    Text(message).foregroundColor(.red)
-                    Button("Retry") {
-                        Task { await viewModel.loadProfile() }
-                    }
-                }
+                .background(Color.ProfileSemantics.containerBackground)
+                .clipShape(
+                    RoundedCorner(
+                        radius: ProfileSemantics.Radius.containerTop,
+                        corners: [.topLeft, .topRight])
+                )
+                .padding(.top, 180)
+                .ignoresSafeArea(edges: .bottom)
             }
         }
-        .edgesIgnoringSafeArea(.top)
+        .ignoresSafeArea()
+        .navigationBarHidden(true)
         .task {
+            isFetchingProfile = true
             await viewModel.loadProfile()
+            withAnimation(.easeIn(duration: 0.3)) {
+                isFetchingProfile = false
+            }
         }
+        .sheet(isPresented: $isAddingNewMember) {
+            FamilyMemberSheetView(
+                existingMember: nil,
+                onSave: { input in
+                    Task { await viewModel.addFamilyMember(input) }
+                }
+            )
+            .presentationDetents([.large])
+        }
+        .sheet(item: $sheetMember) { member in
+            FamilyMemberSheetView(
+                existingMember: member,
+                onSave: { input in
+                    Task { await viewModel.updateFamilyMember(id: member.id ?? "", with: input) }
+                },
+                onDelete: {
+                    Task { await viewModel.deleteFamilyMember(id: member.id ?? "") }
+                }
+            )
+            .presentationDetents([.large])
+        }
+        
     }
 }

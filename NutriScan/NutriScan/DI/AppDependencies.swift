@@ -17,8 +17,10 @@ struct AppDependencies {
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
         ProfileAssembly(),
+        EditProfileAssembly(),
         ScanAssembly(),
-        StepTrackerAssembly()
+        StepTrackerAssembly(),
+        RAGAssembly()
         // Teammates: add your feature's Assembly here, e.g.
         // HomeAssembly(),
         // AuthAssembly(),
@@ -36,6 +38,15 @@ struct ScanAssembly: Assembly {
         container.register(
             type: LookupProductUseCase.self,
             component: LookupProductUseCaseImpl(repository: ProductRepositoryImpl())
+        )
+    }
+}
+
+struct RAGAssembly: Assembly {
+    func assemble(container: DIContainer) {
+        container.register(
+            type: QueryRAGUseCase.self,
+            component: QueryRAGUseCaseImpl(repository: RAGRepositoryImpl())
         )
     }
 }
