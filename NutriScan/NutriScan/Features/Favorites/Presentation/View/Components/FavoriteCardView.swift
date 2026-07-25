@@ -9,24 +9,25 @@ import SwiftUI
 
 struct FavoriteCardView: View {
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 12) {
             Image("testImage")
                 .resizable()
                 .scaledToFill()
-                .frame(height: 180)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .frame(height: 140)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
             
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Milk Product")
-                        .font(Font.AppFont.title3)
-                        .foregroundStyle(Color.Teal.teal1400)
+                        .font(Font.AppFont.textSecondary)
+                        .foregroundStyle(Color.Favorites.titleColor)
                     
                     Text("Safe")
-                        .padding(.horizontal, 12)
+                        .font(Font.AppFont.textCaption)
+                        .padding(.horizontal, 6)
                         .padding(.vertical, 2)
-                        .foregroundStyle(.white)
-                        .background(Capsule().foregroundStyle(Color.Teal.teal1400))
+                        .foregroundStyle(Color.Teal.teal100)
+                        .background(Capsule().foregroundStyle(Color.Teal.teal1000))
                 }
                 
                 Spacer()
@@ -35,11 +36,12 @@ struct FavoriteCardView: View {
                     Text("180")
                     Text("Kcal")
                 }
-                .foregroundStyle(Color.Teal.teal800)
+                .font(Font.AppFont.textCaption)
+                .foregroundStyle(Color.Favorites.caloriesColor)
                 .padding(.vertical, 2)
                 .padding(.horizontal, 8)
-                .background(Color.Teal.teal200)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .background(Color.Teal.teal300)
+                .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             
             SwipeToActionButton(actionTitle: "Swipe right to add") {
@@ -47,12 +49,11 @@ struct FavoriteCardView: View {
             }
   
         }
-        .frame(height: 360)
-        .padding(.vertical, 12)
-        .padding(.horizontal, 12)
-        .background(Color.white)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 8)
+        .background(Color.Favorites.cardColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
-        .customTealShadow()
+        .customLightShadow()
         
 
     }

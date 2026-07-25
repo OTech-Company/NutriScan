@@ -10,19 +10,19 @@ import SwiftUI
 struct FavoritesGridView: View {
     
     let columns = [
-        GridItem(.flexible(), spacing: 1),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: 12),
+        GridItem(.flexible(), spacing: 12)
     ]
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 16) {
+            LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(1..<6) { _ in
                     FavoriteCardView()
                 }
             }
             .padding(.horizontal, 22)
-            .padding(.top, 16)
+            .padding(.top, 12)
         }
     }
 }

@@ -14,44 +14,42 @@ struct SwipeToActionButton: View {
     @State private var dragOffset: CGFloat = 0
     @State private var isCompleted: Bool = false
     
-    private let thumbSize: CGFloat = 28
+    private let thumbWidth: CGFloat = 36
+    private let thumbHeight: CGFloat = 20
     private let trackInset: CGFloat = 2 // The horizontal padding inside the track
     
     var body: some View {
         GeometryReader { geometry in
             let trackWidth = geometry.size.width
-            // Correct maxDrag calculation: Total width minus the thumb size and track padding on both sides
-            let maxDrag = trackWidth - thumbSize - (trackInset * 2)
+            // Correct maxDrag calculation: Total width minus the thumb width and track padding on both sides
+            let maxDrag = trackWidth - thumbWidth - (trackInset * 2)
             
             ZStack(alignment: .leading) {
                 // Background Track
                 Capsule()
-                    .fill(Color.Gray.gray300)
-                    .frame(height: 36)
+                    .fill(Color.Favorites.swipeBackgroundColor)
+                    .frame(height: 24)
                 
                 // Text Instruction (Centered dynamically)
                 HStack {
                     Spacer()
                     Text(isCompleted ? "Added!" : actionTitle)
-                        .font(Font.AppFont.textSecondary)
-                        .foregroundColor(Color.Gray.gray500)
-                        .frame(width: trackWidth, alignment: .center)
-                        .padding(.leading, isCompleted ? 0 : 16)
+                        .font(Font.AppFont.lexendDecaLight12)
+                        .foregroundColor(Color.Favorites.swipeTextColor)
+                        .padding(.leading, isCompleted ? 0 : 28) // Offset a bit to balance the thumb visually
                     Spacer()
                 }
                 
                 // Sliding Thumb / Button
                 HStack {
                     ZStack {
+                        Capsule()
+                            .foregroundStyle(Color.Teal.teal1000)
                         Image(systemName: "chevron.right")
                             .font(.system(size: 12, weight: .bold))
-                            .frame(maxHeight: .infinity)
                             .foregroundColor(.white)
-                            .padding(.horizontal, 16)
-                            .background(Capsule().foregroundStyle(Color.Teal.teal1400))
-                            .padding(.leading, 22)
                     }
-                    .frame(width: thumbSize, height: thumbSize)
+                    .frame(width: thumbWidth, height: thumbHeight)
                     .offset(x: max(0, min(dragOffset, maxDrag)))
                     .gesture(
                         DragGesture()
@@ -81,7 +79,7 @@ struct SwipeToActionButton: View {
                 .padding(.horizontal, trackInset)
             }
         }
-        .frame(height: 36)
+        .frame(height: 24)
     }
     
     private func resetSlider() {
