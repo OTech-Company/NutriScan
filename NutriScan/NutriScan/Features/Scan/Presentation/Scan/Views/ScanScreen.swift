@@ -5,7 +5,6 @@ struct ScanScreen: View {
     @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
-    @State private var scanWaveOffset: CGFloat = -130
 
     init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -66,30 +65,32 @@ struct ScanScreen: View {
                 Rectangle()
                     .stroke(Color.white.opacity(0.8), lineWidth: 2)
                     .frame(height: 260)
-                
+
                 // Scanning wave animation
-                scanningWave
-                    .frame(height: 260)
-                    .clipped()
-                
+                TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { timeline in
+                    let time = timeline.date.timeIntervalSinceReferenceDate
+                    let cycle = time.remainder(dividingBy: 2.0)
+                    let progress = cycle / 2.0
+                    let yOffset = (progress - 0.5) * 260
+
+                    scanningWave(yOffset: yOffset)
+                }
+                .frame(height: 260)
+                .clipped()
+
                 cornerBrackets
             }
             Spacer()
         }
-        .onAppear {
-            startScanAnimation()
-        }
     }
 
-    private var scanningWave: some View {
+    private func scanningWave(yOffset: CGFloat) -> some View {
         GeometryReader { geo in
-            let waveHeight: CGFloat = 2
             let width = geo.size.width
-            let height = geo.size.height
-            
+
             Path { path in
-                path.move(to: CGPoint(x: 0, y: scanWaveOffset))
-                path.addLine(to: CGPoint(x: width, y: scanWaveOffset))
+                path.move(to: CGPoint(x: 0, y: 0))
+                path.addLine(to: CGPoint(x: width, y: 0))
             }
             .stroke(
                 LinearGradient(
@@ -97,21 +98,10 @@ struct ScanScreen: View {
                     startPoint: .leading,
                     endPoint: .trailing
                 ),
-                style: StrokeStyle(lineWidth: waveHeight, lineCap: .round)
+                style: StrokeStyle(lineWidth: 2, lineCap: .round)
             )
             .shadow(color: .teal, radius: 8)
-        }
-    }
-
-    private func startScanAnimation() {
-        let height: CGFloat = 260
-        withAnimation(.linear(duration: 2.0).repeatForever(autoreverses: false)) {
-            scanWaveOffset = 130
-        }
-        // Reset and restart
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            scanWaveOffset = -130
-            startScanAnimation()
+            .offset(y: yOffset)
         }
     }
 
