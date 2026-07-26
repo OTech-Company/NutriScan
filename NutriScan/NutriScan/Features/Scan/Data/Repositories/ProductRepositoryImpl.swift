@@ -23,6 +23,8 @@ final class ScanRepositoryImpl: ScanRepository {
 
     func fetchScanDetail(scanId: String) async throws -> ScanDetail {
         let dto = try await apiService.fetchScanDetail(scanId: scanId)
+        print("row DTO: \(dto)")
+        print("after cleaning it up: \(mapDetail(dto))")
         return mapDetail(dto)
     }
 
