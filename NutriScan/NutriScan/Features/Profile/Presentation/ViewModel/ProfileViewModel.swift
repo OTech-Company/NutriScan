@@ -10,6 +10,7 @@ import Foundation
 @Observable
 final class ProfileViewModel {
     var state = ProfileState()
+    private(set) var hasLoaded = false
 
     private let getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol
     private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
@@ -30,7 +31,9 @@ final class ProfileViewModel {
     }
 
     @MainActor
-    func loadProfile() async {
+    func loadProfile(forceRefresh: Bool = false) async {
+        guard !hasLoaded || forceRefresh else { return }
+
         state.isLoading = true
         state.errorMessage = nil
 
@@ -43,6 +46,7 @@ final class ProfileViewModel {
             let summary = try await getProfileSummaryUseCase.execute()
             state.fullName = summary.fullName
             state.familyMembers = summary.familyMembers
+            hasLoaded = true
         } catch {
             state.errorMessage = error.localizedDescription
         }

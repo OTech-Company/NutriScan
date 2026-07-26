@@ -70,7 +70,7 @@ struct ProfileView: View {
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .task {
-            isFetchingProfile = true
+            isFetchingProfile = !viewModel.hasLoaded
             await viewModel.loadProfile()
             withAnimation(.easeIn(duration: 0.3)) {
                 isFetchingProfile = false
