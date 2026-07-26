@@ -2,18 +2,25 @@
 //  GetStreakUseCase.swift
 //  NutriScan
 //
-//  Created by Mina_Wagdy on 25/07/2026.
-//
+
 import Foundation
 
+// MARK: - Protocol
+
+protocol GetStreakUseCaseProtocol {
+    func execute() async throws -> Int
+}
+
+// MARK: - Implementation
+
 final class GetStreakUseCase: GetStreakUseCaseProtocol {
-    private let repository: StreakRepositoryProtocol
-    
-    init(repository: StreakRepositoryProtocol) {
+    private let repository: ProfileRepositoryProtocol
+
+    init(repository: ProfileRepositoryProtocol = DIContainer.shared.resolve(type: ProfileRepositoryProtocol.self)) {
         self.repository = repository
     }
-    
+
     func execute() async throws -> Int {
-        return try await repository.getStreak()
+        try await repository.getStreak()
     }
 }

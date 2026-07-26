@@ -2,15 +2,21 @@
 //  GetProfileSummaryUseCase.swift
 //  NutriScan
 //
-//  Created by Mina_Wagdy on 24/07/2026.
-//
 
 import Foundation
 
-final class GetProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol {
-    private let repository: ProfileSummaryRepositoryProtocol
+// MARK: - Protocol
 
-    init(repository: ProfileSummaryRepositoryProtocol = DIContainer.shared.resolve(type: ProfileSummaryRepositoryProtocol.self)) {
+protocol GetProfileSummaryUseCaseProtocol {
+    func execute() async throws -> ProfileSummary
+}
+
+// MARK: - Implementation
+
+final class GetProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol {
+    private let repository: ProfileRepositoryProtocol
+
+    init(repository: ProfileRepositoryProtocol = DIContainer.shared.resolve(type: ProfileRepositoryProtocol.self)) {
         self.repository = repository
     }
 
