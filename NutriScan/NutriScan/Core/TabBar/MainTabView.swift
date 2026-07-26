@@ -45,7 +45,7 @@ struct MainTabView: View {
 //                    .background(colorScheme == .light ? .white : Color.Teal.teal1600)
 //                    .tag(AppTab.bookmark)
                 
-                FavoritesGridView(savedItems: mockFavoriteUIStates)
+                FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
                     .tag(AppTab.bookmark)
 
                 ProfileFlowView()

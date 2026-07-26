@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FavoritesGridView: View {
     
-    let savedItems: [FavUIState]
+    let savedItems: [FavoritesScanEntity]
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -20,7 +20,8 @@ struct FavoritesGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(savedItems, id: \.id) { item in
-                    FavoriteCardView(favUIState: FavUIState(id: item.id, image: item.image, title: item.title, calories: item.calories, condition: item.condition)
+                    FavoriteCardView(favUIState:
+                                        FavUIState(entity: item)
                     )
                 }
             }
@@ -31,29 +32,5 @@ struct FavoritesGridView: View {
 }
 
 #Preview {
-    FavoritesGridView(savedItems: mockFavoriteUIStates)
+    FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
 }
-
-let mockFavoriteUIStates: [FavUIState] = [
-    FavUIState(
-        id: "1",
-        image: "testImage",
-        title: "Milk Product",
-        calories: 180.0,
-        condition: .Safe
-    ),
-    FavUIState(
-        id: "2",
-        image: "testImage2",
-        title: "Whole Wheat Bread",
-        calories: 220.0,
-        condition: .Caution
-    ),
-    FavUIState(
-        id: "3",
-        image: "testImage3",
-        title: "Sugary Snack",
-        calories: 450.0,
-        condition: .UnSafe
-    )
-]

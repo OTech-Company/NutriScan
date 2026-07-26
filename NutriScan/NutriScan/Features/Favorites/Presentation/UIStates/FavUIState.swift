@@ -14,17 +14,15 @@ struct FavUIState {
     let calories: Double
     let condition: Condition
     
-//    init(entity: ) {
-//        return FavUIState(
-//            image: entity.image,
-//            title: entity.title,
-//            calories: entity.calories,
-//            condition: entity.condition
-//        )
-//    }
+    
 }
 
-enum Condition: String {
-    case Safe
-    case Caution
+extension FavUIState {
+    init(entity: FavoritesScanEntity) {
+        self.id = entity.id
+        self.title = entity.productName
+        self.image = entity.imageUrl
+        self.calories = entity.calories
+        self.condition = entity.condition
+    }
 }
