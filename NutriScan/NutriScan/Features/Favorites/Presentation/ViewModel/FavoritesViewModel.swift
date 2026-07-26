@@ -27,10 +27,8 @@ class FavoritesViewModel {
         
         do {
             let favs = try await favoritesUseCase.getFavorites()
-            print(favs.count)
             favorites = favs
         } catch {
-            print(error.localizedDescription)
             loadFavoritesError = error.localizedDescription
         }
         isLoadingFavorites = false

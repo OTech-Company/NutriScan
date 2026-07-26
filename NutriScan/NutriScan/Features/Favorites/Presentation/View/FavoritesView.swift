@@ -19,6 +19,9 @@ struct FavoritesView: View {
                 Text("Favorites Is Empty...")
             }
         }
+        .task {
+            await viewModel.loadFavorites()
+        }
     }
 }
 
