@@ -19,7 +19,6 @@ enum ProfileSemantics {
         static let addMemberIconCornerRadius: CGFloat = 7
         static let showDetailsButtonWidth: CGFloat = 75
         static let showDetailsButtonHeight: CGFloat = 25
-        static let addMemberPlusIconSize: CGFloat = 12
         
         // MARK: - Added Sizes
         static let sheetDragHandleWidth: CGFloat = 40
@@ -38,6 +37,7 @@ enum ProfileSemantics {
         static let errorIconSize: CGFloat = 24
         static let errorTextOpacity: Double = 0.8
         static let singleLine: Int = 1
+        static let addMemberPlusIconSize: CGFloat = 12
     }
 
     enum Spacing {
@@ -47,9 +47,9 @@ enum ProfileSemantics {
         static let streakPaddingVertical: CGFloat = 2
         static let streakGap: CGFloat = 10
         static let familyMembersGap: CGFloat = 8
-        static let addMemberSpacing: CGFloat = 6
         
         // MARK: - Added Spacing
+        static let zero: CGFloat = 0
         static let tinySpacing: CGFloat = 4
         static let smallSpacing: CGFloat = 8
         static let menuRowSpacing: CGFloat = 12
@@ -59,6 +59,9 @@ enum ProfileSemantics {
         static let headerVerticalPadding: CGFloat = 42
         static let decorationOffsetX: CGFloat = 90
         static let decorationOffsetY: CGFloat = -100
+        static let addMemberSpacing: CGFloat = 6
+        static let bottomTabBarClearance: CGFloat = 100
+        static let containerTopPadding: CGFloat = 180
     }
 
     enum Radius {
@@ -74,6 +77,7 @@ enum ProfileSemantics {
         static let dragHandle: CGFloat = 3
         static let shimmerSmall: CGFloat = 4
         static let shimmerMedium: CGFloat = 6
+        static let sheetPresentation: CGFloat = 32
     }
 
     enum Border {
@@ -96,6 +100,9 @@ enum ProfileSemantics {
     enum Animation {
         static let navigationTransition: SwiftUI.Animation = .easeInOut(duration: 0.3)
         static let scrollTransition: SwiftUI.Animation = .easeInOut(duration: 0.25)
+        
+        // MARK: - Added Animations
+        static let fetchTransition: SwiftUI.Animation = .easeIn(duration: 0.3)
     }
     
     enum HeaderLayout {
