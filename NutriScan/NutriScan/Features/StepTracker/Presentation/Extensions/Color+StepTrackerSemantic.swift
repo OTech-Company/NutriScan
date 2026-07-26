@@ -56,5 +56,12 @@ extension Color {
         static let chartCardBackground = Color(light: .white, dark: Color.Teal.teal1400)
         static let axisText = Color(light: Color.Gray.gray800, dark: Color.Gray.gray600)
         static let chartTitle = Color(light: Color.Gray.gray1400, dark: .white)
+
+        // MARK: Dashboard
+        static let tabUnselected = Color(light: Color.Gray.gray700, dark: Color.Teal.teal1200)
+        static let tabBackground = Color(light: Color.Gray.gray200, dark: Color.Teal.teal1400)
+        static let navArrowBackground = Color(light: Color.Gray.gray200, dark: Color.Teal.teal1400)
+        static let insightSubtitle = Color(light: Color.Gray.gray700, dark: Color.Teal.teal1200)
+        static let weeklyAvgBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1400)
     }
 }
