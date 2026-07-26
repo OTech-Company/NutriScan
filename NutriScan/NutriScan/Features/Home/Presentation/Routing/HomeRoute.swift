@@ -10,6 +10,7 @@ enum HomeRoute: Route {
     case mealDetail(id: String)
     case summary
     case news
+    case scanDetail(scanId: String)
 
     @ViewBuilder
     var destination: some View {
@@ -20,6 +21,8 @@ enum HomeRoute: Route {
             HomeSummaryView()
         case .news:
             NewsView()
+        case .scanDetail(let scanId):
+            ProductDetailsScreen(scanId: scanId)
         }
     }
 }
