@@ -13,9 +13,9 @@ struct SettingsSectionView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-            SettingsNavRow(icon: "clock.arrow.circlepath", title: "Scan History", action: onScanHistory)
-            SettingsNavRow(icon: "bell", title: "Notifications", action: onNotifications)
-            SettingsNavRow(icon: "gearshape", title: "Settings", action: onSettings)
+            MenuRowView(icon: "clock.arrow.circlepath", title: "Scan History", action: onScanHistory)
+            MenuRowView(icon: "bell", title: "Notifications", action: onNotifications)
+            MenuRowView(icon: "gearshape", title: "Settings", action: onSettings)
         }
     }
 }

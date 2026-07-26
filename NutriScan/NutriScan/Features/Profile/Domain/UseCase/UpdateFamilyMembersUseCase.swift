@@ -2,19 +2,25 @@
 //  UpdateFamilyMembersUseCase.swift
 //  NutriScan
 //
-//  Created by Mina_Wagdy on 24/07/2026.
-//
 
 import Foundation
 
-final class UpdateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol {
-    private let repository: ProfileSummaryRepositoryProtocol
+// MARK: - Protocol
 
-    init(repository: ProfileSummaryRepositoryProtocol = DIContainer.shared.resolve(type: ProfileSummaryRepositoryProtocol.self)) {
+protocol UpdateFamilyMembersUseCaseProtocol {
+    func execute(members: [FamilyMemberInput]) async throws -> ProfileInfo
+}
+
+// MARK: - Implementation
+
+final class UpdateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol {
+    private let repository: ProfileRepositoryProtocol
+
+    init(repository: ProfileRepositoryProtocol = DIContainer.shared.resolve(type: ProfileRepositoryProtocol.self)) {
         self.repository = repository
     }
 
-    func execute(members: [FamilyMemberInput]) async throws -> ProfileSummary {
+    func execute(members: [FamilyMemberInput]) async throws -> ProfileInfo {
         try await repository.updateFamilyMembers(members)
     }
 }

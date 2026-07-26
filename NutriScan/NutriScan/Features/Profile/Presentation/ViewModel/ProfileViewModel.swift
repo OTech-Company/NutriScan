@@ -10,27 +10,30 @@ import Foundation
 @Observable
 final class ProfileViewModel {
     var state = ProfileState()
+    private(set) var hasLoaded = false
 
-    private let getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol
+    private let getProfileUseCase: GetProfileUseCaseProtocol
     private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
     
     private let getStreakUseCase: GetStreakUseCaseProtocol
     private let updateStreakUseCase: UpdateStreakUseCaseProtocol
 
     init(
-        getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileSummaryUseCaseProtocol.self),
+        getProfileUseCase: GetProfileUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileUseCaseProtocol.self),
         updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self),
         getStreakUseCase: GetStreakUseCaseProtocol = DIContainer.shared.resolve(type: GetStreakUseCaseProtocol.self),
         updateStreakUseCase: UpdateStreakUseCaseProtocol = DIContainer.shared.resolve(type: UpdateStreakUseCaseProtocol.self)
     ) {
-        self.getProfileSummaryUseCase = getProfileSummaryUseCase
+        self.getProfileUseCase = getProfileUseCase
         self.updateFamilyMembersUseCase = updateFamilyMembersUseCase
         self.getStreakUseCase = getStreakUseCase
         self.updateStreakUseCase = updateStreakUseCase
     }
 
     @MainActor
-    func loadProfile() async {
+    func loadProfile(forceRefresh: Bool = false) async {
+        guard !hasLoaded || forceRefresh else { return }
+
         state.isLoading = true
         state.errorMessage = nil
 
@@ -40,9 +43,10 @@ final class ProfileViewModel {
             state.streakDays = try await getStreakUseCase.execute()
             
             // Load the rest of the profile
-            let summary = try await getProfileSummaryUseCase.execute()
-            state.fullName = summary.fullName
-            state.familyMembers = summary.familyMembers
+            let profileInfo = try await getProfileUseCase.execute()
+            state.fullName = profileInfo.fullName
+            state.familyMembers = profileInfo.familyMembers
+            hasLoaded = true
         } catch {
             state.errorMessage = error.localizedDescription
         }
@@ -87,9 +91,9 @@ final class ProfileViewModel {
         state.errorMessage = nil
 
         do {
-            let summary = try await updateFamilyMembersUseCase.execute(members: members)
-            state.fullName = summary.fullName
-            state.familyMembers = summary.familyMembers
+            let profileInfo = try await updateFamilyMembersUseCase.execute(members: members)
+            state.fullName = profileInfo.fullName
+            state.familyMembers = profileInfo.familyMembers
         } catch {
             state.errorMessage = error.localizedDescription
         }

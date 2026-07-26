@@ -6,73 +6,61 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct ProfileHeaderView: View {
-    let userName: String
-    let avatarURL: String?
-    let streakDays: Int
+    let state: ProfileState
+    var isLoading: Bool = false
     var onEdit: () -> Void
 
     var body: some View {
         ZStack(alignment: .topLeading) {
-            HStack(spacing: 14) {
-                AsyncImage(url: avatarURL.flatMap(URL.init)) { image in
-                    image.resizable().scaledToFill()
-                } placeholder: {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .foregroundColor(.white.opacity(0.6))
-                }
-                .frame(
-                    width: ProfileSemantics.Sizes.avatarDiameter,
-                    height: ProfileSemantics.Sizes.avatarDiameter
-                )
-                .clipShape(Circle())
-                .overlay(
-                    Circle().stroke(
-                        Color.ProfileSemantics.avatarBorder,
-                        lineWidth: ProfileSemantics.Border.avatarBorderWidth)
-                )
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(userName)
-                        .font(Font.AppFont.title4)  // SemiBold 22
-                        .foregroundColor(Color.ProfileSemantics.userName)
-
-                    Text("\(streakDays) Day streak")
-                        .font(Font.AppFont.textSecondary)  // Lexend Deca Regular 14
-                        .foregroundColor(Color.ProfileSemantics.streakText)
-                        .padding(
-                            .horizontal,
-                            ProfileSemantics.Spacing.streakPaddingHorizontal
-                        )
-                        .padding(
-                            .vertical,
-                            ProfileSemantics.Spacing.streakPaddingVertical
-                        )
-                        .background(Color.ProfileSemantics.streakBackground)
-                        .clipShape(
-                            RoundedRectangle(
-                                cornerRadius: ProfileSemantics.Radius
-                                    .streakBadge))
-                }
-
-                Spacer()
-
-                Button(action: onEdit) {
-                    Image(systemName: "square.and.pencil")
-                        .font(.system(size: 24, weight: .medium))
-                        .foregroundColor(Color.ProfileSemantics.editIcon)
-                        .frame(
-                            width: ProfileSemantics.Sizes.editIconSize,
-                            height: ProfileSemantics.Sizes.editIconSize)
-                }
+            if isLoading {
+                ProfileHeaderLoadingView()
+            } else if let errorMessage = state.errorMessage, !errorMessage.isEmpty {
+                ProfileHeaderFailureView(message: errorMessage)
+            } else {
+                ProfileHeaderSuccessView(state: state, onEdit: onEdit)
             }
-            .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
-            .padding(.top, 42)
-            .padding(.bottom, 42)
         }
-        .frame(height: ProfileSemantics.HeaderLayout.headerHeight).clipShape(
-            RoundedCorner(radius: 0, corners: []))  // no bottom rounding on header itself
+        .frame(height: ProfileSemantics.HeaderLayout.headerHeight)
+        .clipShape(RoundedCorner(radius: 0, corners: []))
     }
+}
+
+#Preview("Profile Header") {
+    VStack(spacing: 20) {
+        ProfileHeaderView(
+            state: ProfileState(
+                fullName: "Sara Omar",
+                familyMembers: [],
+                streakDays: 15,
+                avatarURL: nil,
+                isLoading: false,
+                errorMessage: nil
+            ),
+            isLoading: false,
+            onEdit: {}
+        )
+        
+        ProfileHeaderView(
+            state: ProfileState(),
+            isLoading: true,
+            onEdit: {}
+        )
+        
+        ProfileHeaderView(
+            state: ProfileState(
+                fullName: "",
+                familyMembers: [],
+                streakDays: 0,
+                avatarURL: nil,
+                isLoading: false,
+                errorMessage: "No internet connection"
+            ),
+            isLoading: false,
+            onEdit: {}
+        )
+    }
+    .background(Color.ProfileSemantics.headerBackground)
 }

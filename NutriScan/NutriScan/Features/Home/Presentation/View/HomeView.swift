@@ -28,10 +28,10 @@ struct HomeView: View {
                 ExploreSectionHeader()
 
                 VStack {
-                    SettingsNavRow(icon: "newspaper.fill", title: "Health News") {
-                        router.push(HomeRoute.news)
+                    MenuRowView(icon: "newspaper.fill", title: "Health News") {
+                        // Add action when news button pressed
                     }
-                    SettingsNavRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
+                    MenuRowView(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
                         showRAGChat = true
                     }
                 }

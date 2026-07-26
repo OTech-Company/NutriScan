@@ -1,12 +1,14 @@
 //
-//  SettingsNavRow.swift
+//  MenuRowView.swift
 //  NutriScan
+//
+//  Created by Ahmed Nageh on 26/07/2026.
 //
 
 import SwiftUI
 
-// MARK: - Simple Navigation Row
-struct SettingsNavRow: View {
+// MARK: - Simple Navigation Row (Shared Component)
+struct MenuRowView: View {
     let icon: String
     let title: String
     var action: () -> Void = {}
@@ -14,7 +16,7 @@ struct SettingsNavRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 14) {
-                SettingsIconBadge(icon: icon)
+                MenuIconBadge(icon: icon)
 
                 Text(title)
                     .font(Font.AppFont.textPrimary)
@@ -36,7 +38,7 @@ struct SettingsNavRow: View {
 }
 
 #Preview {
-    SettingsNavRow(icon: "person.crop.circle.badge.pencil", title: "Profile Settings")
+    MenuRowView(icon: "person.crop.circle.badge.pencil", title: "Profile Settings")
         .padding()
         .background(Color.SettingsSemantic.screenBackground)
 }

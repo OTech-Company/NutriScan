@@ -1,14 +1,12 @@
 //
-//  ProfileSummaryEndpoint.swift
+//  ProfileEndpoint.swift
 //  NutriScan
-//
-//  Created by Mina_Wagdy on 24/07/2026.
 //
 
 import Foundation
 
-enum ProfileSummaryEndpoint: APIEndpoint {
-    case getProfileSummary
+enum ProfileEndpoint: APIEndpoint {
+    case getProfile
     case updateFamilyMembers(FamilyMembersUpdateRequestDTO)
 
     var baseURL: String { AppNetworkConfig.core.baseURL }
@@ -19,14 +17,14 @@ enum ProfileSummaryEndpoint: APIEndpoint {
 
     var method: HTTPMethod {
         switch self {
-        case .getProfileSummary: return .get
+        case .getProfile: return .get
         case .updateFamilyMembers: return .patch
         }
     }
 
     var body: RequestBody {
         switch self {
-        case .getProfileSummary: return .none
+        case .getProfile: return .none
         case .updateFamilyMembers(let dto): return .json(dto)
         }
     }

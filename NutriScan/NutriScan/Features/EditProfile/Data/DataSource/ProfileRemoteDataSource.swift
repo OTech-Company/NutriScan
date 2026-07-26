@@ -13,18 +13,18 @@ final class ProfileRemoteDataSource: ProfileRemoteDataSourceProtocol {
     }
 
     func getProfile() async throws -> EditProfileResponseDTO {
-        return try await networkService.request(ProfileEndpoint.getProfile)
+        return try await networkService.request(EditProfileEndpoint.getProfile)
     }
 
     func updateProfile(requestDTO: EditProfileUpdateRequestDTO) async throws -> EditProfileResponseDTO {
-        return try await networkService.request(ProfileEndpoint.updateProfile(requestDTO))
+        return try await networkService.request(EditProfileEndpoint.updateProfile(requestDTO))
     }
 
     func getAllergies() async throws -> [ReferenceItemDTO] {
-        return try await networkService.request(ProfileEndpoint.getAllergies)
+        return try await networkService.request(EditProfileEndpoint.getAllergies)
     }
 
     func getDiseases() async throws -> [ReferenceItemDTO] {
-        return try await networkService.request(ProfileEndpoint.getDiseases)
+        return try await networkService.request(EditProfileEndpoint.getDiseases)
     }
 }

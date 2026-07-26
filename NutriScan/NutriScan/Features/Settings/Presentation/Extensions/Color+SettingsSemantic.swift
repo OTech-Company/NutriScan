@@ -21,9 +21,9 @@ extension Color {
         static let headerSubtitle = Color(light: Color.Gray.gray100, dark: Color.Gray.gray200)
         // MARK: - Section Row
         static let rowBackground = Color(light: Color.Gray.gray100, dark: Color.Teal.teal1500)
-        static let rowTitle = Color(light: Color.Gray.gray500, dark: Color.Teal.teal1200)
-        static let rowChevron = Color(light: Color.Gray.gray500, dark: Color.Gray.gray500)
-        static let rowIconTint = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal1000)
+        static let rowTitle = Color(light: Color.Gray.gray500, dark: Color.Teal.teal500)
+        static let rowChevron = Color(light: Color.Gray.gray500, dark: Color.Teal.teal500)
+        static let rowIconTint = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal500)
         static let rowIconBackground = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1600)
         static let rowShadow = Color(light: Color.black.opacity(0.05), dark: Color.black.opacity(0.2))
 
