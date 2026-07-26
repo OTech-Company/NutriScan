@@ -6,6 +6,7 @@ import SwiftUI
 struct StepGaugeCardView: View {
     let currentSteps: Int
     let goalSteps: Int
+    var onTap: (() -> Void)?
 
     @State private var animatedProgress: Double = 0
     @State private var isTapped = false
@@ -21,75 +22,67 @@ struct StepGaugeCardView: View {
     private let gaugeRotation: Double = 90
 
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                .fill(Color.CaloriesSemantic.cardBackground)
-                .customLightShadow()
-
+        Button {
+            onTap?()
+        } label: {
             ZStack {
-                // Track
-                Circle()
-                    .trim(from: trackStart, to: trackEnd)
-                    .stroke(
-                        Color.Teal.teal200,
-                        style: StrokeStyle(lineWidth: 6, lineCap: .round)
-                    )
-                    .rotationEffect(.degrees(gaugeRotation))
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                    .fill(Color.CaloriesSemantic.cardBackground)
+                    .customLightShadow()
 
-                // Animated progress arc
-                Circle()
-                    .trim(from: trackStart, to: trackStart + (trackEnd - trackStart) * animatedProgress)
-                    .stroke(
-                        Color.Teal.teal700,
-                        style: StrokeStyle(lineWidth: 10, lineCap: .round)
-                    )
-                    .rotationEffect(.degrees(gaugeRotation))
+                ZStack {
+                    // Track
+                    Circle()
+                        .trim(from: trackStart, to: trackEnd)
+                        .stroke(
+                            Color.Teal.teal200,
+                            style: StrokeStyle(lineWidth: 6, lineCap: .round)
+                        )
+                        .rotationEffect(.degrees(gaugeRotation))
 
-                // Center text
-                VStack(spacing: 2) {
-                    Text("Steps")
-                        .font(Font.AppFont.textCaption)
-                        .foregroundColor(Color.CaloriesSemantic.stepsLabel)
-                        .frame(width: 32, height: 15)
+                    // Animated progress arc
+                    Circle()
+                        .trim(from: trackStart, to: trackStart + (trackEnd - trackStart) * animatedProgress)
+                        .stroke(
+                            Color.Teal.teal700,
+                            style: StrokeStyle(lineWidth: 10, lineCap: .round)
+                        )
+                        .rotationEffect(.degrees(gaugeRotation))
 
-                    Text("\(currentSteps.formatted())")
-                        .font(Font.AppFont.numbers)
-                        .foregroundColor(Color.CaloriesSemantic.stepsNumber)
-                        .contentTransition(.numericText())
+                    // Center text
+                    VStack(spacing: 2) {
+                        Text("Steps")
+                            .font(Font.AppFont.textCaption)
+                            .foregroundColor(Color.CaloriesSemantic.stepsLabel)
+                            .frame(width: 32, height: 15)
+
+                        Text("\(currentSteps.formatted())")
+                            .font(Font.AppFont.numbers)
+                            .foregroundColor(Color.CaloriesSemantic.stepsNumber)
+                            .contentTransition(.numericText())
+                    }
+                    .offset(y: -6)
+                    .opacity(showContent ? 1 : 0)
+                    .scaleEffect(showContent ? 1 : 0.5)
+
+                    // Bottom icon
+                    VStack {
+                        Spacer()
+                        Image("steps_icon")
+                            .resizable()
+                            .renderingMode(.template)
+                            .scaledToFit()
+                            .frame(width: 18, height: 20)
+                            .foregroundColor(Color.Teal.teal400)
+                    }
+                    .padding(.bottom, 2)
                 }
-                .offset(y: -6)
-                .opacity(showContent ? 1 : 0)
-                .scaleEffect(showContent ? 1 : 0.5)
-                
-                // Bottom icon
-                VStack {
-                    Spacer()
-                    Image("steps_icon")
-                        .resizable()
-                        .renderingMode(.template)
-                        .scaledToFit()
-                        .frame(width: 18, height: 20)
-                        .foregroundColor(Color.Teal.teal400)
-                }
-                .padding(.bottom, 2)
+                .padding(16)
             }
-            .padding(16)
+            .frame(width: 126, height: 126)
+            .scaleEffect(isTapped ? 0.9 : 1.0)
         }
-        .frame(width: 126, height: 126)
-        .scaleEffect(isTapped ? 0.9 : 1.0)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in
-                    withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
-                        isTapped = true
-                    }
-                }
-                .onEnded { _ in
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.5)) {
-                        isTapped = false
-                    }
-                }
-        )
+        .buttonStyle(.plain)
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.1)) {
                 showContent = true

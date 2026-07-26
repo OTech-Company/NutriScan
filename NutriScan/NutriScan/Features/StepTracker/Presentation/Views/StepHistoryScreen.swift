@@ -49,7 +49,11 @@ struct StepHistoryScreen: View {
                 headerSection
                 rangeTabs
                 dateNavigation
-                dailyInsightCard
+                DailyInsightCardView(
+                    steps: todaySteps,
+                    goalSteps: 10_000,
+                    weeklyAverage: weeklyAverage
+                )
                 stepHistoryChart
                 bottomStatsRow
             }
@@ -83,149 +87,30 @@ struct StepHistoryScreen: View {
     // MARK: - Range Tabs
 
     private var rangeTabs: some View {
-        HStack(spacing: 12) {
-            tabButton(title: "Week", range: .lastWeek)
-            tabButton(title: "Month", range: .lastMonth)
-            tabButton(title: "3 Months", range: .last3Months)
-            tabButton(title: "6 Months", range: .last6Months)
-        }
-    }
-
-    private func tabButton(title: String, range: StepHistoryRange) -> some View {
-        Button {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                selectedRange = range
+        RangePickerView(selectedRange: $selectedRange)
+            .onChange(of: selectedRange) { _, newRange in
                 selectedIndex = 0
+                viewModel.loadHistory(range: newRange)
             }
-            viewModel.loadHistory(range: range)
-        } label: {
-            Text(title)
-                .font(.custom("LexendDeca-Medium", size: 13))
-                .foregroundColor(selectedRange == range ? .white : Color.StepTrackerSemantic.tabUnselected)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
-                .background(
-                    Capsule()
-                        .fill(selectedRange == range ? Color.Teal.teal1000 : Color.StepTrackerSemantic.tabBackground)
-                )
-        }
     }
 
     // MARK: - Date Navigation
 
     private var dateNavigation: some View {
-        HStack {
-            Button {
+        DateNavigationView(
+            displayedDate: displayedDate,
+            canGoForward: selectedIndex > 0,
+            canGoBack: selectedIndex == 0,
+            onPrevious: {
                 withAnimation {
                     selectedIndex += 1
                 }
-            } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-                    .frame(width: 36, height: 36)
-                    .background(
-                        Circle()
-                            .fill(Color.StepTrackerSemantic.navArrowBackground)
-                    )
-            }
-            .disabled(selectedIndex == 0)
-            .opacity(selectedIndex == 0 ? 0.4 : 1)
-
-            Spacer()
-
-            Text(displayedDate)
-                .font(.custom("PlusJakartaSans-SemiBold", size: 17))
-                .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-
-            Spacer()
-
-            Button {
+            },
+            onNext: {
                 withAnimation {
                     if selectedIndex > 0 { selectedIndex -= 1 }
                 }
-            } label: {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-                    .frame(width: 36, height: 36)
-                    .background(
-                        Circle()
-                            .fill(Color.StepTrackerSemantic.navArrowBackground)
-                    )
             }
-            .disabled(selectedIndex == 0)
-            .opacity(selectedIndex == 0 ? 0.4 : 1)
-        }
-        .padding(.horizontal, 4)
-    }
-
-    // MARK: - Daily Insight Card
-
-    private var dailyInsightCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Daily Insight")
-                .font(.custom("PlusJakartaSans-SemiBold", size: 18))
-                .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-
-            HStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .stroke(Color.Teal.teal200, lineWidth: 5)
-                        .frame(width: 56, height: 56)
-
-                    Circle()
-                        .trim(from: 0, to: min(Double(todaySteps) / 10_000, 1.0))
-                        .stroke(Color.Teal.teal1000, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                        .frame(width: 56, height: 56)
-                        .rotationEffect(.degrees(-90))
-
-                    Image(systemName: "figure.walk")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(Color.Teal.teal1000)
-                }
-
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text("\(todaySteps.formatted())")
-                            .font(.custom("PlusJakartaSans-Bold", size: 24))
-                            .foregroundColor(Color.Teal.teal1000)
-                        Text("Steps")
-                            .font(.custom("LexendDeca-Regular", size: 14))
-                            .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
-                    }
-                    Text("of 10,000 Goal")
-                        .font(.custom("LexendDeca-Regular", size: 13))
-                        .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
-                }
-
-                Spacer()
-
-                VStack(alignment: .trailing, spacing: 2) {
-                    Text("Weekly Average")
-                        .font(.custom("LexendDeca-Regular", size: 12))
-                        .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
-                    HStack(alignment: .firstTextBaseline, spacing: 4) {
-                        Text("\(weeklyAverage.formatted())")
-                            .font(.custom("PlusJakartaSans-Bold", size: 20))
-                            .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-                        Text("Steps")
-                            .font(.custom("LexendDeca-Regular", size: 12))
-                            .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
-                    }
-                }
-                .padding(12)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.StepTrackerSemantic.weeklyAvgBackground)
-                )
-            }
-        }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.StepTrackerSemantic.chartCardBackground)
-                .customLightShadow()
         )
     }
 
@@ -329,7 +214,7 @@ struct StepHistoryScreen: View {
 
     private var bottomStatsRow: some View {
         HStack(spacing: 12) {
-            statCard(
+            StatCardView(
                 icon: "flame.fill",
                 iconColor: .orange,
                 title: "Calories\nBurned",
@@ -337,7 +222,7 @@ struct StepHistoryScreen: View {
                 unit: "kcal"
             )
 
-            statCard(
+            StatCardView(
                 icon: "mappin.circle.fill",
                 iconColor: Color.Teal.teal1000,
                 title: "Distance\nCovered",
@@ -345,7 +230,7 @@ struct StepHistoryScreen: View {
                 unit: "km"
             )
 
-            statCard(
+            StatCardView(
                 icon: "stopwatch.fill",
                 iconColor: Color.Teal.teal1000,
                 title: "Active\nMinutes",
@@ -353,43 +238,6 @@ struct StepHistoryScreen: View {
                 unit: "min"
             )
         }
-    }
-
-    private func statCard(icon: String, iconColor: Color, title: String, value: String, unit: String) -> some View {
-        VStack(spacing: 10) {
-            Image(systemName: icon)
-                .font(.system(size: 22))
-                .foregroundColor(iconColor)
-                .frame(width: 40, height: 40)
-                .background(
-                    Circle()
-                        .fill(iconColor.opacity(0.12))
-                )
-
-            Text(title)
-                .font(.custom("LexendDeca-Regular", size: 11))
-                .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .frame(height: 28)
-
-            HStack(alignment: .firstTextBaseline, spacing: 2) {
-                Text(value)
-                    .font(.custom("PlusJakartaSans-Bold", size: 18))
-                    .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-                Text(unit)
-                    .font(.custom("LexendDeca-Regular", size: 11))
-                    .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
-            }
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .padding(.horizontal, 8)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.StepTrackerSemantic.chartCardBackground)
-                .customLightShadow()
-        )
     }
 }
 
