@@ -7,15 +7,18 @@ struct FavoritesEmptyStateView: View {
             
             ZStack {
                 Circle()
-                    .fill(Color(light: .Gray.gray200, dark: .Gray.gray800))
+                    .fill(Color(light: .Gray.gray200, dark: .Teal.teal1400))
                     .frame(width: 80, height: 80)
                 
-                Image(systemName: "heart.slash")
-                    .font(.system(size: 32))
+                Image("bookmark-stroke")
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
                     .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray400))
             }
             
-            Text("No Favorites Yet")
+            Text("No Saved Scans")
                 .font(.AppFont.title3)
                 .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
             
@@ -33,5 +36,5 @@ struct FavoritesEmptyStateView: View {
 }
 
 #Preview {
-    FavoritesEmptyStateView()
+    FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
 }
