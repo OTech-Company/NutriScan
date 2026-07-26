@@ -13,11 +13,28 @@ struct FavoriteCardView: View {
     
     var body: some View {
         VStack(spacing: 12) {
-            Image(favUIState.image)
-                .resizable()
-                .scaledToFill()
-                .frame(height: 140)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+            ZStack(alignment: .topTrailing) {
+                Image(favUIState.image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 140)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                
+                Button(action: {
+                    // Empty implementation as requested
+                }) {
+                    Image("bookmark-fill")
+                        .resizable()
+                        .renderingMode(.template)
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(Color.Teal.teal1000)
+                        .padding(8)
+                        .background(Color.white.opacity(0.85))
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                }
+                .padding(8)
+            }
             
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
