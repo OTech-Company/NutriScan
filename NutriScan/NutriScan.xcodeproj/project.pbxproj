@@ -218,6 +218,7 @@
 		6F8C4EA0301455BD000067BC /* FoodSafetyResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */; };
 		6F8C4EA2301455C4000067BC /* ScanFlaggedIngredientDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */; };
 		6F8C4EA4301455CA000067BC /* ScanNutritionFactsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */; };
+		6F8C4EA930158DEA000067BC /* ProductDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */; };
 		70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */; };
 		722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2550A33566860771C07AAB9 /* ProductMatchCard.swift */; };
 		764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB294EB0DF9DEBB41F600F58 /* AppProfileSetupBackgroundModifier.swift */; };
@@ -691,6 +692,7 @@
 		6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSafetyResponseDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlaggedIngredientDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNutritionFactsDTO.swift; sourceTree = "<group>"; };
+		6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
 		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
 		6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryProtocol.swift; sourceTree = "<group>"; };
@@ -2095,6 +2097,14 @@
 			path = DTO;
 			sourceTree = "<group>";
 		};
+		6F8C4EA730158B95000067BC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -2841,21 +2851,6 @@
 			path = Calories;
 			sourceTree = "<group>";
 		};
-		C51E9CB8301510F7009DF262 /* DateSource */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DateSource;
-			sourceTree = "<group>";
-		};
-		C51E9CB9301510F7009DF262 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				C51E9CB8301510F7009DF262 /* DateSource */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
 		C51E9CBB301510F7009DF262 /* Entity */ = {
 			isa = PBXGroup;
 			children = (
@@ -2921,6 +2916,7 @@
 		C51E9CD2301510F7009DF262 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4EA730158B95000067BC /* ViewModel */,
 				C51E9CBE301510F7009DF262 /* Extensions */,
 				C51E9CC6301510F7009DF262 /* UIState */,
 				C51E9CD1301510F7009DF262 /* View */,
@@ -2931,7 +2927,6 @@
 		C51E9CD3301510F7009DF262 /* ProductDetails */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CB9301510F7009DF262 /* Data */,
 				C51E9CBC301510F7009DF262 /* Domain */,
 				C51E9CD2301510F7009DF262 /* Presentation */,
 			);
@@ -3429,6 +3424,7 @@
 				6F1A8EC73012BE2100E1ACC5 /* RAGLoadingIndicator.swift in Sources */,
 				6F1A8EC83012BE2100E1ACC5 /* RAGSourcesSection.swift in Sources */,
 				6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */,
+				6F8C4EA930158DEA000067BC /* ProductDetailsViewModel.swift in Sources */,
 				6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */,
 				D49E8C0530153DB00043F8D4 /* UpdateStreakUseCaseProtocol.swift in Sources */,
 				6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */,
