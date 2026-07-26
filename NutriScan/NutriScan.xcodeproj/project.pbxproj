@@ -293,6 +293,7 @@
 		8FB0F03A3016979500D84471 /* FavoritesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F0393016979500D84471 /* FavoritesEndpoint.swift */; };
 		8FB0F03C301698C200D84471 /* FavoritesEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */; };
 		8FB0F0403016A31600D84471 /* FavoritesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F03E3016A31600D84471 /* FavoritesFactory.swift */; };
+		8FB0F0423016A79900D84471 /* FavoritesSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F0413016A79900D84471 /* FavoritesSearchBar.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
 		8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */; };
 		8FEFD4A530162CFE00981444 /* FavUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEFD4A430162CFE00981444 /* FavUIState.swift */; };
@@ -775,6 +776,7 @@
 		8FB0F0393016979500D84471 /* FavoritesEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEndpoint.swift; sourceTree = "<group>"; };
 		8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyStateView.swift; sourceTree = "<group>"; };
 		8FB0F03E3016A31600D84471 /* FavoritesFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesFactory.swift; sourceTree = "<group>"; };
+		8FB0F0413016A79900D84471 /* FavoritesSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesSearchBar.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
 		8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
 		8FEFD4A430162CFE00981444 /* FavUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavUIState.swift; sourceTree = "<group>"; };
@@ -2544,6 +2546,7 @@
 		8F305C273014EBAD0002A179 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8FB0F0413016A79900D84471 /* FavoritesSearchBar.swift */,
 				8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */,
 				8F305C283014EC1A0002A179 /* FavoriteCardView.swift */,
 				8F48266A30150E12009F3A11 /* SwipeToActionButton.swift */,
@@ -3361,7 +3364,6 @@
 				2C93914930129DC600287FF2 /* Exercise */,
 				C51E9CD3301510F7009DF262 /* ProductDetails */,
 				8F305C233014E92B0002A179 /* Favorites */,
-
 				C5144EA53013DD05007EE884 /* Calories */,
 				6F1A8E963012AF6400E1ACC5 /* RAG */,
 				6F1A8E7C3012AAE100E1ACC5 /* News */,
@@ -3615,7 +3617,6 @@
 				9C90AFAEDCF85BFBCA64A9B1 /* BackButton.swift in Sources */,
 				8FB0F03530168DBC00D84471 /* FavoritesScanItemDTO.swift in Sources */,
 				2C77D28F30159E3F005AF888 /* ProfileRepositoryProtocol.swift in Sources */,
-
 				D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */,
 				0BD259136AB8037FE9FE20E3 /* BarcodeScannerView.swift in Sources */,
 				8F48266B30150E12009F3A11 /* SwipeToActionButton.swift in Sources */,
@@ -3639,7 +3640,6 @@
 				8FB0F03A3016979500D84471 /* FavoritesEndpoint.swift in Sources */,
 				8FB0F03330168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift in Sources */,
 				D49D9F043013E2E000ACE567 /* GetProfileUseCase.swift in Sources */,
-
 				220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */,
 				DC73ACADE5B3296996297205 /* CustomPuffedButton.swift in Sources */,
 				7D2767545C9B74D3BA022068 /* CustomTextField.swift in Sources */,
@@ -3905,8 +3905,6 @@
 				F6426B5047C2B85892E4E41C /* SelectionIndicatorTriangle.swift in Sources */,
 				DFF4648294180FB01E671903 /* SettingsHeaderSection.swift in Sources */,
 				8F305C293014EC1A0002A179 /* FavoriteCardView.swift in Sources */,
-				D49D9F063013E31900ACE567 /* UpdateFamilyMembersUseCaseProtocol.swift in Sources */,
-
 				8F16ED0E3012A96B00CF43B2 /* ProfileSetupResponseDTO.swift in Sources */,
 				A35257A4A76A3755EEE65E16 /* SettingsLogoutButton.swift in Sources */,
 				A3139845EAAF0AA019A8AAD3 /* SettingsOptions.swift in Sources */,
@@ -3958,6 +3956,7 @@
 				2C78ECE3300E6C700092E6B2 /* RegisterResponseDTO+Domain.swift in Sources */,
 				2C78ECE4300E6C700092E6B2 /* AuthRepositoryImpl.swift in Sources */,
 				CCF4587EDFAE74FE820308CF /* empty99.swift in Sources */,
+				8FB0F0423016A79900D84471 /* FavoritesSearchBar.swift in Sources */,
 				D40DD1D5301026F0001CF496 /* DIContainer.swift in Sources */,
 				D40DD1AC300FFE92001CF496 /* DateSelectionFieldSemantics.swift in Sources */,
 				D4A945553012AC5300A88F56 /* ProfileRemoteDataSourceProtocol.swift in Sources */,

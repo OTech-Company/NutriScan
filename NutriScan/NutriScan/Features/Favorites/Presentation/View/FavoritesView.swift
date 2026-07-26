@@ -10,14 +10,30 @@ import SwiftUI
 struct FavoritesView: View {
     
     let viewModel: FavoritesViewModel
+    @State private var searchText = ""
+    @State private var appliedSearchText = ""
+    
+    var filteredFavorites: [FavoritesScanEntity] {
+        if appliedSearchText.isEmpty {
+            return viewModel.favorites
+        } else {
+            return viewModel.favorites.filter { $0.productName.localizedCaseInsensitiveContains(appliedSearchText) }
+        }
+    }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 16) {
+            FavoritesSearchBar(text: $searchText, onSearch: {
+                appliedSearchText = searchText
+            })
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+            
             if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if !viewModel.favorites.isEmpty {
-                FavoritesGridView(savedItems: viewModel.favorites)
+            } else if !filteredFavorites.isEmpty {
+                FavoritesGridView(savedItems: filteredFavorites)
             } else {
                 FavoritesEmptyStateView()
             }
