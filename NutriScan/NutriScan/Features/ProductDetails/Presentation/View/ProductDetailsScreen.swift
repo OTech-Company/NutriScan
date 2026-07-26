@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ProductDetailsScreen: View {
+    let scanId: String
+
     var body: some View {
         VStack(spacing: 0) {
             HStack{
@@ -38,5 +40,5 @@ struct ProductDetailsScreen: View {
 }
 
 #Preview {
-    ProductDetailsScreen()
+    ProductDetailsScreen(scanId: "preview-id")
 }

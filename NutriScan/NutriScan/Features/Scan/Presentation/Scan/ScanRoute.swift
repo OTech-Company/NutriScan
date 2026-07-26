@@ -10,8 +10,8 @@ enum ScanRoute: Route {
         switch self {
         case .scan:
             ScanScreen()
-        case .scanDetail(let scanId, let imageData):
-            ProductDetailView(scanId: scanId, imageData: imageData)
+        case .scanDetail(let scanId, _):
+            ProductDetailsScreen(scanId: scanId)
         case .scanDetailFromDTO(let detail, let imageData):
             ProductDetailView(detail: detail, imageData: imageData)
         }
