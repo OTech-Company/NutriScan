@@ -8,7 +8,7 @@ import Foundation
 // MARK: - Protocol
 
 protocol UpdateFamilyMembersUseCaseProtocol {
-    func execute(members: [FamilyMemberInput]) async throws -> ProfileSummary
+    func execute(members: [FamilyMemberInput]) async throws -> ProfileInfo
 }
 
 // MARK: - Implementation
@@ -20,7 +20,7 @@ final class UpdateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol {
         self.repository = repository
     }
 
-    func execute(members: [FamilyMemberInput]) async throws -> ProfileSummary {
+    func execute(members: [FamilyMemberInput]) async throws -> ProfileInfo {
         try await repository.updateFamilyMembers(members)
     }
 }

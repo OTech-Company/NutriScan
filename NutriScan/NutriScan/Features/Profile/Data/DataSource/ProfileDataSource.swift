@@ -5,19 +5,24 @@
 
 import Foundation
 
+// MARK: - Protocol
 
 protocol ProfileDataSourceProtocol {
-    func getProfileSummary() async throws -> ProfileSummaryResponseDTO
-    func updateFamilyMembers(_ dto: FamilyMembersUpdateRequestDTO) async throws -> ProfileSummaryResponseDTO
+    func getProfile() async throws -> ProfileResponseDTO
+    func updateFamilyMembers(_ dto: FamilyMembersUpdateRequestDTO) async throws -> ProfileResponseDTO
     func getStreak() async throws -> Int
     func updateStreak() async throws
 }
 
+// MARK: - Implementation
 
 final class ProfileDataSource: ProfileDataSourceProtocol {
 
+    // MARK: - Profile (Remote)
+
     private let networkService: NetworkServiceProtocol
 
+    // MARK: - Streak (Mock – replace with real network call when endpoint is ready)
 
     private let defaults = UserDefaults.standard
     private let streakKey = "mock_backend_streak_count"
@@ -27,15 +32,17 @@ final class ProfileDataSource: ProfileDataSourceProtocol {
         self.networkService = networkService
     }
 
+    // MARK: - ProfileDataSourceProtocol
 
-    func getProfileSummary() async throws -> ProfileSummaryResponseDTO {
-        try await networkService.request(ProfileSummaryEndpoint.getProfileSummary)
+    func getProfile() async throws -> ProfileResponseDTO {
+        try await networkService.request(ProfileEndpoint.getProfile)
     }
 
-    func updateFamilyMembers(_ dto: FamilyMembersUpdateRequestDTO) async throws -> ProfileSummaryResponseDTO {
-        try await networkService.request(ProfileSummaryEndpoint.updateFamilyMembers(dto))
+    func updateFamilyMembers(_ dto: FamilyMembersUpdateRequestDTO) async throws -> ProfileResponseDTO {
+        try await networkService.request(ProfileEndpoint.updateFamilyMembers(dto))
     }
 
+    // MARK: - Streak (Mock)
 
     func getStreak() async throws -> Int {
         try await Task.sleep(nanoseconds: 300_000_000)

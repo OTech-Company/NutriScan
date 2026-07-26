@@ -12,12 +12,12 @@ final class ProfileRepository: ProfileRepositoryProtocol {
         self.dataSource = dataSource
     }
 
-    func getProfileSummary() async throws -> ProfileSummary {
-        let dto = try await dataSource.getProfileSummary()
+    func getProfile() async throws -> ProfileInfo {
+        let dto = try await dataSource.getProfile()
         return dto.toDomain()
     }
 
-    func updateFamilyMembers(_ members: [FamilyMemberInput]) async throws -> ProfileSummary {
+    func updateFamilyMembers(_ members: [FamilyMemberInput]) async throws -> ProfileInfo {
         let requestDTO = FamilyMembersUpdateRequestDTO(
             familyMembers: members.map { $0.toRequestDTO() }
         )

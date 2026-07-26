@@ -8,7 +8,7 @@ import Foundation
 struct ProfileAssembly: Assembly {
     func assemble(container: DIContainer) {
 
-        // MARK: - Data Source (one, covers profile summary + streak)
+        // MARK: - Data Source (one, covers profile + streak)
         container.register(
             type: ProfileDataSourceProtocol.self,
             component: ProfileDataSource(
@@ -24,8 +24,8 @@ struct ProfileAssembly: Assembly {
 
         // MARK: - Use Cases
         container.register(
-            type: GetProfileSummaryUseCaseProtocol.self,
-            component: GetProfileSummaryUseCase(
+            type: GetProfileUseCaseProtocol.self,
+            component: GetProfileUseCase(
                 repository: container.resolve(type: ProfileRepositoryProtocol.self))
         )
 

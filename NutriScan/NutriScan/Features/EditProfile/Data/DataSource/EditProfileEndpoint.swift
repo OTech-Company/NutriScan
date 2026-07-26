@@ -1,13 +1,11 @@
 //
-//  ProfileEndpoint.swift
+//  EditProfileEndpoint.swift
 //  NutriScan
-//
-//  Created by Mina_Wagdy on 22/07/2026.
 //
 
 import Foundation
 
-enum ProfileEndpoint: APIEndpoint {
+enum EditProfileEndpoint: APIEndpoint {
     case getProfile
     case updateProfile(EditProfileUpdateRequestDTO)
     case getAllergies

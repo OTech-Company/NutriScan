@@ -1,5 +1,5 @@
 //
-//  ProfileSummaryResponseDTO.swift
+//  ProfileResponseDTO.swift
 //  NutriScan
 //
 //  Decodes the GET /v1/users/profile response.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileSummaryResponseDTO: Codable {
+struct ProfileResponseDTO: Codable {
     let firstName: String
     let lastName: String
     let familyMembers: [FamilyMemberDTO]

@@ -1,13 +1,13 @@
 //
-//  ProfileSummaryResponseDTO+Domain.swift
+//  ProfileResponseDTO+Domain.swift
 //  NutriScan
 //
 
 import Foundation
 
-extension ProfileSummaryResponseDTO {
-    func toDomain() -> ProfileSummary {
-        ProfileSummary(
+extension ProfileResponseDTO {
+    func toDomain() -> ProfileInfo {
+        ProfileInfo(
             fullName: "\(firstName) \(lastName)",
             familyMembers: familyMembers.map { $0.toDomain() }
         )
