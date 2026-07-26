@@ -1634,7 +1634,6 @@
 				B9B6383C22E3B7DE8618626A /* EditableFieldView.swift */,
 				627DA9F7A0302DB0ABA0E337 /* EditProfileHeaderView.swift */,
 				489B4B74B5B8660DFD7052B3 /* SelectableChipsSectionView.swift */,
-				D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */,
 				D40DD1A7300FF61F001CF496 /* MeasureFieldView.swift */,
 			);
 			path = Components;
@@ -1675,17 +1674,18 @@
 		680237359DE65C4471FA56CE /* Shared Components */ = {
 			isa = PBXGroup;
 			children = (
-				D4BAA31730137EDC006EDB11 /* RoundedCorner.swift */,
 				C546296A301239330032F885 /* Alerts */,
 				2ED8094DD0D46A250F423525 /* Back */,
 				E8E6CBB40F86F2B7D097EF94 /* Chip */,
 				1E0E3123820E383C837D6A20 /* TextField */,
+				D40DD1AD300FFEDC001CF496 /* DateSelectionField */,
+				28F67A092B37F9DE48002963 /* MenuRowView */,
 				9F336C240113B3898A67A273 /* CachedImage.swift */,
 				2C78ED36300E6D180092E6B3 /* FailureDialog.swift */,
 				1FBC1523BBD1FBDF48FA811F /* CustomPuffedButton.swift */,
-				D40DD1AD300FFEDC001CF496 /* DateSelectionField */,
+				D40DD1AE301005A2001CF496 /* SearchSelectionSheet.swift */,
+				D4BAA31730137EDC006EDB11 /* RoundedCorner.swift */,
 				2CC428033013F0CD00099E64 /* CachedAnimatedImage.swift */,
-				28F67A092B37F9DE48002963 /* MenuRowView */,
 			);
 			path = "Shared Components";
 			sourceTree = "<group>";
