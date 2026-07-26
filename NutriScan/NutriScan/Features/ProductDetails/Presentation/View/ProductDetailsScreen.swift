@@ -13,10 +13,12 @@ struct ProductDetailsScreen: View {
 
     init(scanId: String) {
         _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(scanId: scanId))
+        print(scanId)
     }
 
     init(detail: ScanDetail) {
         _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(detail: detail))
+        print(detail)
     }
 
     var body: some View {
