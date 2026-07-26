@@ -12,21 +12,24 @@ struct ProfileHeaderSuccessView: View {
     var onEdit: () -> Void
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: ProfileSemantics.Spacing.headerContentSpacing) {
             CachedImage(
                 urlString: state.avatarURL ?? AppConstants.defaultUserAvatarURL,
                 failureImageName: "person.circle.fill",
                 contentMode: .fill
             )
-            .frame(width: 56, height: 56)
+            .frame(
+                width: ProfileSemantics.Sizes.avatarDiameter,
+                height: ProfileSemantics.Sizes.avatarDiameter
+            )
             .clipShape(Circle())
             .overlay(
                 Circle()
-                    .stroke(Color.Teal.teal1400, lineWidth: 1)
+                    .stroke(Color.Teal.teal1400, lineWidth: ProfileSemantics.Border.avatarBorderWidth)
             )
-            .opacity(1)
+            .opacity(ProfileSemantics.Sizes.fullOpacity)
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.tinySpacing) {
                 Text(state.fullName)
                     .font(Font.AppFont.title4)
                     .foregroundColor(Color.ProfileSemantics.userName)
@@ -65,8 +68,8 @@ struct ProfileHeaderSuccessView: View {
             }
         }
         .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
-        .padding(.top, 42)
-        .padding(.bottom, 42)
+        .padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
+        .padding(.bottom, ProfileSemantics.Spacing.headerVerticalPadding)
     }
 }
 

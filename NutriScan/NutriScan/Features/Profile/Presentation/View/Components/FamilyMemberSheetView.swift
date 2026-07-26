@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// MARK: - View
 struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
@@ -20,10 +19,11 @@ struct FamilyMemberSheetView: View {
 
     init(
         existingMember: FamilyMember?,
+        allMembers: [FamilyMember],
         onSave: @escaping (FamilyMemberInput) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
-        _viewModel = State(initialValue: FamilyMemberSheetViewModel(existingMember: existingMember))
+        _viewModel = State(initialValue: FamilyMemberSheetViewModel(existingMember: existingMember, allMembers: allMembers))
         self.onSave = onSave
         self.onDelete = onDelete
     }
@@ -32,24 +32,30 @@ struct FamilyMemberSheetView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: EditProfileSemantics.Spacing.sectionVertical) {
 
-                RoundedRectangle(cornerRadius: 3)
+                RoundedRectangle(cornerRadius: ProfileSemantics.Radius.dragHandle)
                     .fill(Color.Gray.gray400)
-                    .frame(width: 40, height: 5)
-                    .padding(.top, 8)
+                    .frame(
+                        width: ProfileSemantics.Sizes.sheetDragHandleWidth,
+                        height: ProfileSemantics.Sizes.sheetDragHandleHeight
+                    )
+                    .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
                 ZStack {
                     Circle()
-                        .stroke(Color.Teal.teal700, lineWidth: 1.5)
-                        .frame(width: 90, height: 90)
+                        .stroke(Color.Teal.teal700, lineWidth: ProfileSemantics.Border.avatarThickBorderWidth)
+                        .frame(
+                            width: ProfileSemantics.Sizes.sheetAvatarSize,
+                            height: ProfileSemantics.Sizes.sheetAvatarSize
+                        )
 
                     Image(systemName: viewModel.isEditMode ? "person.fill" : "plus")
-                        .font(.system(size: 28, weight: .medium))
+                        .font(.system(size: ProfileSemantics.Sizes.sheetAvatarIconSize, weight: .medium))
                         .foregroundColor(Color.Teal.teal700)
                 }
-                .padding(.top, 8)
+                .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
-                    VStack(spacing: 8) {
+                    VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
                             placeholder: "Member name",
                             text: $viewModel.name.value,
@@ -60,7 +66,7 @@ struct FamilyMemberSheetView: View {
                         }
                     }
 
-                    VStack(spacing: 8) {
+                    VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
                             placeholder: "Relation (e.g. Son, Mother)",
                             text: $viewModel.relation.value,
@@ -91,7 +97,10 @@ struct FamilyMemberSheetView: View {
                 CustomPuffedButton(
                     title: viewModel.isEditMode ? "Save Changes" : "Add Member",
                     action: {
-                        if let input = viewModel.submit() {
+                        if viewModel.isDuplicate() {
+                            viewModel.alertContext = .duplicate
+                            activeAlert = .warning
+                        } else if let input = viewModel.submit() {
                             onSave(input)
                             dismiss()
                         }
@@ -101,18 +110,18 @@ struct FamilyMemberSheetView: View {
 
                 if onDelete != nil {
                     Button(action: {
+                        viewModel.alertContext = .delete
                         activeAlert = .warning
                     }) {
                         Text("Delete")
-                            .font(.system(size: 16, weight: .medium))
+                            .font(.system(size: ProfileSemantics.Sizes.buttonTextSize, weight: .medium))
                     }
-                    // Apply the custom interactive style
                     .buttonStyle(DeleteTextButtonStyle())
-                    .padding(.top, 4)
+                    .padding(.top, ProfileSemantics.Spacing.tinySpacing)
                 }
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
-            .padding(.bottom, 32)
+            .padding(.bottom, ProfileSemantics.Spacing.sheetBottomPadding)
         }
         .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
         .task {
@@ -140,22 +149,34 @@ struct FamilyMemberSheetView: View {
             config: { alert in
                 switch alert {
                 case .warning:
-                    return CustomAlertConfig(
-                        type: .warning,
-                        title: "Delete Member",
-                        description: "Are you sure you want to delete this family member? This action cannot be undone.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500, // Or swap to Color.red if preferred
-                        secondaryButtonTitle: "Cancel"
-                    )
+                    if viewModel.alertContext == .duplicate {
+                        return CustomAlertConfig(
+                            type: .warning,
+                            title: "Duplicate Member",
+                            description: "this family member already exist",
+                            primaryButtonTitle: "Ok",
+                            primaryButtonColor: Color.Teal.teal1000
+                        )
+                    } else {
+                        return CustomAlertConfig(
+                            type: .warning,
+                            title: "Delete Member",
+                            description: "Are you sure you want to delete this family member? This action cannot be undone.",
+                            primaryButtonTitle: "Delete",
+                            primaryButtonColor: Color.Red.red500,
+                            secondaryButtonTitle: "Cancel"
+                        )
+                    }
                 default:
                     return CustomAlertConfig(type: .warning, title: "", description: "")
                 }
             },
             primaryAction: { alert in
                 if alert == .warning {
-                    onDelete?()
-                    dismiss()
+                    if viewModel.alertContext == .delete {
+                        onDelete?()
+                        dismiss()
+                    }
                 }
             },
             secondaryAction: { _ in }

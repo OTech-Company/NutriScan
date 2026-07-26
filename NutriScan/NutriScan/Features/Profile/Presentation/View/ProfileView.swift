@@ -11,7 +11,7 @@ struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     var viewModel: ProfileViewModel
     @State private var isFetchingProfile = true
-    @State private var sheetMember: FamilyMember?      // nil sentinel for "not shown"
+    @State private var sheetMember: FamilyMember?  // nil sentinel for "not shown"
     @State private var isAddingNewMember = false
     var body: some View {
         ZStack(alignment: .top) {
@@ -23,9 +23,9 @@ struct ProfileView: View {
                 state: viewModel.state,
                 isLoading: isFetchingProfile,
                 onEdit: { router.push(ProfileRoute.editProfile) }
-            ).padding(.top, 42)
+            ).padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
 
-            VStack(spacing: 0) {
+            VStack(spacing: ProfileSemantics.Spacing.zero) {
                 ScrollView(showsIndicators: false) {
                     VStack(
                         alignment: .leading,
@@ -54,7 +54,7 @@ struct ProfileView: View {
                         ProfileSemantics.Spacing.horizontalPadding
                     )
                     .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
-                    .padding(.bottom, 100)  // clearance above bottom tab bar
+                    .padding(.bottom, ProfileSemantics.Spacing.bottomTabBarClearance)  // clearance above bottom tab bar
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
@@ -64,7 +64,7 @@ struct ProfileView: View {
                     radius: ProfileSemantics.Radius.containerTop,
                     corners: [.topLeft, .topRight])
             )
-            .padding(.top, 180)
+            .padding(.top, ProfileSemantics.Spacing.containerTopPadding)
             .ignoresSafeArea(edges: .bottom)
         }
         .ignoresSafeArea()
@@ -72,33 +72,38 @@ struct ProfileView: View {
         .task {
             isFetchingProfile = !viewModel.hasLoaded
             await viewModel.loadProfile()
-            withAnimation(.easeIn(duration: 0.3)) {
+            withAnimation(ProfileSemantics.Animation.fetchTransition) {
                 isFetchingProfile = false
             }
         }
         .sheet(isPresented: $isAddingNewMember) {
             FamilyMemberSheetView(
                 existingMember: nil,
+                allMembers: viewModel.state.familyMembers,
                 onSave: { input in
                     Task { await viewModel.addFamilyMember(input) }
                 }
             )
             .presentationDetents([.large])
-            .presentationCornerRadius(32)
+            .presentationCornerRadius(ProfileSemantics.Radius.sheetPresentation)
         }
         .sheet(item: $sheetMember) { member in
             FamilyMemberSheetView(
                 existingMember: member,
+                allMembers: viewModel.state.familyMembers,
                 onSave: { input in
-                    Task { await viewModel.updateFamilyMember(id: member.id, with: input) }
+                    Task {
+                        await viewModel.updateFamilyMember(
+                            id: member.id, with: input)
+                    }
                 },
                 onDelete: {
                     Task { await viewModel.deleteFamilyMember(id: member.id) }
                 }
             )
             .presentationDetents([.large])
-            .presentationCornerRadius(32)
+            .presentationCornerRadius(ProfileSemantics.Radius.sheetPresentation)
         }
-        
+
     }
 }

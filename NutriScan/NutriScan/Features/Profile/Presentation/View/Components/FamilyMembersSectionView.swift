@@ -15,7 +15,7 @@ struct FamilyMembersSectionView: View {
     var onShowDetails: (FamilyMember) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.sectionTitleSpacing) {
             Text("Family Members")
                 .font(Font.AppFont.title4)
                 .foregroundColor(Color.ProfileSemantics.sectionTitle)
@@ -40,7 +40,6 @@ struct FamilyMembersSectionView: View {
                         AddMemberCardView(action: onAddMember)
                     }
                 }
-                // Applies the padding inside the scroll view so the background encompasses it
                 .padding(.leading, ProfileSemantics.Spacing.horizontalPadding)
                 .padding(.trailing, ProfileSemantics.Spacing.horizontalPadding)
                 .frame(height: ProfileSemantics.FamilySection.containerHeight)
@@ -71,7 +70,7 @@ struct FamilyMembersSectionView: View {
 }
 
 #Preview("Light & Dark Mode") {
-    VStack(spacing: 24) {
+    VStack(spacing: ProfileSemantics.Spacing.sectionSpacing) {
         FamilyMembersSectionView(
             members: [
                 FamilyMember(
