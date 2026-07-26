@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-// MARK: - View
 struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
@@ -20,10 +19,11 @@ struct FamilyMemberSheetView: View {
 
     init(
         existingMember: FamilyMember?,
+        allMembers: [FamilyMember],
         onSave: @escaping (FamilyMemberInput) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
-        _viewModel = State(initialValue: FamilyMemberSheetViewModel(existingMember: existingMember))
+        _viewModel = State(initialValue: FamilyMemberSheetViewModel(existingMember: existingMember, allMembers: allMembers))
         self.onSave = onSave
         self.onDelete = onDelete
     }
@@ -91,7 +91,10 @@ struct FamilyMemberSheetView: View {
                 CustomPuffedButton(
                     title: viewModel.isEditMode ? "Save Changes" : "Add Member",
                     action: {
-                        if let input = viewModel.submit() {
+                        if viewModel.isDuplicate() {
+                            viewModel.alertContext = .duplicate
+                            activeAlert = .warning
+                        } else if let input = viewModel.submit() {
                             onSave(input)
                             dismiss()
                         }
@@ -101,12 +104,12 @@ struct FamilyMemberSheetView: View {
 
                 if onDelete != nil {
                     Button(action: {
+                        viewModel.alertContext = .delete
                         activeAlert = .warning
                     }) {
                         Text("Delete")
                             .font(.system(size: 16, weight: .medium))
                     }
-                    // Apply the custom interactive style
                     .buttonStyle(DeleteTextButtonStyle())
                     .padding(.top, 4)
                 }
@@ -140,22 +143,34 @@ struct FamilyMemberSheetView: View {
             config: { alert in
                 switch alert {
                 case .warning:
-                    return CustomAlertConfig(
-                        type: .warning,
-                        title: "Delete Member",
-                        description: "Are you sure you want to delete this family member? This action cannot be undone.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500, // Or swap to Color.red if preferred
-                        secondaryButtonTitle: "Cancel"
-                    )
+                    if viewModel.alertContext == .duplicate {
+                        return CustomAlertConfig(
+                            type: .warning,
+                            title: "Duplicate Member",
+                            description: "this family member already exist",
+                            primaryButtonTitle: "Ok",
+                            primaryButtonColor: Color.Teal.teal1000
+                        )
+                    } else {
+                        return CustomAlertConfig(
+                            type: .warning,
+                            title: "Delete Member",
+                            description: "Are you sure you want to delete this family member? This action cannot be undone.",
+                            primaryButtonTitle: "Delete",
+                            primaryButtonColor: Color.Red.red500,
+                            secondaryButtonTitle: "Cancel"
+                        )
+                    }
                 default:
                     return CustomAlertConfig(type: .warning, title: "", description: "")
                 }
             },
             primaryAction: { alert in
                 if alert == .warning {
-                    onDelete?()
-                    dismiss()
+                    if viewModel.alertContext == .delete {
+                        onDelete?()
+                        dismiss()
+                    }
                 }
             },
             secondaryAction: { _ in }

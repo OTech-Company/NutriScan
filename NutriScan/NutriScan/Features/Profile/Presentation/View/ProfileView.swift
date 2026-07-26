@@ -11,7 +11,7 @@ struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     var viewModel: ProfileViewModel
     @State private var isFetchingProfile = true
-    @State private var sheetMember: FamilyMember?      // nil sentinel for "not shown"
+    @State private var sheetMember: FamilyMember?  // nil sentinel for "not shown"
     @State private var isAddingNewMember = false
     var body: some View {
         ZStack(alignment: .top) {
@@ -79,6 +79,7 @@ struct ProfileView: View {
         .sheet(isPresented: $isAddingNewMember) {
             FamilyMemberSheetView(
                 existingMember: nil,
+                allMembers: viewModel.state.familyMembers,
                 onSave: { input in
                     Task { await viewModel.addFamilyMember(input) }
                 }
@@ -89,8 +90,12 @@ struct ProfileView: View {
         .sheet(item: $sheetMember) { member in
             FamilyMemberSheetView(
                 existingMember: member,
+                allMembers: viewModel.state.familyMembers,
                 onSave: { input in
-                    Task { await viewModel.updateFamilyMember(id: member.id, with: input) }
+                    Task {
+                        await viewModel.updateFamilyMember(
+                            id: member.id, with: input)
+                    }
                 },
                 onDelete: {
                     Task { await viewModel.deleteFamilyMember(id: member.id) }
@@ -99,6 +104,6 @@ struct ProfileView: View {
             .presentationDetents([.large])
             .presentationCornerRadius(32)
         }
-        
+
     }
 }
