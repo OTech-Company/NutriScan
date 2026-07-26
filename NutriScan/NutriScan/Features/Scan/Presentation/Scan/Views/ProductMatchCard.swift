@@ -1,9 +1,7 @@
 import SwiftUI
 
-/// Bottom card shown once a barcode resolves to a product.
-/// Takes the Domain `Product` entity directly — no DTOs, no view-only models.
 struct ProductMatchCard: View {
-    let product: Product
+    let detail: ScanDetail
     var onAdd: () -> Void
 
     var body: some View {
@@ -11,13 +9,14 @@ struct ProductMatchCard: View {
             productImage
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(product.brand.uppercased())
+                Text(detail.foodSafetyResponse?.verdict.rawValue ?? "Processing")
                     .font(.caption2)
                     .fontWeight(.semibold)
                     .foregroundColor(.secondary)
-                Text(product.name)
+                Text(detail.foodSafetyResponse?.summary ?? "Analyzing...")
                     .font(.system(size: 17, weight: .semibold))
                     .foregroundColor(.primary)
+                    .lineLimit(2)
             }
 
             Spacer()
@@ -30,7 +29,7 @@ struct ProductMatchCard: View {
                     .background(Color.teal)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-            .accessibilityLabel("Add \(product.name)")
+            .accessibilityLabel("View scan details")
         }
         .padding(12)
         .background(Color(.systemBackground))
@@ -40,8 +39,8 @@ struct ProductMatchCard: View {
 
     @ViewBuilder
     private var productImage: some View {
-        if let url = product.imageURL {
-            AsyncImage(url: url) { phase in
+        if let url = detail.imageUrl, let imageURL = URL(string: url) {
+            AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
                     image.resizable().scaledToFit()
@@ -57,13 +56,4 @@ struct ProductMatchCard: View {
                 .frame(width: 48, height: 48)
         }
     }
-}
-
-#Preview {
-    ProductMatchCard(
-        product: Product(id: "1", barcode: "123456", brand: "FANMILK",
-                          name: "Milk Nature", imageURL: nil, healthTag: .healthy),
-        onAdd: {}
-    )
-    .padding()
 }

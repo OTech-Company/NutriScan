@@ -53,8 +53,8 @@ struct CornerBracketsShape: Shape {
         Color.black.ignoresSafeArea()
         
         CornerBracketsShape()
-            .stroke(Color.white, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
-            .frame(width: 331, height: 260) // Matches your NutriScan Figma card width
-            .padding(40)
+            .stroke(Color.white, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+            .frame(width: 250, height: 460) // Matches your NutriScan Figma card width
+//            .padding(40)
     }
 }
