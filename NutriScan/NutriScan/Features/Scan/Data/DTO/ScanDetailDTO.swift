@@ -3,9 +3,7 @@ struct ScanDetailDTO: Decodable {
     let status: String
     let scannedAt: String?
     let imageUrl: String?
-    let productName: String?
-    let verdict: String?
-    let summary: String?
-    let flaggedIngredients: [ScanFlaggedIngredientDTO]?
+    let foodSafetyResponse: FoodSafetyResponseDTO?
     let nutritionFacts: ScanNutritionFactsDTO?
+    let productName: String?
 }
