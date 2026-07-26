@@ -84,18 +84,20 @@ struct ProfileView: View {
                 }
             )
             .presentationDetents([.large])
+            .presentationCornerRadius(32)
         }
         .sheet(item: $sheetMember) { member in
             FamilyMemberSheetView(
                 existingMember: member,
                 onSave: { input in
-                    Task { await viewModel.updateFamilyMember(id: member.id ?? "", with: input) }
+                    Task { await viewModel.updateFamilyMember(id: member.id, with: input) }
                 },
                 onDelete: {
-                    Task { await viewModel.deleteFamilyMember(id: member.id ?? "") }
+                    Task { await viewModel.deleteFamilyMember(id: member.id) }
                 }
             )
             .presentationDetents([.large])
+            .presentationCornerRadius(32)
         }
         
     }

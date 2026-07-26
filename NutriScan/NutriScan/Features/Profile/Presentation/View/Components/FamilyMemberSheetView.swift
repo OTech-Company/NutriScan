@@ -49,7 +49,7 @@ struct FamilyMemberSheetView: View {
                 .padding(.top, 8)
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
-                    VStack(spacing: 4) {
+                    VStack(spacing: 8) {
                         EditableFieldView(
                             placeholder: "Member name",
                             text: $viewModel.name.value,
@@ -60,7 +60,7 @@ struct FamilyMemberSheetView: View {
                         }
                     }
 
-                    VStack(spacing: 4) {
+                    VStack(spacing: 8) {
                         EditableFieldView(
                             placeholder: "Relation (e.g. Son, Mother)",
                             text: $viewModel.relation.value,
