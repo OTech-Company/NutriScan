@@ -247,6 +247,11 @@
 		6F8C4EE03016C89E000067BC /* StepRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EB33016C89E000067BC /* StepRepositoryProtocol.swift */; };
 		6F8C4EE13016C89E000067BC /* PedometerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EAC3016C89E000067BC /* PedometerDataSource.swift */; };
 		6F8C4EE33016C89E000067BC /* FetchStepsHistoryUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EB53016C89E000067BC /* FetchStepsHistoryUseCaseProtocol.swift */; };
+		6F8C4EE83016CFD1000067BC /* RangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE63016CFD1000067BC /* RangePickerView.swift */; };
+		6F8C4EE93016CFD1000067BC /* StatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE73016CFD1000067BC /* StatCardView.swift */; };
+		6F8C4EEA3016CFD1000067BC /* DailyInsightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE43016CFD1000067BC /* DailyInsightCardView.swift */; };
+		6F8C4EEB3016CFD1000067BC /* DateNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE53016CFD1000067BC /* DateNavigationView.swift */; };
+		6F8C4EED3016D4DF000067BC /* StepAnalyticsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EEC3016D4DF000067BC /* StepAnalyticsCalculator.swift */; };
 		70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */; };
 		722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2550A33566860771C07AAB9 /* ProductMatchCard.swift */; };
 		764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB294EB0DF9DEBB41F600F58 /* AppProfileSetupBackgroundModifier.swift */; };
@@ -719,6 +724,11 @@
 		6F8C4EC63016C89E000067BC /* StepGaugeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepGaugeCardView.swift; sourceTree = "<group>"; };
 		6F8C4EC73016C89E000067BC /* StepHistoryBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryBarChartView.swift; sourceTree = "<group>"; };
 		6F8C4ECB3016C89E000067BC /* StepHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryScreen.swift; sourceTree = "<group>"; };
+		6F8C4EE43016CFD1000067BC /* DailyInsightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInsightCardView.swift; sourceTree = "<group>"; };
+		6F8C4EE53016CFD1000067BC /* DateNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateNavigationView.swift; sourceTree = "<group>"; };
+		6F8C4EE63016CFD1000067BC /* RangePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
+		6F8C4EE73016CFD1000067BC /* StatCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCardView.swift; sourceTree = "<group>"; };
+		6F8C4EEC3016D4DF000067BC /* StepAnalyticsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepAnalyticsCalculator.swift; sourceTree = "<group>"; };
 		6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NutriScan.entitlements; sourceTree = "<group>"; };
 		6FFAB9839C62C2DB156A28BD /* CategoryResponseDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CategoryResponseDTO.swift; sourceTree = "<group>"; };
 		702881CEB0053AD3B4F54F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -2123,6 +2133,7 @@
 		6F8C4EB23016C89E000067BC /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4EEC3016D4DF000067BC /* StepAnalyticsCalculator.swift */,
 				6F8C4EB13016C89E000067BC /* DailySteps.swift */,
 			);
 			path = Entities;
@@ -2184,6 +2195,10 @@
 		6F8C4EC93016C89E000067BC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4EE43016CFD1000067BC /* DailyInsightCardView.swift */,
+				6F8C4EE53016CFD1000067BC /* DateNavigationView.swift */,
+				6F8C4EE63016CFD1000067BC /* RangePickerView.swift */,
+				6F8C4EE73016CFD1000067BC /* StatCardView.swift */,
 				6F8C4EC63016C89E000067BC /* StepGaugeCardView.swift */,
 				6F8C4EC73016C89E000067BC /* StepHistoryBarChartView.swift */,
 			);
@@ -3841,11 +3856,16 @@
 				0BC07D1A2158156E63F8F947 /* ValidatedField.swift in Sources */,
 				8F16ED283012AAF000CF43B2 /* ProfileSetupFlowFactory.swift in Sources */,
 				0C2D027E18F236ECAAECD826 /* ValueCard.swift in Sources */,
+				6F8C4EE83016CFD1000067BC /* RangePickerView.swift in Sources */,
+				6F8C4EE93016CFD1000067BC /* StatCardView.swift in Sources */,
+				6F8C4EEA3016CFD1000067BC /* DailyInsightCardView.swift in Sources */,
+				6F8C4EEB3016CFD1000067BC /* DateNavigationView.swift in Sources */,
 				58AA67D9B4015E70DE6D16E1 /* View+Extensions.swift in Sources */,
 				2CC4280630140DAD00099E64 /* EmptyExerciseStateView.swift in Sources */,
 				69F7CF833CED2D891AECC55E /* WeightSelectionView.swift in Sources */,
 				A5D7E326B2F6B7CEBDC67198 /* empty.swift in Sources */,
 				F35D7F2D858B87C57D5B34AC /* empty1.swift in Sources */,
+				6F8C4EED3016D4DF000067BC /* StepAnalyticsCalculator.swift in Sources */,
 				5E36605E0CF7D90883B4136D /* empty12.swift in Sources */,
 				CE1644E9DB351B60402F1331 /* empty4.swift in Sources */,
 				37CBFAD2F65D78E634D04864 /* empty67.swift in Sources */,
