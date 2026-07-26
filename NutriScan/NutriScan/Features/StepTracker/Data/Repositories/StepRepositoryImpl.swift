@@ -50,4 +50,8 @@ final class StepRepositoryImpl: StepRepositoryProtocol {
         let startDate = calendar.date(byAdding: .day, value: -range.daysBack, to: endDate) ?? endDate
         return try await healthKitSource.fetchDailySteps(from: startDate, to: endDate)
     }
+
+    func fetchStepsHistory(from startDate: Date, to endDate: Date) async throws -> [DailySteps] {
+        return try await healthKitSource.fetchDailySteps(from: startDate, to: endDate)
+    }
 }

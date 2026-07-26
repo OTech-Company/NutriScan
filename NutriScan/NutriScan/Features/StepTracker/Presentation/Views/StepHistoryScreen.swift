@@ -7,49 +7,84 @@ struct StepHistoryScreen: View {
     @State private var selectedRange: StepHistoryRange = .lastWeek
     @State private var selectedIndex: Int = 0
 
-    private var displayedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"
-        let calendar = Calendar.current
-        guard let date = calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) else {
-            return ""
+    // MARK: - Date Range Computation
+
+    private var calendar: Calendar { Calendar.current }
+
+    private var rangeEndDate: Date {
+        switch selectedRange {
+        case .lastWeek, .sinceYesterday:
+            return calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) ?? Date()
+        case .lastMonth:
+            return calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) ?? Date()
+        case .last3Months, .last6Months:
+            return calendar.date(byAdding: .month, value: -selectedIndex, to: Date()) ?? Date()
         }
-        if selectedIndex == 0 {
-            return "Today, \(formatter.string(from: date))"
-        }
-        formatter.dateFormat = "EEEE, MMM d"
-        return formatter.string(from: date)
     }
 
+    private var rangeStartDate: Date {
+        switch selectedRange {
+        case .lastWeek:
+            return calendar.date(byAdding: .day, value: -6, to: rangeEndDate) ?? rangeEndDate
+        case .sinceYesterday:
+            return calendar.date(byAdding: .day, value: -1, to: rangeEndDate) ?? rangeEndDate
+        case .lastMonth:
+            return calendar.date(byAdding: .day, value: -29, to: rangeEndDate) ?? rangeEndDate
+        case .last3Months:
+            return calendar.date(byAdding: .month, value: -3, to: rangeEndDate) ?? rangeEndDate
+        case .last6Months:
+            return calendar.date(byAdding: .month, value: -6, to: rangeEndDate) ?? rangeEndDate
+        }
+    }
+
+    private var displayedDate: String {
+        let formatter = DateFormatter()
+        switch selectedRange {
+        case .lastWeek, .lastMonth, .sinceYesterday:
+            let dayFormatter = DateFormatter()
+            dayFormatter.dateFormat = "EEEE, MMM d"
+            if selectedIndex == 0 {
+                formatter.dateFormat = "MMM d"
+                return "Today, \(formatter.string(from: rangeEndDate))"
+            }
+            return dayFormatter.string(from: rangeEndDate)
+        case .last3Months, .last6Months:
+            formatter.dateFormat = "MMM yyyy"
+            return formatter.string(from: rangeEndDate)
+        }
+    }
+
+    // MARK: - Step Data for Selected Period
+
     private var selectedDaySteps: Int {
-        if selectedIndex == 0 {
+        if selectedIndex == 0 && (selectedRange == .lastWeek || selectedRange == .lastMonth || selectedRange == .sinceYesterday) {
             return viewModel.todaySteps
         }
-        let calendar = Calendar.current
-        guard let targetDate = calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) else {
-            return 0
-        }
-        let targetStart = calendar.startOfDay(for: targetDate)
-        return viewModel.history.first(where: { calendar.isDate($0.date, inSameDayAs: targetStart) })?.stepCount ?? 0
+        return viewModel.history.last?.stepCount ?? 0
     }
 
     private var weeklyAverage: Int {
-        let weekData = viewModel.history.suffix(7)
-        guard !weekData.isEmpty else { return 0 }
-        return weekData.map(\.stepCount).reduce(0, +) / weekData.count
+        guard !viewModel.history.isEmpty else { return 0 }
+        return viewModel.history.map(\.stepCount).reduce(0, +) / viewModel.history.count
+    }
+
+    private var selectedDayAnalytics: StepAnalytics {
+        viewModel.analytics.compute(steps: selectedDaySteps)
     }
 
     private var caloriesBurned: Int {
-        Int(Double(selectedDaySteps) * 0.04)
+        selectedDayAnalytics.caloriesBurned
     }
 
     private var distanceKm: Double {
-        Double(selectedDaySteps) * 0.000762
+        selectedDayAnalytics.distanceKm
     }
 
     private var activeMinutes: Int {
-        selectedDaySteps / 100
+        selectedDayAnalytics.activeMinutes
     }
+
+    // MARK: - Body
 
     var body: some View {
         ScrollView {
@@ -79,11 +114,17 @@ struct StepHistoryScreen: View {
         }
         .onAppear {
             viewModel.onAppear()
-            viewModel.loadHistory(range: selectedRange)
+            fetchForCurrentSelection()
         }
         .onDisappear {
             viewModel.onDisappear()
         }
+    }
+
+    // MARK: - Fetching
+
+    private func fetchForCurrentSelection() {
+        viewModel.loadHistory(from: rangeStartDate, to: rangeEndDate, forceRefresh: selectedIndex == 0)
     }
 
     // MARK: - Header
@@ -102,7 +143,7 @@ struct StepHistoryScreen: View {
         RangePickerView(selectedRange: $selectedRange)
             .onChange(of: selectedRange) { _, newRange in
                 selectedIndex = 0
-                viewModel.loadHistory(range: newRange, forceRefresh: true)
+                fetchForCurrentSelection()
             }
     }
 
@@ -116,11 +157,15 @@ struct StepHistoryScreen: View {
             onPrevious: {
                 withAnimation {
                     selectedIndex += 1
+                    fetchForCurrentSelection()
                 }
             },
             onNext: {
                 withAnimation {
-                    if selectedIndex > 0 { selectedIndex -= 1 }
+                    if selectedIndex > 0 {
+                        selectedIndex -= 1
+                        fetchForCurrentSelection()
+                    }
                 }
             }
         )
@@ -153,7 +198,7 @@ struct StepHistoryScreen: View {
     }
 
     private var chart: some View {
-        let displayData = Array(viewModel.history.suffix(displayDataCount))
+        let displayData = viewModel.history
         let maxStep = max(displayData.map(\.stepCount).max() ?? 1, 10_000)
 
         return VStack(spacing: 12) {
@@ -203,25 +248,15 @@ struct StepHistoryScreen: View {
         }
     }
 
-    private var displayDataCount: Int {
-        switch selectedRange {
-        case .lastWeek: return 7
-        case .lastMonth: return 30
-        case .last3Months: return 30
-        case .last6Months: return 30
-        case .sinceYesterday: return 2
-        }
-    }
-
     private func dayLabel(for date: Date) -> String {
         let formatter = DateFormatter()
         switch selectedRange {
         case .lastWeek, .sinceYesterday:
             formatter.dateFormat = "EEE"
+        case .lastMonth:
+            formatter.dateFormat = "d"
         case .last3Months, .last6Months:
             formatter.dateFormat = "MMM d"
-        default:
-            formatter.dateFormat = "d"
         }
         return formatter.string(from: date)
     }
