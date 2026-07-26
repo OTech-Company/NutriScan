@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 struct StepHistoryScreen: View {
     let viewModel: StepCounterViewModel
