@@ -20,7 +20,8 @@ struct AppDependencies {
         EditProfileAssembly(),
         ScanAssembly(),
         StepTrackerAssembly(),
-        RAGAssembly()
+        RAGAssembly(),
+        ProductDetailsAssembly()
         // Teammates: add your feature's Assembly here, e.g.
         // HomeAssembly(),
         // AuthAssembly(),
