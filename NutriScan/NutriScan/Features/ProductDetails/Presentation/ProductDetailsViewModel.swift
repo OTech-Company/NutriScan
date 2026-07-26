@@ -54,7 +54,7 @@ private extension ScanDetail {
 
         let headerState = ProductHeaderUIState(
             imageUrl: imageUrl ?? "",
-            productName: "Scanned Product",
+            productName: productName ?? "Scanned Product",
             scannedAt: scannedAt.map { ISO8601DateFormatter().string(from: $0) } ?? ""
         )
 

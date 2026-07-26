@@ -14,6 +14,7 @@ struct ScanDetail: Identifiable, Hashable {
     let status: ScanStatus
     let scannedAt: Date?
     let imageUrl: String?
+    let productName: String?
     let foodSafetyResponse: ScanFoodSafetyResponse?
     let nutritionFacts: ScanNutritionFacts?
 }

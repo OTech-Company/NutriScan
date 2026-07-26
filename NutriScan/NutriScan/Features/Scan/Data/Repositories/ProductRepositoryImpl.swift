@@ -58,16 +58,15 @@ final class ScanRepositoryImpl: ScanRepository {
             status: ScanStatus(rawValue: dto.status) ?? .processing,
             scannedAt: dto.scannedAt.flatMap { ISO8601DateFormatter().date(from: $0) },
             imageUrl: dto.imageUrl,
-            foodSafetyResponse: dto.foodSafetyResponse.map(mapSafety),
+            productName: dto.productName,
+            foodSafetyResponse: dto.verdict.map { verdict in
+                ScanFoodSafetyResponse(
+                    verdict: ScanResultVerdict(rawValue: verdict) ?? .unknown,
+                    flaggedIngredients: dto.flaggedIngredients?.map(mapIngredient) ?? [],
+                    summary: dto.summary ?? ""
+                )
+            },
             nutritionFacts: dto.nutritionFacts.map(mapNutrition)
-        )
-    }
-
-    private func mapSafety(_ dto: FoodSafetyResponseDTO) -> ScanFoodSafetyResponse {
-        ScanFoodSafetyResponse(
-            verdict: ScanResultVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
-            flaggedIngredients: dto.flaggedIngredients?.map(mapIngredient) ?? [],
-            summary: dto.summary ?? ""
         )
     }
 
