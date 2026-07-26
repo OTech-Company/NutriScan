@@ -7,6 +7,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = HomeViewModel()
     @State private var showRAGChat = false
@@ -21,7 +22,7 @@ struct HomeView: View {
                     .padding(.top, 16)
 
                 HomeReadyToScanSection {
-                    // TODO: Navigate to scanner screen
+                    flowCoordinator.selectedTab = .scan
                 }
 
                 ExploreSectionHeader()
