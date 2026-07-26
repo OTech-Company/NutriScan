@@ -4,39 +4,49 @@
 //
 //  Created by Mina_Wagdy on 24/07/2026.
 //
-//
-//  ProfileViewModel.swift
-//  NutriScan
-//
-//  Features/Profile/Presentation/ViewModel/
-//
 
 import Foundation
 
 @Observable
 final class ProfileViewModel {
     var state = ProfileState()
+    private(set) var hasLoaded = false
 
-    private let getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol
+    private let getProfileUseCase: GetProfileUseCaseProtocol
     private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
+    
+    private let getStreakUseCase: GetStreakUseCaseProtocol
+    private let updateStreakUseCase: UpdateStreakUseCaseProtocol
 
     init(
-        getProfileSummaryUseCase: GetProfileSummaryUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileSummaryUseCaseProtocol.self),
-        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self)
+        getProfileUseCase: GetProfileUseCaseProtocol = DIContainer.shared.resolve(type: GetProfileUseCaseProtocol.self),
+        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self),
+        getStreakUseCase: GetStreakUseCaseProtocol = DIContainer.shared.resolve(type: GetStreakUseCaseProtocol.self),
+        updateStreakUseCase: UpdateStreakUseCaseProtocol = DIContainer.shared.resolve(type: UpdateStreakUseCaseProtocol.self)
     ) {
-        self.getProfileSummaryUseCase = getProfileSummaryUseCase
+        self.getProfileUseCase = getProfileUseCase
         self.updateFamilyMembersUseCase = updateFamilyMembersUseCase
+        self.getStreakUseCase = getStreakUseCase
+        self.updateStreakUseCase = updateStreakUseCase
     }
 
     @MainActor
-    func loadProfile() async {
+    func loadProfile(forceRefresh: Bool = false) async {
+        guard !hasLoaded || forceRefresh else { return }
+
         state.isLoading = true
         state.errorMessage = nil
 
         do {
-            let summary = try await getProfileSummaryUseCase.execute()
-            state.fullName = summary.fullName
-            state.familyMembers = summary.familyMembers
+            // Separate operations: Update the streak on the backend first, then fetch the latest value
+            try await updateStreakUseCase.execute()
+            state.streakDays = try await getStreakUseCase.execute()
+            
+            // Load the rest of the profile
+            let profileInfo = try await getProfileUseCase.execute()
+            state.fullName = profileInfo.fullName
+            state.familyMembers = profileInfo.familyMembers
+            hasLoaded = true
         } catch {
             state.errorMessage = error.localizedDescription
         }
@@ -44,8 +54,6 @@ final class ProfileViewModel {
         state.isLoading = false
     }
 
-    /// Adds a new family member by sending the full desired list
-    /// (existing members + the new one) to the PATCH endpoint.
     @MainActor
     func addFamilyMember(_ newMember: FamilyMemberInput) async {
         let existing = state.familyMembers.map {
@@ -59,7 +67,6 @@ final class ProfileViewModel {
         await submitFamilyMembers(existing + [newMember])
     }
 
-    /// Updates one existing member in place, then resubmits the full list.
     @MainActor
     func updateFamilyMember(id: String, with updated: FamilyMemberInput) async {
         var updatedList: [FamilyMemberInput] = []
@@ -84,9 +91,9 @@ final class ProfileViewModel {
         state.errorMessage = nil
 
         do {
-            let summary = try await updateFamilyMembersUseCase.execute(members: members)
-            state.fullName = summary.fullName
-            state.familyMembers = summary.familyMembers
+            let profileInfo = try await updateFamilyMembersUseCase.execute(members: members)
+            state.fullName = profileInfo.fullName
+            state.familyMembers = profileInfo.familyMembers
         } catch {
             state.errorMessage = error.localizedDescription
         }

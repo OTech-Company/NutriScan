@@ -1,48 +1,97 @@
 import Foundation
 
-final class ProductRepositoryImpl: ProductRepository {
+final class ScanRepositoryImpl: ScanRepository {
 
-    private let apiService: ProductAPIServicing
+    private let apiService: ScanAPIServicing
 
-    init(apiService: ProductAPIServicing = ProductAPIService()) {
+    init(apiService: ScanAPIServicing = ScanAPIService()) {
         self.apiService = apiService
     }
 
-    func fetchProduct(byBarcode barcode: String) async throws -> Product {
-        let dto = try await apiService.fetchProduct(barcode: barcode)
-        return map(dto)
+    func fetchScans(page: Int, size: Int) async throws -> ScanPage {
+        let dto = try await apiService.fetchScans(page: page, size: size)
+        return mapPage(dto)
+    }
+
+    func submitScan(imageData: Data) async throws -> ScanSubmission {
+        let dto = try await apiService.submitScan(imageData: imageData)
+        return ScanSubmission(
+            scanId: dto.scanId,
+            status: ScanStatus(rawValue: dto.status) ?? .processing
+        )
+    }
+
+    func fetchScanDetail(scanId: String) async throws -> ScanDetail {
+        let dto = try await apiService.fetchScanDetail(scanId: scanId)
+        print("row DTO: \(dto)")
+        print("after cleaning it up: \(mapDetail(dto))")
+        return mapDetail(dto)
     }
 
     // MARK: - Mapping
 
-    private func map(_ dto: ProductDTO) -> Product {
-        Product(
-            id: dto.barcode,
-            barcode: dto.barcode,
-            brand: firstBrand(from: dto.brands),
-            name: dto.productName?.isEmpty == false ? dto.productName! : "Unknown product",
-            imageURL: dto.imageUrl.flatMap(URL.init(string:)),
-            healthTag: mapTag(dto.nutriscoreGrade)
+    private func mapPage(_ dto: ScanPageDTO) -> ScanPage {
+        ScanPage(
+            totalElements: dto.totalElements,
+            totalPages: dto.totalPages,
+            page: dto.pageable.pageNumber,
+            size: dto.size,
+            numberOfElements: dto.numberOfElements,
+            first: dto.first,
+            last: dto.last,
+            content: dto.content.map(mapListItem)
         )
     }
 
-    /// OFF returns brands as a comma-separated string, e.g. "Nestlé,Fanmilk".
-    private func firstBrand(from brands: String?) -> String {
-        guard let brands, !brands.isEmpty else { return "Unknown brand" }
-        return brands
-            .split(separator: ",")
-            .first
-            .map { $0.trimmingCharacters(in: .whitespaces) } ?? "Unknown brand"
+    private func mapListItem(_ dto: ScanListItemDTO) -> ScanListItem {
+        ScanListItem(
+            id: dto.scanId,
+            scanId: dto.scanId,
+            imageUrl: dto.imageUrl,
+            verdict: ScanResultVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
+            scannedAt: ISO8601DateFormatter().date(from: dto.scannedAt ?? "") ?? Date()
+        )
     }
 
-    /// Maps OFF's Nutri-Score letter grade (a–e) to a coarse health tag.
-    /// Adjust this rule to whatever your app actually wants to show.
-    private func mapTag(_ grade: String?) -> Product.HealthTag? {
-        switch grade?.lowercased() {
-        case "a", "b": return .healthy
-        case "d", "e": return .highSugar
-        case "c": return .custom("Moderate")
-        default: return nil
-        }
+    private func mapDetail(_ dto: ScanDetailDTO) -> ScanDetail {
+        ScanDetail(
+            id: dto.scanId,
+            scanId: dto.scanId,
+            status: ScanStatus(rawValue: dto.status) ?? .processing,
+            scannedAt: dto.scannedAt.flatMap { ISO8601DateFormatter().date(from: $0) },
+            imageUrl: dto.imageUrl,
+            productName: dto.productName,
+            foodSafetyResponse: dto.foodSafetyResponse.map(mapSafety),
+            nutritionFacts: dto.nutritionFacts.map(mapNutrition)
+        )
+    }
+
+    private func mapSafety(_ dto: FoodSafetyResponseDTO) -> ScanFoodSafetyResponse {
+        ScanFoodSafetyResponse(
+            verdict: ScanResultVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
+            flaggedIngredients: dto.flaggedIngredients?.map(mapIngredient) ?? [],
+            summary: dto.summary ?? ""
+        )
+    }
+
+    private func mapIngredient(_ dto: ScanFlaggedIngredientDTO) -> ScanFlaggedIngredient {
+        ScanFlaggedIngredient(
+            ingredient: dto.ingredient ?? "",
+            reason: dto.reason ?? "",
+            type: ScanFlagType(rawValue: dto.type ?? "OTHER") ?? .other,
+            name: dto.name ?? []
+        )
+    }
+
+    private func mapNutrition(_ dto: ScanNutritionFactsDTO) -> ScanNutritionFacts {
+        ScanNutritionFacts(
+            calories: dto.calories ?? 0,
+            proteinGrams: dto.proteinGrams ?? 0,
+            carbsGrams: dto.carbsGrams ?? 0,
+            fatG: dto.fatG ?? 0,
+            fiberGrams: dto.fiberGrams ?? 0,
+            sugarG: dto.sugarG ?? 0,
+            sodiumMg: dto.sodiumMg ?? 0
+        )
     }
 }

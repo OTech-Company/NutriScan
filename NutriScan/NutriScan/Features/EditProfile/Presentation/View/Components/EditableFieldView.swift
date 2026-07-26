@@ -9,18 +9,33 @@ import SwiftUI
 struct EditableFieldView: View {
     let placeholder: String
     @Binding var text: String
-    var trailingIcon: String = "pencil"
+    var trailingIcon: String = "edit_icon"
     var isEditing: Bool = false
 
     var body: some View {
         HStack {
-            TextField(placeholder, text: $text)
-                .font(Font.AppFont.textPrimary)
-                .foregroundColor(Color.EditProfileSemantics.textSecondary)
-                .disabled(!isEditing)
+            TextField(
+                "",
+                text: $text,
+                prompt: Text(placeholder)
+                    .foregroundColor(Color.EditProfileSemantics.textSecondary)
+            )
+            .font(Font.AppFont.textPrimary)
+            .foregroundColor(Color.EditProfileSemantics.textTertiary)
+            .disabled(!isEditing)
 
-            Image(systemName: trailingIcon)
-                .foregroundColor(Color.EditProfileSemantics.textSecondary)
+            Group {
+                if UIImage(named: trailingIcon) != nil {
+                    Image(trailingIcon)
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
+                } else {
+                    Image(systemName: trailingIcon)
+                }
+            }
+            .foregroundColor(Color.EditProfileSemantics.textSecondary)
         }
         .padding(.horizontal, 16)
         .frame(height: EditProfileSemantics.Sizes.fieldHeight)

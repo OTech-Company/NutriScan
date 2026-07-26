@@ -9,7 +9,7 @@ import SwiftUI
 struct EditProfileHeaderView: View {
     let name: String
     let email: String
-    let avatarImage: Image
+    var avatarURL: String? = AppConstants.defaultUserAvatarURL
 
     var body: some View {
         HStack(spacing: EditProfileSemantics.Spacing.headerRowSpacing) {
@@ -27,14 +27,16 @@ struct EditProfileHeaderView: View {
                                 .outerAvatarDiameter
                         )
 
-                    avatarImage
-                        .resizable()
-                        .scaledToFill()
-                        .frame(
-                            width: EditProfileSemantics.Sizes.avatarDiameter,
-                            height: EditProfileSemantics.Sizes.avatarDiameter
-                        )
-                        .clipShape(Circle())
+                    CachedImage(
+                        urlString: avatarURL ?? AppConstants.defaultUserAvatarURL,
+                        failureImageName: "person.circle.fill",
+                        contentMode: .fill
+                    )
+                    .frame(
+                        width: EditProfileSemantics.Sizes.avatarDiameter,
+                        height: EditProfileSemantics.Sizes.avatarDiameter
+                    )
+                    .clipShape(Circle())
                 }
 
                 ZStack {

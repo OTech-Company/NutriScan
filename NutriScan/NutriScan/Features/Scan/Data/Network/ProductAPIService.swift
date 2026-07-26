@@ -1,34 +1,16 @@
 import Foundation
 
+// MARK: - API Service Protocol
 
-
-struct OpenFoodFactsResponse: Decodable {
-    let code: String
-    let status: Int
-    let product: OpenFoodFactsProductDTO?
+protocol ScanAPIServicing {
+    func fetchScans(page: Int, size: Int) async throws -> ScanPageDTO
+    func submitScan(imageData: Data) async throws -> ScanSubmissionDTO
+    func fetchScanDetail(scanId: String) async throws -> ScanDetailDTO
 }
 
-struct OpenFoodFactsProductDTO: Decodable {
-    let productName: String?
-    let brands: String?
-    let imageUrl: String?
-    let nutriscoreGrade: String?
-}
+// MARK: - API Service Implementation
 
-/// What the repository actually consumes — envelope unwrapped, barcode attached.
-struct ProductDTO {
-    let barcode: String
-    let productName: String?
-    let brands: String?
-    let imageUrl: String?
-    let nutriscoreGrade: String?
-}
-
-protocol ProductAPIServicing {
-    func fetchProduct(barcode: String) async throws -> ProductDTO
-}
-
-final class ProductAPIService: ProductAPIServicing {
+final class ScanAPIService: ScanAPIServicing {
 
     private let networkService: NetworkServiceProtocol
 
@@ -36,35 +18,77 @@ final class ProductAPIService: ProductAPIServicing {
         self.networkService = networkService
     }
 
-    func fetchProduct(barcode: String) async throws -> ProductDTO {
-        let endpoint = ProductEndpoint.fetchProduct(barcode: barcode)
-        
-        let envelope: OpenFoodFactsResponse
+    func fetchScans(page: Int, size: Int) async throws -> ScanPageDTO {
+        let endpoint = ScanEndpoint.fetchScans(page: page, size: size)
         do {
-            envelope = try await networkService.request(endpoint)
+            return try await networkService.request(endpoint)
         } catch let error as NetworkError {
             switch error {
             case .decodingFailed:
-                throw ProductError.decoding
+                throw ScanError.decoding
             default:
-                throw ProductError.network(error.localizedDescription)
+                throw ScanError.network(error.localizedDescription)
             }
         } catch {
-            throw ProductError.network(error.localizedDescription)
+            throw ScanError.network(error.localizedDescription)
         }
-
-        // OFF returns status == 0 (with no `product`) when the barcode isn't found,
-        // rather than an HTTP 404.
-        guard envelope.status == 1, let product = envelope.product else {
-            throw ProductError.notFound(barcode: barcode)
-        }
-
-        return ProductDTO(
-            barcode: envelope.code,
-            productName: product.productName,
-            brands: product.brands,
-            imageUrl: product.imageUrl,
-            nutriscoreGrade: product.nutriscoreGrade
-        )
     }
+
+    func submitScan(imageData: Data) async throws -> ScanSubmissionDTO {
+        let endpoint = ScanSubmitEndpoint(imageData: imageData)
+
+        do {
+            return try await networkService.request(endpoint)
+        } catch let error as NetworkError {
+            switch error {
+            case .decodingFailed:
+                throw ScanError.decoding
+            default:
+                throw ScanError.network(error.localizedDescription)
+            }
+        } catch {
+            throw ScanError.network(error.localizedDescription)
+        }
+    }
+
+    func fetchScanDetail(scanId: String) async throws -> ScanDetailDTO {
+        let endpoint = ScanEndpoint.fetchScanDetail(scanId: scanId)
+        do {
+            return try await networkService.request(endpoint)
+        } catch let error as NetworkError {
+            switch error {
+            case .decodingFailed:
+                throw ScanError.decoding
+            default:
+                throw ScanError.network(error.localizedDescription)
+            }
+        } catch {
+            throw ScanError.network(error.localizedDescription)
+        }
+    }
+}
+
+// MARK: - Multipart Upload Endpoint
+
+private struct ScanSubmitEndpoint: APIEndpoint {
+    let imageData: Data
+
+    var baseURL: String { AppNetworkConfig.core.baseURL }
+    var path: String { "/api/v1/scans" }
+    var method: HTTPMethod { .post }
+    var queryParameters: [String: String]? { nil }
+    var body: RequestBody {
+        var form = MultipartFormData()
+        form.files.append(
+            MultipartFormData.FilePart(
+                name: "image",
+                filename: "scan.jpg",
+                mimeType: "image/jpeg",
+                data: imageData
+            )
+        )
+        return .multipart(form)
+    }
+    var headers: [String: String] { [:] }
+    var requiresAuth: Bool { true }
 }

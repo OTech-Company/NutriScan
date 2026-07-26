@@ -29,42 +29,40 @@ struct NewsView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                NewsFeedPalette.background.ignoresSafeArea()
+        ZStack {
+            NewsFeedPalette.background.ignoresSafeArea()
 
-                ScrollView {
-                    VStack(spacing: NewsFeedMetrics.cardSpacing) {
-                        SearchBarView(text: $viewModel.searchText)
-                            .padding(.horizontal, NewsFeedMetrics.screenPadding)
-                            .padding(.top, 4)
-                            .onChange(of: viewModel.searchText) { _, newValue in
-                                viewModel.onSearchTextChanged(newValue)
-                            }
-
-                        if !viewModel.isSearching {
-                            categoryChipsRow
+            ScrollView {
+                VStack(spacing: NewsFeedMetrics.cardSpacing) {
+                    SearchBarView(text: $viewModel.searchText)
+                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                        .padding(.top, 4)
+                        .onChange(of: viewModel.searchText) { _, newValue in
+                            viewModel.onSearchTextChanged(newValue)
                         }
 
-                        content
-                            .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                    if !viewModel.isSearching {
+                        categoryChipsRow
                     }
-                    .padding(.bottom, 24)
+
+                    content
+                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
                 }
-                .refreshable {
-                    await viewModel.onPullToRefresh()
-                }
+                .padding(.bottom, 24)
             }
-            .navigationTitle("NutriScan News")
-            .navigationBarTitleDisplayMode(.large)
-            .task {
-                await viewModel.onAppear()
+            .refreshable {
+                await viewModel.onPullToRefresh()
             }
-            .sheet(item: $viewModel.selectedArticleForReading) { article in
-                if let url = article.articleURL {
-                    SafariView(url: url)
-                        .ignoresSafeArea()
-                }
+        }
+        .navigationTitle("NutriScan News")
+        .navigationBarTitleDisplayMode(.large)
+        .task {
+            await viewModel.onAppear()
+        }
+        .sheet(item: $viewModel.selectedArticleForReading) { article in
+            if let url = article.articleURL {
+                SafariView(url: url)
+                    .ignoresSafeArea()
             }
         }
         .tint(NewsFeedPalette.accent)
