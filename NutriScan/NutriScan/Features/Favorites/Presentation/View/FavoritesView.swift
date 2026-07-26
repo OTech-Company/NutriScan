@@ -30,5 +30,5 @@ struct FavoritesView: View {
 }
 
 #Preview {
-    FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
+    FavoritesFactory.makeFavoritesView()
 }

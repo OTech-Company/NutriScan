@@ -45,7 +45,7 @@ struct MainTabView: View {
 //                    .background(colorScheme == .light ? .white : Color.Teal.teal1600)
 //                    .tag(AppTab.bookmark)
                 
-                FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
+                FavoritesFactory.makeFavoritesView()
                     .tag(AppTab.bookmark)
 
                 ProfileFlowView()
