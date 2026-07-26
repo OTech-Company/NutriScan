@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct ProductDetailsScreen: View {
-    let scanId: String
+
+    @StateObject private var viewModel: ProductDetailsViewModel
+
+    init(scanId: String) {
+        _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(scanId: scanId))
+    }
+
+    init(detail: ScanDetail) {
+        _viewModel = StateObject(wrappedValue: ProductDetailsViewModel(detail: detail))
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -32,10 +41,24 @@ struct ProductDetailsScreen: View {
             .padding(.horizontal, 22)
             .padding(.vertical, 16)
             
-            ProductSheetView()
+            if viewModel.isLoading {
+                Spacer()
+                ProgressView("Loading scan details...")
+                Spacer()
+            } else if let state = viewModel.uiState {
+                ProductSheetView(state: state)
+            } else {
+                Spacer()
+                Text(viewModel.errorMessage ?? "No scan data.")
+                    .foregroundColor(.secondary)
+                Spacer()
+            }
         }
         .background(Color.Teal.teal1000)
         .ignoresSafeArea(.container, edges: .bottom)
+        .onAppear {
+            viewModel.loadIfNeeded()
+        }
     }
 }
 

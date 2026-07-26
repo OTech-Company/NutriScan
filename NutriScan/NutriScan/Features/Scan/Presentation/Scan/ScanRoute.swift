@@ -12,8 +12,8 @@ enum ScanRoute: Route {
             ScanScreen()
         case .scanDetail(let scanId, _):
             ProductDetailsScreen(scanId: scanId)
-        case .scanDetailFromDTO(let detail, let imageData):
-            ProductDetailView(detail: detail, imageData: imageData)
+        case .scanDetailFromDTO(let detail, _):
+            ProductDetailsScreen(detail: detail)
         }
     }
 }
