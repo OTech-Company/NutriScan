@@ -237,7 +237,6 @@
 		81F15656CCA3C25584FB1580 /* ScanViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82273B5CC6A19254740E4B06 /* ScanViewModel.swift */; };
 		82B580183B6AD4DB04D65E4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1D8A3AF0F1C8BFCCBA18E4D /* Assets.xcassets */; };
 		83BCED67AF3D310ED2A792A7 /* Color+SettingsSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC479CD22A1728C7E9B9A57 /* Color+SettingsSemantic.swift */; };
-		85654F7CAAE9DC89449BC875 /* ProductDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BE8D2F2FC9335D4D662392 /* ProductDetailView.swift */; };
 		8662866AF69309468A360A6B /* AppAuthBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E7AFEE788A78ABBC1820F5 /* AppAuthBackgroundModifier.swift */; };
 		86F696F90C6E8D924E3BC4C5 /* LexendDeca-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9DD54334992BD48AB4A96A34 /* LexendDeca-Regular.ttf */; };
 		87CDFD7A6B4A9E03D3672A78 /* Colors+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D17F082499900C257CEE1D16 /* Colors+Extension.swift */; };
@@ -276,7 +275,6 @@
 		9A9ADDF48A3BBC4320C3738F /* ProfileSetupFlowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78423DDD3A920A593CB66209 /* ProfileSetupFlowViewModel.swift */; };
 		9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2D8F87E335CE8A51061854D /* HomeViewModel.swift */; };
 		9BD6E452E70098B5D58D11A9 /* NutriScanTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D867200C8CDFD59D244B37E /* NutriScanTests.swift */; };
-		9BF9BFBA75D2836ADE31A716 /* ProductDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B12B6EBA80B31009C638DD /* ProductDetailViewModel.swift */; };
 		9C90AFAEDCF85BFBCA64A9B1 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69716FFB096216243DA9DDEE /* BackButton.swift */; };
 		9D9C81A6E59C4C4B064D367D /* ScanScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D38F18CB45A59C69931017 /* ScanScreen.swift */; };
 		9E3D57EFDE580D3E9DED13F6 /* CustomTextFieldInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AAE91B4215BAC7A7714DD /* CustomTextFieldInput.swift */; };
@@ -712,7 +710,6 @@
 		77637C93945E8B51B3D0DCA9 /* LookupProductUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupProductUseCase.swift; sourceTree = "<group>"; };
 		78423DDD3A920A593CB66209 /* ProfileSetupFlowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupFlowViewModel.swift; sourceTree = "<group>"; };
 		78869BEA6A12BC8FD6D8A608 /* TextFieldState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldState.swift; sourceTree = "<group>"; };
-		78B12B6EBA80B31009C638DD /* ProductDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailViewModel.swift; sourceTree = "<group>"; };
 		7D4C56E11B541B29F6BE8003 /* ProductAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductAPIService.swift; sourceTree = "<group>"; };
 		81CB9B9A3B869591060C924F /* ScanResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResponse.swift; sourceTree = "<group>"; };
 		82273B5CC6A19254740E4B06 /* ScanViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewModel.swift; sourceTree = "<group>"; };
@@ -769,7 +766,6 @@
 		B3BD3066A3D78447AAA6A195 /* FetchExercisesRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FetchExercisesRequest.swift; sourceTree = "<group>"; };
 		B44214F78D2FF364F1065559 /* BarcodeScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScannerView.swift; sourceTree = "<group>"; };
 		B6DCE74BF139582C1F30535D /* NutriScanUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		B8BE8D2F2FC9335D4D662392 /* ProductDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailView.swift; sourceTree = "<group>"; };
 		B9B6383C22E3B7DE8618626A /* EditableFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableFieldView.swift; sourceTree = "<group>"; };
 		C29B6E4A1E5F31C5C67384BF /* PlusJakartaSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Medium.ttf"; sourceTree = "<group>"; };
 		C2D8F87E335CE8A51061854D /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -1577,15 +1573,6 @@
 			path = Splash;
 			sourceTree = "<group>";
 		};
-		432D65EC665A2B97B3A0C90C /* ProductDetail */ = {
-			isa = PBXGroup;
-			children = (
-				B8BE8D2F2FC9335D4D662392 /* ProductDetailView.swift */,
-				78B12B6EBA80B31009C638DD /* ProductDetailViewModel.swift */,
-			);
-			path = ProductDetail;
-			sourceTree = "<group>";
-		};
 		437C1C6D781B011BEB459B65 /* Weight-Height */ = {
 			isa = PBXGroup;
 			children = (
@@ -1624,7 +1611,6 @@
 		48F2D3E4092251AA6A7198F5 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				432D65EC665A2B97B3A0C90C /* ProductDetail */,
 				18E13455D867D41D2F3E7DE4 /* Scan */,
 			);
 			path = Presentation;
@@ -3663,8 +3649,6 @@
 				2305D7797A178FEA10CFD101 /* ProductAPIService.swift in Sources */,
 				D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */,
 				D4BAA30630137BE9006EDB11 /* ProfileState.swift in Sources */,
-				85654F7CAAE9DC89449BC875 /* ProductDetailView.swift in Sources */,
-				9BF9BFBA75D2836ADE31A716 /* ProductDetailViewModel.swift in Sources */,
 				AACB8FDACC2DCC73FBFBF5AD /* ProductError.swift in Sources */,
 				D4BAA31A30137F7C006EDB11 /* ProfileViewModel.swift in Sources */,
 				D49D9F0A3013E35500ACE567 /* FamilyMemberDTO.swift in Sources */,
