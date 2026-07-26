@@ -1,27 +1,58 @@
 import Foundation
 
-/// One use case = one user intention. The ViewModel talks to this,
-/// never directly to the repository or network.
-protocol LookupProductUseCase {
-    func execute(barcode: String) async throws -> Product
+protocol FetchScansUseCase {
+    func execute(page: Int, size: Int) async throws -> ScanPage
 }
 
-final class LookupProductUseCaseImpl: LookupProductUseCase {
+final class FetchScansUseCaseImpl: FetchScansUseCase {
 
-    private let repository: ProductRepository
+    private let repository: ScanRepository
 
-    init(repository: ProductRepository) {
+    init(repository: ScanRepository) {
         self.repository = repository
     }
 
-    func execute(barcode: String) async throws -> Product {
-        // This is the place for business rules beyond a raw fetch, e.g.:
-        // - validating barcode format/checksum before hitting the network
-        // - falling back to a cached/local product if the network fails
-        // - applying "is this healthy?" tagging logic if it's not server-side
-        guard barcode.count >= 6 else {
-            throw ProductError.notFound(barcode: barcode)
+    func execute(page: Int, size: Int) async throws -> ScanPage {
+        try await repository.fetchScans(page: page, size: size)
+    }
+}
+
+protocol SubmitScanImageUseCase {
+    func execute(imageData: Data) async throws -> ScanSubmission
+}
+
+final class SubmitScanImageUseCaseImpl: SubmitScanImageUseCase {
+
+    private let repository: ScanRepository
+
+    init(repository: ScanRepository) {
+        self.repository = repository
+    }
+
+    func execute(imageData: Data) async throws -> ScanSubmission {
+        guard !imageData.isEmpty else {
+            throw ScanError.unknown
         }
-        return try await repository.fetchProduct(byBarcode: barcode)
+        return try await repository.submitScan(imageData: imageData)
+    }
+}
+
+protocol FetchScanDetailUseCase {
+    func execute(scanId: String) async throws -> ScanDetail
+}
+
+final class FetchScanDetailUseCaseImpl: FetchScanDetailUseCase {
+
+    private let repository: ScanRepository
+
+    init(repository: ScanRepository) {
+        self.repository = repository
+    }
+
+    func execute(scanId: String) async throws -> ScanDetail {
+        guard !scanId.isEmpty else {
+            throw ScanError.scanNotFound(scanId: scanId)
+        }
+        return try await repository.fetchScanDetail(scanId: scanId)
     }
 }
