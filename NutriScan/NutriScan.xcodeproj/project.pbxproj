@@ -702,12 +702,6 @@
 		6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlaggedIngredientDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNutritionFactsDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
-		6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
-		6FC3C237301003E400ACB5EE /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
-		6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryProtocol.swift; sourceTree = "<group>"; };
-		6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveDailyStepsUseCase.swift; sourceTree = "<group>"; };
-		6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestStepAuthorizationUseCase.swift; sourceTree = "<group>"; };
-		6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepCounterViewModel.swift; sourceTree = "<group>"; };
 		6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NutriScan.entitlements; sourceTree = "<group>"; };
 		6FFAB9839C62C2DB156A28BD /* CategoryResponseDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CategoryResponseDTO.swift; sourceTree = "<group>"; };
 		702881CEB0053AD3B4F54F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -2697,12 +2691,6 @@
 		C5144E813013DBFA007EE884 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				6FC3C23F301003E400ACB5EE /* StepCounterViewModel.swift */,
-				6FC3C234301003E400ACB5EE /* StepRepositoryImpl.swift */,
-				6FC3C23C301003E400ACB5EE /* RequestStepAuthorizationUseCase.swift */,
-				6FC3C237301003E400ACB5EE /* DailySteps.swift */,
-				6FC3C239301003E400ACB5EE /* StepRepositoryProtocol.swift */,
-				6FC3C23B301003E400ACB5EE /* ObserveDailyStepsUseCase.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -3704,7 +3692,6 @@
 				70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */,
 				1F04C92E935902D164B10D67 /* ScanMask.swift in Sources */,
 				6F8C4E9A30145586000067BC /* ScanDetailDTO.swift in Sources */,
-				D49D9F023013E2CC00ACE567 /* GetProfileSummaryUseCaseProtocol.swift in Sources */,
 				61727915CCEC0E896C301DCC /* ScanResponse.swift in Sources */,
 				1CF0FECD5C51B56D371796BD /* ScanRoute.swift in Sources */,
 				9D9C81A6E59C4C4B064D367D /* ScanScreen.swift in Sources */,
