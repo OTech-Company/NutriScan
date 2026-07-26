@@ -22,6 +22,7 @@ struct FavoritesView: View {
                 FavoritesEmptyStateView()
             }
         }
+        .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
         .task {
             await viewModel.loadFavorites()
         }
