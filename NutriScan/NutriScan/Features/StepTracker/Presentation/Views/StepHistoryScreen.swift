@@ -21,26 +21,34 @@ struct StepHistoryScreen: View {
         return formatter.string(from: date)
     }
 
+    private var selectedDaySteps: Int {
+        if selectedIndex == 0 {
+            return viewModel.todaySteps
+        }
+        let calendar = Calendar.current
+        guard let targetDate = calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) else {
+            return 0
+        }
+        let targetStart = calendar.startOfDay(for: targetDate)
+        return viewModel.history.first(where: { calendar.isDate($0.date, inSameDayAs: targetStart) })?.stepCount ?? 0
+    }
+
     private var weeklyAverage: Int {
         let weekData = viewModel.history.suffix(7)
         guard !weekData.isEmpty else { return 0 }
         return weekData.map(\.stepCount).reduce(0, +) / weekData.count
     }
 
-    private var todaySteps: Int {
-        viewModel.history.last?.stepCount ?? 0
-    }
-
     private var caloriesBurned: Int {
-        Int(Double(todaySteps) * 0.04)
+        Int(Double(selectedDaySteps) * 0.04)
     }
 
     private var distanceKm: Double {
-        Double(todaySteps) * 0.000762
+        Double(selectedDaySteps) * 0.000762
     }
 
     private var activeMinutes: Int {
-        todaySteps / 100
+        selectedDaySteps / 100
     }
 
     var body: some View {
@@ -50,7 +58,7 @@ struct StepHistoryScreen: View {
                 rangeTabs
                 dateNavigation
                 DailyInsightCardView(
-                    steps: todaySteps,
+                    steps: selectedDaySteps,
                     goalSteps: 10_000,
                     weeklyAverage: weeklyAverage
                 )
@@ -70,7 +78,11 @@ struct StepHistoryScreen: View {
             }
         }
         .onAppear {
+            viewModel.onAppear()
             viewModel.loadHistory(range: selectedRange)
+        }
+        .onDisappear {
+            viewModel.onDisappear()
         }
     }
 
@@ -90,7 +102,7 @@ struct StepHistoryScreen: View {
         RangePickerView(selectedRange: $selectedRange)
             .onChange(of: selectedRange) { _, newRange in
                 selectedIndex = 0
-                viewModel.loadHistory(range: newRange)
+                viewModel.loadHistory(range: newRange, forceRefresh: true)
             }
     }
 
@@ -141,12 +153,12 @@ struct StepHistoryScreen: View {
     }
 
     private var chart: some View {
-        let displayData = Array(viewModel.history.suffix(7))
+        let displayData = Array(viewModel.history.suffix(displayDataCount))
         let maxStep = max(displayData.map(\.stepCount).max() ?? 1, 10_000)
 
         return VStack(spacing: 12) {
             Chart {
-                ForEach(Array(displayData.enumerated()), id: \.offset) { index, day in
+                ForEach(Array(displayData.enumerated()), id: \.offset) { _, day in
                     BarMark(
                         x: .value("Day", dayLabel(for: day.date)),
                         y: .value("Steps", day.stepCount)
@@ -191,9 +203,26 @@ struct StepHistoryScreen: View {
         }
     }
 
+    private var displayDataCount: Int {
+        switch selectedRange {
+        case .lastWeek: return 7
+        case .lastMonth: return 30
+        case .last3Months: return 30
+        case .last6Months: return 30
+        case .sinceYesterday: return 2
+        }
+    }
+
     private func dayLabel(for date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "EEE"
+        switch selectedRange {
+        case .lastWeek, .sinceYesterday:
+            formatter.dateFormat = "EEE"
+        case .last3Months, .last6Months:
+            formatter.dateFormat = "MMM d"
+        default:
+            formatter.dateFormat = "d"
+        }
         return formatter.string(from: date)
     }
 
