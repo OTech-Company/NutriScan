@@ -15,8 +15,8 @@ struct SwipeToActionButton: View {
     @State private var isCompleted: Bool = false
     
     private let thumbWidth: CGFloat = 36
-    private let thumbHeight: CGFloat = 20
-    private let trackInset: CGFloat = 2 // The horizontal padding inside the track
+    private let thumbHeight: CGFloat = 18
+    private let trackInset: CGFloat = 4 // The horizontal padding inside the track
     
     var body: some View {
         GeometryReader { geometry in
@@ -93,7 +93,9 @@ struct SwipeToActionButton: View {
 
 #Preview {
     VStack {
-        FavoriteCardView()
+        FavoriteCardView(
+            favUIState: FavUIState(id: "1", image: "testImage", title: "Milk Product", calories: 180, condition: .Caution)
+        )
     }
     .padding(.horizontal, 80)
 }

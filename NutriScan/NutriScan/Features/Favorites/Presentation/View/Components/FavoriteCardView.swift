@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct FavoriteCardView: View {
+    
+    let favUIState: FavUIState
+    
     var body: some View {
         VStack(spacing: 12) {
-            Image("testImage")
+            Image(favUIState.image)
                 .resizable()
                 .scaledToFill()
                 .frame(height: 140)
@@ -18,28 +21,34 @@ struct FavoriteCardView: View {
             
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Milk Product")
+                    Text(favUIState.title)
                         .font(Font.AppFont.textSecondary)
                         .foregroundStyle(Color.Favorites.titleColor)
+                        .lineLimit(1)
+                        
                     
-                    Text("Safe")
+                    Text(favUIState.condition.rawValue)
                         .font(Font.AppFont.textCaption)
                         .padding(.horizontal, 6)
                         .padding(.vertical, 2)
                         .foregroundStyle(Color.Teal.teal100)
-                        .background(Capsule().foregroundStyle(Color.Teal.teal1000))
+                        .background(
+                            Capsule().foregroundStyle(
+                                favUIState.condition == Condition.Safe ? Color.Teal.teal1000 : Color.Yellow.yellow500
+                            )
+                        )
                 }
                 
                 Spacer()
                 
                 VStack(spacing: 0) {
-                    Text("180")
+                    Text(String(favUIState.calories))
                     Text("Kcal")
                 }
                 .font(Font.AppFont.textCaption)
                 .foregroundStyle(Color.Favorites.caloriesColor)
                 .padding(.vertical, 2)
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 4)
                 .background(Color.Teal.teal300)
                 .clipShape(RoundedRectangle(cornerRadius: 4))
             }
@@ -61,7 +70,9 @@ struct FavoriteCardView: View {
 
 #Preview {
     VStack {
-        FavoriteCardView()
+        FavoriteCardView(
+            favUIState: FavUIState(id: "1", image: "testImage", title: "Milk Product", calories: 180, condition: .Caution)
+        )
     }
     .padding(.horizontal, 80)
 }

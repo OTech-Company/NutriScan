@@ -229,10 +229,12 @@
 		8F48266B30150E12009F3A11 /* SwipeToActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F48266A30150E12009F3A11 /* SwipeToActionButton.swift */; };
 		8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F729C18301145C900094C23 /* ExploreSectionHeader.swift */; };
 		8F7450233015317400E9B8A1 /* FavoritesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7450223015317400E9B8A1 /* FavoritesGridView.swift */; };
+		8F75A3D93016425500C53524 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F75A3D83016425500C53524 /* FavoritesViewModel.swift */; };
 		8F79B3A130154DF900D771E7 /* Color+Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F79B3A030154DF900D771E7 /* Color+Favorites.swift */; };
 		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
 		8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */; };
+		8FEFD4A530162CFE00981444 /* FavUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEFD4A430162CFE00981444 /* FavUIState.swift */; };
 		901C9D543FA7B839A1109594 /* CornerBracketsShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EB74CA07FB9BBCE08073B1 /* CornerBracketsShape.swift */; };
 		909DF67C3792378F84AA70EA /* RulerDial.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D223E8294229110E9CCF7F /* RulerDial.swift */; };
 		9897EA3C11AE497DBF27AB1A /* TabIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027B3159563301F48A196427 /* TabIconButton.swift */; };
@@ -636,10 +638,12 @@
 		8F48266A30150E12009F3A11 /* SwipeToActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToActionButton.swift; sourceTree = "<group>"; };
 		8F729C18301145C900094C23 /* ExploreSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSectionHeader.swift; sourceTree = "<group>"; };
 		8F7450223015317400E9B8A1 /* FavoritesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesGridView.swift; sourceTree = "<group>"; };
+		8F75A3D83016425500C53524 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		8F79B3A030154DF900D771E7 /* Color+Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Favorites.swift"; sourceTree = "<group>"; };
 		8FA3439F300EB7C20044192A /* ProductEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEndpoint.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
 		8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
+		8FEFD4A430162CFE00981444 /* FavUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavUIState.swift; sourceTree = "<group>"; };
 		92C40C8ADD09912A731367A4 /* Color+HomeSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HomeSemantic.swift"; sourceTree = "<group>"; };
 		969F97EA94D104FF0E5D3CF4 /* InputChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputChip.swift; sourceTree = "<group>"; };
 		99C01998A84CB66F3A387D15 /* empty12.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty12.swift; sourceTree = "<group>"; };
@@ -2162,6 +2166,7 @@
 		8F305C233014E92B0002A179 /* Favorites */ = {
 			isa = PBXGroup;
 			children = (
+				8F75A3D63016423300C53524 /* Domain */,
 				8F305C253014E9460002A179 /* Presentation */,
 			);
 			path = Favorites;
@@ -2170,6 +2175,8 @@
 		8F305C253014E9460002A179 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				8F75A3D73016424200C53524 /* ViewModel */,
+				8FEFD4A330162CE800981444 /* UIStates */,
 				8F79B39F30154DD800D771E7 /* Extensions */,
 				8F305C263014E94E0002A179 /* View */,
 			);
@@ -2194,6 +2201,21 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		8F75A3D63016423300C53524 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		8F75A3D73016424200C53524 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8F75A3D83016425500C53524 /* FavoritesViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		8F79B39F30154DD800D771E7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2209,6 +2231,14 @@
 				1F009A2660B7E5BFF43D3F04 /* KeychainManager.swift */,
 			);
 			path = Security;
+			sourceTree = "<group>";
+		};
+		8FEFD4A330162CE800981444 /* UIStates */ = {
+			isa = PBXGroup;
+			children = (
+				8FEFD4A430162CFE00981444 /* FavUIState.swift */,
+			);
+			path = UIStates;
 			sourceTree = "<group>";
 		};
 		935F9DC36F877B976C204669 /* Entity */ = {
@@ -3183,6 +3213,7 @@
 				2C78ED17300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift in Sources */,
 				2C78ED18300E6C7E0092E6B2 /* RegisterHeaderSection.swift in Sources */,
 				2C78ED19300E6C7E0092E6B2 /* RegisterView.swift in Sources */,
+				8F75A3D93016425500C53524 /* FavoritesViewModel.swift in Sources */,
 				2C78ED1A300E6C7E0092E6B2 /* SocialLoginButton.swift in Sources */,
 				2C78ED1C300E6C7E0092E6B2 /* Color+LoginSemantic.swift in Sources */,
 				8F16ED123012A9C500CF43B2 /* ProfileSetupRepository.swift in Sources */,
@@ -3295,6 +3326,7 @@
 				80E3E81EE7F77DB2BEF484EA /* SettingsNavRow.swift in Sources */,
 				A3139845EAAF0AA019A8AAD3 /* SettingsOptions.swift in Sources */,
 				DF8C799C34206520431D05F1 /* SettingsSegmentRow.swift in Sources */,
+				8FEFD4A530162CFE00981444 /* FavUIState.swift in Sources */,
 				1D6E84E32F4668FB17E8512E /* SettingsView.swift in Sources */,
 				6F1A8EE630138F7700E1ACC5 /* RAGLanguage+LayoutDirection.swift in Sources */,
 				7656C044D75870646BAEFF96 /* SettingsViewModel.swift in Sources */,
