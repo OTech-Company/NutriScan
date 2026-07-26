@@ -12,8 +12,8 @@ struct FamilyMemberCardView: View {
     var onShowDetails: () -> Void
 
     var body: some View {
-        VStack(spacing: 8) {
-            HStack(spacing: 4) {
+        VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
+            HStack(spacing: ProfileSemantics.Spacing.tinySpacing) {
                 Image(systemName: "person.circle.fill")
                     .resizable()
                     .foregroundColor(Color.Gray.gray400)
@@ -24,19 +24,19 @@ struct FamilyMemberCardView: View {
                     .clipShape(Circle())
                     .overlay(
                         Circle()
-                            .stroke(Color.Teal.teal1600, lineWidth: 1)
+                            .stroke(Color.Teal.teal1600, lineWidth: ProfileSemantics.Border.avatarBorderWidth)
                     )
 
                 Text(member.name)
                     .font(Font.AppFont.textCaption)
                     .foregroundColor(Color.ProfileSemantics.memberName)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
+                    .lineLimit(ProfileSemantics.Sizes.singleLine)
+                    .minimumScaleFactor(ProfileSemantics.Sizes.minimumScaleFactor)
             }
 
             ShowDetailsButton(action: onShowDetails)
         }
-        .padding(8)
+        .padding(ProfileSemantics.Spacing.smallSpacing)
         .frame(
             width: ProfileSemantics.Sizes.memberCardWidth,
             height: ProfileSemantics.Sizes.memberCardHeight

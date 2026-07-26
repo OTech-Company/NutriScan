@@ -10,28 +10,37 @@ import Shimmer
 
 struct ProfileHeaderLoadingView: View {
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: ProfileSemantics.Spacing.headerContentSpacing) {
             Circle()
-                .fill(Color.gray.opacity(0.15))
-                .frame(width: 56, height: 56)
+                .fill(Color.gray.opacity(ProfileSemantics.Sizes.shimmerOpacity))
+                .frame(
+                    width: ProfileSemantics.Sizes.avatarDiameter,
+                    height: ProfileSemantics.Sizes.avatarDiameter
+                )
                 .shimmering()
 
-            VStack(alignment: .leading, spacing: 4) {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(Color.gray.opacity(0.15))
-                    .frame(width: 140, height: 22)
+            VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.tinySpacing) {
+                RoundedRectangle(cornerRadius: ProfileSemantics.Radius.shimmerSmall)
+                    .fill(Color.gray.opacity(ProfileSemantics.Sizes.shimmerOpacity))
+                    .frame(
+                        width: ProfileSemantics.Sizes.shimmerTextWidth,
+                        height: ProfileSemantics.Sizes.shimmerTextHeight
+                    )
                     .shimmering()
 
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.gray.opacity(0.15))
-                    .frame(width: 90, height: 20)
+                RoundedRectangle(cornerRadius: ProfileSemantics.Radius.shimmerMedium)
+                    .fill(Color.gray.opacity(ProfileSemantics.Sizes.shimmerOpacity))
+                    .frame(
+                        width: ProfileSemantics.Sizes.shimmerSubtextWidth,
+                        height: ProfileSemantics.Sizes.shimmerSubtextHeight
+                    )
                     .shimmering()
             }
             Spacer()
         }
         .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
-        .padding(.top, 42)
-        .padding(.bottom, 42)
+        .padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
+        .padding(.bottom, ProfileSemantics.Spacing.headerVerticalPadding)
     }
 }
 

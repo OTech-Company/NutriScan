@@ -32,24 +32,30 @@ struct FamilyMemberSheetView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: EditProfileSemantics.Spacing.sectionVertical) {
 
-                RoundedRectangle(cornerRadius: 3)
+                RoundedRectangle(cornerRadius: ProfileSemantics.Radius.dragHandle)
                     .fill(Color.Gray.gray400)
-                    .frame(width: 40, height: 5)
-                    .padding(.top, 8)
+                    .frame(
+                        width: ProfileSemantics.Sizes.sheetDragHandleWidth,
+                        height: ProfileSemantics.Sizes.sheetDragHandleHeight
+                    )
+                    .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
                 ZStack {
                     Circle()
-                        .stroke(Color.Teal.teal700, lineWidth: 1.5)
-                        .frame(width: 90, height: 90)
+                        .stroke(Color.Teal.teal700, lineWidth: ProfileSemantics.Border.avatarThickBorderWidth)
+                        .frame(
+                            width: ProfileSemantics.Sizes.sheetAvatarSize,
+                            height: ProfileSemantics.Sizes.sheetAvatarSize
+                        )
 
                     Image(systemName: viewModel.isEditMode ? "person.fill" : "plus")
-                        .font(.system(size: 28, weight: .medium))
+                        .font(.system(size: ProfileSemantics.Sizes.sheetAvatarIconSize, weight: .medium))
                         .foregroundColor(Color.Teal.teal700)
                 }
-                .padding(.top, 8)
+                .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
-                    VStack(spacing: 8) {
+                    VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
                             placeholder: "Member name",
                             text: $viewModel.name.value,
@@ -60,7 +66,7 @@ struct FamilyMemberSheetView: View {
                         }
                     }
 
-                    VStack(spacing: 8) {
+                    VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
                             placeholder: "Relation (e.g. Son, Mother)",
                             text: $viewModel.relation.value,
@@ -108,14 +114,14 @@ struct FamilyMemberSheetView: View {
                         activeAlert = .warning
                     }) {
                         Text("Delete")
-                            .font(.system(size: 16, weight: .medium))
+                            .font(.system(size: ProfileSemantics.Sizes.buttonTextSize, weight: .medium))
                     }
                     .buttonStyle(DeleteTextButtonStyle())
-                    .padding(.top, 4)
+                    .padding(.top, ProfileSemantics.Spacing.tinySpacing)
                 }
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
-            .padding(.bottom, 32)
+            .padding(.bottom, ProfileSemantics.Spacing.sheetBottomPadding)
         }
         .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
         .task {

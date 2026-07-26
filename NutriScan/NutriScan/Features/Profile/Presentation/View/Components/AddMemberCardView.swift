@@ -11,7 +11,7 @@ struct AddMemberCardView: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 6) {
+            VStack(spacing: ProfileSemantics.Spacing.addMemberSpacing) {
                 ZStack {
                     RoundedRectangle(cornerRadius: ProfileSemantics.Sizes.addMemberIconCornerRadius)
                         .fill(Color.ProfileSemantics.addMemberIconBackground)
@@ -19,7 +19,7 @@ struct AddMemberCardView: View {
                                height: ProfileSemantics.Sizes.addMemberIconSize)
 
                     Image(systemName: "plus")
-                        .font(.system(size: 12, weight: .bold))
+                        .font(.system(size: ProfileSemantics.Sizes.addMemberPlusIconSize, weight: .bold))
                         .foregroundColor(Color.ProfileSemantics.addMemberIcon)
                 }
 
@@ -32,7 +32,7 @@ struct AddMemberCardView: View {
                    height: ProfileSemantics.Sizes.memberCardHeight)
             .background(Color.ProfileSemantics.addMemberBackground)
             .clipShape(RoundedRectangle(cornerRadius: ProfileSemantics.Radius.memberCardRadius))
-            .opacity(1)
+            .opacity(ProfileSemantics.Sizes.fullOpacity)
         }
         .buttonStyle(.plain)
     }

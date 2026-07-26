@@ -24,17 +24,17 @@ struct ProfileHeaderView: View {
             }
         }
         .frame(height: ProfileSemantics.HeaderLayout.headerHeight)
-        .clipShape(RoundedCorner(radius: 0, corners: []))
+        .clipShape(RoundedCorner(radius: ProfileSemantics.Radius.zero, corners: []))
     }
 }
 
 #Preview("Profile Header") {
-    VStack(spacing: 20) {
+    VStack(spacing: ProfileSemantics.Spacing.sectionSpacing) {
         ProfileHeaderView(
             state: ProfileState(
                 fullName: "Sara Omar",
                 familyMembers: [],
-                streakDays: 15,
+                streakDays: 15, // Mock data
                 avatarURL: nil,
                 isLoading: false,
                 errorMessage: nil
@@ -53,7 +53,7 @@ struct ProfileHeaderView: View {
             state: ProfileState(
                 fullName: "",
                 familyMembers: [],
-                streakDays: 0,
+                streakDays: 0, // Mock data
                 avatarURL: nil,
                 isLoading: false,
                 errorMessage: "No internet connection"

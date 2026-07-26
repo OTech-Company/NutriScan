@@ -11,27 +11,30 @@ struct ProfileHeaderFailureView: View {
     let message: String
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: ProfileSemantics.Spacing.headerContentSpacing) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 24))
+                .font(.system(size: ProfileSemantics.Sizes.errorIconSize))
                 .foregroundColor(.red)
-                .frame(width: 56, height: 56)
+                .frame(
+                    width: ProfileSemantics.Sizes.avatarDiameter,
+                    height: ProfileSemantics.Sizes.avatarDiameter
+                )
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.tinySpacing) {
                 Text("Failed to load profile")
                     .font(Font.AppFont.title4)
                     .foregroundColor(Color.ProfileSemantics.userName)
 
                 Text(message)
                     .font(Font.AppFont.textSecondary)
-                    .foregroundColor(.red.opacity(0.8))
-                    .lineLimit(1)
+                    .foregroundColor(.red.opacity(ProfileSemantics.Sizes.errorTextOpacity))
+                    .lineLimit(ProfileSemantics.Sizes.singleLine)
             }
             Spacer()
         }
         .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
-        .padding(.top, 42)
-        .padding(.bottom, 42)
+        .padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
+        .padding(.bottom, ProfileSemantics.Spacing.headerVerticalPadding)
     }
 }
 
