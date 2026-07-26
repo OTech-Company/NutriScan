@@ -10,6 +10,7 @@ import SwiftUI
 struct FavoritesGridView: View {
     
     let savedItems: [FavoritesScanEntity]
+    var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -23,6 +24,9 @@ struct FavoritesGridView: View {
                     FavoriteCardView(favUIState:
                                         FavUIState(entity: item)
                     )
+                    .onAppear {
+                        onItemAppear?(item)
+                    }
                 }
             }
             .padding(.horizontal, 22)

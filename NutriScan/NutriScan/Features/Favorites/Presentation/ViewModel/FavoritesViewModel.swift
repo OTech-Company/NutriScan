@@ -23,24 +23,55 @@ class FavoritesViewModel {
         self.favoritesUseCase = favoritesUseCase
     }
     
-    func loadFavorites() async {
-        guard favorites.isEmpty else { return }
-        
+    func loadFavorites(search: String? = nil) async {
+        // If it's a new search or initial load, reset state.
         currentPage = 0
         hasMorePages = true
         favorites.removeAll()
         
-        await fetchFavorites()
+        if let search = search, !search.isEmpty {
+            await fetchAllAndFilter(search: search)
+        } else {
+            await fetchFavorites()
+        }
     }
     
     
-    func loadNextPageIfNeeded(currentItem: FavoritesScanEntity) {
+    func loadNextPageIfNeeded(currentItem: FavoritesScanEntity, search: String? = nil) {
         guard let lastItem = favorites.last, lastItem.id == currentItem.id else { return }
         guard !isLoadingFavorites && hasMorePages else { return }
         
-        Task {
-            await fetchFavorites()
+        if search == nil || search!.isEmpty {
+            Task {
+                await fetchFavorites()
+            }
         }
+    }
+    
+    private func fetchAllAndFilter(search: String) async {
+        isLoadingFavorites = true
+        loadFavoritesError = nil
+        
+        var allFetched: [FavoritesScanEntity] = []
+        var page = 0
+        var morePages = true
+        let fetchSize = 100
+        
+        do {
+            while morePages {
+                let result = try await favoritesUseCase.getFavorites(page: page, size: fetchSize)
+                allFetched.append(contentsOf: result.favorites)
+                page += 1
+                morePages = page < result.totalPages
+            }
+            
+            favorites = allFetched.filter { $0.productName.localizedCaseInsensitiveContains(search) }
+            hasMorePages = false
+        } catch {
+            loadFavoritesError = error.localizedDescription
+        }
+        
+        isLoadingFavorites = false
     }
     
     func fetchFavorites() async {

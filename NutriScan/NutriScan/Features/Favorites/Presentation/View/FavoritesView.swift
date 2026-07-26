@@ -13,18 +13,14 @@ struct FavoritesView: View {
     @State private var searchText = ""
     @State private var appliedSearchText = ""
     
-    var filteredFavorites: [FavoritesScanEntity] {
-        if appliedSearchText.isEmpty {
-            return viewModel.favorites
-        } else {
-            return viewModel.favorites.filter { $0.productName.localizedCaseInsensitiveContains(appliedSearchText) }
-        }
-    }
-    
     var body: some View {
         VStack(spacing: 16) {
             FavoritesSearchBar(text: $searchText, onSearch: {
                 appliedSearchText = searchText
+                Task {
+                    let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
+                    await viewModel.loadFavorites(search: searchParam)
+                }
             })
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
@@ -32,8 +28,11 @@ struct FavoritesView: View {
             if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if !filteredFavorites.isEmpty {
-                FavoritesGridView(savedItems: filteredFavorites)
+            } else if !viewModel.favorites.isEmpty {
+                FavoritesGridView(savedItems: viewModel.favorites, onItemAppear: { item in
+                    let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
+                    viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
+                })
             } else {
                 FavoritesEmptyStateView()
             }

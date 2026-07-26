@@ -20,7 +20,7 @@ class FavoritesUseCase: FavoritesUseCaseProtocol {
     }
     
     func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int) {
-        try await favoritesRepository.getFavorites(page: page, size: size)
+        return try await favoritesRepository.getFavorites(page: page, size: size)
     }
     
 }
