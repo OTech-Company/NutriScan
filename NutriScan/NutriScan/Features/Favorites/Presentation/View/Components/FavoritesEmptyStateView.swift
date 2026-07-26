@@ -10,11 +10,8 @@ struct FavoritesEmptyStateView: View {
                     .fill(Color(light: .Gray.gray200, dark: .Teal.teal1400))
                     .frame(width: 80, height: 80)
                 
-                Image("bookmark-stroke")
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .frame(width: 32, height: 32)
+                Image(systemName: "bookmark.slash")
+                    .font(.system(size: 32))
                     .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray400))
             }
             
