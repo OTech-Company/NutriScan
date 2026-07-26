@@ -9,6 +9,7 @@ import SwiftUI
 enum HomeRoute: Route {
     case mealDetail(id: String)
     case summary
+    case news
 
     @ViewBuilder
     var destination: some View {
@@ -17,6 +18,8 @@ enum HomeRoute: Route {
             MealDetailView(mealId: id)
         case .summary:
             HomeSummaryView()
+        case .news:
+            NewsView()
         }
     }
 }

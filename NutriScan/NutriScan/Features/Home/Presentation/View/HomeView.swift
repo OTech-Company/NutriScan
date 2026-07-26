@@ -32,7 +32,7 @@ struct HomeView: View {
                 
                 VStack {
                     SettingsNavRow(icon: "newspaper.fill", title: "Health News") {
-                        // Add action when news button pressed
+                        router.push(HomeRoute.news)
                     }
                     SettingsNavRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
                         showRAGChat = true
