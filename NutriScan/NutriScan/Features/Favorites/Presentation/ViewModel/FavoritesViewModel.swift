@@ -13,6 +13,10 @@ class FavoritesViewModel {
     var isLoadingFavorites: Bool = false
     var loadFavoritesError: String? = nil
     
+    private var currentPage: Int = 0
+    private var hasMorePages: Bool = true
+    private let pageSize: Int = 20
+    
     let favoritesUseCase: FavoritesUseCaseProtocol
     
     init(favoritesUseCase: FavoritesUseCaseProtocol) {
@@ -22,16 +26,39 @@ class FavoritesViewModel {
     func loadFavorites() async {
         guard favorites.isEmpty else { return }
         
+        currentPage = 0
+        hasMorePages = true
+        favorites.removeAll()
+        
+        await fetchFavorites()
+    }
+    
+    
+    func loadNextPageIfNeeded(currentItem: FavoritesScanEntity) {
+        guard let lastItem = favorites.last, lastItem.id == currentItem.id else { return }
+        guard !isLoadingFavorites && hasMorePages else { return }
+        
+        Task {
+            await fetchFavorites()
+        }
+    }
+    
+    func fetchFavorites() async {
+        guard !isLoadingFavorites && hasMorePages else { return }
         isLoadingFavorites = true
         loadFavoritesError = nil
         
         do {
-            let favs = try await favoritesUseCase.getFavorites()
-            favorites = favs
+            let result = try await favoritesUseCase.getFavorites(page: currentPage, size: pageSize)
+            
+            favorites.append(contentsOf: result.favorites)
+            
+            currentPage += 1
+            hasMorePages = currentPage < result.totalPages
         } catch {
             loadFavoritesError = error.localizedDescription
         }
-        isLoadingFavorites = false
         
+        isLoadingFavorites = false
     }
 }

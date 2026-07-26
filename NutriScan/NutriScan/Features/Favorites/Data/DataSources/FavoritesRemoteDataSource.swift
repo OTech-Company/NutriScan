@@ -8,9 +8,19 @@
 import Foundation
 
 protocol FavoritesRemoteDataSourceProtocol {
-//    func getAllFavorites() async throws -> [FavoritesDTO]
+    func getFavorites(page: Int, size: Int) async throws -> FavoritesPaginatedScanResponseDTO
 }
 
 class FavoritesRemoteDataSource: FavoritesRemoteDataSourceProtocol {
     
+    private let networkService: NetworkServiceProtocol
+    
+    init(networkService: NetworkServiceProtocol = NetworkService.shared) {
+        self.networkService = networkService
+    }
+    
+    func getFavorites(page: Int, size: Int) async throws -> FavoritesPaginatedScanResponseDTO {
+        let endpoint = FavoritesEndpoint.getFavorites(page: page, size: size)
+        return try await networkService.request(endpoint)
+    }
 }

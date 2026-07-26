@@ -8,7 +8,7 @@
 import Foundation
 
 protocol FavoritesUseCaseProtocol {
-    func getFavorites() async throws -> [FavoritesScanEntity]
+    func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int)
 }
 
 class FavoritesUseCase: FavoritesUseCaseProtocol {
@@ -19,8 +19,8 @@ class FavoritesUseCase: FavoritesUseCaseProtocol {
         self.favoritesRepository = favoritesRepository
     }
     
-    func getFavorites() async throws -> [FavoritesScanEntity] {
-        try await favoritesRepository.getAllFavorites()
+    func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int) {
+        try await favoritesRepository.getFavorites(page: page, size: size)
     }
     
 }

@@ -8,11 +8,17 @@
 import Foundation
 
 class FavoritesRepository: FavoritesRepositoryProtocol {
+    private let remoteDataSource: FavoritesRemoteDataSourceProtocol
     
-    func getAllFavorites() async throws -> [FavoritesScanEntity] {
-        return mockFavoritesScanEntities
+    init(remoteDataSource: FavoritesRemoteDataSourceProtocol = FavoritesRemoteDataSource()) {
+        self.remoteDataSource = remoteDataSource
     }
     
+    func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int) {
+        let response = try await remoteDataSource.getFavorites(page: page, size: size)
+        let entities = response.content?.map { FavoritesScanEntity(dto: $0) } ?? []
+        return (favorites: entities, totalPages: response.totalPages ?? 0)
+    }
 }
 
 

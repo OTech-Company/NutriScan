@@ -239,6 +239,11 @@
 		8FB0F0293016842500D84471 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F0283016842500D84471 /* FavoritesView.swift */; };
 		8FB0F02C301685C800D84471 /* FavoritesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F02B301685C800D84471 /* FavoritesRepository.swift */; };
 		8FB0F0303016863300D84471 /* FavoritesRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F02F3016863300D84471 /* FavoritesRemoteDataSource.swift */; };
+		8FB0F03330168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F03230168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift */; };
+		8FB0F03530168DBC00D84471 /* FavoritesScanItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F03430168DBC00D84471 /* FavoritesScanItemDTO.swift */; };
+		8FB0F03830168EBC00D84471 /* FavoritesMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F03730168EBC00D84471 /* FavoritesMapper.swift */; };
+		8FB0F03A3016979500D84471 /* FavoritesEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F0393016979500D84471 /* FavoritesEndpoint.swift */; };
+		8FB0F03C301698C200D84471 /* FavoritesEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */; };
 		8FC42A93300EAC0300A2B876 /* RequestBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A92300EAC0300A2B876 /* RequestBody.swift */; };
 		8FC42A95300EACBD00A2B876 /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */; };
 		8FEFD4A530162CFE00981444 /* FavUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FEFD4A430162CFE00981444 /* FavUIState.swift */; };
@@ -655,6 +660,11 @@
 		8FB0F0283016842500D84471 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		8FB0F02B301685C800D84471 /* FavoritesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRepository.swift; sourceTree = "<group>"; };
 		8FB0F02F3016863300D84471 /* FavoritesRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRemoteDataSource.swift; sourceTree = "<group>"; };
+		8FB0F03230168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesPaginatedScanResponseDTO.swift; sourceTree = "<group>"; };
+		8FB0F03430168DBC00D84471 /* FavoritesScanItemDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScanItemDTO.swift; sourceTree = "<group>"; };
+		8FB0F03730168EBC00D84471 /* FavoritesMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesMapper.swift; sourceTree = "<group>"; };
+		8FB0F0393016979500D84471 /* FavoritesEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEndpoint.swift; sourceTree = "<group>"; };
+		8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesEmptyStateView.swift; sourceTree = "<group>"; };
 		8FC42A92300EAC0300A2B876 /* RequestBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestBody.swift; sourceTree = "<group>"; };
 		8FC42A94300EACBD00A2B876 /* MultipartFormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartFormData.swift; sourceTree = "<group>"; };
 		8FEFD4A430162CFE00981444 /* FavUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavUIState.swift; sourceTree = "<group>"; };
@@ -2210,6 +2220,7 @@
 		8F305C273014EBAD0002A179 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */,
 				8F305C283014EC1A0002A179 /* FavoriteCardView.swift */,
 				8F48266A30150E12009F3A11 /* SwipeToActionButton.swift */,
 				8F7450223015317400E9B8A1 /* FavoritesGridView.swift */,
@@ -2280,6 +2291,8 @@
 		8FB0F02A301685B300D84471 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				8FB0F03630168EA800D84471 /* Mappers */,
+				8FB0F03130168D8000D84471 /* DTOs */,
 				8FB0F02E3016861700D84471 /* DataSources */,
 				8FB0F02D301685FF00D84471 /* Repository */,
 			);
@@ -2297,9 +2310,27 @@
 		8FB0F02E3016861700D84471 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				8FB0F0393016979500D84471 /* FavoritesEndpoint.swift */,
 				8FB0F02F3016863300D84471 /* FavoritesRemoteDataSource.swift */,
 			);
 			path = DataSources;
+			sourceTree = "<group>";
+		};
+		8FB0F03130168D8000D84471 /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				8FB0F03230168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift */,
+				8FB0F03430168DBC00D84471 /* FavoritesScanItemDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		8FB0F03630168EA800D84471 /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				8FB0F03730168EBC00D84471 /* FavoritesMapper.swift */,
+			);
+			path = Mappers;
 			sourceTree = "<group>";
 		};
 		8FEFD4A330162CE800981444 /* UIStates */ = {
@@ -3130,6 +3161,7 @@
 				6F1A8ECD3012BE2100E1ACC5 /* RAGRoute.swift in Sources */,
 				6F1A8ECE3012BE2100E1ACC5 /* RAGError.swift in Sources */,
 				6F1A8ECF3012BE2100E1ACC5 /* RAGFlowView.swift in Sources */,
+				8FB0F03C301698C200D84471 /* FavoritesEmptyStateView.swift in Sources */,
 				6F1A8ED03012BE2100E1ACC5 /* QueryRAGUseCase.swift in Sources */,
 				6F1A8ED13012BE2100E1ACC5 /* RAGEmptyStateView.swift in Sources */,
 				6F1A8ED23012BE2100E1ACC5 /* Color+RAGSemantic.swift in Sources */,
@@ -3149,6 +3181,7 @@
 				88CC3382C6A545FA3E93E2F5 /* AppValidator.swift in Sources */,
 				D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */,
 				9C90AFAEDCF85BFBCA64A9B1 /* BackButton.swift in Sources */,
+				8FB0F03530168DBC00D84471 /* FavoritesScanItemDTO.swift in Sources */,
 				D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */,
 				0BD259136AB8037FE9FE20E3 /* BarcodeScannerView.swift in Sources */,
 				8F48266B30150E12009F3A11 /* SwipeToActionButton.swift in Sources */,
@@ -3169,6 +3202,8 @@
 				87CDFD7A6B4A9E03D3672A78 /* Colors+Extension.swift in Sources */,
 				8FB0F02530167E8900D84471 /* FavoritesUseCase.swift in Sources */,
 				901C9D543FA7B839A1109594 /* CornerBracketsShape.swift in Sources */,
+				8FB0F03A3016979500D84471 /* FavoritesEndpoint.swift in Sources */,
+				8FB0F03330168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift in Sources */,
 				D49D9F043013E2E000ACE567 /* GetProfileSummaryUseCase.swift in Sources */,
 				220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */,
 				DC73ACADE5B3296996297205 /* CustomPuffedButton.swift in Sources */,
@@ -3270,6 +3305,7 @@
 				C5462973301239330032F885 /* CustomAlertType.swift in Sources */,
 				2C78ED0F300E6C7E0092E6B2 /* RegisterViewModel.swift in Sources */,
 				2C78ED10300E6C7E0092E6B2 /* ForgotPasswordViewModel.swift in Sources */,
+				8FB0F03830168EBC00D84471 /* FavoritesMapper.swift in Sources */,
 				2C78ED11300E6C7E0092E6B2 /* RegisterRequest.swift in Sources */,
 				2C78ED12300E6C7E0092E6B2 /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */,

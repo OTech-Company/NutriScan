@@ -13,10 +13,13 @@ struct FavoritesView: View {
     
     var body: some View {
         VStack {
-            if !viewModel.favorites.isEmpty {
+            if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else if !viewModel.favorites.isEmpty {
                 FavoritesGridView(savedItems: viewModel.favorites)
             } else {
-                Text("Favorites Is Empty...")
+                FavoritesEmptyStateView()
             }
         }
         .task {
