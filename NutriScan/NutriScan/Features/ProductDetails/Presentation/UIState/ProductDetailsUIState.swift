@@ -49,7 +49,7 @@ extension ProductDetailsUIState {
         
         self.headerState = ProductHeaderUIState(
             imageUrl: details.imageUrl,
-            productName: "Scanned Product", // Real name would come from DB or we can default
+            productName: details.productName,
             scannedAt: details.scannedAt
         )
         

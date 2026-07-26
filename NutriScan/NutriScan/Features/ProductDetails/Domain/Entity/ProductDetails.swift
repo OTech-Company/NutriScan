@@ -11,6 +11,7 @@ struct ProductDetails {
     let scanId: String
     let scannedAt: String
     let imageUrl: String
+    let productName: String
     let verdict : String
     let summary: String
     let flagedIngredients: [ProductDetailsFlagedIngredient]
@@ -35,6 +36,7 @@ extension ProductDetails {
         self.scanId = dto.scanId
         self.scannedAt = dto.scannedAt ?? "No date"
         self.imageUrl = dto.imageUrl ?? "No Image"
+        self.productName = dto.productName ?? "Unknown Product"
         self.verdict = dto.foodSafetyResponse?.verdict ?? "No verdict"
         self.summary = dto.foodSafetyResponse?.summary ?? "No summary"
         

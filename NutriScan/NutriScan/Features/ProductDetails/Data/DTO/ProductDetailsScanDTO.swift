@@ -17,6 +17,7 @@ struct ProductDetailsScanDTO: Decodable {
     let status: String
     let scannedAt: String?
     let imageUrl: String?
+    let productName: String?
     let foodSafetyResponse: ProductDetailsFoodSafetyResponseDTO?
     let nutritionFacts: ProductDetailsNutritionFactsDTO?
 }
