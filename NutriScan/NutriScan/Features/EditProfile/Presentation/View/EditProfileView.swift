@@ -13,7 +13,6 @@ struct EditProfileView: View {
     @State private var isEditingMode = false
     @State private var isFetchingProfile = true
     @State private var activeAlert: ActiveAlert = .none
-    @State private var alertMessage = ""
 
     var body: some View {
         ZStack {
@@ -159,8 +158,7 @@ struct EditProfileView: View {
             }
         }
         .onChange(of: viewModel.errorMessage) { _, error in
-            if let error = error {
-                alertMessage = error
+            if error != nil {
                 activeAlert = .error
             }
         }
@@ -172,7 +170,7 @@ struct EditProfileView: View {
                     return CustomAlertConfig(
                         type: .error,
                         title: "Action Failed",
-                        description: alertMessage,
+                        description: viewModel.errorMessage ?? "An unknown error occurred",
                         primaryButtonTitle: "OK",
                         primaryButtonColor: Color.Red.red500
                     )
