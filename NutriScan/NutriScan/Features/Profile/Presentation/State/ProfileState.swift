@@ -10,6 +10,8 @@ import Foundation
 struct ProfileState {
     var fullName: String = ""
     var familyMembers: [FamilyMember] = []
+    var streakDays: Int = 0
+    var avatarURL: String? = AppConstants.defaultUserAvatarURL
     var isLoading: Bool = false
     var errorMessage: String?
 }

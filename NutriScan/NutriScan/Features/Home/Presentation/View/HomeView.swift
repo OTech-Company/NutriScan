@@ -7,6 +7,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = HomeViewModel()
     @State private var showRAGChat = false
@@ -14,38 +15,40 @@ struct HomeView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
-                // MARK: Greeting
                 HomeGreetingSection(userName: viewModel.userName)
                     .padding(.top, 22)
 
-                // MARK: Daily Tip
                 HomeDailyTipSection(tipMessage: viewModel.dailyTip)
-                    .padding(.top,16)
+                    .padding(.top, 16)
 
-                // MARK: Scan CTA
                 HomeReadyToScanSection {
-                    // TODO: Navigate to scanner screen
+                    flowCoordinator.selectedTab = .scan
                 }
-                
-                
+
                 ExploreSectionHeader()
-                
+
                 VStack {
-                    SettingsNavRow(icon: "newspaper.fill", title: "Health News") {
+                    MenuRowView(icon: "newspaper.fill", title: "Health News") {
                         // Add action when news button pressed
                     }
-                    SettingsNavRow(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
+                    MenuRowView(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
                         showRAGChat = true
                     }
                 }
 
-                // MARK: Recent History
-                RecentHistoryView(
-                    historyItems: viewModel.recentHistory,
-                    onViewAll: {
-                        // TODO: Navigate to full history
-                    }
-                )
+                if viewModel.isLoadingHistory {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 20)
+                } else {
+                    RecentHistoryView(
+                        historyItems: viewModel.recentHistory,
+                        onViewAll: { },
+                        onTap: { scanId in
+                            router.push(HomeRoute.scanDetail(scanId: scanId))
+                        }
+                    )
+                }
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
@@ -53,6 +56,9 @@ struct HomeView: View {
         }
         .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
         .navigationBarHidden(true)
+        .onAppear {
+            viewModel.loadHistory()
+        }
         .fullScreenCover(isPresented: $showRAGChat) {
             RAGChatView(
                 viewModel: RAGChatViewModel(

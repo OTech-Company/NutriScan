@@ -13,19 +13,8 @@ struct ForgotPasswordHeaderSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             // Back Button
-            Button(action: onBack) {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(.white)
-                    .frame(width: 44, height: 44)
-                    .background(Color.white.opacity(0.08))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(Color.white.opacity(0.5), lineWidth: 1)
-                    )
-            }
-            .padding(.top, 64)
+            BackButton(action: onBack, style: .onTeal)
+                .padding(.top, 64)
             
             // Text Block
             VStack(alignment: .leading, spacing: 8) {

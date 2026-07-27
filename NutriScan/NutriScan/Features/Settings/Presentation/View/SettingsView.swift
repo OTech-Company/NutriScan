@@ -19,7 +19,7 @@ struct SettingsView: View {
                 }
 
                 VStack(spacing: 12) {
-                    SettingsNavRow(
+                    MenuRowView(
                         icon: "person.badge.shield.checkmark.fill",
                         title: "Profile Settings"
                     )
@@ -38,12 +38,12 @@ struct SettingsView: View {
                         selected: $viewModel.selectedLanguage
                     )
 
-                    SettingsNavRow(
+                    MenuRowView(
                         icon: "questionmark.circle",
                         title: "Terms and Conditions"
                     )
 
-                    SettingsNavRow(
+                    MenuRowView(
                         icon: "questionmark.circle",
                         title: "Help"
                     )

@@ -1,42 +1,57 @@
-//
-//  ProductEndpoint.swift
-//  NutriScan
-//
-//  Created by youssef abdelfatah on 20/07/2026.
-//
-
 import Foundation
 
-enum ProductEndpoint: APIEndpoint {
-    case fetchProduct(barcode: String)
-    
+enum ScanEndpoint: APIEndpoint {
+    case fetchScans(page: Int, size: Int)
+    case submitScan
+    case fetchScanDetail(scanId: String)
+
     var baseURL: String {
-        return AppNetworkConfig.openFoodFacts.baseURL
+        return AppNetworkConfig.core.baseURL
     }
-    
+
     var path: String {
         switch self {
-        case .fetchProduct(let barcode):
-            return "/\(barcode).json"
+        case .fetchScans:
+            return "/api/v1/scans"
+        case .submitScan:
+            return "/api/v1/scans"
+        case .fetchScanDetail(let scanId):
+            return "/api/v1/scans/\(scanId)"
         }
     }
-    
+
     var method: HTTPMethod {
-        return .get
-    }
-    
-    var queryParameters: [String : String]? {
         switch self {
-        case .fetchProduct:
-            return ["fields": "code,product_name,brands,image_url,nutriscore_grade"]
+        case .fetchScans, .fetchScanDetail:
+            return .get
+        case .submitScan:
+            return .post
         }
     }
-    
-    var headers: [String : String] {
-        return ["User-Agent": "NutriScan - iOS - Version 1.0"]
+
+    var queryParameters: [String: String]? {
+        switch self {
+        case .fetchScans(let page, let size):
+            return ["page": String(page), "size": String(size)]
+        case .submitScan, .fetchScanDetail:
+            return nil
+        }
     }
-    
+
+    var body: RequestBody {
+        switch self {
+        case .submitScan:
+            return .none
+        default:
+            return .none
+        }
+    }
+
+    var headers: [String: String] {
+        return [:]
+    }
+
     var requiresAuth: Bool {
-        return false
+        return true
     }
 }

@@ -60,17 +60,18 @@ struct CaloriesScreen: View {
                 HStack(spacing: 12) {
                     StepGaugeCardView(
                         currentSteps: stepViewModel.todaySteps,
-                        goalSteps: 10_000
+                        goalSteps: 10_000,
+                        onTap: {
+                            router.push(CaloriesRoute.stepHistory(viewModel: stepViewModel))
+                        }
                     )
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        router.push(CaloriesRoute.stepHistory(viewModel: stepViewModel))
-                    }
                     
                     ExerciseCardView(
                         exerciseKcal: caloriesViewModel.exerciseKcal,
                         exerciseMinutes: caloriesViewModel.exerciseMinutes,
-                        onAddTap: { caloriesViewModel.addExercise() }
+                        onAddTap: {
+                            router.push(CaloriesRoute.exercises)
+                        }
                     )
                 }
                 .opacity(showStepsAndExercise ? 1 : 0)

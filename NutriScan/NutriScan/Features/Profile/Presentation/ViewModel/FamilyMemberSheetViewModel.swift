@@ -5,12 +5,15 @@
 //  Created by Mina_Wagdy on 25/07/2026.
 //
 
-
 import Foundation
 
 @Observable
 final class FamilyMemberSheetViewModel {
     let existingMember: FamilyMember?
+    let allMembers: [FamilyMember]
+    
+    enum AlertContext { case delete, duplicate }
+    var alertContext: AlertContext = .delete
 
     var name = ValidatedField(value: "")
     var relation = ValidatedField(value: "")
@@ -28,10 +31,12 @@ final class FamilyMemberSheetViewModel {
 
     init(
         existingMember: FamilyMember?,
+        allMembers: [FamilyMember],
         getReferenceDataUseCase: GetEditProfileUseCaseProtocol = DIContainer.shared.resolve(type: GetEditProfileUseCaseProtocol.self),
         updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self)
     ) {
         self.existingMember = existingMember
+        self.allMembers = allMembers
         self.getReferenceDataUseCase = getReferenceDataUseCase
         self.updateFamilyMembersUseCase = updateFamilyMembersUseCase
 
@@ -41,16 +46,12 @@ final class FamilyMemberSheetViewModel {
         }
     }
 
-    /// Loads the master allergy/disease reference lists (same lists Edit Profile
-    /// uses) so this sheet's chips have something to select from and search.
     @MainActor
     func loadReferenceData() async {
         isLoading = true
         errorMessage = nil
 
         do {
-            // Reuses the SAME endpoint/use case Edit Profile already calls for
-            // allergies/diseases master lists — avoids a duplicate network call type.
             let data = try await getReferenceDataUseCase.execute()
 
             conditions.configure(
@@ -73,6 +74,23 @@ final class FamilyMemberSheetViewModel {
         let isRelationValid = relation.validate(using: AppValidator.displayNameValidator)
         return isNameValid && isRelationValid
     }
+    
+    // MARK: - Validation
+    func isDuplicate() -> Bool {
+        let currentName = name.value.trimmingCharacters(in: .whitespaces).lowercased()
+        let currentRelation = relation.value.trimmingCharacters(in: .whitespaces).lowercased()
+        
+        return allMembers.contains { member in
+            if let existingId = existingMember?.id, member.id == existingId {
+                return false
+            }
+            
+            let memberName = member.name.trimmingCharacters(in: .whitespaces).lowercased()
+            let memberRelation = member.relation.trimmingCharacters(in: .whitespaces).lowercased()
+            
+            return memberName == currentName && memberRelation == currentRelation
+        }
+    }
 
     private func buildInput() -> FamilyMemberInput {
         FamilyMemberInput(
@@ -83,8 +101,6 @@ final class FamilyMemberSheetViewModel {
         )
     }
 
-    /// Returns the input to submit, and whether this is an add or update —
-    /// the caller (ProfileViewModel) owns merging it into the full list.
     func submit() -> FamilyMemberInput? {
         guard validate() else { return nil }
         return buildInput()

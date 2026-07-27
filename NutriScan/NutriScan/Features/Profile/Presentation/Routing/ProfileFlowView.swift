@@ -9,10 +9,11 @@ import SwiftUI
 
 struct ProfileFlowView: View {
     @StateObject private var router = AppRouter()
+    @State private var viewModel = ProfileViewModel()
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ProfileView(viewModel: ProfileViewModel())
+            ProfileView(viewModel: viewModel)
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }

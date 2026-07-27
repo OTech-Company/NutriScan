@@ -14,7 +14,7 @@ struct SettingsSegmentRow<T: Hashable & CustomStringConvertible>: View {
 
     var body: some View {
         HStack(spacing: 14) {
-            SettingsIconBadge(icon: icon)
+            MenuIconBadge(icon: icon)
 
             Text(title)
                 .font(Font.AppFont.textPrimary)

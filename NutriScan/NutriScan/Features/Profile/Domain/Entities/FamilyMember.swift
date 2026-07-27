@@ -14,3 +14,13 @@ struct FamilyMember: Identifiable, Hashable {
     let allergies: [ReferenceItem]
     let diseases: [ReferenceItem]
 }
+
+extension FamilyMember {
+    static var dummyList: [FamilyMember] {
+        [
+            FamilyMember(id: "d1", name: "Sara Omar", relation: "Daughter", allergies: [], diseases: []),
+            FamilyMember(id: "d2", name: "Omar Osama", relation: "Son", allergies: [], diseases: []),
+            FamilyMember(id: "d3", name: "Youssef Ahmed", relation: "Brother", allergies: [], diseases: [])
+        ]
+    }
+}

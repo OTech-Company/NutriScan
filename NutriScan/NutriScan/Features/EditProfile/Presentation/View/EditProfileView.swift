@@ -43,8 +43,7 @@ struct EditProfileView: View {
                         EditProfileHeaderView(
                             name: viewModel.firstName.value + " "
                                 + viewModel.lastName.value,
-                            email: viewModel.email,
-                            avatarImage: Image(systemName: "person.circle.fill")
+                            email: viewModel.email
                         )
                         .disabled(!isEditingMode)
 

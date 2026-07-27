@@ -69,12 +69,19 @@ final class NetworkService: NetworkServiceProtocol {
             request.setValue(form.contentTypeHeader, forHTTPHeaderField: "Content-Type")
         }
 
+        // Log outgoing request
+        NetworkLogger.log(request: request)
+        let startTime = Date()
+
         do {
             let (data, response) = try await session.data(for: request)
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw NetworkError.unknown(URLError(.badServerResponse))
             }
+
+            // Log incoming response
+            NetworkLogger.log(response: httpResponse, data: data, startTime: startTime)
 
             // 401 handling: refresh once, then re-run this ENTIRE function via
             // recursion (isRetry: true) instead of duplicating the request/decode
@@ -93,10 +100,6 @@ final class NetworkService: NetworkServiceProtocol {
             }
 
             guard (200...299).contains(httpResponse.statusCode) else {
-                if let json = String(data: data, encoding: .utf8) {
-                    print("Status:", httpResponse.statusCode)
-                    print("Response:", json)
-                }
                 let decoder = JSONDecoder()
                 if let apiError = try? decoder.decode(APIErrorResponse.self, from: data) {
                     throw NetworkError.apiError(apiError)
@@ -114,16 +117,14 @@ final class NetworkService: NetworkServiceProtocol {
                 decoder.keyDecodingStrategy = endpoint.keyDecodingStrategy
                 return try decoder.decode(T.self, from: data)
             } catch {
-                if let json = String(data: data, encoding: .utf8) {
-                    print("Decoding failed for \(T.self):", error)
-                    print("Response:", json)
-                }
                 throw NetworkError.decodingFailed
             }
 
         } catch let error as NetworkError {
+            NetworkLogger.log(error: error, for: request)
             throw error
         } catch {
+            NetworkLogger.log(error: error, for: request)
             throw NetworkError.unknown(error)
         }
     }

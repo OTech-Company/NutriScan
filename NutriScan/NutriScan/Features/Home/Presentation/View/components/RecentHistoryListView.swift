@@ -10,10 +10,10 @@ import SwiftUI
 struct RecentHistoryView: View {
     let historyItems: [UiStateHistoryItem]
     var onViewAll: () -> Void = {}
+    var onTap: (String) -> Void = { _ in }
 
     var body: some View {
         VStack(spacing: 16) {
-            // Header
             HStack {
                 Text("Recent History")
                     .font(Font.AppFont.title3)
@@ -28,10 +28,14 @@ struct RecentHistoryView: View {
                 }
             }
 
-            // List
             VStack(spacing: 16) {
                 ForEach(historyItems) { item in
-                    HistoryRowView(item: item)
+                    Button {
+                        onTap(item.id)
+                    } label: {
+                        HistoryRowView(item: item)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }

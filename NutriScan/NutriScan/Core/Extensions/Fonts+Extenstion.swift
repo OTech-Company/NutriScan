@@ -40,5 +40,8 @@ extension Font {
         static let lexendDecaMedium16 = Font.custom("LexendDeca-Medium", size: 16)
         static let plusJakartaSansMedium18 = Font.custom("PlusJakartaSans-Medium", size: 18)
         static let lexendDecaLight12 = Font.custom("LexendDeca-Light", size: 12)
+        
+        // Profile specific fonts
+        static let lexendDecaLight10 = Font.custom("LexendDeca-Light", size: 10)
     }
 }

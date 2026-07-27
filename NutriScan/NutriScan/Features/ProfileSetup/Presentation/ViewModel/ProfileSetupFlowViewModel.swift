@@ -20,7 +20,7 @@ final class ProfileSetupFlowViewModel {
     var birthdate: Date = Calendar.current.date(byAdding: .year, value: -23, to: Date()) ?? Date()
     var weight: Int = 60
     var height: Int = 183
-
+ 
     var allConditions: [ProfileSetupDiseaseOption] = []
     var allAllergies: [ProfileSetupAllergyOption] = []
     
