@@ -17,8 +17,9 @@ final class StepCounterViewModel {
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
     private var observationTask: Task<Void, Never>?
 
-    private var historyCache: [StepHistoryRange: [DailySteps]] = [:]
-    private var customRangeCache: String = ""
+    /// Full history fetched once (last 6 months), cached for slicing.
+    private var fullHistoryCache: [DailySteps] = []
+    private var hasFetchedFullHistory = false
 
     init(
         observeStepsUseCase: ObserveDailyStepsUseCaseProtocol,
@@ -51,17 +52,19 @@ final class StepCounterViewModel {
         observationTask?.cancel()
     }
 
-    func loadHistory(range: StepHistoryRange, forceRefresh: Bool = false) {
-        if !forceRefresh, let cached = historyCache[range] {
-            history = cached
-            return
-        }
+    /// Fetches the full 6-month history once. Subsequent calls use the cache.
+    func fetchFullHistoryIfNeeded() {
+        guard !hasFetchedFullHistory else { return }
         Task {
             isLoadingHistory = true
             errorMessage = nil
             do {
-                let result = try await fetchHistoryUseCase.execute(range: range)
-                historyCache[range] = result
+                let calendar = Calendar.current
+                let endDate = Date()
+                let startDate = calendar.date(byAdding: .month, value: -6, to: endDate) ?? endDate
+                let result = try await fetchHistoryUseCase.execute(from: startDate, to: endDate)
+                fullHistoryCache = result
+                hasFetchedFullHistory = true
                 history = result
             } catch {
                 errorMessage = error.localizedDescription
@@ -70,26 +73,22 @@ final class StepCounterViewModel {
         }
     }
 
-    func loadHistory(from startDate: Date, to endDate: Date, forceRefresh: Bool = false) {
+    /// Slices the cached full history for the given date range.
+    func sliceHistory(from startDate: Date, to endDate: Date) -> [DailySteps] {
         let calendar = Calendar.current
-        let startKey = calendar.startOfDay(for: startDate)
-        let cacheKey = "\(startKey.timeIntervalSince1970)_\(endDate.timeIntervalSince1970)"
+        return fullHistoryCache.filter { day in
+            day.date >= calendar.startOfDay(for: startDate) && day.date <= calendar.startOfDay(for: endDate)
+        }
+    }
 
-        if !forceRefresh, customRangeCache == cacheKey, !history.isEmpty {
-            return
-        }
-        Task {
-            isLoadingHistory = true
-            errorMessage = nil
-            do {
-                let result = try await fetchHistoryUseCase.execute(from: startDate, to: endDate)
-                customRangeCache = cacheKey
-                history = result
-            } catch {
-                errorMessage = error.localizedDescription
-            }
-            isLoadingHistory = false
-        }
+    // MARK: - Legacy support (used by CaloriesScreen)
+
+    func loadHistory(range: StepHistoryRange, forceRefresh: Bool = false) {
+        fetchFullHistoryIfNeeded()
+    }
+
+    func loadHistory(from startDate: Date, to endDate: Date, forceRefresh: Bool = false) {
+        fetchFullHistoryIfNeeded()
     }
 
     private func requestAuthorizationAndObserve() async {

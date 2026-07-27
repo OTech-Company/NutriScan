@@ -5,22 +5,14 @@ struct StepHistoryScreen: View {
     let viewModel: StepCounterViewModel
     @EnvironmentObject private var router: AppRouter
     @State private var selectedRange: StepHistoryRange = .lastWeek
-    @State private var selectedIndex: Int = 0
-    @State private var isFetching = false
+    @State private var displayedHistory: [DailySteps] = []
 
     private var calendar: Calendar { Calendar.current }
 
     // MARK: - Date Range Computation
 
     private var rangeEndDate: Date {
-        switch selectedRange {
-        case .lastWeek, .sinceYesterday:
-            return calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) ?? Date()
-        case .lastMonth:
-            return calendar.date(byAdding: .day, value: -selectedIndex, to: Date()) ?? Date()
-        case .last3Months, .last6Months:
-            return calendar.date(byAdding: .month, value: -selectedIndex, to: Date()) ?? Date()
-        }
+        Date()
     }
 
     private var rangeStartDate: Date {
@@ -38,104 +30,61 @@ struct StepHistoryScreen: View {
         }
     }
 
-    // MARK: - Displayed Date Strings
+    // MARK: - Date Strings
 
     private var startDateString: String {
         let formatter = DateFormatter()
-        switch selectedRange {
-        case .lastWeek, .sinceYesterday, .lastMonth:
-            formatter.dateFormat = "MMM d"
-        case .last3Months, .last6Months:
-            formatter.dateFormat = "MMM yyyy"
-        }
-        if selectedIndex == 0 {
-            return "Today"
-        }
+        formatter.dateFormat = "MMM d"
         return formatter.string(from: rangeStartDate)
     }
 
     private var endDateString: String {
         let formatter = DateFormatter()
-        switch selectedRange {
-        case .lastWeek, .sinceYesterday, .lastMonth:
-            formatter.dateFormat = "MMM d"
-        case .last3Months, .last6Months:
-            formatter.dateFormat = "MMM yyyy"
-        }
+        formatter.dateFormat = "MMM d"
         return formatter.string(from: rangeEndDate)
     }
 
-    // MARK: - Chart Data Points (Aggregated)
+    // MARK: - Chart Data Points
 
     private var chartDataPoints: [ChartDataPoint] {
-        let history = viewModel.history
-        guard !history.isEmpty else { return [] }
+        guard !displayedHistory.isEmpty else { return [] }
 
         switch selectedRange {
         case .lastWeek, .sinceYesterday:
-            // Daily points for week view
-            return history.map { day in
-                ChartDataPoint(
-                    date: day.date,
-                    steps: day.stepCount,
-                    label: dayLabel(for: day.date)
-                )
+            return displayedHistory.map { day in
+                ChartDataPoint(date: day.date, steps: day.stepCount, label: dayLabel(for: day.date))
             }
-
         case .lastMonth:
-            // Daily points for month view
-            return history.map { day in
-                ChartDataPoint(
-                    date: day.date,
-                    steps: day.stepCount,
-                    label: dayLabel(for: day.date)
-                )
+            return displayedHistory.map { day in
+                ChartDataPoint(date: day.date, steps: day.stepCount, label: dayLabel(for: day.date))
             }
-
         case .last3Months, .last6Months:
-            // Monthly aggregated points for 3M/6M views
-            return aggregateByMonth(history)
+            return aggregateByMonth(displayedHistory)
         }
     }
 
     private func aggregateByMonth(_ history: [DailySteps]) -> [ChartDataPoint] {
         var monthly: [Date: Int] = [:]
-        let calendar = Calendar.current
-
         for day in history {
             let monthStart = calendar.date(from: calendar.dateComponents([.year, .month], from: day.date)) ?? day.date
             monthly[monthStart, default: 0] += day.stepCount
         }
-
         return monthly.sorted(by: { $0.key < $1.key }).map { (monthStart, totalSteps) in
             let formatter = DateFormatter()
-            formatter.dateFormat = "MMM yyyy"
-            return ChartDataPoint(
-                date: monthStart,
-                steps: totalSteps,
-                label: formatter.string(from: monthStart)
-            )
+            formatter.dateFormat = "MMM"
+            return ChartDataPoint(date: monthStart, steps: totalSteps, label: formatter.string(from: monthStart))
         }
     }
 
-    // MARK: - Period Analytics
+    // MARK: - Analytics
 
-    private var selectedDaySteps: Int {
-        if selectedIndex == 0 && (selectedRange == .lastWeek || selectedRange == .lastMonth || selectedRange == .sinceYesterday) {
-            return viewModel.todaySteps
-        }
-        let targetStart = calendar.startOfDay(for: rangeEndDate)
-        return viewModel.history.first { calendar.isDate($0.date, inSameDayAs: targetStart) }?.stepCount ?? 0
-    }
-
-    /// Total steps across the entire fetched period.
     private var periodTotalSteps: Int {
-        viewModel.history.map(\.stepCount).reduce(0, +)
+        displayedHistory.map(\.stepCount).reduce(0, +)
     }
 
-    private var weeklyAverage: Int {
-        guard !viewModel.history.isEmpty else { return 0 }
-        return viewModel.history.map(\.stepCount).reduce(0, +) / viewModel.history.count
+    private var periodAverage: Int {
+        guard !displayedHistory.isEmpty else { return 0 }
+        return periodTotalSteps / displayedHistory.count
     }
 
     private var periodAnalytics: StepAnalytics {
@@ -148,11 +97,11 @@ struct StepHistoryScreen: View {
         ScrollView {
             VStack(spacing: 20) {
                 rangeTabs
-                dateNavigation
+                dateRangeCards
                 DailyInsightCardView(
-                    steps: selectedDaySteps,
+                    steps: periodAverage,
                     goalSteps: 10_000,
-                    weeklyAverage: weeklyAverage
+                    weeklyAverage: periodAverage
                 )
                 stepHistoryChart
                 bottomStatsRow
@@ -170,57 +119,55 @@ struct StepHistoryScreen: View {
         }
         .onAppear {
             viewModel.onAppear()
-            fetchForCurrentSelection()
+            viewModel.fetchFullHistoryIfNeeded()
+            updateDisplayedHistory()
         }
-        .onDisappear {
-            viewModel.onDisappear()
+        .onChange(of: selectedRange) { _, _ in
+            updateDisplayedHistory()
         }
     }
 
-    // MARK: - Fetching
+    // MARK: - Slice cached data for the selected range
 
-    private func fetchForCurrentSelection() {
-        guard !isFetching else { return }
-        isFetching = true
-        viewModel.loadHistory(from: rangeStartDate, to: rangeEndDate, forceRefresh: true)
-        // Reset fetch flag after a short delay to allow rapid navigation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            isFetching = false
-        }
+    private func updateDisplayedHistory() {
+        displayedHistory = viewModel.sliceHistory(from: rangeStartDate, to: rangeEndDate)
     }
 
     // MARK: - Range Tabs
 
     private var rangeTabs: some View {
         RangePickerView(selectedRange: $selectedRange)
-            .onChange(of: selectedRange) { _, newRange in
-                selectedIndex = 0
-                fetchForCurrentSelection()
-            }
     }
 
-    // MARK: - Date Navigation
+    // MARK: - Date Range Cards (Start / End)
 
-    private var dateNavigation: some View {
-        DateNavigationView(
-            startDate: startDateString,
-            endDate: endDateString,
-            canGoForward: selectedIndex > 0,
-            canGoBack: selectedIndex == 0,
-            onPrevious: {
-                withAnimation {
-                    selectedIndex += 1
-                    fetchForCurrentSelection()
-                }
-            },
-            onNext: {
-                withAnimation {
-                    if selectedIndex > 0 {
-                        selectedIndex -= 1
-                        fetchForCurrentSelection()
-                    }
-                }
+    private var dateRangeCards: some View {
+        HStack(spacing: 12) {
+            dateCard(label: "Start", date: startDateString)
+            dateCard(label: "End", date: endDateString)
+        }
+    }
+
+    private func dateCard(label: String, date: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Image(systemName: "calendar")
+                    .font(.system(size: 14))
+                    .foregroundColor(Color.Teal.teal1000)
+                Text(label)
+                    .font(.custom("LexendDeca-Regular", size: 13))
+                    .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
             }
+            Text(date)
+                .font(.custom("PlusJakartaSans-SemiBold", size: 18))
+                .foregroundColor(Color.StepTrackerSemantic.chartTitle)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.StepTrackerSemantic.chartCardBackground)
+                .customLightShadow()
         )
     }
 
