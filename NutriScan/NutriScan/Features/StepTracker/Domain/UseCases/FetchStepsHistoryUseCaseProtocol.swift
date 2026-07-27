@@ -10,6 +10,7 @@ import Foundation
 
 protocol FetchStepsHistoryUseCaseProtocol {
     func execute(range: StepHistoryRange) async throws -> [DailySteps]
+    func execute(from startDate: Date, to endDate: Date) async throws -> [DailySteps]
 }
 
 final class FetchStepsHistoryUseCase: FetchStepsHistoryUseCaseProtocol {
@@ -21,5 +22,9 @@ final class FetchStepsHistoryUseCase: FetchStepsHistoryUseCaseProtocol {
 
     func execute(range: StepHistoryRange) async throws -> [DailySteps] {
         try await repository.fetchStepsHistory(for: range)
+    }
+
+    func execute(from startDate: Date, to endDate: Date) async throws -> [DailySteps] {
+        try await repository.fetchStepsHistory(from: startDate, to: endDate)
     }
 }
