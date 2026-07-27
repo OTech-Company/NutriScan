@@ -231,7 +231,6 @@
 		6F8C4EA0301455BD000067BC /* FoodSafetyResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */; };
 		6F8C4EA2301455C4000067BC /* ScanFlaggedIngredientDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */; };
 		6F8C4EA4301455CA000067BC /* ScanNutritionFactsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */; };
-		6F8C4EA930158DEA000067BC /* ProductDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */; };
 		6F8C4ECE3016C89E000067BC /* StepTrackerFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EBC3016C89E000067BC /* StepTrackerFlowView.swift */; };
 		6F8C4ECF3016C89E000067BC /* Color+StepTrackerSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EBA3016C89E000067BC /* Color+StepTrackerSemantic.swift */; };
 		6F8C4ED03016C89E000067BC /* StepTrackerRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EBD3016C89E000067BC /* StepTrackerRoute.swift */; };
@@ -364,24 +363,33 @@
 		C5144EB73013DD05007EE884 /* Color+CaloriesSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5144E913013DD05007EE884 /* Color+CaloriesSemantic.swift */; };
 		C5144EB83013DD05007EE884 /* CaloriesRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5144E943013DD05007EE884 /* CaloriesRoute.swift */; };
 		C5144EB93013DD05007EE884 /* CaloriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5144E963013DD05007EE884 /* CaloriesViewModel.swift */; };
-		C51E9CD4301510F7009DF262 /* SafetyLevelText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CCD301510F7009DF262 /* SafetyLevelText.swift */; };
-		C51E9CD5301510F7009DF262 /* UnsafeIngredientUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC5301510F7009DF262 /* UnsafeIngredientUIState.swift */; };
-		C51E9CD6301510F7009DF262 /* ProductIngredientsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC9301510F7009DF262 /* ProductIngredientsSection.swift */; };
-		C51E9CD7301510F7009DF262 /* ProductDetailsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC0301510F7009DF262 /* ProductDetailsUIState.swift */; };
-		C51E9CD8301510F7009DF262 /* SafetyLaver+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CBD301510F7009DF262 /* SafetyLaver+Colors.swift */; };
-		C51E9CD9301510F7009DF262 /* NutritionFactUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CBF301510F7009DF262 /* NutritionFactUIState.swift */; };
-		C51E9CDA301510F7009DF262 /* NutritionFactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC7301510F7009DF262 /* NutritionFactView.swift */; };
-		C51E9CDB301510F7009DF262 /* ProductSafetyUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC4301510F7009DF262 /* ProductSafetyUIState.swift */; };
-		C51E9CDC301510F7009DF262 /* ProductHeaderUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC1301510F7009DF262 /* ProductHeaderUIState.swift */; };
-		C51E9CDD301510F7009DF262 /* ProductSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CCC301510F7009DF262 /* ProductSheetView.swift */; };
-		C51E9CDE301510F7009DF262 /* SafetyLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CBA301510F7009DF262 /* SafetyLevel.swift */; };
-		C51E9CDF301510F7009DF262 /* ProductNutritionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CCA301510F7009DF262 /* ProductNutritionSection.swift */; };
-		C51E9CE0301510F7009DF262 /* ProductDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CD0301510F7009DF262 /* ProductDetailsScreen.swift */; };
-		C51E9CE1301510F7009DF262 /* ProductSafetySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CCB301510F7009DF262 /* ProductSafetySection.swift */; };
-		C51E9CE2301510F7009DF262 /* ProductHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC8301510F7009DF262 /* ProductHeaderSection.swift */; };
-		C51E9CE3301510F7009DF262 /* UnsafeIngredientCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CCE301510F7009DF262 /* UnsafeIngredientCard.swift */; };
-		C51E9CE4301510F7009DF262 /* ProductNutritionUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC3301510F7009DF262 /* ProductNutritionUIState.swift */; };
-		C51E9CE5301510F7009DF262 /* ProductIngredientsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9CC2301510F7009DF262 /* ProductIngredientsUIState.swift */; };
+		C51E9D3430155E56009DF262 /* ProductDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1330155E56009DF262 /* ProductDetails.swift */; };
+		C51E9D3530155E56009DF262 /* ProductHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2630155E56009DF262 /* ProductHeaderSection.swift */; };
+		C51E9D3630155E56009DF262 /* SafetyLaver+Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1B30155E56009DF262 /* SafetyLaver+Colors.swift */; };
+		C51E9D3730155E56009DF262 /* ProductSafetyUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2230155E56009DF262 /* ProductSafetyUIState.swift */; };
+		C51E9D3830155E56009DF262 /* ProductSafetySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2930155E56009DF262 /* ProductSafetySection.swift */; };
+		C51E9D3930155E56009DF262 /* UnsafeIngredientUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2330155E56009DF262 /* UnsafeIngredientUIState.swift */; };
+		C51E9D3A30155E56009DF262 /* ProductIngredientsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2030155E56009DF262 /* ProductIngredientsUIState.swift */; };
+		C51E9D3B30155E56009DF262 /* ProductDetailsRepoImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D0E30155E56009DF262 /* ProductDetailsRepoImpl.swift */; };
+		C51E9D3C30155E56009DF262 /* UnsafeIngredientCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2C30155E56009DF262 /* UnsafeIngredientCard.swift */; };
+		C51E9D3D30155E56009DF262 /* ProductDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D3030155E56009DF262 /* ProductDetailsViewModel.swift */; };
+		C51E9D3E30155E56009DF262 /* ProductIngredientsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2730155E56009DF262 /* ProductIngredientsSection.swift */; };
+		C51E9D3F30155E56009DF262 /* ProductDetailsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D0930155E56009DF262 /* ProductDetailsService.swift */; };
+		C51E9D4030155E56009DF262 /* SafetyLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1430155E56009DF262 /* SafetyLevel.swift */; };
+		C51E9D4130155E56009DF262 /* NutritionFactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2530155E56009DF262 /* NutritionFactView.swift */; };
+		C51E9D4230155E56009DF262 /* GetProductDetailsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1830155E56009DF262 /* GetProductDetailsUseCase.swift */; };
+		C51E9D4330155E56009DF262 /* ProductDetailsRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */; };
+		C51E9D4430155E56009DF262 /* ProductNutritionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2830155E56009DF262 /* ProductNutritionSection.swift */; };
+		C51E9D4530155E56009DF262 /* ProductDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */; };
+		C51E9D4630155E56009DF262 /* ProductDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2E30155E56009DF262 /* ProductDetailsScreen.swift */; };
+		C51E9D4730155E56009DF262 /* ProductHeaderUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1F30155E56009DF262 /* ProductHeaderUIState.swift */; };
+		C51E9D4830155E56009DF262 /* ProductSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2A30155E56009DF262 /* ProductSheetView.swift */; };
+		C51E9D4930155E56009DF262 /* SafetyLevelText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2B30155E56009DF262 /* SafetyLevelText.swift */; };
+		C51E9D4A30155E56009DF262 /* NutritionFactUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1D30155E56009DF262 /* NutritionFactUIState.swift */; };
+		C51E9D4B30155E56009DF262 /* ProductDetailsScanDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D0C30155E56009DF262 /* ProductDetailsScanDTO.swift */; };
+		C51E9D4C30155E56009DF262 /* ProductDetailsEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D0830155E56009DF262 /* ProductDetailsEndPoint.swift */; };
+		C51E9D4D30155E56009DF262 /* ProductNutritionUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2130155E56009DF262 /* ProductNutritionUIState.swift */; };
+		C51E9D4E30155E56009DF262 /* ProductDetailsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1E30155E56009DF262 /* ProductDetailsUIState.swift */; };
 		C546296B301239330032F885 /* ActiveAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462961301239330032F885 /* ActiveAlert.swift */; };
 		C546296C301239330032F885 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462962301239330032F885 /* CustomAlert.swift */; };
 		C546296D301239330032F885 /* CustomAlertCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462963301239330032F885 /* CustomAlertCard.swift */; };
@@ -848,24 +856,33 @@
 		C5144E9C3013DD05007EE884 /* ExerciseCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCardView.swift; sourceTree = "<group>"; };
 		C5144E9F3013DD05007EE884 /* WaterTrackingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterTrackingSection.swift; sourceTree = "<group>"; };
 		C5144EA13013DD05007EE884 /* CaloriesScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesScreen.swift; sourceTree = "<group>"; };
-		C51E9CBA301510F7009DF262 /* SafetyLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyLevel.swift; sourceTree = "<group>"; };
-		C51E9CBD301510F7009DF262 /* SafetyLaver+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SafetyLaver+Colors.swift"; sourceTree = "<group>"; };
-		C51E9CBF301510F7009DF262 /* NutritionFactUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionFactUIState.swift; sourceTree = "<group>"; };
-		C51E9CC0301510F7009DF262 /* ProductDetailsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsUIState.swift; sourceTree = "<group>"; };
-		C51E9CC1301510F7009DF262 /* ProductHeaderUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderUIState.swift; sourceTree = "<group>"; };
-		C51E9CC2301510F7009DF262 /* ProductIngredientsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductIngredientsUIState.swift; sourceTree = "<group>"; };
-		C51E9CC3301510F7009DF262 /* ProductNutritionUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNutritionUIState.swift; sourceTree = "<group>"; };
-		C51E9CC4301510F7009DF262 /* ProductSafetyUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSafetyUIState.swift; sourceTree = "<group>"; };
-		C51E9CC5301510F7009DF262 /* UnsafeIngredientUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeIngredientUIState.swift; sourceTree = "<group>"; };
-		C51E9CC7301510F7009DF262 /* NutritionFactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionFactView.swift; sourceTree = "<group>"; };
-		C51E9CC8301510F7009DF262 /* ProductHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderSection.swift; sourceTree = "<group>"; };
-		C51E9CC9301510F7009DF262 /* ProductIngredientsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductIngredientsSection.swift; sourceTree = "<group>"; };
-		C51E9CCA301510F7009DF262 /* ProductNutritionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNutritionSection.swift; sourceTree = "<group>"; };
-		C51E9CCB301510F7009DF262 /* ProductSafetySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSafetySection.swift; sourceTree = "<group>"; };
-		C51E9CCC301510F7009DF262 /* ProductSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSheetView.swift; sourceTree = "<group>"; };
-		C51E9CCD301510F7009DF262 /* SafetyLevelText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyLevelText.swift; sourceTree = "<group>"; };
-		C51E9CCE301510F7009DF262 /* UnsafeIngredientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeIngredientCard.swift; sourceTree = "<group>"; };
-		C51E9CD0301510F7009DF262 /* ProductDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsScreen.swift; sourceTree = "<group>"; };
+		C51E9D0830155E56009DF262 /* ProductDetailsEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsEndPoint.swift; sourceTree = "<group>"; };
+		C51E9D0930155E56009DF262 /* ProductDetailsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsService.swift; sourceTree = "<group>"; };
+		C51E9D0C30155E56009DF262 /* ProductDetailsScanDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsScanDTO.swift; sourceTree = "<group>"; };
+		C51E9D0E30155E56009DF262 /* ProductDetailsRepoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRepoImpl.swift; sourceTree = "<group>"; };
+		C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsAssembly.swift; sourceTree = "<group>"; };
+		C51E9D1330155E56009DF262 /* ProductDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetails.swift; sourceTree = "<group>"; };
+		C51E9D1430155E56009DF262 /* SafetyLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyLevel.swift; sourceTree = "<group>"; };
+		C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRepo.swift; sourceTree = "<group>"; };
+		C51E9D1830155E56009DF262 /* GetProductDetailsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProductDetailsUseCase.swift; sourceTree = "<group>"; };
+		C51E9D1B30155E56009DF262 /* SafetyLaver+Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SafetyLaver+Colors.swift"; sourceTree = "<group>"; };
+		C51E9D1D30155E56009DF262 /* NutritionFactUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionFactUIState.swift; sourceTree = "<group>"; };
+		C51E9D1E30155E56009DF262 /* ProductDetailsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsUIState.swift; sourceTree = "<group>"; };
+		C51E9D1F30155E56009DF262 /* ProductHeaderUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderUIState.swift; sourceTree = "<group>"; };
+		C51E9D2030155E56009DF262 /* ProductIngredientsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductIngredientsUIState.swift; sourceTree = "<group>"; };
+		C51E9D2130155E56009DF262 /* ProductNutritionUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNutritionUIState.swift; sourceTree = "<group>"; };
+		C51E9D2230155E56009DF262 /* ProductSafetyUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSafetyUIState.swift; sourceTree = "<group>"; };
+		C51E9D2330155E56009DF262 /* UnsafeIngredientUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeIngredientUIState.swift; sourceTree = "<group>"; };
+		C51E9D2530155E56009DF262 /* NutritionFactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionFactView.swift; sourceTree = "<group>"; };
+		C51E9D2630155E56009DF262 /* ProductHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductHeaderSection.swift; sourceTree = "<group>"; };
+		C51E9D2730155E56009DF262 /* ProductIngredientsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductIngredientsSection.swift; sourceTree = "<group>"; };
+		C51E9D2830155E56009DF262 /* ProductNutritionSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductNutritionSection.swift; sourceTree = "<group>"; };
+		C51E9D2930155E56009DF262 /* ProductSafetySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSafetySection.swift; sourceTree = "<group>"; };
+		C51E9D2A30155E56009DF262 /* ProductSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductSheetView.swift; sourceTree = "<group>"; };
+		C51E9D2B30155E56009DF262 /* SafetyLevelText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyLevelText.swift; sourceTree = "<group>"; };
+		C51E9D2C30155E56009DF262 /* UnsafeIngredientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeIngredientCard.swift; sourceTree = "<group>"; };
+		C51E9D2E30155E56009DF262 /* ProductDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsScreen.swift; sourceTree = "<group>"; };
+		C51E9D3030155E56009DF262 /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
 		C5462961301239330032F885 /* ActiveAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAlert.swift; sourceTree = "<group>"; };
 		C5462962301239330032F885 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		C5462963301239330032F885 /* CustomAlertCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertCard.swift; sourceTree = "<group>"; };
@@ -2128,14 +2145,6 @@
 			path = DTO;
 			sourceTree = "<group>";
 		};
-		6F8C4EA730158B95000067BC /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		6F8C4EAA3016C870000067BC /* StepTracker */ = {
 			isa = PBXGroup;
 			children = (
@@ -3032,6 +3041,7 @@
 		C5144E813013DBFA007EE884 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -3157,84 +3167,164 @@
 			path = Calories;
 			sourceTree = "<group>";
 		};
-		C51E9CBB301510F7009DF262 /* Entity */ = {
+		C51E9D0A30155E56009DF262 /* RemoteDataSource */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CBA301510F7009DF262 /* SafetyLevel.swift */,
+				C51E9D0830155E56009DF262 /* ProductDetailsEndPoint.swift */,
+				C51E9D0930155E56009DF262 /* ProductDetailsService.swift */,
+			);
+			path = RemoteDataSource;
+			sourceTree = "<group>";
+		};
+		C51E9D0B30155E56009DF262 /* DateSource */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D0A30155E56009DF262 /* RemoteDataSource */,
+			);
+			path = DateSource;
+			sourceTree = "<group>";
+		};
+		C51E9D0D30155E56009DF262 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D0C30155E56009DF262 /* ProductDetailsScanDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		C51E9D0F30155E56009DF262 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D0E30155E56009DF262 /* ProductDetailsRepoImpl.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		C51E9D1030155E56009DF262 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D0B30155E56009DF262 /* DateSource */,
+				C51E9D0D30155E56009DF262 /* DTO */,
+				C51E9D0F30155E56009DF262 /* Repository */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		C51E9D1230155E56009DF262 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		C51E9D1530155E56009DF262 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D1330155E56009DF262 /* ProductDetails.swift */,
+				C51E9D1430155E56009DF262 /* SafetyLevel.swift */,
 			);
 			path = Entity;
 			sourceTree = "<group>";
 		};
-		C51E9CBC301510F7009DF262 /* Domain */ = {
+		C51E9D1730155E56009DF262 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CBB301510F7009DF262 /* Entity */,
+				C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		C51E9D1930155E56009DF262 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D1830155E56009DF262 /* GetProductDetailsUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		C51E9D1A30155E56009DF262 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D1530155E56009DF262 /* Entity */,
+				C51E9D1730155E56009DF262 /* Repository */,
+				C51E9D1930155E56009DF262 /* UseCase */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
 		};
-		C51E9CBE301510F7009DF262 /* Extensions */ = {
+		C51E9D1C30155E56009DF262 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CBD301510F7009DF262 /* SafetyLaver+Colors.swift */,
+				C51E9D1B30155E56009DF262 /* SafetyLaver+Colors.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		C51E9CC6301510F7009DF262 /* UIState */ = {
+		C51E9D2430155E56009DF262 /* UIState */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CBF301510F7009DF262 /* NutritionFactUIState.swift */,
-				C51E9CC0301510F7009DF262 /* ProductDetailsUIState.swift */,
-				C51E9CC1301510F7009DF262 /* ProductHeaderUIState.swift */,
-				C51E9CC2301510F7009DF262 /* ProductIngredientsUIState.swift */,
-				C51E9CC3301510F7009DF262 /* ProductNutritionUIState.swift */,
-				C51E9CC4301510F7009DF262 /* ProductSafetyUIState.swift */,
-				C51E9CC5301510F7009DF262 /* UnsafeIngredientUIState.swift */,
+				C51E9D1D30155E56009DF262 /* NutritionFactUIState.swift */,
+				C51E9D1E30155E56009DF262 /* ProductDetailsUIState.swift */,
+				C51E9D1F30155E56009DF262 /* ProductHeaderUIState.swift */,
+				C51E9D2030155E56009DF262 /* ProductIngredientsUIState.swift */,
+				C51E9D2130155E56009DF262 /* ProductNutritionUIState.swift */,
+				C51E9D2230155E56009DF262 /* ProductSafetyUIState.swift */,
+				C51E9D2330155E56009DF262 /* UnsafeIngredientUIState.swift */,
 			);
 			path = UIState;
 			sourceTree = "<group>";
 		};
-		C51E9CCF301510F7009DF262 /* Components */ = {
+		C51E9D2D30155E56009DF262 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CC7301510F7009DF262 /* NutritionFactView.swift */,
-				C51E9CC8301510F7009DF262 /* ProductHeaderSection.swift */,
-				C51E9CC9301510F7009DF262 /* ProductIngredientsSection.swift */,
-				C51E9CCA301510F7009DF262 /* ProductNutritionSection.swift */,
-				C51E9CCB301510F7009DF262 /* ProductSafetySection.swift */,
-				C51E9CCC301510F7009DF262 /* ProductSheetView.swift */,
-				C51E9CCD301510F7009DF262 /* SafetyLevelText.swift */,
-				C51E9CCE301510F7009DF262 /* UnsafeIngredientCard.swift */,
+				C51E9D2530155E56009DF262 /* NutritionFactView.swift */,
+				C51E9D2630155E56009DF262 /* ProductHeaderSection.swift */,
+				C51E9D2730155E56009DF262 /* ProductIngredientsSection.swift */,
+				C51E9D2830155E56009DF262 /* ProductNutritionSection.swift */,
+				C51E9D2930155E56009DF262 /* ProductSafetySection.swift */,
+				C51E9D2A30155E56009DF262 /* ProductSheetView.swift */,
+				C51E9D2B30155E56009DF262 /* SafetyLevelText.swift */,
+				C51E9D2C30155E56009DF262 /* UnsafeIngredientCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
 		};
-		C51E9CD1301510F7009DF262 /* View */ = {
+		C51E9D2F30155E56009DF262 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CCF301510F7009DF262 /* Components */,
-				C51E9CD0301510F7009DF262 /* ProductDetailsScreen.swift */,
+				C51E9D2D30155E56009DF262 /* Components */,
+				C51E9D2E30155E56009DF262 /* ProductDetailsScreen.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		C51E9CD2301510F7009DF262 /* Presentation */ = {
+		C51E9D3130155E56009DF262 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				6F8C4EA730158B95000067BC /* ViewModel */,
-				C51E9CBE301510F7009DF262 /* Extensions */,
-				C51E9CC6301510F7009DF262 /* UIState */,
-				C51E9CD1301510F7009DF262 /* View */,
+				C51E9D3030155E56009DF262 /* ProductDetailsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C51E9D3230155E56009DF262 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				C51E9D1C30155E56009DF262 /* Extensions */,
+				C51E9D2430155E56009DF262 /* UIState */,
+				C51E9D2F30155E56009DF262 /* View */,
+				C51E9D3130155E56009DF262 /* ViewModel */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
 		};
-		C51E9CD3301510F7009DF262 /* ProductDetails */ = {
+		C51E9D3330155E56009DF262 /* ProductDetails */ = {
 			isa = PBXGroup;
 			children = (
-				C51E9CBC301510F7009DF262 /* Domain */,
-				C51E9CD2301510F7009DF262 /* Presentation */,
+				C51E9D1030155E56009DF262 /* Data */,
+				C51E9D1230155E56009DF262 /* DI */,
+				C51E9D1A30155E56009DF262 /* Domain */,
+				C51E9D3230155E56009DF262 /* Presentation */,
 			);
 			path = ProductDetails;
 			sourceTree = "<group>";
@@ -3507,9 +3597,9 @@
 		F00E8B813AF1AA6E29087914 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				C51E9D3330155E56009DF262 /* ProductDetails */,
 				6F8C4EAA3016C870000067BC /* StepTracker */,
 				2C93914930129DC600287FF2 /* Exercise */,
-				C51E9CD3301510F7009DF262 /* ProductDetails */,
 				8F305C233014E92B0002A179 /* Favorites */,
 				C5144EA53013DD05007EE884 /* Calories */,
 				6F1A8E963012AF6400E1ACC5 /* RAG */,
@@ -3734,7 +3824,6 @@
 				6F1A8EC73012BE2100E1ACC5 /* RAGLoadingIndicator.swift in Sources */,
 				6F1A8EC83012BE2100E1ACC5 /* RAGSourcesSection.swift in Sources */,
 				6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */,
-				6F8C4EA930158DEA000067BC /* ProductDetailsViewModel.swift in Sources */,
 				6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */,
 				6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */,
 				6F1A8ECC3012BE2100E1ACC5 /* RAGEndpoint.swift in Sources */,
@@ -3859,24 +3948,6 @@
 				6F1A8E943012AAE100E1ACC5 /* Date+Formatting.swift in Sources */,
 				6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */,
 				D48A243C301155F90004D95E /* GetEditProfileUseCase.swift in Sources */,
-				C51E9CD4301510F7009DF262 /* SafetyLevelText.swift in Sources */,
-				C51E9CD5301510F7009DF262 /* UnsafeIngredientUIState.swift in Sources */,
-				C51E9CD6301510F7009DF262 /* ProductIngredientsSection.swift in Sources */,
-				C51E9CD7301510F7009DF262 /* ProductDetailsUIState.swift in Sources */,
-				C51E9CD8301510F7009DF262 /* SafetyLaver+Colors.swift in Sources */,
-				C51E9CD9301510F7009DF262 /* NutritionFactUIState.swift in Sources */,
-				C51E9CDA301510F7009DF262 /* NutritionFactView.swift in Sources */,
-				C51E9CDB301510F7009DF262 /* ProductSafetyUIState.swift in Sources */,
-				C51E9CDC301510F7009DF262 /* ProductHeaderUIState.swift in Sources */,
-				C51E9CDD301510F7009DF262 /* ProductSheetView.swift in Sources */,
-				C51E9CDE301510F7009DF262 /* SafetyLevel.swift in Sources */,
-				C51E9CDF301510F7009DF262 /* ProductNutritionSection.swift in Sources */,
-				C51E9CE0301510F7009DF262 /* ProductDetailsScreen.swift in Sources */,
-				C51E9CE1301510F7009DF262 /* ProductSafetySection.swift in Sources */,
-				C51E9CE2301510F7009DF262 /* ProductHeaderSection.swift in Sources */,
-				C51E9CE3301510F7009DF262 /* UnsafeIngredientCard.swift in Sources */,
-				C51E9CE4301510F7009DF262 /* ProductNutritionUIState.swift in Sources */,
-				C51E9CE5301510F7009DF262 /* ProductIngredientsUIState.swift in Sources */,
 				5BDFB387E5C37B41261F67A8 /* FloatingTabButton.swift in Sources */,
 				2C7708F3301573DC00A8FCCE /* ProfileHeaderLoadingView.swift in Sources */,
 				D4BAA31430137E6C006EDB11 /* FamilyMembersSectionView.swift in Sources */,
@@ -4022,9 +4093,7 @@
 				F47A8EBA6FF78D365DE46055 /* ProfileSetupStep.swift in Sources */,
 				E703F74B90B7FD260A877B20 /* ProfileSetupStepView.swift in Sources */,
 				AFA336F30CB6DD2BC65321B3 /* ProgressNextButton.swift in Sources */,
-				C5144EA63013DD05007EE884 /* RequestStepAuthorizationUseCase.swift in Sources */,
 				8FB0F0303016863300D84471 /* FavoritesRemoteDataSource.swift in Sources */,
-				C5144EA73013DD05007EE884 /* StepHistoryBarChartView.swift in Sources */,
 				C5144EA83013DD05007EE884 /* WaterTrackingSection.swift in Sources */,
 				2C77D28730159DF5005AF888 /* ProfileRepository.swift in Sources */,
 				C5144EAF3013DD05007EE884 /* CaloriesScreen.swift in Sources */,
@@ -4108,6 +4177,33 @@
 				8F16ED1E3012AA0700CF43B2 /* ProfileSetupUserProfile.swift in Sources */,
 				2C78ECDE300E6C700092E6B2 /* AuthEndpoint.swift in Sources */,
 				2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */,
+				C51E9D3430155E56009DF262 /* ProductDetails.swift in Sources */,
+				C51E9D3530155E56009DF262 /* ProductHeaderSection.swift in Sources */,
+				C51E9D3630155E56009DF262 /* SafetyLaver+Colors.swift in Sources */,
+				C51E9D3730155E56009DF262 /* ProductSafetyUIState.swift in Sources */,
+				C51E9D3830155E56009DF262 /* ProductSafetySection.swift in Sources */,
+				C51E9D3930155E56009DF262 /* UnsafeIngredientUIState.swift in Sources */,
+				C51E9D3A30155E56009DF262 /* ProductIngredientsUIState.swift in Sources */,
+				C51E9D3B30155E56009DF262 /* ProductDetailsRepoImpl.swift in Sources */,
+				C51E9D3C30155E56009DF262 /* UnsafeIngredientCard.swift in Sources */,
+				C51E9D3D30155E56009DF262 /* ProductDetailsViewModel.swift in Sources */,
+				C51E9D3E30155E56009DF262 /* ProductIngredientsSection.swift in Sources */,
+				C51E9D3F30155E56009DF262 /* ProductDetailsService.swift in Sources */,
+				C51E9D4030155E56009DF262 /* SafetyLevel.swift in Sources */,
+				C51E9D4130155E56009DF262 /* NutritionFactView.swift in Sources */,
+				C51E9D4230155E56009DF262 /* GetProductDetailsUseCase.swift in Sources */,
+				C51E9D4330155E56009DF262 /* ProductDetailsRepo.swift in Sources */,
+				C51E9D4430155E56009DF262 /* ProductNutritionSection.swift in Sources */,
+				C51E9D4530155E56009DF262 /* ProductDetailsAssembly.swift in Sources */,
+				C51E9D4630155E56009DF262 /* ProductDetailsScreen.swift in Sources */,
+				C51E9D4730155E56009DF262 /* ProductHeaderUIState.swift in Sources */,
+				C51E9D4830155E56009DF262 /* ProductSheetView.swift in Sources */,
+				C51E9D4930155E56009DF262 /* SafetyLevelText.swift in Sources */,
+				C51E9D4A30155E56009DF262 /* NutritionFactUIState.swift in Sources */,
+				C51E9D4B30155E56009DF262 /* ProductDetailsScanDTO.swift in Sources */,
+				C51E9D4C30155E56009DF262 /* ProductDetailsEndPoint.swift in Sources */,
+				C51E9D4D30155E56009DF262 /* ProductNutritionUIState.swift in Sources */,
+				C51E9D4E30155E56009DF262 /* ProductDetailsUIState.swift in Sources */,
 				2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */,
 				2C78ECE1300E6C700092E6B2 /* AuthRemoteService.swift in Sources */,
 				2C78ECE2300E6C700092E6B2 /* RegisterRequest+DTO.swift in Sources */,
