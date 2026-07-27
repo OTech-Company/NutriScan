@@ -39,4 +39,7 @@ protocol StepRepositoryProtocol {
 
     /// One-shot fetch of a per-day step history for the given range.
     func fetchStepsHistory(for range: StepHistoryRange) async throws -> [DailySteps]
+
+    /// One-shot fetch of a per-day step history for a custom date range.
+    func fetchStepsHistory(from startDate: Date, to endDate: Date) async throws -> [DailySteps]
 }
