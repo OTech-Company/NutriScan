@@ -23,7 +23,8 @@ struct AppDependencies {
         ScanAssembly(),
         StepTrackerAssembly(),
         RAGAssembly(),
-        SettingsAssembly()
+        SettingsAssembly(),
+        ProductDetailsAssembly()
     ]
 
     static func setup() {
