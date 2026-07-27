@@ -7,10 +7,14 @@
 
 import Foundation
 
-final class RegisterUseCase {
+protocol RegisterUseCaseProtocol {
+    func execute(request: RegisterRequest) async throws -> RegisterResult
+}
+
+final class RegisterUseCase: RegisterUseCaseProtocol {
     private let repository: AuthRepositoryProtocol
 
-    init(repository: AuthRepositoryProtocol = AuthRepositoryImpl()) {
+    init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
 

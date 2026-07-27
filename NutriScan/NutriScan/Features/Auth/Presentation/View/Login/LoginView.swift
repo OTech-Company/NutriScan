@@ -13,7 +13,11 @@ struct LoginView: View {
 
     @State private var activeAlert: ActiveAlert = .none
     @State private var errorMessage = ""
-    @State private var viewModel = LoginViewModel()
+    @State private var viewModel: LoginViewModel
+
+    init(viewModel: LoginViewModel) {
+        _viewModel = State(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {

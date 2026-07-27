@@ -7,6 +7,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject private var router: AppRouter
+    @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @State private var viewModel = SettingsViewModel()
 
     var body: some View {
@@ -49,7 +50,7 @@ struct SettingsView: View {
                     )
 
                     SettingsLogoutButton {
-                        viewModel.logout()
+                        viewModel.requestLogout()
                     }
                     .padding(.top, 20)
                 }
@@ -61,6 +62,21 @@ struct SettingsView: View {
         .background(Color.SettingsSemantic.screenBackground.ignoresSafeArea())
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
+        .customAlert(
+            isPresented: $viewModel.showLogoutAlert,
+            type: .warning,
+            title: "Logout",
+            description: "Are you sure you want to log out of NutriScan?",
+            primaryButtonTitle: "Logout",
+            primaryButtonColor: Color.Red.red500,
+            primaryAction: {
+                viewModel.confirmLogout(flowCoordinator: flowCoordinator)
+            },
+            secondaryButtonTitle: "Cancel",
+            secondaryAction: {
+                viewModel.cancelLogout()
+            }
+        )
     }
 }
 

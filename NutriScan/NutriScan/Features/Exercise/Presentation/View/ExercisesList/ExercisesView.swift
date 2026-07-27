@@ -8,7 +8,11 @@ import SwiftUI
 struct ExercisesView: View {
     @EnvironmentObject private var router: AppRouter
 
-    @State private var viewModel = ExerciseListViewModel()
+    @State private var viewModel: ExerciseListViewModel
+
+    init(viewModel: ExerciseListViewModel) {
+        _viewModel = State(wrappedValue: viewModel)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -63,13 +67,13 @@ struct ExercisesView: View {
 // MARK: - Previews
 
 #Preview("Light") {
-    ExercisesView()
+    ExerciseFactory.makeExercisesView()
         .environmentObject(AppRouter())
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-    ExercisesView()
+    ExerciseFactory.makeExercisesView()
         .environmentObject(AppRouter())
         .preferredColorScheme(.dark)
 }

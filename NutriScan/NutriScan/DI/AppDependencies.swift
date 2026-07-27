@@ -16,15 +16,15 @@ struct AppDependencies {
     /// that depends on it (e.g. NetworkServiceProtocol before ProfileAssembly).
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
+        AuthAssembly(),
+        ExerciseAssembly(),
         ProfileAssembly(),
         EditProfileAssembly(),
         ScanAssembly(),
         StepTrackerAssembly(),
         RAGAssembly(),
+        SettingsAssembly(),
         ProductDetailsAssembly()
-        // Teammates: add your feature's Assembly here, e.g.
-        // HomeAssembly(),
-        // AuthAssembly(),
     ]
 
     static func setup() {
@@ -33,7 +33,7 @@ struct AppDependencies {
     }
 }
 
-// MARK: - Inline Assemblies (to avoid pbxproj conflicts)
+
 struct ScanAssembly: Assembly {
     func assemble(container: DIContainer) {
         let repository = ScanRepositoryImpl()

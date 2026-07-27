@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Playgrounds
 
 struct ProductDetailsResponse : Decodable {
     let product : ProductDetailsScanDTO
@@ -44,16 +43,4 @@ struct ProductDetailsNutritionFactsDTO: Decodable {
     let fiberGrams: Double?
     let sugarG: Double?
     let sodiumMg: Double?
-}
-
-
-#Playground {
-    Task {
-        do {
-            let response: ProductDetailsResponse = try await NetworkService.shared.request(ProductDetailsEndPoint.getProductDetails(scanId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"))
-            print(response.product)
-        } catch {
-            print("Error: \(error)")
-        }
-    }
 }

@@ -1,9 +1,9 @@
 //
-//  SettingsOptions.swift
+//  AppAppearance.swift
 //  NutriScan
 //
 
-import Foundation
+import SwiftUI
 
 // MARK: - Appearance Mode
 enum AppAppearance: String, CaseIterable, CustomStringConvertible {
@@ -12,12 +12,12 @@ enum AppAppearance: String, CaseIterable, CustomStringConvertible {
     case light  = "Light"
 
     var description: String { rawValue }
-}
 
-// MARK: - App Language
-enum AppLanguage: String, CaseIterable, CustomStringConvertible {
-    case english = "En"
-    case arabic  = "Ar"
-
-    var description: String { rawValue }
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
+    }
 }
