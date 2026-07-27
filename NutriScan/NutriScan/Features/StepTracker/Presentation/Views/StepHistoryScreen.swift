@@ -6,10 +6,11 @@ struct StepHistoryScreen: View {
     @EnvironmentObject private var router: AppRouter
     @State private var selectedRange: StepHistoryRange = .lastWeek
     @State private var selectedIndex: Int = 0
-
-    // MARK: - Date Range Computation
+    @State private var isFetching = false
 
     private var calendar: Calendar { Calendar.current }
+
+    // MARK: - Date Range Computation
 
     private var rangeEndDate: Date {
         switch selectedRange {
@@ -37,6 +38,8 @@ struct StepHistoryScreen: View {
         }
     }
 
+    // MARK: - Displayed Date String
+
     private var displayedDate: String {
         let formatter = DateFormatter()
         switch selectedRange {
@@ -54,34 +57,78 @@ struct StepHistoryScreen: View {
         }
     }
 
-    // MARK: - Step Data for Selected Period
+    // MARK: - Chart Data Points (Aggregated)
+
+    private var chartDataPoints: [ChartDataPoint] {
+        let history = viewModel.history
+        guard !history.isEmpty else { return [] }
+
+        switch selectedRange {
+        case .lastWeek, .sinceYesterday:
+            // Daily points for week view
+            return history.map { day in
+                ChartDataPoint(
+                    date: day.date,
+                    steps: day.stepCount,
+                    label: dayLabel(for: day.date)
+                )
+            }
+
+        case .lastMonth:
+            // Daily points for month view
+            return history.map { day in
+                ChartDataPoint(
+                    date: day.date,
+                    steps: day.stepCount,
+                    label: dayLabel(for: day.date)
+                )
+            }
+
+        case .last3Months, .last6Months:
+            // Monthly aggregated points for 3M/6M views
+            return aggregateByMonth(history)
+        }
+    }
+
+    private func aggregateByMonth(_ history: [DailySteps]) -> [ChartDataPoint] {
+        var monthly: [Date: Int] = [:]
+        let calendar = Calendar.current
+
+        for day in history {
+            let monthStart = calendar.date(from: calendar.dateComponents([.year, .month], from: day.date)) ?? day.date
+            monthly[monthStart, default: 0] += day.stepCount
+        }
+
+        return monthly.sorted(by: { $0.key < $1.key }).map { (monthStart, totalSteps) in
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM yyyy"
+            return ChartDataPoint(
+                date: monthStart,
+                steps: totalSteps,
+                label: formatter.string(from: monthStart)
+            )
+        }
+    }
+
+    // MARK: - Selected Day Analytics
 
     private var selectedDaySteps: Int {
         if selectedIndex == 0 && (selectedRange == .lastWeek || selectedRange == .lastMonth || selectedRange == .sinceYesterday) {
             return viewModel.todaySteps
         }
-        return viewModel.history.last?.stepCount ?? 0
+        // Find the day in history that matches the rangeEndDate
+        let targetStart = calendar.startOfDay(for: rangeEndDate)
+        return viewModel.history.first { calendar.isDate($0.date, inSameDayAs: targetStart) }?.stepCount ?? 0
     }
 
     private var weeklyAverage: Int {
-        guard !viewModel.history.isEmpty else { return 0 }
-        return viewModel.history.map(\.stepCount).reduce(0, +) / viewModel.history.count
+        let weekData = viewModel.history.suffix(7)
+        guard !weekData.isEmpty else { return 0 }
+        return weekData.map(\.stepCount).reduce(0, +) / weekData.count
     }
 
     private var selectedDayAnalytics: StepAnalytics {
         viewModel.analytics.compute(steps: selectedDaySteps)
-    }
-
-    private var caloriesBurned: Int {
-        selectedDayAnalytics.caloriesBurned
-    }
-
-    private var distanceKm: Double {
-        selectedDayAnalytics.distanceKm
-    }
-
-    private var activeMinutes: Int {
-        selectedDayAnalytics.activeMinutes
     }
 
     // MARK: - Body
@@ -107,9 +154,7 @@ struct StepHistoryScreen: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                BackButton {
-                    router.pop()
-                }
+                BackButton { router.pop() }
             }
         }
         .onAppear {
@@ -124,7 +169,13 @@ struct StepHistoryScreen: View {
     // MARK: - Fetching
 
     private func fetchForCurrentSelection() {
-        viewModel.loadHistory(from: rangeStartDate, to: rangeEndDate, forceRefresh: selectedIndex == 0)
+        guard !isFetching else { return }
+        isFetching = true
+        viewModel.loadHistory(from: rangeStartDate, to: rangeEndDate, forceRefresh: true)
+        // Reset fetch flag after a short delay to allow rapid navigation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            isFetching = false
+        }
     }
 
     // MARK: - Header
@@ -183,7 +234,7 @@ struct StepHistoryScreen: View {
                 ProgressView()
                     .frame(maxWidth: .infinity)
                     .frame(height: 220)
-            } else if viewModel.history.isEmpty {
+            } else if chartDataPoints.isEmpty {
                 emptyState
             } else {
                 chart
@@ -198,24 +249,24 @@ struct StepHistoryScreen: View {
     }
 
     private var chart: some View {
-        let displayData = viewModel.history
-        let maxStep = max(displayData.map(\.stepCount).max() ?? 1, 10_000)
+        let data = chartDataPoints
+        let maxStep = max(data.map(\.steps).max() ?? 1, 10_000)
 
         return VStack(spacing: 12) {
             Chart {
-                ForEach(Array(displayData.enumerated()), id: \.offset) { _, day in
+                ForEach(data) { point in
                     BarMark(
-                        x: .value("Day", dayLabel(for: day.date)),
-                        y: .value("Steps", day.stepCount)
+                        x: .value("Period", point.label),
+                        y: .value("Steps", point.steps)
                     )
                     .foregroundStyle(
-                        day.stepCount >= 10_000
+                        point.steps >= 10_000
                             ? Color.Teal.teal600
                             : Color.Teal.teal400
                     )
                     .cornerRadius(6)
                     .annotation(position: .top, spacing: 4) {
-                        Text("\(day.stepCount)")
+                        Text("\(point.steps.formatted())")
                             .font(.custom("LexendDeca-Regular", size: 10))
                             .foregroundColor(Color.StepTrackerSemantic.chartTitle)
                     }
@@ -256,7 +307,7 @@ struct StepHistoryScreen: View {
         case .lastMonth:
             formatter.dateFormat = "d"
         case .last3Months, .last6Months:
-            formatter.dateFormat = "MMM d"
+            formatter.dateFormat = "MMM"
         }
         return formatter.string(from: date)
     }
@@ -282,7 +333,7 @@ struct StepHistoryScreen: View {
                 icon: "flame.fill",
                 iconColor: .orange,
                 title: "Calories\nBurned",
-                value: "\(caloriesBurned)",
+                value: "\(selectedDayAnalytics.caloriesBurned)",
                 unit: "kcal"
             )
 
@@ -290,7 +341,7 @@ struct StepHistoryScreen: View {
                 icon: "mappin.circle.fill",
                 iconColor: Color.Teal.teal1000,
                 title: "Distance\nCovered",
-                value: String(format: "%.1f", distanceKm),
+                value: String(format: "%.1f", selectedDayAnalytics.distanceKm),
                 unit: "km"
             )
 
@@ -298,11 +349,20 @@ struct StepHistoryScreen: View {
                 icon: "stopwatch.fill",
                 iconColor: Color.Teal.teal1000,
                 title: "Active\nMinutes",
-                value: "\(activeMinutes)",
+                value: "\(selectedDayAnalytics.activeMinutes)",
                 unit: "min"
             )
         }
     }
+}
+
+// MARK: - Chart Data Point
+
+private struct ChartDataPoint: Identifiable {
+    let id = UUID()
+    let date: Date
+    let steps: Int
+    let label: String
 }
 
 #Preview {

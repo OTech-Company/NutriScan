@@ -63,6 +63,8 @@ struct RAGAssembly: Assembly {
 struct StepTrackerAssembly: Assembly {
     func assemble(container: DIContainer) {
         let repository = StepRepositoryImpl()
+        
+        // Register step tracker use cases
         container.register(
             type: ObserveDailyStepsUseCase.self,
             component: ObserveDailyStepsUseCase(repository: repository)
@@ -74,6 +76,14 @@ struct StepTrackerAssembly: Assembly {
         container.register(
             type: FetchStepsHistoryUseCase.self,
             component: FetchStepsHistoryUseCase(repository: repository)
+        )
+        
+        // Register user profile service for height/weight
+        container.register(
+            type: UserProfileService.self,
+            component: UserProfileService(
+                getProfileUseCase: container.resolve(type: GetEditProfileUseCaseProtocol.self)
+            )
         )
     }
 }
