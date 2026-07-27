@@ -25,7 +25,7 @@ struct ScanHistoryView: View {
                     .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
                 Spacer()
             }
-            .padding(.horizontal, 20)
+            .padding(.horizontal, 22)
             .padding(.top, 16)
             .padding(.bottom, 16)
             
@@ -42,7 +42,7 @@ struct ScanHistoryView: View {
                 ScanHistoryEmptyStateView()
             } else {
                 ScrollView {
-                    LazyVStack(spacing: 16) {
+                    LazyVStack(spacing: 8) {
                         ForEach(viewModel.scans) { scan in
                             HistoryRowView(
                                 item: UiStateHistoryItem(
@@ -63,7 +63,7 @@ struct ScanHistoryView: View {
                                 .padding()
                         }
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 22)
                     .padding(.top, 8)
                     .padding(.bottom, 24)
                 }
@@ -78,5 +78,47 @@ struct ScanHistoryView: View {
 }
 
 #Preview {
-    ScanHistoryFactory.makeScanHistoryView()
+    class MockScanHistoryUseCase: ScanHistoryUseCaseProtocol {
+        func getScanHistory(page: Int, size: Int) async throws -> (scans: [ScanHistoryEntity], totalPages: Int) {
+            let mockData = [
+                ScanHistoryEntity(
+                    id: "1",
+                    productName: "Almarai Fresh Milk",
+                    imageUrl: "",
+                    calories: 150,
+                    scannedAt: "2026-07-27T10:15:00Z",
+                    status: .safe
+                ),
+                ScanHistoryEntity(
+                    id: "2",
+                    productName: "Lays Classic Potato Chips",
+                    imageUrl: "",
+                    calories: 240,
+                    scannedAt: "2026-07-26T14:30:00Z",
+                    status: .caution
+                ),
+                ScanHistoryEntity(
+                    id: "3",
+                    productName: "Coca Cola Regular",
+                    imageUrl: "",
+                    calories: 140,
+                    scannedAt: "2026-07-25T09:00:00Z",
+                    status: .unsafe
+                ),
+                ScanHistoryEntity(
+                    id: "4",
+                    productName: "Quaker Oats",
+                    imageUrl: "",
+                    calories: 150,
+                    scannedAt: "2026-07-24T08:15:00Z",
+                    status: .safe
+                )
+            ]
+            return (scans: mockData, totalPages: 1)
+        }
+    }
+
+    let viewModel = ScanHistoryViewModel(scanHistoryUseCase: MockScanHistoryUseCase())
+    return ScanHistoryView(viewModel: viewModel)
+        .environmentObject(AppRouter())
 }
