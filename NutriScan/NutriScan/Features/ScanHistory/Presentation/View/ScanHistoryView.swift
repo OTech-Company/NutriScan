@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
+    @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ScanHistoryViewModel
     
     init(viewModel: ScanHistoryViewModel) {
@@ -16,6 +17,18 @@ struct ScanHistoryView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            // Custom header with BackButton
+            HStack(spacing: 16) {
+                BackButton { router.pop() }
+                Text("Scan History")
+                    .font(.AppFont.title3)
+                    .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 16)
+            .padding(.bottom, 16)
+            
             if viewModel.isLoading && viewModel.scans.isEmpty {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -51,97 +64,16 @@ struct ScanHistoryView: View {
                         }
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top, 16)
+                    .padding(.top, 8)
                     .padding(.bottom, 24)
                 }
             }
         }
         .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
-        .navigationTitle("Scan History")
+        .navigationBarBackButtonHidden(true)
         .task {
             await viewModel.loadScanHistory()
         }
-    }
-}
-
-// MARK: - Empty State
-
-private struct ScanHistoryEmptyStateView: View {
-    var body: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            
-            ZStack {
-                Circle()
-                    .fill(Color(light: .Gray.gray200, dark: .Teal.teal1400))
-                    .frame(width: 80, height: 80)
-                
-                Image(systemName: "clock.arrow.circlepath")
-                    .font(.system(size: 32))
-                    .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray400))
-            }
-            
-            Text("No Scan History")
-                .font(.AppFont.title3)
-                .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
-            
-            Text("Your scanned products will appear here.")
-                .font(.AppFont.textSecondary)
-                .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray300))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
-    }
-}
-
-// MARK: - Error State
-
-private struct ScanHistoryErrorView: View {
-    let errorMessage: String
-    let onRetry: () -> Void
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            
-            ZStack {
-                Circle()
-                    .fill(Color(light: .Gray.gray200, dark: .Teal.teal1400))
-                    .frame(width: 80, height: 80)
-                
-                Image(systemName: "exclamationmark.triangle")
-                    .font(.system(size: 32))
-                    .foregroundColor(.orange)
-            }
-            
-            Text("Something went wrong")
-                .font(.AppFont.title3)
-                .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
-            
-            Text(errorMessage)
-                .font(.AppFont.textSecondary)
-                .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray300))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 40)
-            
-            Button(action: onRetry) {
-                Text("Retry")
-                    .font(.AppFont.textDefault)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 10)
-                    .background(Color.Teal.teal1000)
-                    .clipShape(Capsule())
-            }
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding()
     }
 }
 
