@@ -24,7 +24,7 @@ enum ProfileRoute: Route {
         case .settings:
             SettingsView()
         case .scanHistory:
-            ScanHistoryView()
+            ScanHistoryFactory.makeScanHistoryView()
         }
     }
 }
