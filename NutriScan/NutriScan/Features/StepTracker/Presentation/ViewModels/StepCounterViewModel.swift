@@ -1,8 +1,3 @@
-//
-//  StepCounterViewModel.swift
-//  StepTracker - Presentation / ViewModels
-//
-
 import Foundation
 import Combine
 
@@ -15,23 +10,36 @@ final class StepCounterViewModel {
     private(set) var history: [DailySteps] = []
     private(set) var isLoadingHistory: Bool = false
 
+    let analytics: StepAnalyticsCalculator
+
     private let observeStepsUseCase: ObserveDailyStepsUseCaseProtocol
     private let requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
     private var observationTask: Task<Void, Never>?
 
-    /// Cache of already-fetched history, keyed by range, so switching
-    /// back to a previously selected range doesn't trigger a refetch.
-    private var historyCache: [StepHistoryRange: [DailySteps]] = [:]
+    /// Full history fetched once (last 6 months), cached for slicing.
+    private var fullHistoryCache: [DailySteps] = []
+    private var hasFetchedFullHistory = false
 
     init(
         observeStepsUseCase: ObserveDailyStepsUseCaseProtocol,
         requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol,
-        fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
+        fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol,
+        weightKg: Double = 70.0,
+        heightCm: Double = 170.0
     ) {
         self.observeStepsUseCase = observeStepsUseCase
         self.requestAuthUseCase = requestAuthUseCase
         self.fetchHistoryUseCase = fetchHistoryUseCase
+        self.analytics = StepAnalyticsCalculator(weightKg: weightKg, heightCm: heightCm)
+    }
+
+    func todayAnalytics() -> StepAnalytics {
+        analytics.compute(steps: todaySteps)
+    }
+
+    func analytics(for steps: Int) -> StepAnalytics {
+        analytics.compute(steps: steps)
     }
 
     func onAppear() {
@@ -44,23 +52,43 @@ final class StepCounterViewModel {
         observationTask?.cancel()
     }
 
-    func loadHistory(range: StepHistoryRange, forceRefresh: Bool = false) {
-        if !forceRefresh, let cached = historyCache[range] {
-            history = cached
-            return
-        }
+    /// Fetches the full 6-month history once. Subsequent calls use the cache.
+    func fetchFullHistoryIfNeeded() {
+        guard !hasFetchedFullHistory else { return }
         Task {
             isLoadingHistory = true
             errorMessage = nil
             do {
-                let result = try await fetchHistoryUseCase.execute(range: range)
-                historyCache[range] = result
+                let calendar = Calendar.current
+                let endDate = Date()
+                let startDate = calendar.date(byAdding: .month, value: -6, to: endDate) ?? endDate
+                let result = try await fetchHistoryUseCase.execute(from: startDate, to: endDate)
+                fullHistoryCache = result
+                hasFetchedFullHistory = true
                 history = result
             } catch {
                 errorMessage = error.localizedDescription
             }
             isLoadingHistory = false
         }
+    }
+
+    /// Slices the cached full history for the given date range.
+    func sliceHistory(from startDate: Date, to endDate: Date) -> [DailySteps] {
+        let calendar = Calendar.current
+        return fullHistoryCache.filter { day in
+            day.date >= calendar.startOfDay(for: startDate) && day.date <= calendar.startOfDay(for: endDate)
+        }
+    }
+
+    // MARK: - Legacy support (used by CaloriesScreen)
+
+    func loadHistory(range: StepHistoryRange, forceRefresh: Bool = false) {
+        fetchFullHistoryIfNeeded()
+    }
+
+    func loadHistory(from startDate: Date, to endDate: Date, forceRefresh: Bool = false) {
+        fetchFullHistoryIfNeeded()
     }
 
     private func requestAuthorizationAndObserve() async {
