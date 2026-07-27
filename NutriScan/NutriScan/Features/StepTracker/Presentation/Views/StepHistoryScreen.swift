@@ -38,23 +38,31 @@ struct StepHistoryScreen: View {
         }
     }
 
-    // MARK: - Displayed Date String
+    // MARK: - Displayed Date Strings
 
-    private var displayedDate: String {
+    private var startDateString: String {
         let formatter = DateFormatter()
         switch selectedRange {
-        case .lastWeek, .lastMonth, .sinceYesterday:
-            let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "EEEE, MMM d"
-            if selectedIndex == 0 {
-                formatter.dateFormat = "MMM d"
-                return "Today, \(formatter.string(from: rangeEndDate))"
-            }
-            return dayFormatter.string(from: rangeEndDate)
+        case .lastWeek, .sinceYesterday, .lastMonth:
+            formatter.dateFormat = "MMM d"
         case .last3Months, .last6Months:
             formatter.dateFormat = "MMM yyyy"
-            return formatter.string(from: rangeEndDate)
         }
+        if selectedIndex == 0 {
+            return "Today"
+        }
+        return formatter.string(from: rangeStartDate)
+    }
+
+    private var endDateString: String {
+        let formatter = DateFormatter()
+        switch selectedRange {
+        case .lastWeek, .sinceYesterday, .lastMonth:
+            formatter.dateFormat = "MMM d"
+        case .last3Months, .last6Months:
+            formatter.dateFormat = "MMM yyyy"
+        }
+        return formatter.string(from: rangeEndDate)
     }
 
     // MARK: - Chart Data Points (Aggregated)
@@ -110,25 +118,28 @@ struct StepHistoryScreen: View {
         }
     }
 
-    // MARK: - Selected Day Analytics
+    // MARK: - Period Analytics
 
     private var selectedDaySteps: Int {
         if selectedIndex == 0 && (selectedRange == .lastWeek || selectedRange == .lastMonth || selectedRange == .sinceYesterday) {
             return viewModel.todaySteps
         }
-        // Find the day in history that matches the rangeEndDate
         let targetStart = calendar.startOfDay(for: rangeEndDate)
         return viewModel.history.first { calendar.isDate($0.date, inSameDayAs: targetStart) }?.stepCount ?? 0
     }
 
-    private var weeklyAverage: Int {
-        let weekData = viewModel.history.suffix(7)
-        guard !weekData.isEmpty else { return 0 }
-        return weekData.map(\.stepCount).reduce(0, +) / weekData.count
+    /// Total steps across the entire fetched period.
+    private var periodTotalSteps: Int {
+        viewModel.history.map(\.stepCount).reduce(0, +)
     }
 
-    private var selectedDayAnalytics: StepAnalytics {
-        viewModel.analytics.compute(steps: selectedDaySteps)
+    private var weeklyAverage: Int {
+        guard !viewModel.history.isEmpty else { return 0 }
+        return viewModel.history.map(\.stepCount).reduce(0, +) / viewModel.history.count
+    }
+
+    private var periodAnalytics: StepAnalytics {
+        viewModel.analytics.compute(steps: periodTotalSteps)
     }
 
     // MARK: - Body
@@ -136,7 +147,6 @@ struct StepHistoryScreen: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                headerSection
                 rangeTabs
                 dateNavigation
                 DailyInsightCardView(
@@ -148,6 +158,7 @@ struct StepHistoryScreen: View {
                 bottomStatsRow
             }
             .padding(.horizontal, 20)
+            .padding(.top, 8)
             .padding(.bottom, 32)
         }
         .background(Color.StepTrackerSemantic.background.ignoresSafeArea())
@@ -178,16 +189,6 @@ struct StepHistoryScreen: View {
         }
     }
 
-    // MARK: - Header
-
-    private var headerSection: some View {
-        Text("Advanced Activity\nHistory Dashboard")
-            .font(.custom("PlusJakartaSans-Bold", size: 28))
-            .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 8)
-    }
-
     // MARK: - Range Tabs
 
     private var rangeTabs: some View {
@@ -202,7 +203,8 @@ struct StepHistoryScreen: View {
 
     private var dateNavigation: some View {
         DateNavigationView(
-            displayedDate: displayedDate,
+            startDate: startDateString,
+            endDate: endDateString,
             canGoForward: selectedIndex > 0,
             canGoBack: selectedIndex == 0,
             onPrevious: {
@@ -333,7 +335,7 @@ struct StepHistoryScreen: View {
                 icon: "flame.fill",
                 iconColor: .orange,
                 title: "Calories\nBurned",
-                value: "\(selectedDayAnalytics.caloriesBurned)",
+                value: "\(periodAnalytics.caloriesBurned)",
                 unit: "kcal"
             )
 
@@ -341,7 +343,7 @@ struct StepHistoryScreen: View {
                 icon: "mappin.circle.fill",
                 iconColor: Color.Teal.teal1000,
                 title: "Distance\nCovered",
-                value: String(format: "%.1f", selectedDayAnalytics.distanceKm),
+                value: String(format: "%.1f", periodAnalytics.distanceKm),
                 unit: "km"
             )
 
@@ -349,7 +351,7 @@ struct StepHistoryScreen: View {
                 icon: "stopwatch.fill",
                 iconColor: Color.Teal.teal1000,
                 title: "Active\nMinutes",
-                value: "\(selectedDayAnalytics.activeMinutes)",
+                value: "\(periodAnalytics.activeMinutes)",
                 unit: "min"
             )
         }

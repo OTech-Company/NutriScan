@@ -45,7 +45,7 @@ struct DailyInsightCardView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("Weekly Average")
+                    Text("Period Average")
                         .font(.custom("LexendDeca-Regular", size: 12))
                         .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
                     HStack(alignment: .firstTextBaseline, spacing: 4) {

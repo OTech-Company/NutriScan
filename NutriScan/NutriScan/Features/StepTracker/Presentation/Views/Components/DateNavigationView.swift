@@ -1,7 +1,8 @@
 import SwiftUI
 
 struct DateNavigationView: View {
-    let displayedDate: String
+    let startDate: String
+    let endDate: String
     let canGoForward: Bool
     let canGoBack: Bool
     var onPrevious: () -> Void
@@ -26,9 +27,19 @@ struct DateNavigationView: View {
 
             Spacer()
 
-            Text(displayedDate)
-                .font(.custom("PlusJakartaSans-SemiBold", size: 17))
-                .foregroundColor(Color.StepTrackerSemantic.chartTitle)
+            HStack(spacing: 6) {
+                Text(startDate)
+                    .font(.custom("PlusJakartaSans-SemiBold", size: 14))
+                    .foregroundColor(Color.StepTrackerSemantic.chartTitle)
+
+                Text("—")
+                    .font(.custom("PlusJakartaSans-SemiBold", size: 14))
+                    .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
+
+                Text(endDate)
+                    .font(.custom("PlusJakartaSans-SemiBold", size: 14))
+                    .foregroundColor(Color.StepTrackerSemantic.chartTitle)
+            }
 
             Spacer()
 
@@ -53,7 +64,8 @@ struct DateNavigationView: View {
 
 #Preview {
     DateNavigationView(
-        displayedDate: "Today, Oct 26",
+        startDate: "Jul 21",
+        endDate: "Jul 27",
         canGoForward: true,
         canGoBack: false,
         onPrevious: {},
