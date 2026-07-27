@@ -14,7 +14,7 @@ protocol ResendVerificationUseCaseProtocol {
 final class ResendVerificationUseCase: ResendVerificationUseCaseProtocol {
     private let repository: AuthRepositoryProtocol
 
-    init(repository: AuthRepositoryProtocol = AuthRepositoryImpl()) {
+    init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
 

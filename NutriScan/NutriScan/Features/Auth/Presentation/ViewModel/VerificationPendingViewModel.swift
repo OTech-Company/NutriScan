@@ -19,7 +19,7 @@ final class VerificationPendingViewModel {
     
     private let resendUseCase: ResendVerificationUseCaseProtocol
     
-    init(email: String, resendUseCase: ResendVerificationUseCaseProtocol = ResendVerificationUseCase()) {
+    init(email: String, resendUseCase: ResendVerificationUseCaseProtocol) {
         self.email = email
         self.resendUseCase = resendUseCase
     }

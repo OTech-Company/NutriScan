@@ -44,8 +44,8 @@ final class ExerciseListViewModel {
     private var searchTask: Task<Void, Never>? = nil
 
     init(
-        fetchCategoriesUseCase: FetchExerciseCategoriesUseCaseProtocol = FetchExerciseCategoriesUseCase(),
-        fetchExercisesUseCase: FetchExercisesUseCaseProtocol = FetchExercisesUseCase()
+        fetchCategoriesUseCase: FetchExerciseCategoriesUseCaseProtocol,
+        fetchExercisesUseCase: FetchExercisesUseCaseProtocol
     ) {
         self.fetchCategoriesUseCase = fetchCategoriesUseCase
         self.fetchExercisesUseCase = fetchExercisesUseCase

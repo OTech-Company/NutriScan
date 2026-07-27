@@ -14,7 +14,7 @@ protocol ForgotPasswordUseCaseProtocol {
 final class ForgotPasswordUseCase: ForgotPasswordUseCaseProtocol {
     private let repository: AuthRepositoryProtocol
 
-    init(repository: AuthRepositoryProtocol = AuthRepositoryImpl()) {
+    init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
 

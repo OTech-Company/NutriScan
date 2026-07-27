@@ -71,6 +71,6 @@ struct ForgotPasswordOptionsSection: View {
 }
 
 #Preview {
-    ForgotPasswordOptionsSection(viewModel: ForgotPasswordViewModel())
+    ForgotPasswordOptionsSection(viewModel: AuthFactory.makeForgotPasswordViewModel())
         .background(Color.Teal.teal100)
 }

@@ -14,7 +14,7 @@ protocol RegisterUseCaseProtocol {
 final class RegisterUseCase: RegisterUseCaseProtocol {
     private let repository: AuthRepositoryProtocol
 
-    init(repository: AuthRepositoryProtocol = AuthRepositoryImpl()) {
+    init(repository: AuthRepositoryProtocol) {
         self.repository = repository
     }
 

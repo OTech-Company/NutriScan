@@ -8,9 +8,13 @@ import SwiftUI
 struct RegisterView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @EnvironmentObject private var router: AppRouter
-    @State private var viewModel = RegisterViewModel()
+    @State private var viewModel: RegisterViewModel
     @State private var activeAlert: ActiveAlert = .none
     @State private var errorMessage = ""
+
+    init(viewModel: RegisterViewModel) {
+        _viewModel = State(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
@@ -88,7 +92,7 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    AuthFactory.makeRegisterView()
         .environmentObject(AppFlowCoordinator())
         .environmentObject(AppRouter())
 }

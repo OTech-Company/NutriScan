@@ -35,6 +35,6 @@ struct LoginFormFieldsSection: View {
 }
 
 #Preview {
-    LoginFormFieldsSection(viewModel: LoginViewModel())
+    LoginFormFieldsSection(viewModel: AuthFactory.makeLoginViewModel())
         .background(Color.Teal.teal100)
 }

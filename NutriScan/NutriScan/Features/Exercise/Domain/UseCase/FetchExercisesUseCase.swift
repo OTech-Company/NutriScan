@@ -12,7 +12,7 @@ protocol FetchExercisesUseCaseProtocol {
 struct FetchExercisesUseCase: FetchExercisesUseCaseProtocol {
     private let repository: ExerciseRepositoryProtocol
 
-    init(repository: ExerciseRepositoryProtocol = ExerciseRepositoryImpl()) {
+    init(repository: ExerciseRepositoryProtocol) {
         self.repository = repository
     }
 

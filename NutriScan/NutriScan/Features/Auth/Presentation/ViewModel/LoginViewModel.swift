@@ -22,7 +22,7 @@ final class LoginViewModel {
 
     private let loginUseCase: LoginUseCaseProtocol
 
-    init(loginUseCase: LoginUseCaseProtocol = LoginUseCase()) {
+    init(loginUseCase: LoginUseCaseProtocol) {
         self.loginUseCase = loginUseCase
     }
 

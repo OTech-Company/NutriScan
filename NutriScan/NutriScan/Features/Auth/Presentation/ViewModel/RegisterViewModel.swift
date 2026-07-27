@@ -34,7 +34,7 @@ final class RegisterViewModel {
     // MARK: - UseCase
     private let registerUseCase: RegisterUseCaseProtocol
 
-    init(registerUseCase: RegisterUseCaseProtocol = RegisterUseCase()) {
+    init(registerUseCase: RegisterUseCaseProtocol) {
         self.registerUseCase = registerUseCase
     }
 

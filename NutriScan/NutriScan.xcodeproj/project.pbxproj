@@ -138,6 +138,10 @@
 		2C9391763012DA2300287FF2 /* HideTabBarKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9391753012DA2300287FF2 /* HideTabBarKey.swift */; };
 		2C9391783012E70600287FF2 /* WorkoutActiveControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9391773012E70600287FF2 /* WorkoutActiveControlsView.swift */; };
 		2C93917A3012E71200287FF2 /* WorkoutPausedControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9391793012E71200287FF2 /* WorkoutPausedControlsView.swift */; };
+		2CC033A23017BF9B009B42A1 /* AuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */; };
+		2CC033B23017BF9B009B42B1 /* ExerciseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033B13017BF9B009B42B1 /* ExerciseAssembly.swift */; };
+		2CC033C53017BF9B009B42D3 /* AuthFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033C33017BF9B009B42D3 /* AuthFactory.swift */; };
+		2CC033E53017BF9B009B42E3 /* ExerciseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033E33017BF9B009B42E3 /* ExerciseFactory.swift */; };
 		2CC428043013F0CD00099E64 /* CachedAnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC428033013F0CD00099E64 /* CachedAnimatedImage.swift */; };
 		2CC4280630140DAD00099E64 /* EmptyExerciseStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC4280530140DAD00099E64 /* EmptyExerciseStateView.swift */; };
 		2F32023795B7B6D55A5B428B /* FetchExercisesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3BD3066A3D78447AAA6A195 /* FetchExercisesRequest.swift */; };
@@ -634,6 +638,10 @@
 		2C9391753012DA2300287FF2 /* HideTabBarKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideTabBarKey.swift; sourceTree = "<group>"; };
 		2C9391773012E70600287FF2 /* WorkoutActiveControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutActiveControlsView.swift; sourceTree = "<group>"; };
 		2C9391793012E71200287FF2 /* WorkoutPausedControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPausedControlsView.swift; sourceTree = "<group>"; };
+		2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAssembly.swift; sourceTree = "<group>"; };
+		2CC033B13017BF9B009B42B1 /* ExerciseAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAssembly.swift; sourceTree = "<group>"; };
+		2CC033C33017BF9B009B42D3 /* AuthFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFactory.swift; sourceTree = "<group>"; };
+		2CC033E33017BF9B009B42E3 /* ExerciseFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseFactory.swift; sourceTree = "<group>"; };
 		2CC428033013F0CD00099E64 /* CachedAnimatedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAnimatedImage.swift; sourceTree = "<group>"; };
 		2CC4280530140DAD00099E64 /* EmptyExerciseStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyExerciseStateView.swift; sourceTree = "<group>"; };
 		2FEF660290E42B34D7642B3C /* HomeReadyToScanSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReadyToScanSection.swift; sourceTree = "<group>"; };
@@ -1386,6 +1394,7 @@
 		2C78ED0E300E6C7E0092E6B2 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2CC033C43017BF9B009B42D3 /* DI */,
 				2C78ECF0300E6C7E0092E6B2 /* Extensions */,
 				2C78ECF3300E6C7E0092E6B2 /* Routing */,
 				2C78ED09300E6C7E0092E6B2 /* View */,
@@ -1511,6 +1520,7 @@
 		2C93914830129DC600287FF2 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				2CC033E43017BF9B009B42E3 /* DI */,
 				2C93913B30129DC600287FF2 /* Extensions */,
 				2C93913E30129DC600287FF2 /* Routing */,
 				2C9391673012D45800287FF2 /* View */,
@@ -1587,6 +1597,24 @@
 				2C9391713012D49400287FF2 /* ExerciseWorkoutPlayerViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2CC033C43017BF9B009B42D3 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */,
+				2CC033C33017BF9B009B42D3 /* AuthFactory.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		2CC033E43017BF9B009B42E3 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				2CC033B13017BF9B009B42B1 /* ExerciseAssembly.swift */,
+				2CC033E33017BF9B009B42E3 /* ExerciseFactory.swift */,
+			);
+			path = DI;
 			sourceTree = "<group>";
 		};
 		2ED8094DD0D46A250F423525 /* Back */ = {
@@ -4016,6 +4044,10 @@
 				0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */,
 				88CAD96BC98D8EBCC6D9CBC3 /* KeychainManager.swift in Sources */,
 				A1DD6F5AE5B509897CB8FD52 /* LookupProductUseCase.swift in Sources */,
+				2CC033A23017BF9B009B42A1 /* AuthAssembly.swift in Sources */,
+				2CC033B23017BF9B009B42B1 /* ExerciseAssembly.swift in Sources */,
+				2CC033C53017BF9B009B42D3 /* AuthFactory.swift in Sources */,
+				2CC033E53017BF9B009B42E3 /* ExerciseFactory.swift in Sources */,
 				3228C765F03FD2424DB3CC11 /* MainTabView.swift in Sources */,
 				DAF8A7D00000000000000001 /* AppTabBarVisibility.swift in Sources */,
 				A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */,
@@ -4127,9 +4159,7 @@
 				F47A8EBA6FF78D365DE46055 /* ProfileSetupStep.swift in Sources */,
 				E703F74B90B7FD260A877B20 /* ProfileSetupStepView.swift in Sources */,
 				AFA336F30CB6DD2BC65321B3 /* ProgressNextButton.swift in Sources */,
-				C5144EA63013DD05007EE884 /* RequestStepAuthorizationUseCase.swift in Sources */,
 				8FB0F0303016863300D84471 /* FavoritesRemoteDataSource.swift in Sources */,
-				C5144EA73013DD05007EE884 /* StepHistoryBarChartView.swift in Sources */,
 				C5144EA83013DD05007EE884 /* WaterTrackingSection.swift in Sources */,
 				2C77D28730159DF5005AF888 /* ProfileRepository.swift in Sources */,
 				C5144EAF3013DD05007EE884 /* CaloriesScreen.swift in Sources */,

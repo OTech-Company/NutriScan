@@ -32,7 +32,7 @@ final class ForgotPasswordViewModel {
     
     private let forgotPasswordUseCase: ForgotPasswordUseCaseProtocol
     
-    init(forgotPasswordUseCase: ForgotPasswordUseCaseProtocol = ForgotPasswordUseCase()) {
+    init(forgotPasswordUseCase: ForgotPasswordUseCaseProtocol) {
         self.forgotPasswordUseCase = forgotPasswordUseCase
     }
     

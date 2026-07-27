@@ -12,7 +12,7 @@ struct ExerciseFlowView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            ExercisesView()
+            ExerciseFactory.makeExercisesView()
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }
