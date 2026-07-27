@@ -30,9 +30,9 @@ final class ForgotPasswordViewModel {
     var isLoading: Bool = false
     var successMessage: String? = nil
     
-    private let forgotPasswordUseCase: ForgotPasswordUseCase
+    private let forgotPasswordUseCase: ForgotPasswordUseCaseProtocol
     
-    init(forgotPasswordUseCase: ForgotPasswordUseCase = ForgotPasswordUseCase()) {
+    init(forgotPasswordUseCase: ForgotPasswordUseCaseProtocol = ForgotPasswordUseCase()) {
         self.forgotPasswordUseCase = forgotPasswordUseCase
     }
     

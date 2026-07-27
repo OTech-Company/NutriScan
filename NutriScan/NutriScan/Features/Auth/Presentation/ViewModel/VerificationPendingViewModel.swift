@@ -17,9 +17,9 @@ final class VerificationPendingViewModel {
     var resendSuccess: Bool = false
     var resendMessage: String = ""
     
-    private let resendUseCase: ResendVerificationUseCase
+    private let resendUseCase: ResendVerificationUseCaseProtocol
     
-    init(email: String, resendUseCase: ResendVerificationUseCase = ResendVerificationUseCase()) {
+    init(email: String, resendUseCase: ResendVerificationUseCaseProtocol = ResendVerificationUseCase()) {
         self.email = email
         self.resendUseCase = resendUseCase
     }

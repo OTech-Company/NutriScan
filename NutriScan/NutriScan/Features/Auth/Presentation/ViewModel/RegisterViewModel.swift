@@ -32,9 +32,9 @@ final class RegisterViewModel {
     var generalError: String? = nil
 
     // MARK: - UseCase
-    private let registerUseCase: RegisterUseCase
+    private let registerUseCase: RegisterUseCaseProtocol
 
-    init(registerUseCase: RegisterUseCase = RegisterUseCase()) {
+    init(registerUseCase: RegisterUseCaseProtocol = RegisterUseCase()) {
         self.registerUseCase = registerUseCase
     }
 

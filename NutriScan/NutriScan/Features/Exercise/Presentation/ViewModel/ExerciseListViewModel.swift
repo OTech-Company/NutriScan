@@ -39,13 +39,13 @@ final class ExerciseListViewModel {
     // MARK: - Data
     var categories: [ExerciseCategory] = [.all]
 
-    private let fetchCategoriesUseCase: FetchExerciseCategoriesUseCase
-    private let fetchExercisesUseCase: FetchExercisesUseCase
+    private let fetchCategoriesUseCase: FetchExerciseCategoriesUseCaseProtocol
+    private let fetchExercisesUseCase: FetchExercisesUseCaseProtocol
     private var searchTask: Task<Void, Never>? = nil
 
     init(
-        fetchCategoriesUseCase: FetchExerciseCategoriesUseCase = FetchExerciseCategoriesUseCase(),
-        fetchExercisesUseCase: FetchExercisesUseCase = FetchExercisesUseCase()
+        fetchCategoriesUseCase: FetchExerciseCategoriesUseCaseProtocol = FetchExerciseCategoriesUseCase(),
+        fetchExercisesUseCase: FetchExercisesUseCaseProtocol = FetchExercisesUseCase()
     ) {
         self.fetchCategoriesUseCase = fetchCategoriesUseCase
         self.fetchExercisesUseCase = fetchExercisesUseCase

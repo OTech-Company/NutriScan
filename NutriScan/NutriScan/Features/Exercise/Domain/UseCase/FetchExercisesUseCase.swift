@@ -5,7 +5,11 @@
 
 import Foundation
 
-struct FetchExercisesUseCase {
+protocol FetchExercisesUseCaseProtocol {
+    func execute(request: FetchExercisesRequest) async throws -> PaginatedExercisesResult
+}
+
+struct FetchExercisesUseCase: FetchExercisesUseCaseProtocol {
     private let repository: ExerciseRepositoryProtocol
 
     init(repository: ExerciseRepositoryProtocol = ExerciseRepositoryImpl()) {

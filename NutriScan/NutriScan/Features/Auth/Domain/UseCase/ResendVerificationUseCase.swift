@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class ResendVerificationUseCase {
+protocol ResendVerificationUseCaseProtocol {
+    func execute(email: String) async throws -> ResendVerificationResult
+}
+
+final class ResendVerificationUseCase: ResendVerificationUseCaseProtocol {
     private let repository: AuthRepositoryProtocol
 
     init(repository: AuthRepositoryProtocol = AuthRepositoryImpl()) {

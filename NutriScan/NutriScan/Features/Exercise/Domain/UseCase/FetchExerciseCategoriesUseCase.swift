@@ -5,7 +5,11 @@
 
 import Foundation
 
-struct FetchExerciseCategoriesUseCase {
+protocol FetchExerciseCategoriesUseCaseProtocol {
+    func execute() async throws -> [ExerciseCategory]
+}
+
+struct FetchExerciseCategoriesUseCase: FetchExerciseCategoriesUseCaseProtocol {
     private let repository: ExerciseRepositoryProtocol
 
     init(repository: ExerciseRepositoryProtocol = ExerciseRepositoryImpl()) {

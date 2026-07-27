@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class ForgotPasswordUseCase {
+protocol ForgotPasswordUseCaseProtocol {
+    func execute(email: String) async throws -> ForgotPasswordResult
+}
+
+final class ForgotPasswordUseCase: ForgotPasswordUseCaseProtocol {
     private let repository: AuthRepositoryProtocol
 
     init(repository: AuthRepositoryProtocol = AuthRepositoryImpl()) {
