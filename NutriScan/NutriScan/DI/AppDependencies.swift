@@ -61,7 +61,7 @@ struct RAGAssembly: Assembly {
 }
 
 struct StepTrackerAssembly: Assembly {
-    func assemble(container: DIContainer) {
+    @MainActor func assemble(container: DIContainer) {
         let repository = StepRepositoryImpl()
         
         // Register step tracker use cases

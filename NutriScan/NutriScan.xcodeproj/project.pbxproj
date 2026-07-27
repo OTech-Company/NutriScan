@@ -250,8 +250,9 @@
 		6F8C4EE83016CFD1000067BC /* RangePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE63016CFD1000067BC /* RangePickerView.swift */; };
 		6F8C4EE93016CFD1000067BC /* StatCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE73016CFD1000067BC /* StatCardView.swift */; };
 		6F8C4EEA3016CFD1000067BC /* DailyInsightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE43016CFD1000067BC /* DailyInsightCardView.swift */; };
-		6F8C4EEB3016CFD1000067BC /* DateNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EE53016CFD1000067BC /* DateNavigationView.swift */; };
 		6F8C4EED3016D4DF000067BC /* StepAnalyticsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EEC3016D4DF000067BC /* StepAnalyticsCalculator.swift */; };
+		6F8C4EF03016D873000067BC /* UserProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EEE3016D873000067BC /* UserProfileService.swift */; };
+		6F8C4EF23016DFA8000067BC /* DailyInsightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EF13016DFA8000067BC /* DailyInsightCardView.swift */; };
 		70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */; };
 		722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2550A33566860771C07AAB9 /* ProductMatchCard.swift */; };
 		764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB294EB0DF9DEBB41F600F58 /* AppProfileSetupBackgroundModifier.swift */; };
@@ -725,10 +726,11 @@
 		6F8C4EC73016C89E000067BC /* StepHistoryBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryBarChartView.swift; sourceTree = "<group>"; };
 		6F8C4ECB3016C89E000067BC /* StepHistoryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepHistoryScreen.swift; sourceTree = "<group>"; };
 		6F8C4EE43016CFD1000067BC /* DailyInsightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInsightCardView.swift; sourceTree = "<group>"; };
-		6F8C4EE53016CFD1000067BC /* DateNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateNavigationView.swift; sourceTree = "<group>"; };
 		6F8C4EE63016CFD1000067BC /* RangePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangePickerView.swift; sourceTree = "<group>"; };
 		6F8C4EE73016CFD1000067BC /* StatCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCardView.swift; sourceTree = "<group>"; };
 		6F8C4EEC3016D4DF000067BC /* StepAnalyticsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepAnalyticsCalculator.swift; sourceTree = "<group>"; };
+		6F8C4EEE3016D873000067BC /* UserProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileService.swift; sourceTree = "<group>"; };
+		6F8C4EF13016DFA8000067BC /* DailyInsightCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyInsightCardView.swift; sourceTree = "<group>"; };
 		6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NutriScan.entitlements; sourceTree = "<group>"; };
 		6FFAB9839C62C2DB156A28BD /* CategoryResponseDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CategoryResponseDTO.swift; sourceTree = "<group>"; };
 		702881CEB0053AD3B4F54F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -2160,6 +2162,7 @@
 		6F8C4EB93016C89E000067BC /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4EEF3016D873000067BC /* Services */,
 				6F8C4EB23016C89E000067BC /* Entities */,
 				6F8C4EB43016C89E000067BC /* Repositories */,
 				6F8C4EB83016C89E000067BC /* UseCases */,
@@ -2195,8 +2198,8 @@
 		6F8C4EC93016C89E000067BC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4EF13016DFA8000067BC /* DailyInsightCardView.swift */,
 				6F8C4EE43016CFD1000067BC /* DailyInsightCardView.swift */,
-				6F8C4EE53016CFD1000067BC /* DateNavigationView.swift */,
 				6F8C4EE63016CFD1000067BC /* RangePickerView.swift */,
 				6F8C4EE73016CFD1000067BC /* StatCardView.swift */,
 				6F8C4EC63016C89E000067BC /* StepGaugeCardView.swift */,
@@ -2223,6 +2226,14 @@
 				6F8C4ECC3016C89E000067BC /* Views */,
 			);
 			path = Presentation;
+			sourceTree = "<group>";
+		};
+		6F8C4EEF3016D873000067BC /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6F8C4EEE3016D873000067BC /* UserProfileService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		6F9B935997CCD64D48B73AE1 /* Components */ = {
@@ -3562,6 +3573,7 @@
 				D49D9F103013E39400ACE567 /* FamilyMembersUpdateRequestDTO.swift in Sources */,
 				2C2525F5476C19DF89C6AB28 /* ChipSemantics.swift in Sources */,
 				0B67C8DB9699D804AF73B7B1 /* Color+Dynamic.swift in Sources */,
+				6F8C4EF03016D873000067BC /* UserProfileService.swift in Sources */,
 				5190CD659C9CDE9928D88D48 /* Color+EditProfileSemantics.swift in Sources */,
 				2C7708F93015783B00A8FCCE /* MenuRowView.swift in Sources */,
 				3E8463A20AFA905AFCCABD44 /* Color+HomeSemantic.swift in Sources */,
@@ -3803,6 +3815,7 @@
 				2C77D28730159DF5005AF888 /* ProfileRepository.swift in Sources */,
 				C5144EAF3013DD05007EE884 /* CaloriesScreen.swift in Sources */,
 				C5144EB23013DD05007EE884 /* CaloriesFlowView.swift in Sources */,
+				6F8C4EF23016DFA8000067BC /* DailyInsightCardView.swift in Sources */,
 				C5144EB33013DD05007EE884 /* ExerciseCardView.swift in Sources */,
 				C5144EB43013DD05007EE884 /* CalorieGoalsSection.swift in Sources */,
 				C5144EB53013DD05007EE884 /* DailyProductsSection.swift in Sources */,
@@ -3859,7 +3872,6 @@
 				6F8C4EE83016CFD1000067BC /* RangePickerView.swift in Sources */,
 				6F8C4EE93016CFD1000067BC /* StatCardView.swift in Sources */,
 				6F8C4EEA3016CFD1000067BC /* DailyInsightCardView.swift in Sources */,
-				6F8C4EEB3016CFD1000067BC /* DateNavigationView.swift in Sources */,
 				58AA67D9B4015E70DE6D16E1 /* View+Extensions.swift in Sources */,
 				2CC4280630140DAD00099E64 /* EmptyExerciseStateView.swift in Sources */,
 				69F7CF833CED2D891AECC55E /* WeightSelectionView.swift in Sources */,
