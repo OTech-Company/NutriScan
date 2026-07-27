@@ -24,7 +24,8 @@ struct AppDependencies {
         StepTrackerAssembly(),
         RAGAssembly(),
         SettingsAssembly(),
-        ProductDetailsAssembly()
+        ProductDetailsAssembly(),
+        CaloriesAssembly()
     ]
 
     static func setup() {
