@@ -94,29 +94,37 @@ struct StepHistoryScreen: View {
     // MARK: - Body
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                rangeTabs
-                dateRangeCards
-                DailyInsightCardView(
-                    steps: periodAverage,
-                    goalSteps: 10_000,
-                    weeklyAverage: periodAverage
-                )
-                stepHistoryChart
-                bottomStatsRow
+        VStack(spacing: 0) {
+            HStack(spacing: 16) {
+                BackButton { router.pop() }
+                Text("Step History")
+                    .font(.custom("LexendDeca-SemiBold", size: 18))
+                    .foregroundColor(Color.StepTrackerSemantic.chartTitle)
+                Spacer()
             }
             .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .padding(.bottom, 32)
+            .padding(.top, 16)
+            .padding(.bottom, 16)
+
+            ScrollView {
+                VStack(spacing: 20) {
+                    rangeTabs
+                    dateRangeCards
+                    DailyInsightCardView(
+                        steps: periodAverage,
+                        goalSteps: 10_000,
+                        weeklyAverage: periodAverage
+                    )
+                    stepHistoryChart
+                    bottomStatsRow
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .padding(.bottom, 32)
+            }
         }
         .background(Color.StepTrackerSemantic.background.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                BackButton { router.pop() }
-            }
-        }
         .onAppear {
             viewModel.onAppear()
             viewModel.fetchFullHistoryIfNeeded()
