@@ -20,7 +20,8 @@ struct AppDependencies {
         EditProfileAssembly(),
         ScanAssembly(),
         StepTrackerAssembly(),
-        RAGAssembly()
+        RAGAssembly(),
+        SettingsAssembly()
         // Teammates: add your feature's Assembly here, e.g.
         // HomeAssembly(),
         // AuthAssembly(),
@@ -33,6 +34,8 @@ struct AppDependencies {
 }
 
 // MARK: - Inline Assemblies (to avoid pbxproj conflicts)
+
+
 struct ScanAssembly: Assembly {
     func assemble(container: DIContainer) {
         let repository = ScanRepositoryImpl()

@@ -17,26 +17,31 @@ import SwiftUI
 ///
 /// Each flow below (Splash, Onboarding, Auth, Main) owns its own
 /// internal navigation — this view just decides which one is visible.
+/// 
 struct RootCoordinatorView: View {
     @StateObject private var flowCoordinator = AppFlowCoordinator()
+    @AppStorage("appAppearance") private var appAppearance: AppAppearance = .system
 
     var body: some View {
-        Group {
-            switch flowCoordinator.flow {
-            case .splash:
-                SplashView()
-            case .onboarding:
-                OnboardingFlowView()
-            case .auth:
-                AuthFlowView()
-            case .profileSetup:
-                ProfileSetupFlowView()
-            case .main:
-                MainTabView()
-            }
+        currentFlowView
+            .preferredColorScheme(appAppearance.colorScheme)
+            .environmentObject(flowCoordinator)
+            .animation(.default, value: flowCoordinator.flow)
+    }
+
+    @ViewBuilder
+    private var currentFlowView: some View {
+        switch flowCoordinator.flow {
+        case .splash:
+            SplashView()
+        case .onboarding:
+            OnboardingFlowView()
+        case .auth:
+            AuthFlowView()
+        case .profileSetup:
+            ProfileSetupFlowView()
+        case .main:
+            MainTabView()
         }
-        .environmentObject(flowCoordinator)
-        .animation(.default, value: flowCoordinator.flow)
     }
 }
-
