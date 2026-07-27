@@ -754,7 +754,6 @@
 		6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSafetyResponseDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlaggedIngredientDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNutritionFactsDTO.swift; sourceTree = "<group>"; };
-		6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
 		6F8C4EAB3016C89E000067BC /* HealthKitStepDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStepDataSource.swift; sourceTree = "<group>"; };
 		6F8C4EAC3016C89E000067BC /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		6F8C4EAE3016C89E000067BC /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
@@ -3091,7 +3090,6 @@
 		C5144E813013DBFA007EE884 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				6F8C4EA830158DEA000067BC /* ProductDetailsViewModel.swift */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
