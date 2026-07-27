@@ -20,6 +20,7 @@ struct ProductDetailsScanDTO: Decodable {
     let productName: String?
     let foodSafetyResponse: ProductDetailsFoodSafetyResponseDTO?
     let nutritionFacts: ProductDetailsNutritionFactsDTO?
+    let favorite: Bool
 }
 
 struct ProductDetailsFoodSafetyResponseDTO: Decodable {
@@ -37,12 +38,12 @@ struct ProductDetailsFlagedIngredientDTO: Decodable {
 
 struct ProductDetailsNutritionFactsDTO: Decodable {
     let calories: Int?
-    let proteinGrams: Int?
-    let carbsGrams: Int?
-    let fatG: Int?
-    let fiberGrams: Int?
-    let sugarG: Int?
-    let sodiumMg: Int?
+    let proteinGrams: Double?
+    let carbsGrams: Double?
+    let fatG: Double?
+    let fiberGrams: Double?
+    let sugarG: Double?
+    let sodiumMg: Double?
 }
 
 

@@ -12,13 +12,11 @@ struct ProductHeaderSection: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            AsyncImage(url: URL(string: state.imageUrl)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                Color.gray.opacity(0.2)
-            }
+            CachedImage(
+                urlString: state.imageUrl,
+                failureImageName: "",
+                contentMode: .fill
+            )
             .frame(maxWidth: .infinity, minHeight: 192, maxHeight: 192)
             .clipShape(RoundedRectangle(cornerRadius: 24))
             .overlay {

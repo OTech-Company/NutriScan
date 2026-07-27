@@ -9,4 +9,5 @@ import Foundation
 
 protocol ProductDetailsRepo {
     func getProductDetails(scanId: String) async throws -> ProductDetails
+    func updateFavorite(scanId: String, isFavorite: Bool) async throws
 }

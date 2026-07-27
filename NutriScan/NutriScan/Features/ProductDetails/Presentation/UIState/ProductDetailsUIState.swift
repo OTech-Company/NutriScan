@@ -8,12 +8,14 @@
 import Foundation
 
 struct ProductDetailsUIState {
+    var isFavorite: Bool
     let headerState: ProductHeaderUIState
     let safetyState: ProductSafetyUIState
     let ingredientsState: ProductIngredientsUIState
     let nutritionState: ProductNutritionUIState
     
     static let mock = ProductDetailsUIState(
+        isFavorite: false,
         headerState: ProductHeaderUIState(
             imageUrl: "https://www.heritagefoods.in/blog/wp-content/uploads/2020/12/shutterstock_539045662.jpg",
             productName: "Milk Product\nName",
@@ -47,6 +49,7 @@ extension ProductDetailsUIState {
         // Parse the safety level string to Enum
         let parsedSafety = SafetyLevel(rawValue: details.verdict.lowercased().capitalized) ?? .unsafe
         
+        self.isFavorite = details.isFavorite
         self.headerState = ProductHeaderUIState(
             imageUrl: details.imageUrl,
             productName: details.productName,

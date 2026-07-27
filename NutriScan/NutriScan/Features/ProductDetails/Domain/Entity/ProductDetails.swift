@@ -16,12 +16,13 @@ struct ProductDetails {
     let summary: String
     let flagedIngredients: [ProductDetailsFlagedIngredient]
     let calories: Int
-    let proteinGrams: Int
-    let carbsGrams: Int
-    let fatG: Int
-    let fiberGrams: Int
-    let sugarG: Int
-    let sodiumMg: Int
+    let proteinGrams: Double
+    let carbsGrams: Double
+    let fatG: Double
+    let fiberGrams: Double
+    let sugarG: Double
+    let sodiumMg: Double
+    let isFavorite: Bool
 }
 
 struct ProductDetailsFlagedIngredient {
@@ -56,5 +57,6 @@ extension ProductDetails {
         self.fiberGrams = dto.nutritionFacts?.fiberGrams ?? 0
         self.sugarG = dto.nutritionFacts?.sugarG ?? 0
         self.sodiumMg = dto.nutritionFacts?.sodiumMg ?? 0
+        self.isFavorite = dto.favorite
     }
 }

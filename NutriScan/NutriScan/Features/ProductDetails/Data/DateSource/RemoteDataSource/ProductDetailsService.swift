@@ -9,6 +9,7 @@ import Foundation
 
 protocol ProductDetailsService {
     func fetchScanDetails(scanId: String) async throws -> ProductDetailsScanDTO
+    func updateFavorite(scanId: String, isFavorite: Bool) async throws
 }
 
 class ProductDetailsServiceImpl : ProductDetailsService {
@@ -17,5 +18,11 @@ class ProductDetailsServiceImpl : ProductDetailsService {
         
         response = try await NetworkService.shared.request(ProductDetailsEndPoint.getProductDetails(scanId: scanId))
         return response.product
+    }
+    
+    func updateFavorite(scanId: String, isFavorite: Bool) async throws {
+        // We do not need the response payload but NetworkService requires a Decodable.
+        // It returns the scan DTO directly based on swagger docs.
+        let _ : ProductDetailsScanDTO = try await NetworkService.shared.request(ProductDetailsEndPoint.updateFavorite(scanId: scanId, isFavorite: isFavorite))
     }
 }
