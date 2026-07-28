@@ -32,7 +32,7 @@ struct ExercisesView: View {
             .padding(.bottom, 16)
 
             // MARK: Search Bar
-            ExerciseSearchBar(text: $viewModel.searchQuery)
+            CustomSearchBar(text: $viewModel.searchQuery)
                 .padding(.horizontal, 20)
                 .padding(.bottom, 16)
 
