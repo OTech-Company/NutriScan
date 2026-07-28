@@ -4,6 +4,7 @@ import SwiftUI
 struct ScanViewfinderView: View {
     var cornerLength: CGFloat = 32
     var cornerRadius: CGFloat = 20
+    var isScanning: Bool = true
 
     var body: some View {
         ZStack {
@@ -15,9 +16,11 @@ struct ScanViewfinderView: View {
             CornerBracketsShape(cornerLength: cornerLength, cornerRadius: cornerRadius)
                 .stroke(Color.white, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
 
-            // Scanning wave animation
-            ScanningWaveView()
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            // Scanning wave animation (hidden when not scanning)
+            if isScanning {
+                ScanningWaveView()
+                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            }
         }
     }
 }

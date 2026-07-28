@@ -32,7 +32,7 @@ struct ScanScreen: View {
                 ScanMask(windowHeight: viewfinderHeight, verticalOffset: viewfinderOffsetY)
                     .ignoresSafeArea()
 
-                ScanViewfinderView()
+                ScanViewfinderView(isScanning: !viewModel.isSubmitting && viewModel.latestScan == nil)
                     .frame(width: viewfinderWidth, height: viewfinderHeight)
                     .position(x: geo.size.width / 2, y: viewfinderY + (viewfinderHeight / 2))
 
