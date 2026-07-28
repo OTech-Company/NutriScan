@@ -26,8 +26,18 @@ struct FavoritesView: View {
                 .padding(.top, 24)
             
             if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                ScrollView {
+                    LazyVGrid(columns: [
+                        GridItem(.flexible(), spacing: 12),
+                        GridItem(.flexible(), spacing: 12)
+                    ], spacing: 12) {
+                        ForEach(0..<6, id: \.self) { _ in
+                            FavoriteCardShimmerView()
+                        }
+                    }
+                    .padding(.horizontal, 22)
+                    .padding(.top, 12)
+                }
             } else if !viewModel.favorites.isEmpty {
                 FavoritesGridView(savedItems: viewModel.favorites, onItemAppear: { item in
                     let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText

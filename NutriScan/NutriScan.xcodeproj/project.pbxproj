@@ -300,6 +300,7 @@
 		8F4132C13013BD29005C482C /* ProfileSetupRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F4132C03013BD29005C482C /* ProfileSetupRemoteDataSource.swift */; };
 		8F48266B30150E12009F3A11 /* SwipeToActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F48266A30150E12009F3A11 /* SwipeToActionButton.swift */; };
 		8F6F705730191C6E008232DC /* FavoritesNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F6F705530191C6E008232DC /* FavoritesNotifier.swift */; };
+		8F72738A30192D82001A25C4 /* FavoriteCardShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F72738930192D82001A25C4 /* FavoriteCardShimmerView.swift */; };
 		8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F729C18301145C900094C23 /* ExploreSectionHeader.swift */; };
 		8F7450233015317400E9B8A1 /* FavoritesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7450223015317400E9B8A1 /* FavoritesGridView.swift */; };
 		8F75A3D93016425500C53524 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F75A3D83016425500C53524 /* FavoritesViewModel.swift */; };
@@ -814,6 +815,7 @@
 		8F4132C03013BD29005C482C /* ProfileSetupRemoteDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupRemoteDataSource.swift; sourceTree = "<group>"; };
 		8F48266A30150E12009F3A11 /* SwipeToActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToActionButton.swift; sourceTree = "<group>"; };
 		8F6F705530191C6E008232DC /* FavoritesNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesNotifier.swift; sourceTree = "<group>"; };
+		8F72738930192D82001A25C4 /* FavoriteCardShimmerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoriteCardShimmerView.swift; sourceTree = "<group>"; };
 		8F729C18301145C900094C23 /* ExploreSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreSectionHeader.swift; sourceTree = "<group>"; };
 		8F7450223015317400E9B8A1 /* FavoritesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesGridView.swift; sourceTree = "<group>"; };
 		8F75A3D83016425500C53524 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
@@ -2765,6 +2767,7 @@
 		8F305C273014EBAD0002A179 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				8F72738930192D82001A25C4 /* FavoriteCardShimmerView.swift */,
 				8FB0F0413016A79900D84471 /* FavoritesSearchBar.swift */,
 				8FB0F03B301698C100D84471 /* FavoritesEmptyStateView.swift */,
 				8F305C283014EC1A0002A179 /* FavoriteCardView.swift */,
@@ -4305,6 +4308,7 @@
 				6F8C4EE93016CFD1000067BC /* StatCardView.swift in Sources */,
 				6F8C4EEA3016CFD1000067BC /* DailyInsightCardView.swift in Sources */,
 				58AA67D9B4015E70DE6D16E1 /* View+Extensions.swift in Sources */,
+				8F72738A30192D82001A25C4 /* FavoriteCardShimmerView.swift in Sources */,
 				2CC4280630140DAD00099E64 /* EmptyExerciseStateView.swift in Sources */,
 				69F7CF833CED2D891AECC55E /* WeightSelectionView.swift in Sources */,
 				A5D7E326B2F6B7CEBDC67198 /* empty.swift in Sources */,
