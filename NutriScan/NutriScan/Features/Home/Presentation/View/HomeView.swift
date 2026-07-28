@@ -15,10 +15,15 @@ struct HomeView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
-                HomeGreetingSection(
-                    userName: viewModel.userName,
-                    userImageURL: viewModel.userImageURL
-                )
+                Button(action: {
+                    flowCoordinator.selectedTab = .profile
+                }) {
+                    HomeGreetingSection(
+                        userName: viewModel.userName,
+                        userImageURL: viewModel.userImageURL
+                    )
+                }
+                .buttonStyle(.plain)
                 .padding(.top, 22)
 
                 HomeDailyTipSection(tipMessage: viewModel.dailyTip)
@@ -34,7 +39,10 @@ struct HomeView: View {
                     MenuRowView(icon: "newspaper.fill", title: "Health News") {
                         // Add action when news button pressed
                     }
-                    MenuRowView(icon: "bubble.left.and.bubble.right.fill", title: "Chat with AI") {
+                    MenuRowView(
+                        icon: "bubble.left.and.bubble.right.fill",
+                        title: "Chat with AI"
+                    ) {
                         showRAGChat = true
                     }
                 }
@@ -46,7 +54,7 @@ struct HomeView: View {
                 } else {
                     RecentHistoryView(
                         historyItems: viewModel.recentHistory,
-                        onViewAll: { },
+                        onViewAll: {},
                         onTap: { scanId in
                             router.push(HomeRoute.scanDetail(scanId: scanId))
                         }
@@ -65,7 +73,8 @@ struct HomeView: View {
         .fullScreenCover(isPresented: $showRAGChat) {
             RAGChatView(
                 viewModel: RAGChatViewModel(
-                    queryUseCase: DIContainer.shared.resolve(type: QueryRAGUseCase.self)
+                    queryUseCase: DIContainer.shared.resolve(
+                        type: QueryRAGUseCase.self)
                 )
             )
         }
