@@ -22,6 +22,6 @@ struct UserProfileResponseDTO: Codable {
     let tdee: Double?
     let allergies: [ReferenceItemDTO]?
     let diseases: [ReferenceItemDTO]?
-    let familyMembers: [UserFamilyMemberDTO]?
+    let familyMembers: [FamilyMemberDTO]?
     let updatedAt: String?
 }

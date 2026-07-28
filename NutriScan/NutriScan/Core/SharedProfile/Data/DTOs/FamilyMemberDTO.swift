@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserFamilyMemberDTO: Codable {
+struct FamilyMemberDTO: Codable {
     let id: String
     let name: String
     let relation: String

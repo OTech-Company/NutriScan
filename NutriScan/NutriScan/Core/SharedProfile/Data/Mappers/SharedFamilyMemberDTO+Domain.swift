@@ -7,7 +7,7 @@
 import Foundation
 
 
-extension UserFamilyMemberDTO {
+extension FamilyMemberDTO {
     func toDomain() -> FamilyMember {
         FamilyMember(
             id: id,
