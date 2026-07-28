@@ -23,34 +23,19 @@ struct NewsView: View {
         ZStack {
             NewsFeedPalette.background.ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: NewsFeedMetrics.cardSpacing) {
-                    // Personalized for You section
-                    if !viewModel.personalizedArticles.isEmpty {
-                        personalizedSection
-                    }
-
-                    SearchBarView(text: $viewModel.searchText)
-                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
-                        .padding(.top, 4)
-                        .onChange(of: viewModel.searchText) { _, newValue in
-                            viewModel.onSearchTextChanged(newValue)
-                        }
-
-                    if !viewModel.isSearching {
-                        categoryChipsRow
-                    }
-
-                    content
-                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 24) {
+                    breakingNewsSection
+                    recommendationSection
+                    discoverSection
                 }
-                .padding(.bottom, 24)
+                .padding(.vertical, 16)
             }
             .refreshable {
                 await viewModel.onPullToRefresh()
             }
         }
-        .navigationTitle("NutriScan News")
+        .navigationTitle("News")
         .navigationBarTitleDisplayMode(.large)
         .task {
             await viewModel.onAppear()
@@ -64,34 +49,114 @@ struct NewsView: View {
         .tint(NewsFeedPalette.accent)
     }
 
-    // MARK: - Personalized Section
+    // MARK: - Breaking News
 
-    private var personalizedSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: "person.fill")
-                    .foregroundColor(NewsFeedPalette.accent)
-                Text("Personalized for You")
-                    .font(NewsFeedTypography.eyebrow)
-                    .foregroundColor(NewsFeedPalette.textPrimary)
-                Spacer()
+    private var breakingNewsSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionHeader(title: "Breaking News", showSeeAll: true)
+
+            if viewModel.viewState == .loading || viewModel.viewState == .idle {
+                BreakingNewsHeroSkeleton()
+                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            } else if let firstArticle = viewModel.articles.first {
+                BreakingNewsHeroCard(article: firstArticle)
+                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
             }
-            .padding(.horizontal, NewsFeedMetrics.screenPadding)
-            .padding(.top, 8)
+        }
+    }
 
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(viewModel.personalizedArticles) { article in
+    // MARK: - Recommendation (Personalized)
+
+    @ViewBuilder
+    private var recommendationSection: some View {
+        if viewModel.isLoadingPersonalized {
+            recommendationSkeleton
+        } else if !viewModel.personalizedArticles.isEmpty {
+            VStack(alignment: .leading, spacing: 14) {
+                sectionHeader(title: "Recommendation", showSeeAll: false)
+
+                VStack(spacing: 10) {
+                    ForEach(viewModel.personalizedArticles.prefix(5)) { article in
                         Button {
                             viewModel.onArticleTapped(article)
                         } label: {
-                            PersonalizedArticleCard(article: article)
+                            CompactArticleRow(article: article)
                         }
                         .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
             }
+        }
+    }
+
+    private var recommendationSkeleton: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionHeader(title: "Recommendation", showSeeAll: false)
+
+            VStack(spacing: 10) {
+                ForEach(0..<3, id: \.self) { _ in
+                    CompactArticleRowSkeleton()
+                }
+            }
+            .padding(.horizontal, NewsFeedMetrics.screenPadding)
+        }
+    }
+
+    // MARK: - Discover (Search + Chips + Feed)
+
+    private var discoverSection: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            sectionHeader(title: "Discover", showSeeAll: false)
+
+            SearchBarView(text: $viewModel.searchText)
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                .onChange(of: viewModel.searchText) { _, newValue in
+                    viewModel.onSearchTextChanged(newValue)
+                }
+
+            if !viewModel.isSearching {
+                categoryChipsRow
+            }
+
+            feedContent
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
+        }
+    }
+
+    // MARK: - Feed Content
+
+    @ViewBuilder
+    private var feedContent: some View {
+        switch viewModel.viewState {
+        case .idle, .loading:
+            VStack(spacing: 10) {
+                ForEach(0..<4, id: \.self) { _ in
+                    CompactArticleRowSkeleton()
+                }
+            }
+
+        case .loaded:
+            VStack(spacing: 10) {
+                ForEach(viewModel.articles) { article in
+                    Button {
+                        viewModel.onArticleTapped(article)
+                    } label: {
+                        CompactArticleRow(article: article)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+
+        case .empty:
+            FeedEmptyStateView()
+                .padding(.top, 40)
+
+        case .error(let message):
+            FeedErrorStateView(message: message) {
+                Task { await viewModel.onPullToRefresh() }
+            }
+            .padding(.top, 40)
         }
     }
 
@@ -113,81 +178,28 @@ struct NewsView: View {
         }
     }
 
-    // MARK: - Content
+    // MARK: - Helpers
 
-    @ViewBuilder
-    private var content: some View {
-        switch viewModel.viewState {
-        case .idle, .loading:
-            ArticleFeedSkeletonList()
-                .padding(.horizontal, -NewsFeedMetrics.screenPadding)
-
-        case .loaded:
-            LazyVStack(spacing: NewsFeedMetrics.cardSpacing) {
-                ForEach(viewModel.articles) { article in
-                    Button {
-                        viewModel.onArticleTapped(article)
-                    } label: {
-                        ArticleCardView(article: article)
+    private func sectionHeader(title: String, showSeeAll: Bool) -> some View {
+        HStack {
+            Text(title)
+                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .foregroundStyle(NewsFeedPalette.textPrimary)
+            Spacer()
+            if showSeeAll {
+                Button {} label: {
+                    HStack(spacing: 4) {
+                        Text("See All")
+                            .font(NewsFeedTypography.chip)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 10, weight: .semibold))
                     }
-                    .buttonStyle(.plain)
+                    .foregroundStyle(NewsFeedPalette.accent)
                 }
-            }
-
-        case .empty:
-            FeedEmptyStateView()
-
-        case .error(let message):
-            FeedErrorStateView(message: message) {
-                Task { await viewModel.onPullToRefresh() }
+                .buttonStyle(.plain)
             }
         }
-    }
-}
-
-// MARK: - Personalized Article Card
-
-private struct PersonalizedArticleCard: View {
-    let article: Article
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            if let urlString = article.imageURLString, let url = URL(string: urlString) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    default:
-                        Rectangle()
-                            .fill(NewsFeedPalette.surfaceMuted)
-                            .overlay {
-                                Image(systemName: "photo")
-                                    .foregroundColor(NewsFeedPalette.textTertiary)
-                            }
-                    }
-                }
-                .frame(width: 160, height: 100)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            } else {
-                Rectangle()
-                    .fill(NewsFeedPalette.surfaceMuted)
-                    .frame(width: 160, height: 100)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .overlay {
-                        Image(systemName: "photo")
-                            .foregroundColor(NewsFeedPalette.textTertiary)
-                    }
-            }
-
-            Text(article.title)
-                .font(NewsFeedTypography.caption)
-                .foregroundColor(NewsFeedPalette.textPrimary)
-                .lineLimit(2)
-                .frame(width: 160, alignment: .leading)
-        }
-        .frame(width: 160)
+        .padding(.horizontal, NewsFeedMetrics.screenPadding)
     }
 }
 
