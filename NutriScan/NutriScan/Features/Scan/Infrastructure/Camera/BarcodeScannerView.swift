@@ -109,14 +109,14 @@ final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputO
               let previewLayer = previewLayer else { return }
 
         // Use Apple's built-in coordinate conversion — works correctly with .resizeAspectFill
-        let center = previewLayer.layerPointConverted(fromMetadataOutputPoint: object.bounds.origin)
+        let center = previewLayer.layerPointConverted(fromCaptureDevicePoint: object.bounds.origin)
             .applying(CGAffineTransform(scaleX: 1, y: -1))
             .applying(CGAffineTransform(translationX: 0, y: previewLayer.bounds.height))
 
         // Calculate barcode size in view coordinates
-        let topLeft = previewLayer.layerPointConverted(fromMetadataOutputPoint: object.bounds.origin)
+        let topLeft = previewLayer.layerPointConverted(fromCaptureDevicePoint: object.bounds.origin)
         let bottomRight = previewLayer.layerPointConverted(
-            fromMetadataOutputPoint: CGPoint(
+            fromCaptureDevicePoint: CGPoint(
                 x: object.bounds.origin.x + object.bounds.width,
                 y: object.bounds.origin.y + object.bounds.height
             )
