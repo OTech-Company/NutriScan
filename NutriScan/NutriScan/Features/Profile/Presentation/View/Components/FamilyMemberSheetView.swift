@@ -102,7 +102,7 @@ struct FamilyMemberSheetView: View {
                 .disabled(!isEditingForm)
 
                 CustomPuffedButton(
-                    title: viewModel.isEditMode ? (isEditingForm ? "Save Changes" : "Edit") : "Add Member",
+                    title: viewModel.isEditMode ? (isEditingForm ? "Save" : "Edit") : "Add Member",
                     action: {
                         if !viewModel.isEditMode {
                             // Flow for adding a NEW member
@@ -192,7 +192,7 @@ struct FamilyMemberSheetView: View {
                     } else if viewModel.alertContext == .unsavedChanges {
                         return CustomAlertConfig(
                             type: .warning,
-                            title: "Save",
+                            title: "Save Changes",
                             description: "You have modified this family member's data. Are you sure you want to save these changes?",
                             primaryButtonTitle: "Save",
                             primaryButtonColor: Color.Teal.teal1000,
