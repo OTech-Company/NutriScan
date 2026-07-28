@@ -103,7 +103,7 @@ struct FamilyMemberSheetView: View {
                 // Dynamic Button Text: "Edit" -> "Save Changes" / "Add Member"
                 let buttonTitle: String = {
                     if !viewModel.isEditMode { return "Add Member" }
-                    return isEditingMode ? "Save Changes" : "Edit"
+                    return isEditingMode ? "Save" : "Edit"
                 }()
 
                 CustomPuffedButton(
