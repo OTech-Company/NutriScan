@@ -28,6 +28,8 @@ struct NewsView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     topBar
                     breakingNewsSection
+                        .padding(.bottom, 24)
+
                     recommendationSection
                 }
                 .padding(.top, 8)
