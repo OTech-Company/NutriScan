@@ -2,6 +2,7 @@ import SwiftUI
 
 struct NewsView: View {
     @StateObject private var viewModel: NewsViewModel
+    @EnvironmentObject var router: AppRouter
 
     init(viewModel: NewsViewModel? = nil) {
         if let viewModel {
@@ -25,18 +26,26 @@ struct NewsView: View {
 
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
+                    searchBarButton
                     breakingNewsSection
                     recommendationSection
-                    discoverSection
                 }
-                .padding(.vertical, 16)
-            }
-            .refreshable {
-                await viewModel.onPullToRefresh()
+                .padding(.top, 8)
+                .padding(.bottom, 24)
             }
         }
-        .navigationTitle("News")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    router.pop()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(NewsFeedPalette.textPrimary)
+                }
+            }
+        }
         .task {
             await viewModel.onAppear()
         }
@@ -49,6 +58,33 @@ struct NewsView: View {
         .tint(NewsFeedPalette.accent)
     }
 
+    // MARK: - Search Bar (navigates to Discover)
+
+    private var searchBarButton: some View {
+        Button {
+            router.push(HomeRoute.discover)
+        } label: {
+            HStack(spacing: 10) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(NewsFeedPalette.textTertiary)
+                Text("Search health & nutrition news")
+                    .font(NewsFeedTypography.cardBody)
+                    .foregroundStyle(NewsFeedPalette.textTertiary)
+                Spacer()
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(NewsFeedPalette.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(NewsFeedPalette.divider, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, NewsFeedMetrics.screenPadding)
+    }
+
     // MARK: - Breaking News
 
     private var breakingNewsSection: some View {
@@ -59,8 +95,13 @@ struct NewsView: View {
                 BreakingNewsHeroSkeleton()
                     .padding(.horizontal, NewsFeedMetrics.screenPadding)
             } else if let firstArticle = viewModel.articles.first {
-                BreakingNewsHeroCard(article: firstArticle)
-                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                Button {
+                    viewModel.onArticleTapped(firstArticle)
+                } label: {
+                    BreakingNewsHeroCard(article: firstArticle)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
             }
         }
     }
@@ -97,81 +138,6 @@ struct NewsView: View {
             VStack(spacing: 10) {
                 ForEach(0..<3, id: \.self) { _ in
                     CompactArticleRowSkeleton()
-                }
-            }
-            .padding(.horizontal, NewsFeedMetrics.screenPadding)
-        }
-    }
-
-    // MARK: - Discover (Search + Chips + Feed)
-
-    private var discoverSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader(title: "Discover", showSeeAll: false)
-
-            SearchBarView(text: $viewModel.searchText)
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
-                .onChange(of: viewModel.searchText) { _, newValue in
-                    viewModel.onSearchTextChanged(newValue)
-                }
-
-            if !viewModel.isSearching {
-                categoryChipsRow
-            }
-
-            feedContent
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
-        }
-    }
-
-    // MARK: - Feed Content
-
-    @ViewBuilder
-    private var feedContent: some View {
-        switch viewModel.viewState {
-        case .idle, .loading:
-            VStack(spacing: 10) {
-                ForEach(0..<4, id: \.self) { _ in
-                    CompactArticleRowSkeleton()
-                }
-            }
-
-        case .loaded:
-            VStack(spacing: 10) {
-                ForEach(viewModel.articles) { article in
-                    Button {
-                        viewModel.onArticleTapped(article)
-                    } label: {
-                        CompactArticleRow(article: article)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-
-        case .empty:
-            FeedEmptyStateView()
-                .padding(.top, 40)
-
-        case .error(let message):
-            FeedErrorStateView(message: message) {
-                Task { await viewModel.onPullToRefresh() }
-            }
-            .padding(.top, 40)
-        }
-    }
-
-    // MARK: - Category Chips
-
-    private var categoryChipsRow: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
-                ForEach(NewsFeedCategory.allCases) { category in
-                    CategoryChipView(
-                        title: category.displayName,
-                        isSelected: viewModel.selectedCategory == category
-                    ) {
-                        viewModel.selectedCategory = category
-                    }
                 }
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
