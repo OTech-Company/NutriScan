@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ScanScreen: View {
 
-    @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
 
     private let viewfinderHeight: CGFloat = 520
@@ -46,30 +45,6 @@ struct ScanScreen: View {
                     }
                     .position(x: position.x, y: position.y - 30)
                     .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
-                }
-
-                // Product card (fixed at bottom, above the tab bar)
-                VStack {
-                    Spacer()
-                    ScanStateCardView(
-                        isSubmitting: viewModel.isSubmitting,
-                        latestScan: viewModel.latestScan,
-                        isLoadingDetail: viewModel.isLoadingDetail,
-                        scanDetail: viewModel.scanDetail,
-                        capturedImageData: viewModel.capturedImageData,
-                        onSave: { viewModel.toggleSaveFavorite() },
-                        onRetry: { viewModel.reset() },
-                        onTapDetail: { scanId in
-                            router.path.append(AnyRoute(
-                                ScanRoute.scanDetail(
-                                    scanId: scanId,
-                                    imageData: viewModel.capturedImageData ?? Data()
-                                )
-                            ))
-                        }
-                    )
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 100)
                 }
             }
         }
