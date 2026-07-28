@@ -79,11 +79,6 @@ struct NewsView: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                 Spacer()
-                Button {} label: {
-                    Text("View all")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(NewsFeedPalette.accent)
-                }
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
@@ -106,7 +101,7 @@ struct NewsView: View {
                                 viewModel.onArticleTapped(article)
                             } label: {
                                 BreakingNewsHeroCard(article: article)
-                                    .frame(width: UIScreen.main.bounds.width - 120)
+                                    .frame(width: UIScreen.main.bounds.width - 60)
                             }
                             .buttonStyle(.plain)
                             .id(article.id)
@@ -148,11 +143,6 @@ struct NewsView: View {
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Spacer()
-                    Button {} label: {
-                        Text("View all")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.accent)
-                    }
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
@@ -170,11 +160,6 @@ struct NewsView: View {
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Spacer()
-                    Button {} label: {
-                        Text("View all")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.accent)
-                    }
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
