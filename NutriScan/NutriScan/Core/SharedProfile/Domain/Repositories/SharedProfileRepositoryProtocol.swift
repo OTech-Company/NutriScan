@@ -15,4 +15,5 @@ protocol SharedProfileRepositoryProtocol {
     func getDiseases() async throws -> [ReferenceItem]
     func getStreak() async throws -> Int
     func updateStreak() async throws
+    func uploadProfileImage(data: Data) async throws
 }

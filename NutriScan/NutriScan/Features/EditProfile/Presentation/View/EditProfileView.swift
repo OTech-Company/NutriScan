@@ -27,7 +27,8 @@ struct EditProfileView: View {
                         EditProfileSemantics.Spacing.sectionVertical)
 
                     EditProfileHeaderView(
-                        name: viewModel.firstName.value + " " + viewModel.lastName.value,
+                        name: viewModel.firstName.value + " "
+                            + viewModel.lastName.value,
                         email: viewModel.email,
                         customImage: viewModel.avatarUIImage,
                         isEditing: isEditingMode,
@@ -167,13 +168,15 @@ struct EditProfileView: View {
                     return CustomAlertConfig(
                         type: .warning,
                         title: "Save Changes",
-                        description: "You have modified your profile data. Are you sure you want to save these changes?",
+                        description:
+                            "You have modified your profile data. Are you sure you want to save these changes?",
                         primaryButtonTitle: "Save",
                         primaryButtonColor: Color.Teal.teal1000,
                         secondaryButtonTitle: "Discard"
                     )
                 default:
-                    return CustomAlertConfig(type: .warning, title: "", description: "")
+                    return CustomAlertConfig(
+                        type: .warning, title: "", description: "")
                 }
             },
             primaryAction: { alert in
@@ -222,6 +225,11 @@ struct EditProfileView: View {
                     viewModel.allergies.select(selectedAllergy)
                 }
             )
+        }
+        .onChange(of: viewModel.selectedPhotoItem) { _, _ in
+            Task {
+                await viewModel.loadSelectedImage()
+            }
         }
     }
 }

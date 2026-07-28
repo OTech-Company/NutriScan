@@ -54,5 +54,10 @@ struct SharedProfileAssembly: Assembly {
             type: GetReferenceDataUseCaseProtocol.self,
             component: GetReferenceDataUseCase()
         )
+        
+        container.register(
+            type: UploadProfileImageUseCaseProtocol.self,
+            component: UploadProfileImageUseCase()
+        )
     }
 }
