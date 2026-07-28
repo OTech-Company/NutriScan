@@ -5,14 +5,25 @@ import Observation
 final class HomeViewModel {
 
     private let fetchScansUseCase: FetchScansUseCase
+    private let observeProfileUseCase: ObserveProfileUseCaseProtocol
 
-    var userName: String = "Youssef"
     var dailyTip: String = "Stay hydrated! Drink at least 8 glasses of water today."
     var recentHistory: [UiStateHistoryItem] = []
     var isLoadingHistory = false
 
-    init(fetchScansUseCase: FetchScansUseCase = DIContainer.shared.resolve(type: FetchScansUseCase.self)) {
+    // MARK: - Reactive Profile Data
+    var userName: String {
+        let profile = observeProfileUseCase.execute().currentProfile
+        // Return their first name if available, fallback to a friendly default
+        return profile?.firstName ?? "User"
+    }
+
+    init(
+        fetchScansUseCase: FetchScansUseCase = DIContainer.shared.resolve(type: FetchScansUseCase.self),
+        observeProfileUseCase: ObserveProfileUseCaseProtocol = DIContainer.shared.resolve(type: ObserveProfileUseCaseProtocol.self)
+    ) {
         self.fetchScansUseCase = fetchScansUseCase
+        self.observeProfileUseCase = observeProfileUseCase
     }
 
     func loadHistory() {
