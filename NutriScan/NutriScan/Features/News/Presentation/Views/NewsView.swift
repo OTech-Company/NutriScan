@@ -25,67 +25,61 @@ struct NewsView: View {
             NewsFeedPalette.background.ignoresSafeArea()
 
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 0) {
-                    searchBarButton
-                        .padding(.top, 8)
-                        .padding(.bottom, 20)
-
+                VStack(alignment: .leading, spacing: 24) {
+                    topBar
                     breakingNewsSection
-                        .padding(.bottom, 24)
-
                     recommendationSection
                 }
-                .padding(.bottom, 24)
+                .padding(.top, 8)
+                .padding(.bottom, 100)
             }
         }
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                }
-            }
-        }
         .task {
             await viewModel.onAppear()
         }
         .sheet(item: $viewModel.selectedArticleForReading) { article in
-            if let url = article.articleURL {
-                SafariView(url: url)
-                    .ignoresSafeArea()
-            }
+            ArticleDetailView(article: article)
+                .environmentObject(router)
         }
         .tint(NewsFeedPalette.accent)
     }
 
-    // MARK: - Search Bar (navigates to Discover)
+    // MARK: - Top Bar
 
-    private var searchBarButton: some View {
-        Button {
-            router.push(HomeRoute.discover)
-        } label: {
-            HStack(spacing: 10) {
-                Image(systemName: "magnifyingglass")
-                    .foregroundStyle(NewsFeedPalette.textTertiary)
-                Text("Search health & nutrition news")
-                    .font(NewsFeedTypography.cardBody)
-                    .foregroundStyle(NewsFeedPalette.textTertiary)
-                Spacer()
+    private var topBar: some View {
+        HStack {
+            Button {} label: {
+                Image(systemName: "line.3.horizontal")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
-            .background(NewsFeedPalette.surface)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(NewsFeedPalette.divider, lineWidth: 1)
-            )
+
+            Spacer()
+
+            HStack(spacing: 16) {
+                Button {
+                    router.push(HomeRoute.discover)
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(NewsFeedPalette.textPrimary)
+                }
+
+                Button {} label: {
+                    ZStack(alignment: .topTrailing) {
+                        Image(systemName: "bell")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.textPrimary)
+
+                        Circle()
+                            .fill(NewsFeedPalette.accent)
+                            .frame(width: 8, height: 8)
+                            .offset(x: 2, y: -2)
+                    }
+                }
+            }
         }
-        .buttonStyle(.plain)
         .padding(.horizontal, NewsFeedMetrics.screenPadding)
     }
 
@@ -99,29 +93,50 @@ struct NewsView: View {
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                 Spacer()
                 Button {} label: {
-                    HStack(spacing: 4) {
-                        Text("See All")
-                            .font(NewsFeedTypography.chip)
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 10, weight: .semibold))
-                    }
-                    .foregroundStyle(NewsFeedPalette.accent)
+                    Text("View all")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(NewsFeedPalette.accent)
                 }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
             if viewModel.viewState == .loading || viewModel.viewState == .idle {
-                BreakingNewsHeroSkeleton()
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 14) {
+                        BreakingNewsHeroSkeleton()
+                            .frame(width: UIScreen.main.bounds.width - 64)
+                        BreakingNewsHeroSkeleton()
+                            .frame(width: UIScreen.main.bounds.width - 64)
+                            .opacity(0.5)
+                    }
                     .padding(.horizontal, NewsFeedMetrics.screenPadding)
-            } else if let firstArticle = viewModel.articles.first {
-                Button {
-                    viewModel.onArticleTapped(firstArticle)
-                } label: {
-                    BreakingNewsHeroCard(article: firstArticle)
                 }
-                .buttonStyle(.plain)
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            } else {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 14) {
+                        ForEach(viewModel.articles.prefix(5)) { article in
+                            Button {
+                                viewModel.onArticleTapped(article)
+                            } label: {
+                                BreakingNewsHeroCard(article: article)
+                                    .frame(width: UIScreen.main.bounds.width - 64)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                }
+            }
+
+            if viewModel.viewState != .loading && viewModel.viewState != .idle {
+                HStack(spacing: 6) {
+                    ForEach(0..<min(viewModel.articles.count, 5), id: \.self) { index in
+                        Capsule()
+                            .fill(index == 0 ? NewsFeedPalette.accent : NewsFeedPalette.divider)
+                            .frame(width: index == 0 ? 20 : 6, height: 6)
+                    }
+                }
+                .frame(maxWidth: .infinity)
             }
         }
     }
@@ -132,12 +147,20 @@ struct NewsView: View {
     private var recommendationSection: some View {
         if viewModel.isLoadingPersonalized {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Recommendation")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
-                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                HStack {
+                    Text("Recommendation")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundStyle(NewsFeedPalette.textPrimary)
+                    Spacer()
+                    Button {} label: {
+                        Text("View all")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.accent)
+                    }
+                }
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
-                VStack(spacing: 10) {
+                VStack(spacing: 12) {
                     ForEach(0..<3, id: \.self) { _ in
                         CompactArticleRowSkeleton()
                     }
@@ -146,12 +169,20 @@ struct NewsView: View {
             }
         } else if !viewModel.personalizedArticles.isEmpty {
             VStack(alignment: .leading, spacing: 14) {
-                Text("Recommendation")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
-                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                HStack {
+                    Text("Recommendation")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .foregroundStyle(NewsFeedPalette.textPrimary)
+                    Spacer()
+                    Button {} label: {
+                        Text("View all")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.accent)
+                    }
+                }
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
-                VStack(spacing: 10) {
+                VStack(spacing: 12) {
                     ForEach(viewModel.personalizedArticles.prefix(5)) { article in
                         Button {
                             viewModel.onArticleTapped(article)

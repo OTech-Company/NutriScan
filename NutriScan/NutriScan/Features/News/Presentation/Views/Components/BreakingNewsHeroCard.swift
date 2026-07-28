@@ -2,44 +2,70 @@ import SwiftUI
 
 struct BreakingNewsHeroCard: View {
     let article: Article
-    var body: some View {
-        Button {
-            // handled externally
-        } label: {
-            ZStack(alignment: .bottomLeading) {
-                heroImage
 
-                LinearGradient(
-                    colors: [.black.opacity(0.75), .black.opacity(0.25), .clear],
-                    startPoint: .bottom,
-                    endPoint: .top
-                )
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            heroImage
+                .frame(height: 260)
+
+            LinearGradient(
+                colors: [.black.opacity(0.6), .black.opacity(0.15), .clear],
+                startPoint: .bottom,
+                endPoint: .top
+            )
+            .frame(height: 260)
+
+            VStack(alignment: .leading, spacing: 0) {
+                Text(categoryName)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(NewsFeedPalette.accent)
+                    .clipShape(Capsule())
+                    .padding(.top, 16)
+                    .padding(.leading, 16)
+
+                Spacer()
 
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(article.source.name.uppercased())
-                        .font(NewsFeedTypography.eyebrow)
-                        .foregroundStyle(.white.opacity(0.85))
+                    HStack(spacing: 6) {
+                        Text(article.source.name)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(.white)
+                        Image(systemName: "checkmark.seal.fill")
+                            .font(.system(size: 11))
+                            .foregroundStyle(NewsFeedPalette.accent)
+                        Text("•")
+                            .foregroundStyle(.white.opacity(0.6))
+                        Text(article.publishedAt.relativeShortString)
+                            .font(.system(size: 13))
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
 
                     Text(article.title)
-                        .font(.system(size: 18, weight: .bold, design: .rounded))
+                        .font(.system(size: 17, weight: .bold))
                         .foregroundStyle(.white)
                         .lineLimit(3)
                         .multilineTextAlignment(.leading)
-
-                    HStack(spacing: 8) {
-                        Image(systemName: "clock")
-                            .font(.system(size: 10))
-                        Text(article.publishedAt.relativeShortString)
-                    }
-                    .font(NewsFeedTypography.caption)
-                    .foregroundStyle(.white.opacity(0.7))
                 }
                 .padding(16)
             }
-            .frame(height: 240)
-            .clipShape(RoundedRectangle(cornerRadius: NewsFeedMetrics.cardCornerRadius, style: .continuous))
         }
-        .buttonStyle(.plain)
+        .frame(height: 260)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    private var categoryName: String {
+        let title = article.title.lowercased()
+        if title.contains("sport") || title.contains("football") || title.contains("tennis") || title.contains("race") {
+            return "Sports"
+        } else if title.contains("health") || title.contains("diet") || title.contains("nutrition") {
+            return "Health"
+        } else if title.contains("education") || title.contains("school") || title.contains("university") {
+            return "Education"
+        }
+        return "News"
     }
 
     @ViewBuilder
@@ -53,23 +79,18 @@ struct BreakingNewsHeroCard: View {
                     Rectangle()
                         .fill(
                             LinearGradient(
-                                colors: [Color.Teal.teal300, Color.Teal.teal700],
+                                colors: [Color.Teal.teal300, Color.Teal.teal600],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .overlay {
-                            Image(systemName: "newspaper")
-                                .font(.system(size: 40))
-                                .foregroundStyle(.white.opacity(0.3))
-                        }
                 }
             }
         } else {
             Rectangle()
                 .fill(
                     LinearGradient(
-                        colors: [Color.Teal.teal300, Color.Teal.teal700],
+                        colors: [Color.Teal.teal300, Color.Teal.teal600],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
@@ -85,32 +106,41 @@ struct BreakingNewsHeroCard: View {
 
 struct BreakingNewsHeroSkeleton: View {
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Spacer()
-            RoundedRectangle(cornerRadius: 4)
-                .fill(.white.opacity(0.3))
-                .frame(width: 80, height: 10)
-            RoundedRectangle(cornerRadius: 4)
-                .fill(.white.opacity(0.5))
-                .frame(height: 16)
-            RoundedRectangle(cornerRadius: 4)
-                .fill(.white.opacity(0.5))
-                .frame(width: 200, height: 16)
-            RoundedRectangle(cornerRadius: 4)
-                .fill(.white.opacity(0.3))
-                .frame(width: 100, height: 10)
-        }
-        .padding(16)
-        .frame(height: 240)
-        .frame(maxWidth: .infinity)
-        .background(
+        ZStack(alignment: .topLeading) {
             LinearGradient(
-                colors: [Color.Teal.teal200, Color.Teal.teal500],
+                colors: [Color.Teal.teal200, Color.Teal.teal400],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
-        )
-        .clipShape(RoundedRectangle(cornerRadius: NewsFeedMetrics.cardCornerRadius, style: .continuous))
+
+            VStack(alignment: .leading, spacing: 0) {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(.white.opacity(0.3))
+                    .frame(width: 70, height: 24)
+                    .padding(.top, 16)
+                    .padding(.leading, 16)
+
+                Spacer()
+
+                VStack(alignment: .leading, spacing: 8) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(.white.opacity(0.3))
+                        .frame(width: 180, height: 12)
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(.white.opacity(0.5))
+                        .frame(height: 16)
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(.white.opacity(0.5))
+                        .frame(width: 220, height: 16)
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(.white.opacity(0.4))
+                        .frame(width: 160, height: 16)
+                }
+                .padding(16)
+            }
+        }
+        .frame(height: 260)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shimmering()
     }
 }
