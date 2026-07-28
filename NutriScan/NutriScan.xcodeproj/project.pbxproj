@@ -2518,6 +2518,9 @@
 			isa = PBXGroup;
 			children = (
 				D49D9F033013E2DE00ACE567 /* GetProfileUseCase.swift */,
+				D489D1D23018E9C200E7A1DF /* UpdateStreakUseCase.swift */,
+				D489D1D03018E95900E7A1DF /* GetStreakUseCase.swift */,
+				D489D1CE3018E92B00E7A1DF /* UpdateFamilyMembersUseCase.swift */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -3670,9 +3673,6 @@
 				D4948B2E3019061F003F86D7 /* UploadProfileImageUseCase.swift */,
 				D489D1D63018EB5A00E7A1DF /* GetReferenceDataUseCase.swift */,
 				D489D1D43018EB4000E7A1DF /* UpdateProfileUseCase.swift */,
-				D489D1D23018E9C200E7A1DF /* UpdateStreakUseCase.swift */,
-				D489D1D03018E95900E7A1DF /* GetStreakUseCase.swift */,
-				D489D1CE3018E92B00E7A1DF /* UpdateFamilyMembersUseCase.swift */,
 				D489D1C33018E47100E7A1DF /* ObserveProfileUseCase.swift */,
 				D489D1C13018E45500E7A1DF /* FetchAndCacheProfileUseCase.swift */,
 			);
