@@ -11,8 +11,8 @@ import Foundation
 final class FamilyMemberSheetViewModel {
     let existingMember: FamilyMember?
     let allMembers: [FamilyMember]
-    
-    enum AlertContext { case delete, duplicate }
+
+    enum AlertContext { case delete, duplicate, unsavedChanges }
     var alertContext: AlertContext = .delete
 
     var name = ValidatedField(value: "")
@@ -24,7 +24,10 @@ final class FamilyMemberSheetViewModel {
     var isLoading = false
     var errorMessage: String?
 
-    // Updated to use the shared reference data use case protocol
+    // MARK: - Dirty-Check Baseline
+    private var snapshot: FamilyMemberInput?
+    private var revertAction: (() -> Void)?
+
     private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
     private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
 
@@ -33,8 +36,11 @@ final class FamilyMemberSheetViewModel {
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
-        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
-        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self)
+        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer
+            .shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
+        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol =
+            DIContainer.shared.resolve(
+                type: UpdateFamilyMembersUseCaseProtocol.self)
     ) {
         self.existingMember = existingMember
         self.allMembers = allMembers
@@ -45,6 +51,9 @@ final class FamilyMemberSheetViewModel {
             name.value = member.name
             relation.value = member.relation
         }
+
+        captureSnapshot()
+        setupRevertAction()
     }
 
     @MainActor
@@ -53,7 +62,6 @@ final class FamilyMemberSheetViewModel {
         errorMessage = nil
 
         do {
-            // The unified use case returns a tuple of (allergies, diseases)
             let data = try await getReferenceDataUseCase.execute()
 
             conditions.configure(
@@ -64,6 +72,10 @@ final class FamilyMemberSheetViewModel {
                 availableItems: data.allergies,
                 existingSelections: existingMember?.allergies ?? []
             )
+
+            captureSnapshot()
+            setupRevertAction()
+
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -71,26 +83,81 @@ final class FamilyMemberSheetViewModel {
         isLoading = false
     }
 
+    // MARK: - Dirty Checking & Reverting
+    private func captureSnapshot() {
+        snapshot = buildInput()
+    }
+
+    private func setupRevertAction() {
+        let origName = existingMember?.name ?? ""
+        let origRelation = existingMember?.relation ?? ""
+        let origDiseases = existingMember?.diseases ?? []
+        let origAllergies = existingMember?.allergies ?? []
+
+        self.revertAction = { [weak self] in
+            guard let self = self else { return }
+            self.name.value = origName
+            self.relation.value = origRelation
+
+            self.conditions.configure(
+                availableItems: self.conditions.availableItems,
+                existingSelections: origDiseases
+            )
+            self.allergies.configure(
+                availableItems: self.allergies.availableItems,
+                existingSelections: origAllergies
+            )
+
+            self.name.state = .normal
+            self.relation.state = .normal
+            self.captureSnapshot()
+        }
+    }
+
+    func revertChanges() {
+        revertAction?()
+        errorMessage = nil
+    }
+
+    var hasUnsavedChanges: Bool {
+        guard let snapshot else { return false }
+        let current = buildInput()
+
+        return snapshot.name != current.name
+            || snapshot.relation != current.relation
+            || Set(snapshot.allergyIds) != Set(current.allergyIds)
+            || Set(snapshot.diseaseIds) != Set(current.diseaseIds)
+    }
+
+    // MARK: - Validation
     func validate() -> Bool {
-        let isNameValid = name.validate(using: AppValidator.displayNameValidator)
-        let isRelationValid = relation.validate(using: AppValidator.displayNameValidator)
+        let isNameValid = name.validate(
+            using: AppValidator.displayNameValidator)
+        let isRelationValid = relation.validate(
+            using: AppValidator.displayNameValidator)
         return isNameValid && isRelationValid
     }
-    
-    // MARK: - Validation
+
     func isDuplicate() -> Bool {
-        let currentName = name.value.trimmingCharacters(in: .whitespaces).lowercased()
-        let currentRelation = relation.value.trimmingCharacters(in: .whitespaces).lowercased()
-        
+        let currentName = name.value.trimmingCharacters(in: .whitespaces)
+            .lowercased()
+        let currentRelation = relation.value.trimmingCharacters(
+            in: .whitespaces
+        ).lowercased()
+
         return allMembers.contains { member in
             if let existingId = existingMember?.id, member.id == existingId {
                 return false
             }
-            
-            let memberName = member.name.trimmingCharacters(in: .whitespaces).lowercased()
-            let memberRelation = member.relation.trimmingCharacters(in: .whitespaces).lowercased()
-            
-            return memberName == currentName && memberRelation == currentRelation
+
+            let memberName = member.name.trimmingCharacters(in: .whitespaces)
+                .lowercased()
+            let memberRelation = member.relation.trimmingCharacters(
+                in: .whitespaces
+            ).lowercased()
+
+            return memberName == currentName
+                && memberRelation == currentRelation
         }
     }
 
@@ -106,5 +173,9 @@ final class FamilyMemberSheetViewModel {
     func submit() -> FamilyMemberInput? {
         guard validate() else { return nil }
         return buildInput()
+    }
+
+    func validateFieldsOrInputs() -> Bool {
+        return validate()
     }
 }

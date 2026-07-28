@@ -82,18 +82,14 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
     }
 
     func uploadProfileImage(data: Data) async throws {
-        // 1. Upload the raw image data[cite: 35]
         try await dataSource.uploadProfileImage(data: data)
 
-        // 2. Generate a new cache version to force image reloading across screens[cite: 35]
         self.imageCacheVersion = UUID().uuidString
 
-        // 3. Fetch the updated profile so the backend provides the new image URL[cite: 35]
         let updatedProfileDTO: SharedProfileResponseDTO =
             try await dataSource.getProfile()
         let profile = processProfile(updatedProfileDTO)
 
-        // 4. Push the fresh profile with cache buster to the reactive store[cite: 35]
         await MainActor.run {
             self.sharedStore.currentProfile = profile
         }
