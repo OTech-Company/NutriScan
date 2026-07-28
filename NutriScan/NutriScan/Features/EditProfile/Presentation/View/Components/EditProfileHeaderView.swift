@@ -1,5 +1,5 @@
 //
-//  ProfileHeaderView.swift
+//  EditProfileHeaderView.swift
 //  NutriScan
 //
 //  Created by Mina_Wagdy on 19/07/2026.
@@ -11,9 +11,9 @@ struct EditProfileHeaderView: View {
     let name: String
     let email: String
     var avatarURL: String? = AppConstants.defaultUserAvatarURL
-    var customImage: UIImage? = nil // Added to display locally picked image instantly
-    var isEditing: Bool = false     // Controls whether picking is enabled
-    @Binding var selectedItem: PhotosPickerItem? // Binding to the picker item
+    var customImage: UIImage? = nil
+    var isEditing: Bool = false
+    @Binding var selectedItem: PhotosPickerItem?
 
     var body: some View {
         HStack(spacing: EditProfileSemantics.Spacing.headerRowSpacing) {

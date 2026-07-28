@@ -30,6 +30,7 @@ struct EditProfileView: View {
                         name: viewModel.firstName.value + " "
                             + viewModel.lastName.value,
                         email: viewModel.email,
+                        avatarURL: viewModel.avatarURL,
                         customImage: viewModel.avatarUIImage,
                         isEditing: isEditingMode,
                         selectedItem: $viewModel.selectedPhotoItem

@@ -28,16 +28,17 @@ final class EditProfileViewModel {
     var email: String = ""
     var birthdate: Date = Date()
     var gender: String = "FEMALE"
+    
+    var avatarURL: String? {
+        let rawURL = observeProfileUseCase.execute().currentProfile?.imageUrl
+        return (rawURL?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true) ? nil : rawURL
+    }
 
     var conditions = ChipSelectionManager()
     var allergies = ChipSelectionManager()
 
     // MARK: - Avatar Selection State
-    var selectedPhotoItem: PhotosPickerItem? = nil {
-        didSet {
-            Task { await loadSelectedImage() }
-        }
-    }
+    var selectedPhotoItem: PhotosPickerItem? = nil
     var avatarData: Data? = nil
     var avatarUIImage: UIImage? = nil
 
@@ -247,12 +248,15 @@ final class EditProfileViewModel {
         errorMessage = nil
 
         do {
+            // 1. Send the text update first (PATCH)
             try await updateProfileUseCase.execute(update: buildUpdateRequest())
 
+            // 2. Send the image update second (POST)
             if let imageData = avatarData {
                 try await uploadImageProfileUseCase.execute(data: imageData)
             }
-            // Reset temporary image data states after successful sync
+            
+            // 3. Reset temporary image data states after successful sync
             self.avatarData = nil
             self.selectedPhotoItem = nil
             populateFromStore()
