@@ -11,6 +11,7 @@ struct FavoritesGridView: View {
     
     let savedItems: [FavoritesScanEntity]
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
+    var onRemoveFavorite: ((String) -> Void)? = nil
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -21,8 +22,11 @@ struct FavoritesGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(savedItems, id: \.id) { item in
-                    FavoriteCardView(favUIState:
-                                        FavUIState(entity: item)
+                    FavoriteCardView(
+                        favUIState: FavUIState(entity: item),
+                        onRemove: {
+                            onRemoveFavorite?(item.id)
+                        }
                     )
                     .onAppear {
                         onItemAppear?(item)

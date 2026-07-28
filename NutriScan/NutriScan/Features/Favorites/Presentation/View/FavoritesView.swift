@@ -42,6 +42,8 @@ struct FavoritesView: View {
                 FavoritesGridView(savedItems: viewModel.favorites, onItemAppear: { item in
                     let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
                     viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
+                }, onRemoveFavorite: { scanId in
+                    viewModel.removeFavorite(scanId: scanId)
                 })
             } else {
                 FavoritesEmptyStateView()

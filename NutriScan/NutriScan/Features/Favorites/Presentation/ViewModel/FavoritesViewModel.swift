@@ -104,4 +104,21 @@ class FavoritesViewModel {
         
         isLoadingFavorites = false
     }
+    
+    func removeFavorite(scanId: String) {
+        guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return }
+        let removed = favorites.remove(at: index)
+        
+        Task {
+            do {
+                try await favoritesUseCase.removeFavorite(scanId: scanId)
+                notifier.setNeedsRefresh()
+            } catch {
+                await MainActor.run {
+                    self.favorites.insert(removed, at: min(index, self.favorites.count))
+                }
+                print("Error removing favorite: \(error)")
+            }
+        }
+    }
 }

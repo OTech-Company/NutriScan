@@ -10,6 +10,7 @@ import SwiftUI
 struct FavoriteCardView: View {
     
     let favUIState: FavUIState
+    var onRemove: (() -> Void)? = nil
     
     var body: some View {
         VStack(spacing: 12) {
@@ -23,7 +24,7 @@ struct FavoriteCardView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
                 
                 Button(action: {
-                    // Empty implementation as requested
+                    onRemove?()
                 }) {
                     Image("bookmark-fill")
                         .resizable()
