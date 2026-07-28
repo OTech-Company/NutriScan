@@ -35,6 +35,9 @@ final class FetchPersonalizedNewsUseCase: FetchPersonalizedNewsUseCaseProtocol {
 
         let query = "(\(terms.joined(separator: " OR ")))"
 
+        let fullURL = "https://newsapi.org/v2/everything?q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? query)&apiKey=a06999badc0d4b2ebbe795b1a4891167"
+        print("[PersonalizedNews] URL: \(fullURL)")
+
         let articles = try await newsRepository.searchArticles(query: query)
         return Array(articles.prefix(10))
     }
