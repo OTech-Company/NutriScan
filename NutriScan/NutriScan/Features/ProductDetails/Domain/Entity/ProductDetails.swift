@@ -72,7 +72,7 @@ extension ProductDetails {
         let displayFormatter = DateFormatter()
         displayFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
 
-        self.scanId = dto.scanId
+        self.scanId = dto.scanId ?? ""
         if let dateString = dto.scannedAt,
            let date = ISO8601DateFormatter().date(from: dateString) {
             self.scannedAt = displayFormatter.string(from: date)
