@@ -1,15 +1,55 @@
-//
-//  ProductHeaderSection.swift
-//  NutriScan
-//
-//  Created by albaraa alsayed on 10/02/1448 AH.
-//
-
 import SwiftUI
 
 struct ProductHeaderSection: View {
     let state: ProductHeaderUIState
-    
+
+    private var displayTitle: String {
+        state.productName
+    }
+
+    private var titleFont: Font {
+        let wordCount = state.productName.split(separator: " ").count
+        if wordCount <= 1 {
+            return Font.AppFont.title1
+        } else {
+            return Font.AppFont.title1
+        }
+    }
+
+    private var titleLineLimit: Int? {
+        let wordCount = state.productName.split(separator: " ").count
+        if wordCount > 6 {
+            return 3
+        } else if wordCount > 3 {
+            return 2
+        }
+        return nil
+    }
+
+    private var formattedDate: String {
+        let raw = state.scannedAt
+        // Check if it's already formatted (not ISO8601)
+        if raw.contains("T") && raw.contains("Z") {
+            // Raw ISO8601 — format it
+            let isoFormatter = ISO8601DateFormatter()
+            isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            if let date = isoFormatter.date(from: raw) {
+                let display = DateFormatter()
+                display.dateFormat = "MMM d, yyyy 'at' h:mm a"
+                return display.string(from: date)
+            }
+            // Try without fractional seconds
+            isoFormatter.formatOptions = [.withInternetDateTime]
+            if let date = isoFormatter.date(from: raw) {
+                let display = DateFormatter()
+                display.dateFormat = "MMM d, yyyy 'at' h:mm a"
+                return display.string(from: date)
+            }
+            return raw
+        }
+        return raw
+    }
+
     var body: some View {
         VStack(spacing: 16) {
             CachedImage(
@@ -23,17 +63,18 @@ struct ProductHeaderSection: View {
                 RoundedRectangle(cornerRadius: 24)
                     .strokeBorder(Color.Teal.teal1000, style: StrokeStyle(lineWidth: 3))
             }
-            
+
             HStack(alignment: .bottom) {
-                Text(state.productName)
-                    .font(Font.AppFont.title1)
+                Text(displayTitle)
+                    .font(titleFont)
+                    .lineLimit(titleLineLimit)
                     .foregroundStyle(Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400))
                 Spacer()
                 VStack(alignment: .center, spacing: 0) {
                     Text("Scanned at")
                         .foregroundStyle(Color(light: Color.Gray.gray500, dark: Color.Teal.teal1300))
                         .font(Font.AppFont.textSecondary.weight(.bold))
-                    Text(state.scannedAt)
+                    Text(formattedDate)
                         .foregroundStyle(Color.Teal.teal800)
                         .font(Font.AppFont.textSecondary.weight(.bold))
                         .padding(.horizontal, 4)
