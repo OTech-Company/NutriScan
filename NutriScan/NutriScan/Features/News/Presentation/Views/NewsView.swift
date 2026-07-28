@@ -56,7 +56,7 @@ struct NewsView: View {
     private var topBar: some View {
         HStack {
             Button {} label: {
-                Image(systemName: "line.3.horizontal")
+                Image(systemName: "back.arrow")
                     .font(.system(size: 20, weight: .medium))
                     .foregroundStyle(NewsFeedPalette.textPrimary)
             }
@@ -72,18 +72,6 @@ struct NewsView: View {
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                 }
 
-                Button {} label: {
-                    ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bell")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.textPrimary)
-
-                        Circle()
-                            .fill(NewsFeedPalette.accent)
-                            .frame(width: 8, height: 8)
-                            .offset(x: 2, y: -2)
-                    }
-                }
             }
         }
         .padding(.horizontal, NewsFeedMetrics.screenPadding)
@@ -98,11 +86,7 @@ struct NewsView: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                 Spacer()
-                Button {} label: {
-                    Text("View all")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(NewsFeedPalette.accent)
-                }
+
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
@@ -162,11 +146,7 @@ struct NewsView: View {
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Spacer()
-                    Button {} label: {
-                        Text("View all")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.accent)
-                    }
+
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
@@ -184,11 +164,6 @@ struct NewsView: View {
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Spacer()
-                    Button {} label: {
-                        Text("View all")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.accent)
-                    }
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
 

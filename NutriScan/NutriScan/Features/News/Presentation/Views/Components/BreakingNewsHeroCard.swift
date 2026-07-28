@@ -2,19 +2,20 @@ import SwiftUI
 
 struct BreakingNewsHeroCard: View {
     let article: Article
+    
+    // Strict width defined to match the parent's requirements and prevent layout shifts
+    private let cardWidth = UIScreen.main.bounds.width - 64
 
     var body: some View {
         ZStack(alignment: .bottom) {
             heroImage
-                .frame(height: 260)
-                .clipped()
-
+            
             LinearGradient(
                 colors: [.black.opacity(0.75), .black.opacity(0.3), .clear],
                 startPoint: .bottom,
                 endPoint: .top
             )
-            .frame(height: 260)
+            .frame(width: cardWidth, height: 260)
 
             // Content overlay sits inside the fixed ZStack bounds
             VStack(alignment: .leading, spacing: 0) {
@@ -59,9 +60,10 @@ struct BreakingNewsHeroCard: View {
                 }
                 .padding(16)
             }
-            .frame(height: 260, alignment: .top)
+            .frame(width: cardWidth, height: 260, alignment: .top)
         }
-        .frame(height: 260)
+        // Strict frame on the root container
+        .frame(width: cardWidth, height: 260)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 
@@ -86,43 +88,45 @@ struct BreakingNewsHeroCard: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 260)
+                        // Strict frame applied directly to the loaded image
+                        .frame(width: cardWidth, height: 260)
                         .clipped()
                 default:
-                    Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.Teal.teal300, Color.Teal.teal600],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                    placeholderView
                 }
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 260)
+            // Strict frame on the AsyncImage wrapper
+            .frame(width: cardWidth, height: 260)
             .clipped()
         } else {
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color.Teal.teal300, Color.Teal.teal600],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(maxWidth: .infinity)
-                .frame(height: 260)
-                .overlay {
-                    Image(systemName: "newspaper")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.white.opacity(0.3))
-                }
+            placeholderView
         }
+    }
+    
+    // Extracted placeholder view to ensure perfect dimension matching
+    private var placeholderView: some View {
+        Rectangle()
+            .fill(
+                LinearGradient(
+                    colors: [Color.Teal.teal300, Color.Teal.teal600],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(width: cardWidth, height: 260)
+            .overlay {
+                Image(systemName: "newspaper")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.white.opacity(0.3))
+            }
     }
 }
 
+// MARK: - Skeleton View
+
 struct BreakingNewsHeroSkeleton: View {
+    private let cardWidth = UIScreen.main.bounds.width - 64
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             LinearGradient(
@@ -157,17 +161,20 @@ struct BreakingNewsHeroSkeleton: View {
                 .padding(16)
             }
         }
-        .frame(height: 260)
+        // Strict frame applied to the skeleton to match the exact card size
+        .frame(width: cardWidth, height: 260)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .shimmering()
     }
 }
 
 #Preview {
-    VStack(spacing: 16) {
-        BreakingNewsHeroCard(article: .preview)
-        BreakingNewsHeroSkeleton()
+    ScrollView(.horizontal) {
+        HStack(spacing: 16) {
+            BreakingNewsHeroCard(article: .preview)
+            BreakingNewsHeroSkeleton()
+        }
+        .padding()
     }
-    .padding()
     .background(NewsFeedPalette.background)
 }

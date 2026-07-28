@@ -41,19 +41,8 @@ struct ArticleDetailView: View {
             Spacer()
 
             HStack(spacing: 12) {
-                Button {
-                    isBookmarked.toggle()
-                } label: {
-                    Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 40, height: 40)
-                        .background(.black.opacity(0.3))
-                        .clipShape(Circle())
-                }
-
                 Button {} label: {
-                    Image(systemName: "ellipsis")
+                    Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(width: 40, height: 40)
@@ -273,39 +262,36 @@ struct ArticleDetailView: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 340)
+                        // Lock the width strictly to the screen width
+                        .frame(width: UIScreen.main.bounds.width, height: 340)
                         .clipped()
                 default:
-                    Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.Teal.teal300, Color.Teal.teal600],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                    placeholderView
                 }
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 340)
+            // Strict frame on the wrapper as well
+            .frame(width: UIScreen.main.bounds.width, height: 340)
             .clipped()
         } else {
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color.Teal.teal300, Color.Teal.teal600],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(maxWidth: .infinity)
-                .frame(height: 340)
-                .overlay {
-                    Image(systemName: "newspaper")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.white.opacity(0.3))
-                }
+            placeholderView
         }
+    }
+    
+    private var placeholderView: some View {
+        Rectangle()
+            .fill(
+                LinearGradient(
+                    colors: [Color.Teal.teal300, Color.Teal.teal600],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(width: UIScreen.main.bounds.width, height: 340)
+            .overlay {
+                Image(systemName: "newspaper")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.white.opacity(0.3))
+            }
     }
 
     private var categoryName: String {
