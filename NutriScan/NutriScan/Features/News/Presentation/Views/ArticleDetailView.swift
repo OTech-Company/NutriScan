@@ -273,6 +273,8 @@ struct ArticleDetailView: View {
                     image
                         .resizable()
                         .scaledToFill()
+                        .frame(maxWidth: .infinity, maxHeight: 340)
+                        .clipped()
                 default:
                     Rectangle()
                         .fill(

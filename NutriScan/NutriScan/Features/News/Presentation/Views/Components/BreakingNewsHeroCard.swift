@@ -86,6 +86,8 @@ struct BreakingNewsHeroCard: View {
                     image
                         .resizable()
                         .scaledToFill()
+                        .frame(maxWidth: .infinity, maxHeight: 260)
+                        .clipped()
                 default:
                     Rectangle()
                         .fill(
