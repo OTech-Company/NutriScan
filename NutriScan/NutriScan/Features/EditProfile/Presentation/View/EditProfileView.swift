@@ -27,9 +27,11 @@ struct EditProfileView: View {
                         EditProfileSemantics.Spacing.sectionVertical)
 
                     EditProfileHeaderView(
-                        name: viewModel.firstName.value + " "
-                            + viewModel.lastName.value,
-                        email: viewModel.email
+                        name: viewModel.firstName.value + " " + viewModel.lastName.value,
+                        email: viewModel.email,
+                        customImage: viewModel.avatarUIImage,
+                        isEditing: isEditingMode,
+                        selectedItem: $viewModel.selectedPhotoItem
                     )
                     .disabled(!isEditingMode)
 

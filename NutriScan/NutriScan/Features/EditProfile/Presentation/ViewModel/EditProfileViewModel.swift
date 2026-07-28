@@ -4,7 +4,9 @@
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
+
 import Combine
+import PhotosUI
 import SwiftUI
 
 @Observable
@@ -28,6 +30,15 @@ final class EditProfileViewModel {
 
     var conditions = ChipSelectionManager()
     var allergies = ChipSelectionManager()
+
+    // MARK: - Avatar Selection State
+    var selectedPhotoItem: PhotosPickerItem? = nil {
+        didSet {
+            Task { await loadSelectedImage() }
+        }
+    }
+    var avatarData: Data? = nil
+    var avatarUIImage: UIImage? = nil
 
     // MARK: - Status
     var isLoading = false
@@ -63,7 +74,6 @@ final class EditProfileViewModel {
         if let g = profile.gender { self.gender = g }
         if let dob = profile.dateOfBirth { self.birthdate = dob }
 
-        // We set existing selections immediately, but wait for loadReferenceData() to provide the full available list
         conditions.configure(availableItems: profile.diseases, existingSelections: profile.diseases)
         allergies.configure(availableItems: profile.allergies, existingSelections: profile.allergies)
 
@@ -81,6 +91,7 @@ final class EditProfileViewModel {
         let origDOB = profile.dateOfBirth
         let existDiseases = profile.diseases
         let existAllergies = profile.allergies
+        let origImage = self.avatarUIImage
         
         self.revertAction = { [weak self] in
             guard let self = self else { return }
@@ -92,7 +103,10 @@ final class EditProfileViewModel {
             if let g = origGender { self.gender = g }
             if let dob = origDOB { self.birthdate = dob }
             
-            // Re-apply existing selections to whatever the current available items are
+            self.avatarUIImage = origImage
+            self.avatarData = nil
+            self.selectedPhotoItem = nil
+            
             self.conditions.configure(availableItems: self.conditions.availableItems, existingSelections: existDiseases)
             self.allergies.configure(availableItems: self.allergies.availableItems, existingSelections: existAllergies)
             
@@ -103,6 +117,20 @@ final class EditProfileViewModel {
         }
     }
 
+    // MARK: - Image Selection Loader
+    @MainActor
+    private func loadSelectedImage() async {
+        guard let item = selectedPhotoItem else { return }
+        do {
+            if let data = try await item.loadTransferable(type: Data.self) {
+                self.avatarData = data
+                self.avatarUIImage = UIImage(data: data)
+            }
+        } catch {
+            self.errorMessage = error.localizedDescription
+        }
+    }
+
     // MARK: - Networking: Load Reference Data
     @MainActor
     func loadReferenceData() async {
@@ -110,7 +138,6 @@ final class EditProfileViewModel {
             let refData = try await getReferenceDataUseCase.execute()
             guard let profile = observeProfileUseCase.execute().currentProfile else { return }
             
-            // Now we inject the full lists into the Chip Managers so the search sheets work
             self.conditions.configure(availableItems: refData.diseases, existingSelections: profile.diseases)
             self.allergies.configure(availableItems: refData.allergies, existingSelections: profile.allergies)
         } catch {
@@ -154,6 +181,7 @@ final class EditProfileViewModel {
             || snapshot.weightKg != current.weightKg
             || snapshot.allergyIds != current.allergyIds
             || snapshot.diseaseIds != current.diseaseIds
+            || avatarData != nil
     }
 
     func validateFields() -> Bool {
@@ -171,10 +199,11 @@ final class EditProfileViewModel {
         errorMessage = nil
 
         do {
-            // Firing this automatically updates the SharedStore in the Repository!
             try await updateProfileUseCase.execute(update: buildUpdateRequest())
-            populateFromStore() // Re-capture the new baseline
-            print("Profile saved and synced globally!")
+            // Reset temporary image data states after successful sync
+            self.avatarData = nil
+            self.selectedPhotoItem = nil
+            populateFromStore()
         } catch {
             self.errorMessage = error.localizedDescription
         }
