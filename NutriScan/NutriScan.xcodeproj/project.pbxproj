@@ -43,7 +43,6 @@
 		2C7708F73015782A00A8FCCE /* MenuIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F63015782A00A8FCCE /* MenuIconBadge.swift */; };
 		2C7708F93015783B00A8FCCE /* MenuRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F83015783B00A8FCCE /* MenuRowView.swift */; };
 		2C77D28B30159E18005AF888 /* FamilyMemberInput+DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77D28A30159E18005AF888 /* FamilyMemberInput+DTO.swift */; };
-		2C77D28F30159E3F005AF888 /* ProfileRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77D28E30159E3F005AF888 /* ProfileRepositoryProtocol.swift */; };
 		2C78ECDE300E6C700092E6B2 /* AuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECDA300E6C700092E6B2 /* AuthEndpoint.swift */; };
 		2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */; };
 		2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */; };
@@ -452,7 +451,6 @@
 		D48A24463011595F0004D95E /* ProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A24453011595C0004D95E /* ProfileAssembly.swift */; };
 		D4948B2F30190623003F86D7 /* UploadProfileImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4948B2E3019061F003F86D7 /* UploadProfileImageUseCase.swift */; };
 		D49D9EFC3013E18300ACE567 /* FamilyMemberInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9EFB3013E18000ACE567 /* FamilyMemberInput.swift */; };
-		D49D9F043013E2E000ACE567 /* GetProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F033013E2DE00ACE567 /* GetProfileUseCase.swift */; };
 		D49D9F0C3013E36D00ACE567 /* FamilyMemberRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F0B3013E36A00ACE567 /* FamilyMemberRequestDTO.swift */; };
 		D49D9F103013E39400ACE567 /* FamilyMembersUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F0F3013E39200ACE567 /* FamilyMembersUpdateRequestDTO.swift */; };
 		D49D9F1D3014092600ACE567 /* OpenRightRoundedRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */; };
@@ -549,7 +547,6 @@
 		2C7708F63015782A00A8FCCE /* MenuIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuIconBadge.swift; sourceTree = "<group>"; };
 		2C7708F83015783B00A8FCCE /* MenuRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRowView.swift; sourceTree = "<group>"; };
 		2C77D28A30159E18005AF888 /* FamilyMemberInput+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FamilyMemberInput+DTO.swift"; sourceTree = "<group>"; };
-		2C77D28E30159E3F005AF888 /* ProfileRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRepositoryProtocol.swift; sourceTree = "<group>"; };
 		2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequestDTO.swift; sourceTree = "<group>"; };
 		2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResponseDTO.swift; sourceTree = "<group>"; };
 		2C78ECD5300E6C700092E6B2 /* RegisterRequest+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RegisterRequest+DTO.swift"; sourceTree = "<group>"; };
@@ -963,7 +960,6 @@
 		D48A24453011595C0004D95E /* ProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAssembly.swift; sourceTree = "<group>"; };
 		D4948B2E3019061F003F86D7 /* UploadProfileImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProfileImageUseCase.swift; sourceTree = "<group>"; };
 		D49D9EFB3013E18000ACE567 /* FamilyMemberInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberInput.swift; sourceTree = "<group>"; };
-		D49D9F033013E2DE00ACE567 /* GetProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetProfileUseCase.swift; sourceTree = "<group>"; };
 		D49D9F0B3013E36A00ACE567 /* FamilyMemberRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberRequestDTO.swift; sourceTree = "<group>"; };
 		D49D9F0F3013E39200ACE567 /* FamilyMembersUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMembersUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		D49D9F1C3014092200ACE567 /* OpenRightRoundedRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRightRoundedRect.swift; sourceTree = "<group>"; };
@@ -1087,7 +1083,6 @@
 		10C73D0CFF5CD458CDF25398 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				2C77D28E30159E3F005AF888 /* ProfileRepositoryProtocol.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -2509,7 +2504,6 @@
 		8AD06DE6859F0EED750F93AF /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
-				D49D9F033013E2DE00ACE567 /* GetProfileUseCase.swift */,
 				D489D1D23018E9C200E7A1DF /* UpdateStreakUseCase.swift */,
 				D489D1D03018E95900E7A1DF /* GetStreakUseCase.swift */,
 				D489D1CE3018E92B00E7A1DF /* UpdateFamilyMembersUseCase.swift */,
@@ -4075,7 +4069,6 @@
 				D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */,
 				9C90AFAEDCF85BFBCA64A9B1 /* BackButton.swift in Sources */,
 				8FB0F03530168DBC00D84471 /* FavoritesScanItemDTO.swift in Sources */,
-				2C77D28F30159E3F005AF888 /* ProfileRepositoryProtocol.swift in Sources */,
 				D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */,
 				0BD259136AB8037FE9FE20E3 /* BarcodeScannerView.swift in Sources */,
 				8F48266B30150E12009F3A11 /* SwipeToActionButton.swift in Sources */,
@@ -4101,7 +4094,6 @@
 				901C9D543FA7B839A1109594 /* CornerBracketsShape.swift in Sources */,
 				8FB0F03A3016979500D84471 /* FavoritesEndpoint.swift in Sources */,
 				8FB0F03330168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift in Sources */,
-				D49D9F043013E2E000ACE567 /* GetProfileUseCase.swift in Sources */,
 				220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */,
 				DC73ACADE5B3296996297205 /* CustomPuffedButton.swift in Sources */,
 				7D2767545C9B74D3BA022068 /* CustomTextField.swift in Sources */,
