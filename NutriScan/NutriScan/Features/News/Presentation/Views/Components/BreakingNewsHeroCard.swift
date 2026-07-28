@@ -86,8 +86,6 @@ struct BreakingNewsHeroCard: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 260)
-                        .clipped()
                 default:
                     Rectangle()
                         .fill(
@@ -97,9 +95,11 @@ struct BreakingNewsHeroCard: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(height: 260)
                 }
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 260)
+            .clipped()
         } else {
             Rectangle()
                 .fill(
@@ -109,6 +109,7 @@ struct BreakingNewsHeroCard: View {
                         endPoint: .bottomTrailing
                     )
                 )
+                .frame(maxWidth: .infinity)
                 .frame(height: 260)
                 .overlay {
                     Image(systemName: "newspaper")

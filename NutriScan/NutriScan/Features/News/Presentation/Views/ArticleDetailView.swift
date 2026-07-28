@@ -95,6 +95,7 @@ struct ArticleDetailView: View {
                     .foregroundStyle(.white)
                     .lineLimit(4)
                     .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 6) {
@@ -175,6 +176,7 @@ struct ArticleDetailView: View {
                         .font(.system(size: 16))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                         .lineSpacing(6)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -198,6 +200,7 @@ struct ArticleDetailView: View {
                             .font(.system(size: 16))
                             .foregroundStyle(NewsFeedPalette.textPrimary)
                             .lineSpacing(6)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
@@ -270,8 +273,6 @@ struct ArticleDetailView: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 340)
-                        .clipped()
                 default:
                     Rectangle()
                         .fill(
@@ -281,9 +282,11 @@ struct ArticleDetailView: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(height: 340)
                 }
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 340)
+            .clipped()
         } else {
             Rectangle()
                 .fill(
@@ -293,6 +296,7 @@ struct ArticleDetailView: View {
                         endPoint: .bottomTrailing
                     )
                 )
+                .frame(maxWidth: .infinity)
                 .frame(height: 340)
                 .overlay {
                     Image(systemName: "newspaper")
