@@ -6,50 +6,50 @@ struct ScanScreen: View {
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
 
+    private let viewfinderHeight: CGFloat = 520
+
     init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Camera feed (full screen background)
-                BarcodeScannerView(
-                    onDetect: { code, position in
-                        viewModel.onBarcodeDetected(code, at: position)
-                    },
-                    onPhotoCapture: { imageData in
-                        viewModel.onPhotoCaptured(imageData)
-                    }
-                )
-                .ignoresSafeArea()
-
-                // Dark overlay with scan window cutout
-                ScanMask(windowHeight: 260)
-
-                // Viewfinder with corner brackets + scanning wave
-                viewfinder
-
-                // Barcode detected overlay pill
-                if let barcode = viewModel.detectedBarcode,
-                   let position = viewModel.barcodePosition {
-                    barcodeOverlay(barcode: barcode, position: position)
-                        .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
+        ZStack {
+            // Camera feed (full screen background)
+            BarcodeScannerView(
+                onDetect: { code, position in
+                    viewModel.onBarcodeDetected(code, at: position)
+                },
+                onPhotoCapture: { imageData in
+                    viewModel.onPhotoCaptured(imageData)
                 }
+            )
+            .ignoresSafeArea()
 
-                // Top bar
-                VStack {
-                    topBar
-                    Spacer()
-                }
+            // Dark overlay with scan window cutout
+            ScanMask(windowHeight: viewfinderHeight)
 
-                // Bottom card
-                VStack {
-                    Spacer()
-                    scanStateCard
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 32)
-                }
+            // Viewfinder with corner brackets + scanning wave
+            viewfinder
+
+            // Barcode detected overlay pill
+            if let barcode = viewModel.detectedBarcode,
+               let position = viewModel.barcodePosition {
+                barcodeOverlay(barcode: barcode, position: position)
+                    .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
+            }
+
+            // Top bar (fixed at top)
+            VStack {
+                topBar
+                Spacer()
+            }
+
+            // Product card (fixed at bottom, not affected by other elements)
+            VStack {
+                Spacer()
+                scanStateCard
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 40)
             }
         }
         .toolbar(.hidden, for: .navigationBar)
@@ -77,21 +77,21 @@ struct ScanScreen: View {
             Spacer()
             ZStack {
                 // Viewfinder rectangle border
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 20)
                     .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                    .frame(height: 260)
+                    .frame(height: viewfinderHeight)
 
                 // Corner brackets
-                CornerBracketsShape(cornerLength: 28, cornerRadius: 16)
+                CornerBracketsShape(cornerLength: 32, cornerRadius: 20)
                     .stroke(Color.white, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
-                    .frame(height: 260)
+                    .frame(height: viewfinderHeight)
 
                 // Scanning wave animation
                 scanningWave
-                    .frame(height: 260)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .frame(height: viewfinderHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, 20)
             Spacer()
         }
     }
@@ -101,9 +101,9 @@ struct ScanScreen: View {
     private var scanningWave: some View {
         TimelineView(.animation(minimumInterval: 1.0 / 60.0)) { timeline in
             let time = timeline.date.timeIntervalSinceReferenceDate
-            let cycle = time.remainder(dividingBy: 2.0)
-            let progress = cycle / 2.0
-            let yOffset = (progress - 0.5) * 260
+            let cycle = time.remainder(dividingBy: 2.5)
+            let progress = cycle / 2.5
+            let yOffset = (progress - 0.5) * viewfinderHeight
 
             GeometryReader { geo in
                 // Main bright line
@@ -130,28 +130,28 @@ struct ScanScreen: View {
                         LinearGradient(
                             colors: [
                                 Color.Teal.teal1000.opacity(0),
-                                Color.Teal.teal1000.opacity(0.15)
+                                Color.Teal.teal1000.opacity(0.12)
                             ],
                             startPoint: .top,
                             endPoint: .bottom
                         )
                     )
-                    .frame(height: 40)
-                    .offset(y: yOffset - 40)
+                    .frame(height: 60)
+                    .offset(y: yOffset - 60)
 
                 // Glow below the line
                 Rectangle()
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color.Teal.teal1000.opacity(0.15),
+                                Color.Teal.teal1000.opacity(0.12),
                                 Color.Teal.teal1000.opacity(0)
                             ],
                             startPoint: .top,
                             endPoint: .bottom
                         )
                     )
-                    .frame(height: 40)
+                    .frame(height: 60)
                     .offset(y: yOffset + 2)
             }
         }

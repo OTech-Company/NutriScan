@@ -12,17 +12,17 @@ protocol ProductDetailsService {
     func updateFavorite(scanId: String, isFavorite: Bool) async throws
 }
 
-class ProductDetailsServiceImpl : ProductDetailsService {
+class ProductDetailsServiceImpl: ProductDetailsService {
     func fetchScanDetails(scanId: String) async throws -> ProductDetailsScanDTO {
-        let response : ProductDetailsResponse
-        
-        response = try await NetworkService.shared.request(ProductDetailsEndPoint.getProductDetails(scanId: scanId))
-        return response.product
+        let response: ProductDetailsScanDTO = try await NetworkService.shared.request(
+            ProductDetailsEndPoint.getProductDetails(scanId: scanId)
+        )
+        return response
     }
-    
+
     func updateFavorite(scanId: String, isFavorite: Bool) async throws {
-        // We do not need the response payload but NetworkService requires a Decodable.
-        // It returns the scan DTO directly based on swagger docs.
-        let _ : ProductDetailsScanDTO = try await NetworkService.shared.request(ProductDetailsEndPoint.updateFavorite(scanId: scanId, isFavorite: isFavorite))
+        let _: ProductDetailsScanDTO = try await NetworkService.shared.request(
+            ProductDetailsEndPoint.updateFavorite(scanId: scanId, isFavorite: isFavorite)
+        )
     }
 }

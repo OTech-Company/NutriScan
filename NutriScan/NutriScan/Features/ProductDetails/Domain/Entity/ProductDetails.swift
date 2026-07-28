@@ -57,6 +57,6 @@ extension ProductDetails {
         self.fiberGrams = dto.nutritionFacts?.fiberGrams ?? 0
         self.sugarG = dto.nutritionFacts?.sugarG ?? 0
         self.sodiumMg = dto.nutritionFacts?.sodiumMg ?? 0
-        self.isFavorite = dto.favorite
+        self.isFavorite = dto.favorite ?? false
     }
 }
