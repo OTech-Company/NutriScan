@@ -15,7 +15,7 @@ final class ChipSelectionManager {
     var showSearchSheet = false
 
     /// Reference items (id + name) used to map selected chip names back to backend IDs.
-    private var availableItems: [ReferenceItem] = []
+    private(set) var availableItems: [ReferenceItem] = []
 
     func configure(availableItems: [ReferenceItem], existingSelections: [ReferenceItem]) {
         self.availableItems = availableItems
