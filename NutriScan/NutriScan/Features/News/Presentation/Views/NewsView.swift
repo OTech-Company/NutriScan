@@ -25,12 +25,16 @@ struct NewsView: View {
             NewsFeedPalette.background.ignoresSafeArea()
 
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 0) {
                     searchBarButton
+                        .padding(.top, 8)
+                        .padding(.bottom, 20)
+
                     breakingNewsSection
+                        .padding(.bottom, 24)
+
                     recommendationSection
                 }
-                .padding(.top, 8)
                 .padding(.bottom, 24)
             }
         }
@@ -89,7 +93,23 @@ struct NewsView: View {
 
     private var breakingNewsSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            sectionHeader(title: "Breaking News", showSeeAll: true)
+            HStack {
+                Text("Breaking News")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+                Spacer()
+                Button {} label: {
+                    HStack(spacing: 4) {
+                        Text("See All")
+                            .font(NewsFeedTypography.chip)
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 10, weight: .semibold))
+                    }
+                    .foregroundStyle(NewsFeedPalette.accent)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
             if viewModel.viewState == .loading || viewModel.viewState == .idle {
                 BreakingNewsHeroSkeleton()
@@ -111,10 +131,25 @@ struct NewsView: View {
     @ViewBuilder
     private var recommendationSection: some View {
         if viewModel.isLoadingPersonalized {
-            recommendationSkeleton
+            VStack(alignment: .leading, spacing: 14) {
+                Text("Recommendation")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+
+                VStack(spacing: 10) {
+                    ForEach(0..<3, id: \.self) { _ in
+                        CompactArticleRowSkeleton()
+                    }
+                }
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            }
         } else if !viewModel.personalizedArticles.isEmpty {
             VStack(alignment: .leading, spacing: 14) {
-                sectionHeader(title: "Recommendation", showSeeAll: false)
+                Text("Recommendation")
+                    .font(.system(size: 20, weight: .bold, design: .rounded))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
                 VStack(spacing: 10) {
                     ForEach(viewModel.personalizedArticles.prefix(5)) { article in
@@ -129,43 +164,6 @@ struct NewsView: View {
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
             }
         }
-    }
-
-    private var recommendationSkeleton: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            sectionHeader(title: "Recommendation", showSeeAll: false)
-
-            VStack(spacing: 10) {
-                ForEach(0..<3, id: \.self) { _ in
-                    CompactArticleRowSkeleton()
-                }
-            }
-            .padding(.horizontal, NewsFeedMetrics.screenPadding)
-        }
-    }
-
-    // MARK: - Helpers
-
-    private func sectionHeader(title: String, showSeeAll: Bool) -> some View {
-        HStack {
-            Text(title)
-                .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundStyle(NewsFeedPalette.textPrimary)
-            Spacer()
-            if showSeeAll {
-                Button {} label: {
-                    HStack(spacing: 4) {
-                        Text("See All")
-                            .font(NewsFeedTypography.chip)
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 10, weight: .semibold))
-                    }
-                    .foregroundStyle(NewsFeedPalette.accent)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(.horizontal, NewsFeedMetrics.screenPadding)
     }
 }
 
