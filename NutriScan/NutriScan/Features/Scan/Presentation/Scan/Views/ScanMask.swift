@@ -3,12 +3,13 @@ import SwiftUI
 /// Dark scrim covering the full screen with a clear rounded "window"
 /// cut out where the camera scan target sits.
 struct ScanMask: View {
+    var windowHeight: CGFloat = 260
+    var windowCornerRadius: CGFloat = 16
+
     var body: some View {
         GeometryReader { geo in
-            let windowHeight: CGFloat = 260
-            let windowWidth = geo.size.width - 80
-            
-            let windowY = ((geo.size.height - windowHeight) / 2) + 5
+            let windowWidth = geo.size.width - 48
+            let windowY = (geo.size.height - windowHeight) / 2
 
             Canvas { context, size in
                 var path = Rectangle().path(in: CGRect(origin: .zero, size: size))
@@ -18,8 +19,8 @@ struct ScanMask: View {
                     width: windowWidth,
                     height: windowHeight
                 )
-                path.addPath(RoundedRectangle(cornerRadius: 16).path(in: windowRect))
-                context.fill(path, with: .color(.black.opacity(0.45)), style: FillStyle(eoFill: true))
+                path.addPath(RoundedRectangle(cornerRadius: windowCornerRadius).path(in: windowRect))
+                context.fill(path, with: .color(.black.opacity(0.5)), style: FillStyle(eoFill: true))
             }
         }
         .allowsHitTesting(false)
@@ -27,6 +28,8 @@ struct ScanMask: View {
 }
 
 #Preview {
-    ScanMask()
-        .background(Color.gray)
+    ZStack {
+        Color.gray.ignoresSafeArea()
+        ScanMask()
+    }
 }
