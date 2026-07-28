@@ -78,20 +78,28 @@ struct ProductMatchCard: View {
     }
 
     private var statusBadge: some View {
-        Text(status.rawValue.capitalized)
+        Text(status.rawValue)
             .font(.custom("LexendDeca-Medium", size: 12))
-            .foregroundColor(.white)
+            .foregroundColor(badgeTextColor)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
             .background(badgeColor)
             .clipShape(Capsule())
     }
 
+    // MARK: - Dynamic Colors
+    
+    private var badgeTextColor: Color {
+        switch status {
+        case .processing: return Color(red: 0.1, green: 0.2, blue: 0.25) // Dark color for contrast against yellow
+        case .safe, .unsafe: return .white
+        }
+    }
+
     private var badgeColor: Color {
         switch status {
-        case .processing: return .orange
-        case .safe:       return Color.Teal.teal700
-        case .unsafe:     return Color.Teal.teal700
+        case .processing: return .yellow
+        case .safe, .unsafe: return Color.Teal.teal400 // Brighter cyan to match image
         }
     }
 
@@ -100,8 +108,12 @@ struct ProductMatchCard: View {
         switch status {
         case .processing:
             ProgressView()
-                .tint(.white)
+                .progressViewStyle(CircularProgressViewStyle(tint: Color.Teal.teal400))
                 .frame(width: 48, height: 48)
+                .background(
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(Color.black.opacity(0.15)) // Darker container for the spinner
+                )
 
         case .safe:
             Button {
@@ -113,7 +125,7 @@ struct ProductMatchCard: View {
                     .frame(width: 48, height: 48)
                     .background(
                         RoundedRectangle(cornerRadius: 14)
-                            .fill(Color.Teal.teal700)
+                            .fill(Color.Teal.teal400)
                     )
             }
 
@@ -127,7 +139,7 @@ struct ProductMatchCard: View {
                     .frame(width: 48, height: 48)
                     .background(
                         RoundedRectangle(cornerRadius: 14)
-                            .fill(Color.Teal.teal700)
+                            .fill(Color.Teal.teal400)
                     )
             }
         }
