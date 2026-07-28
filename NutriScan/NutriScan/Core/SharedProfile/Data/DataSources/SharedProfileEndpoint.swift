@@ -1,23 +1,24 @@
 //
-//  EditProfileEndpoint.swift
+//  SharedProfileEndpoint.swift
 //  NutriScan
+//
+//  Created by Mina_Wagdy on 28/07/2026.
 //
 
 import Foundation
 
-enum EditProfileEndpoint: APIEndpoint {
+enum SharedProfileEndpoint: APIEndpoint {
     case getProfile
     case updateProfile(EditProfileUpdateRequestDTO)
+    case updateFamilyMembers(FamilyMembersUpdateRequestDTO)
     case getAllergies
     case getDiseases
     
-    var baseURL: String {
-        return AppNetworkConfig.core.baseURL
-    }
+    var baseURL: String { AppNetworkConfig.core.baseURL }
     
     var path: String {
         switch self {
-        case .getProfile, .updateProfile:
+        case .getProfile, .updateProfile, .updateFamilyMembers:
             return "/api/v1/users/profile"
         case .getAllergies:
             return "/api/v1/allergies"
@@ -30,7 +31,7 @@ enum EditProfileEndpoint: APIEndpoint {
         switch self {
         case .getProfile, .getAllergies, .getDiseases:
             return .get
-        case .updateProfile:
+        case .updateProfile, .updateFamilyMembers:
             return .patch
         }
     }
@@ -41,11 +42,10 @@ enum EditProfileEndpoint: APIEndpoint {
             return .none
         case .updateProfile(let requestDTO):
             return .json(requestDTO)
+        case .updateFamilyMembers(let dto):
+            return .json(dto)
         }
     }
     
-    // Auth token is required for all these endpoints
-    var requiresAuth: Bool {
-        return true
-    }
+    var requiresAuth: Bool { true }
 }

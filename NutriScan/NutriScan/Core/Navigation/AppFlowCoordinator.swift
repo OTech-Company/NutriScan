@@ -14,8 +14,17 @@ import SwiftUI
 final class AppFlowCoordinator: ObservableObject {
     @Published private(set) var flow: AppFlow = .splash
     @Published var selectedTab: AppTab = .home
+    
+    // Inject the use case (you'll bind this in your DI setup)
+    private let fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol
 
-    init() {
+    init(
+        fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol =
+            DIContainer.shared.resolve(
+                type: FetchAndCacheProfileUseCaseProtocol.self)
+    ) {
+        self.fetchAndCacheProfileUseCase = fetchAndCacheProfileUseCase
+
         NotificationCenter.default.addObserver(
             forName: .userDidSessionExpire,
             object: nil,
@@ -46,19 +55,25 @@ final class AppFlowCoordinator: ObservableObject {
         // or a dedicated flag from your ProfileRepository
         UserDefaults.standard.bool(forKey: "hasCompletedProfileSetup")
     }
-    
 
     /// Called once, e.g. after Splash finishes its minimum display time
     /// and/or any startup checks (session validation, remote config, etc).
+    @MainActor
     func finishSplash() {
-        if !hasCompletedOnboarding {
-            flow = .onboarding
-        } else if !isAuthenticated {
-            flow = .auth
-        } else if !hasCompletedProfileSetup {
-            flow = .profileSetup
-        } else {
-            flow = .main
+        Task {
+            if !hasCompletedOnboarding {
+                flow = .onboarding
+            } else if !isAuthenticated {
+                flow = .auth
+            } else if !hasCompletedProfileSetup {
+                flow = .profileSetup
+            } else {
+                // EAGER LOAD: Fetch the profile data silently.
+                // If it fails (e.g. no internet), we still let them into the main app
+                // where the Home screen can handle the empty cache gracefully.
+                _ = try? await fetchAndCacheProfileUseCase.execute()
+                flow = .main
+            }
         }
     }
 
@@ -79,19 +94,26 @@ final class AppFlowCoordinator: ObservableObject {
             flow = .main
         }
     }
-    
+
     func finishProfileSetup() {
-        if let email = UserDefaults.standard.string(forKey: "currentSetupEmail") {
-            UserDefaults.standard.removeObject(forKey: "isPendingProfileSetup_\(email)")
+        if let email = UserDefaults.standard.string(forKey: "currentSetupEmail")
+        {
+            UserDefaults.standard.removeObject(
+                forKey: "isPendingProfileSetup_\(email)")
             UserDefaults.standard.removeObject(forKey: "currentSetupEmail")
         }
         UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
         flow = .main
     }
-    
+
     func logout() {
         try? KeychainManager.shared.delete(key: .accessToken)
         try? KeychainManager.shared.delete(key: .refreshToken)
+
+        // Clear the shared cache so the next user doesn't see old data
+        let store = DIContainer.shared.resolve(type: SharedProfileStore.self)
+        store.clear()
+
         flow = .auth
     }
 }
