@@ -12,25 +12,19 @@ struct HomeGreetingSection: View {
     var body: some View {
         HStack(spacing: 12) {
 
-            // User Profile Image or Fallback Icon
             Group {
-                if let urlString = userImageURL, let url = URL(string: urlString) {
-                    AsyncImage(url: url) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .scaledToFill()
-                        default:
-                            fallbackImageView
-                        }
-                    }
+                if let urlString = userImageURL, !urlString.isEmpty {
+                    CachedImage(
+                        urlString: urlString,
+                        failureImageName: "person.fill",
+                        contentMode: .fill
+                    )
                 } else {
                     fallbackImageView
                 }
             }
             .frame(width: 48, height: 48)
-            .clipShape(Circle())
+            .clipShape(Circle()) // Ensures the CachedImage remains perfectly round
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("Hello, \(userName)!")
@@ -61,18 +55,4 @@ struct HomeGreetingSection: View {
                     .font(.system(size: 22))
             )
     }
-}
-
-#Preview("Light") {
-    HomeGreetingSection(userName: "Youssef", userImageURL: nil)
-        .padding(20)
-        .background(Color.Teal.teal100)
-        .preferredColorScheme(.light)
-}
-
-#Preview("Dark") {
-    HomeGreetingSection(userName: "Youssef", userImageURL: nil)
-        .padding(20)
-        .background(Color.Teal.teal1600)
-        .preferredColorScheme(.dark)
 }

@@ -34,16 +34,19 @@ final class ProfileViewModel {
     }
     
     var state: ProfileState {
-        // Bridge for your existing UI components that expect a ProfileState object
-        ProfileState(
-            fullName: self.fullName,
-            familyMembers: self.familyMembers,
-            streakDays: self.streakDays,
-            avatarURL: observeProfileUseCase.execute().currentProfile?.imageUrl ?? AppConstants.defaultUserAvatarURL,
-            isLoading: self.isMutating,
-            errorMessage: self.errorMessage
-        )
-    }
+            let rawURL = observeProfileUseCase.execute().currentProfile?.imageUrl
+            
+            let cleanURL = (rawURL?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true) ? nil : rawURL
+            
+            return ProfileState(
+                fullName: self.fullName,
+                familyMembers: self.familyMembers,
+                streakDays: self.streakDays,
+                avatarURL: cleanURL ?? AppConstants.defaultUserAvatarURL,
+                isLoading: self.isMutating,
+                errorMessage: self.errorMessage
+            )
+        }
 
     init(
         observeProfileUseCase: ObserveProfileUseCaseProtocol = DIContainer.shared.resolve(type: ObserveProfileUseCaseProtocol.self),

@@ -10,6 +10,7 @@ import Foundation
 final class SharedProfileRepository: SharedProfileRepositoryProtocol {
     private let dataSource: SharedProfileDataSourceProtocol
     private let sharedStore: SharedProfileStore
+    private var imageCacheVersion: String = ""
 
     init(
         dataSource: SharedProfileDataSourceProtocol = DIContainer.shared
@@ -21,25 +22,42 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
         self.sharedStore = sharedStore
     }
 
+    /// Helper to attach cache busting query parameters to the profile image URL
+    private func processProfile(_ dto: SharedProfileResponseDTO) -> ProfileInfo
+    {
+        var domainProfile = dto.toDomain()
+        if !imageCacheVersion.isEmpty, let originalURL = domainProfile.imageUrl,
+            !originalURL.isEmpty
+        {
+            let separator = originalURL.contains("?") ? "&" : "?"
+            domainProfile.imageUrl =
+                "\(originalURL)\(separator)v=\(imageCacheVersion)"
+        }
+        return domainProfile
+    }
+
     func getProfile() async throws {
         let dto: SharedProfileResponseDTO = try await dataSource.getProfile()
-        await MainActor.run { self.sharedStore.currentProfile = dto.toDomain() }
+        let profile = processProfile(dto)
+        await MainActor.run { self.sharedStore.currentProfile = profile }
     }
 
     func updateProfile(update: ProfileUpdate) async throws {
         let requestDTO = update.toRequestDTO()
         let dto: SharedProfileResponseDTO = try await dataSource.updateProfile(
             requestDTO: requestDTO)
-        await MainActor.run { self.sharedStore.currentProfile = dto.toDomain() }
+        let profile = processProfile(dto)
+        await MainActor.run { self.sharedStore.currentProfile = profile }
     }
 
     func updateFamilyMembers(_ members: [FamilyMemberInput]) async throws {
         let requestDTO = FamilyMembersUpdateRequestDTO(
-            familyMembers: members.map { $0.toRequestDTO() }  // Assuming you kept your FamilyMemberInput+DTO mapper
+            familyMembers: members.map { $0.toRequestDTO() }
         )
         let dto: SharedProfileResponseDTO =
             try await dataSource.updateFamilyMembers(requestDTO)
-        await MainActor.run { self.sharedStore.currentProfile = dto.toDomain() }
+        let profile = processProfile(dto)
+        await MainActor.run { self.sharedStore.currentProfile = profile }
     }
 
     func getAllergies() async throws -> [ReferenceItem] {
@@ -62,17 +80,22 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
     func updateStreak() async throws {
         try await dataSource.updateStreak()
     }
+
     func uploadProfileImage(data: Data) async throws {
-        // 1. Upload the raw image data
+        // 1. Upload the raw image data[cite: 35]
         try await dataSource.uploadProfileImage(data: data)
 
-        // 2. Fetch the updated profile so the backend provides the new image URL
+        // 2. Generate a new cache version to force image reloading across screens[cite: 35]
+        self.imageCacheVersion = UUID().uuidString
+
+        // 3. Fetch the updated profile so the backend provides the new image URL[cite: 35]
         let updatedProfileDTO: SharedProfileResponseDTO =
             try await dataSource.getProfile()
+        let profile = processProfile(updatedProfileDTO)
 
-        // 3. Push the fresh profile to the reactive store to instantly update the UI globally
+        // 4. Push the fresh profile with cache buster to the reactive store[cite: 35]
         await MainActor.run {
-            self.sharedStore.currentProfile = updatedProfileDTO.toDomain()
+            self.sharedStore.currentProfile = profile
         }
     }
 }

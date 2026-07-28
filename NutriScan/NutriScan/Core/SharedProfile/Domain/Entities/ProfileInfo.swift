@@ -13,7 +13,7 @@ struct ProfileInfo: Identifiable, Equatable {
     let username: String
     let firstName: String
     let lastName: String
-    let imageUrl: String?
+    var imageUrl: String?
     let dateOfBirth: Date?
     let gender: String?
     let heightCm: Double?
