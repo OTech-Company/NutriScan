@@ -38,8 +38,10 @@ struct FavoritesView: View {
             }
         }
         .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
-        .task {
-            await viewModel.loadFavorites()
+        .onAppear {
+            Task {
+                await viewModel.loadIfNeeded()
+            }
         }
     }
 }

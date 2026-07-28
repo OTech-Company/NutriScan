@@ -53,6 +53,7 @@ final class ProductDetailsViewModel {
         Task {
             do {
                 try await repo.updateFavorite(scanId: scanId, isFavorite: newFavoriteStatus)
+                FavoritesNotifier.shared.setNeedsRefresh()
             } catch {
                 // Revert on failure
                 var revertedState = self.uiState

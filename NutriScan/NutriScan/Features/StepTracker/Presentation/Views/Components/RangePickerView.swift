@@ -48,9 +48,9 @@ struct RangePickerView: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview {
-    @Previewable @State var range: StepHistoryRange = .lastWeek
-    RangePickerView(selectedRange: $range)
-        .padding()
-}
+//
+//#Preview {
+//    @Previewable @State var range: StepHistoryRange = .lastWeek
+//    RangePickerView(selectedRange: $range)
+//        .padding()
+//}

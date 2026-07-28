@@ -18,13 +18,20 @@ class FavoritesViewModel {
     private let pageSize: Int = 20
     
     let favoritesUseCase: FavoritesUseCaseProtocol
+    private let notifier: FavoritesNotifier
     
-    init(favoritesUseCase: FavoritesUseCaseProtocol) {
+    init(favoritesUseCase: FavoritesUseCaseProtocol, notifier: FavoritesNotifier = .shared) {
         self.favoritesUseCase = favoritesUseCase
+        self.notifier = notifier
+    }
+    
+    /// Called every time the screen appears. Only fetches if data is stale.
+    func loadIfNeeded() async {
+        guard notifier.needsRefresh else { return }
+        await loadFavorites()
     }
     
     func loadFavorites(search: String? = nil) async {
-        // If it's a new search or initial load, reset state.
         currentPage = 0
         hasMorePages = true
         favorites.removeAll()
@@ -33,6 +40,11 @@ class FavoritesViewModel {
             await fetchAllAndFilter(search: search)
         } else {
             await fetchFavorites()
+        }
+        
+        // Mark as refreshed only when not searching (search is a transient view)
+        if search == nil || search!.isEmpty {
+            notifier.didRefresh()
         }
     }
     

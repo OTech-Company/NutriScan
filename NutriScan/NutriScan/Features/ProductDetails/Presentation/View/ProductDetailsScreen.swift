@@ -10,7 +10,7 @@ import SwiftUI
 struct ProductDetailsScreen: View {
     @State private var viewModel: ProductDetailsViewModel
     @State private var activeAlert: ActiveAlert = .none
-    
+    @MainActor
     init(scanId: String) {
         _viewModel = State(wrappedValue: ProductDetailsViewModel(scanId: scanId))
     }

@@ -5,6 +5,7 @@ enum ScanRoute: Route {
     case scanDetail(scanId: String, imageData: Data)
 //    case scanDetailFromDTO(detail: ScanDetail, imageData: Data)
 
+    @MainActor
     @ViewBuilder
     var destination: some View {
         switch self {
