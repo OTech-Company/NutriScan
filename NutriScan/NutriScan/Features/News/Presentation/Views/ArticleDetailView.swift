@@ -5,6 +5,7 @@ struct ArticleDetailView: View {
     @EnvironmentObject var router: AppRouter
     @Environment(\.dismiss) private var dismiss
     @State private var isBookmarked = false
+    @State private var showShareSheet = false
 
     var body: some View {
         ZStack {
@@ -20,6 +21,11 @@ struct ArticleDetailView: View {
         .navigationBarBackButtonHidden(true)
         .overlay(alignment: .top) {
             topBar
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let url = article.articleURL {
+                ShareSheet(activityItems: [article.title, url])
+            }
         }
     }
 
@@ -41,19 +47,11 @@ struct ArticleDetailView: View {
             Spacer()
 
             HStack(spacing: 12) {
-                Button {
-                    isBookmarked.toggle()
-                } label: {
-                    Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 40, height: 40)
-                        .background(.black.opacity(0.3))
-                        .clipShape(Circle())
-                }
 
-                Button {} label: {
-                    Image(systemName: "ellipsis")
+                Button {
+                    showShareSheet = true
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(width: 40, height: 40)
@@ -71,14 +69,15 @@ struct ArticleDetailView: View {
     private var heroSection: some View {
         ZStack(alignment: .bottomLeading) {
             heroImage
-                .frame(height: 320)
+                .frame(width: UIScreen.main.bounds.width, height: 320)
+                .clipped()
 
             LinearGradient(
                 colors: [.black.opacity(0.5), .black.opacity(0.1), .clear],
                 startPoint: .bottom,
                 endPoint: .top
             )
-            .frame(height: 320)
+            .frame(width: UIScreen.main.bounds.width, height: 320)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(categoryName)
@@ -221,6 +220,16 @@ struct ArticleDetailView: View {
         }
         return "News"
     }
+}
+
+private struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 #Preview {

@@ -64,19 +64,6 @@ struct NewsView: View {
                         .font(.system(size: 18, weight: .medium))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                 }
-
-                Button {} label: {
-                    ZStack(alignment: .topTrailing) {
-                        Image(systemName: "bell")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.textPrimary)
-
-                        Circle()
-                            .fill(NewsFeedPalette.accent)
-                            .frame(width: 8, height: 8)
-                            .offset(x: 2, y: -2)
-                    }
-                }
             }
         }
         .padding(.horizontal, NewsFeedMetrics.screenPadding)
