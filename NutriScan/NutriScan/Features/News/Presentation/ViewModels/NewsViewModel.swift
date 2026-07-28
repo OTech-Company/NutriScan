@@ -1,11 +1,3 @@
-//
-//  NewsFeedViewModel.swift
-//  NewsFeed (Feature)
-//
-//  MVVM ViewModel: exposes @Published state the View binds to, and
-//  depends only on use case protocols (never on networking or DTOs).
-//
-
 import Foundation
 
 @MainActor
@@ -22,6 +14,8 @@ final class NewsViewModel: ObservableObject {
     // MARK: - Published state consumed by the View
 
     @Published private(set) var articles: [Article] = []
+    @Published private(set) var personalizedArticles: [Article] = []
+    @Published private(set) var isLoadingPersonalized: Bool = false
     @Published private(set) var viewState: ViewState = .idle
     @Published var selectedCategory: NewsFeedCategory = .topHealth {
         didSet {
@@ -33,25 +27,32 @@ final class NewsViewModel: ObservableObject {
     @Published var isSearching: Bool = false
     @Published var selectedArticleForReading: Article?
 
-    // MARK: - Dependencies (use cases, not repositories/data sources)
+    // MARK: - Dependencies
 
     private let fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol
     private let searchArticlesUseCase: SearchArticlesUseCaseProtocol
+    private let fetchPersonalizedNewsUseCase: FetchPersonalizedNewsUseCaseProtocol
     private var searchTask: Task<Void, Never>?
 
     init(
         fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol,
-        searchArticlesUseCase: SearchArticlesUseCaseProtocol
+        searchArticlesUseCase: SearchArticlesUseCaseProtocol,
+        fetchPersonalizedNewsUseCase: FetchPersonalizedNewsUseCaseProtocol = FetchPersonalizedNewsUseCase()
     ) {
         self.fetchTopHeadlinesUseCase = fetchTopHeadlinesUseCase
         self.searchArticlesUseCase = searchArticlesUseCase
+        self.fetchPersonalizedNewsUseCase = fetchPersonalizedNewsUseCase
     }
 
-    // MARK: - Intents (called by the View)
+    // MARK: - Intents
 
     func onAppear() async {
-        guard viewState == .idle else { return }
-        await loadCurrentCategory()
+        if viewState == .idle {
+            await loadCurrentCategory()
+        }
+        if personalizedArticles.isEmpty {
+            await loadPersonalizedNews()
+        }
     }
 
     func onPullToRefresh() async {
@@ -60,6 +61,7 @@ final class NewsViewModel: ObservableObject {
         } else {
             await loadCurrentCategory()
         }
+        await loadPersonalizedNews()
     }
 
     func onSearchTextChanged(_ newValue: String) {
@@ -71,7 +73,6 @@ final class NewsViewModel: ObservableObject {
             return
         }
 
-        // Debounce keystrokes so we don't fire a request per character.
         searchTask = Task { [weak self] in
             try? await Task.sleep(nanoseconds: 400_000_000)
             guard !Task.isCancelled else { return }
@@ -98,6 +99,16 @@ final class NewsViewModel: ObservableObject {
             apply(result)
         } catch {
             viewState = .error(error.localizedDescription)
+        }
+    }
+
+    private func loadPersonalizedNews() async {
+        isLoadingPersonalized = true
+        defer { isLoadingPersonalized = false }
+        do {
+            personalizedArticles = try await fetchPersonalizedNewsUseCase.execute()
+        } catch {
+            personalizedArticles = []
         }
     }
 
