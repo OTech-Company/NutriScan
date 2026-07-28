@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SharedProfileEndpoint: APIEndpoint {
+enum UserProfileEndpoint: APIEndpoint {
     case getProfile
     case updateProfile(EditProfileUpdateRequestDTO)
     case updateFamilyMembers(FamilyMembersUpdateRequestDTO)

@@ -7,23 +7,23 @@
 
 import Foundation
 
-final class SharedProfileRepository: SharedProfileRepositoryProtocol {
-    private let dataSource: SharedProfileDataSourceProtocol
-    private let sharedStore: SharedProfileStore
+final class UserProfileRepository: UserProfileRepositoryProtocol {
+    private let dataSource: UserProfileDataSourceProtocol
+    private let sharedStore: UserProfileStore
     private var imageCacheVersion: String = ""
 
     init(
-        dataSource: SharedProfileDataSourceProtocol = DIContainer.shared
-            .resolve(type: SharedProfileDataSourceProtocol.self),
-        sharedStore: SharedProfileStore = DIContainer.shared.resolve(
-            type: SharedProfileStore.self)
+        dataSource: UserProfileDataSourceProtocol = DIContainer.shared
+            .resolve(type: UserProfileDataSourceProtocol.self),
+        sharedStore: UserProfileStore = DIContainer.shared.resolve(
+            type: UserProfileStore.self)
     ) {
         self.dataSource = dataSource
         self.sharedStore = sharedStore
     }
 
     /// Helper to attach cache busting query parameters to the profile image URL
-    private func processProfile(_ dto: SharedProfileResponseDTO) -> ProfileInfo
+    private func processProfile(_ dto: UserProfileResponseDTO) -> ProfileInfo
     {
         var domainProfile = dto.toDomain()
         if !imageCacheVersion.isEmpty, let originalURL = domainProfile.imageUrl,
@@ -37,14 +37,14 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
     }
 
     func getProfile() async throws {
-        let dto: SharedProfileResponseDTO = try await dataSource.getProfile()
+        let dto: UserProfileResponseDTO = try await dataSource.getProfile()
         let profile = processProfile(dto)
         await MainActor.run { self.sharedStore.currentProfile = profile }
     }
 
     func updateProfile(update: ProfileUpdate) async throws {
         let requestDTO = update.toRequestDTO()
-        let dto: SharedProfileResponseDTO = try await dataSource.updateProfile(
+        let dto: UserProfileResponseDTO = try await dataSource.updateProfile(
             requestDTO: requestDTO)
         let profile = processProfile(dto)
         await MainActor.run { self.sharedStore.currentProfile = profile }
@@ -54,7 +54,7 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
         let requestDTO = FamilyMembersUpdateRequestDTO(
             familyMembers: members.map { $0.toRequestDTO() }
         )
-        let dto: SharedProfileResponseDTO =
+        let dto: UserProfileResponseDTO =
             try await dataSource.updateFamilyMembers(requestDTO)
         let profile = processProfile(dto)
         await MainActor.run { self.sharedStore.currentProfile = profile }
@@ -86,7 +86,7 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
 
         self.imageCacheVersion = UUID().uuidString
 
-        let updatedProfileDTO: SharedProfileResponseDTO =
+        let updatedProfileDTO: UserProfileResponseDTO =
             try await dataSource.getProfile()
         let profile = processProfile(updatedProfileDTO)
 

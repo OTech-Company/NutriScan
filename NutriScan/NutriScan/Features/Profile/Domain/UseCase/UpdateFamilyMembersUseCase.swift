@@ -12,9 +12,9 @@ protocol UpdateFamilyMembersUseCaseProtocol {
 }
 
 struct UpdateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol {
-    private let repository: SharedProfileRepositoryProtocol
+    private let repository: UserProfileRepositoryProtocol
     
-    init(repository: SharedProfileRepositoryProtocol = DIContainer.shared.resolve(type: SharedProfileRepositoryProtocol.self)) {
+    init(repository: UserProfileRepositoryProtocol = DIContainer.shared.resolve(type: UserProfileRepositoryProtocol.self)) {
         self.repository = repository
     }
     

@@ -7,7 +7,7 @@
 import Foundation
 
 
-extension SharedFamilyMemberDTO {
+extension UserFamilyMemberDTO {
     func toDomain() -> FamilyMember {
         FamilyMember(
             id: id,

@@ -426,18 +426,18 @@
 		D489D1A73018DF6C00E7A1DF /* ProfileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1A63018DF6A00E7A1DF /* ProfileInfo.swift */; };
 		D489D1A93018DF9100E7A1DF /* FamilyMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1A83018DF8E00E7A1DF /* FamilyMember.swift */; };
 		D489D1AB3018DFB800E7A1DF /* ReferenceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1AA3018DFB600E7A1DF /* ReferenceItem.swift */; };
-		D489D1AE3018E03700E7A1DF /* SharedProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1AD3018E03400E7A1DF /* SharedProfileStore.swift */; };
-		D489D1B23018E1D000E7A1DF /* SharedProfileResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1B13018E1CE00E7A1DF /* SharedProfileResponseDTO.swift */; };
+		D489D1AE3018E03700E7A1DF /* UserProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1AD3018E03400E7A1DF /* UserProfileStore.swift */; };
+		D489D1B23018E1D000E7A1DF /* UserProfileResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1B13018E1CE00E7A1DF /* UserProfileResponseDTO.swift */; };
 		D489D1B53018E20900E7A1DF /* SharedProfileResponseDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1B43018E1EF00E7A1DF /* SharedProfileResponseDTO+Domain.swift */; };
 		D489D1B73018E23700E7A1DF /* SharedFamilyMemberDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1B63018E23300E7A1DF /* SharedFamilyMemberDTO+Domain.swift */; };
-		D489D1B93018E26E00E7A1DF /* SharedFamilyMemberDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1B83018E26C00E7A1DF /* SharedFamilyMemberDTO.swift */; };
-		D489D1BD3018E2DA00E7A1DF /* SharedProfileRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1BC3018E2D800E7A1DF /* SharedProfileRepositoryProtocol.swift */; };
+		D489D1B93018E26E00E7A1DF /* UserFamilyMemberDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1B83018E26C00E7A1DF /* UserFamilyMemberDTO.swift */; };
+		D489D1BD3018E2DA00E7A1DF /* UserProfileRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1BC3018E2D800E7A1DF /* UserProfileRepositoryProtocol.swift */; };
 		D489D1C23018E45800E7A1DF /* FetchAndCacheProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1C13018E45500E7A1DF /* FetchAndCacheProfileUseCase.swift */; };
 		D489D1C43018E47300E7A1DF /* ObserveProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1C33018E47100E7A1DF /* ObserveProfileUseCase.swift */; };
-		D489D1C73018E4CB00E7A1DF /* SharedProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1C63018E4C800E7A1DF /* SharedProfileDataSource.swift */; };
+		D489D1C73018E4CB00E7A1DF /* UserProfileDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1C63018E4C800E7A1DF /* UserProfileDataSource.swift */; };
 		D489D1C93018E50E00E7A1DF /* SharedProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1C83018E50D00E7A1DF /* SharedProfileAssembly.swift */; };
-		D489D1CB3018E66D00E7A1DF /* SharedProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1CA3018E66B00E7A1DF /* SharedProfileEndpoint.swift */; };
-		D489D1CD3018E85200E7A1DF /* SharedProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1CC3018E85000E7A1DF /* SharedProfileRepository.swift */; };
+		D489D1CB3018E66D00E7A1DF /* UserProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1CA3018E66B00E7A1DF /* UserProfileEndpoint.swift */; };
+		D489D1CD3018E85200E7A1DF /* UserProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1CC3018E85000E7A1DF /* UserProfileRepository.swift */; };
 		D489D1CF3018E92D00E7A1DF /* UpdateFamilyMembersUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1CE3018E92B00E7A1DF /* UpdateFamilyMembersUseCase.swift */; };
 		D489D1D13018E96400E7A1DF /* GetStreakUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1D03018E95900E7A1DF /* GetStreakUseCase.swift */; };
 		D489D1D33018E9C500E7A1DF /* UpdateStreakUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1D23018E9C200E7A1DF /* UpdateStreakUseCase.swift */; };
@@ -935,18 +935,18 @@
 		D489D1A63018DF6A00E7A1DF /* ProfileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfo.swift; sourceTree = "<group>"; };
 		D489D1A83018DF8E00E7A1DF /* FamilyMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMember.swift; sourceTree = "<group>"; };
 		D489D1AA3018DFB600E7A1DF /* ReferenceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceItem.swift; sourceTree = "<group>"; };
-		D489D1AD3018E03400E7A1DF /* SharedProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileStore.swift; sourceTree = "<group>"; };
-		D489D1B13018E1CE00E7A1DF /* SharedProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileResponseDTO.swift; sourceTree = "<group>"; };
+		D489D1AD3018E03400E7A1DF /* UserProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileStore.swift; sourceTree = "<group>"; };
+		D489D1B13018E1CE00E7A1DF /* UserProfileResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileResponseDTO.swift; sourceTree = "<group>"; };
 		D489D1B43018E1EF00E7A1DF /* SharedProfileResponseDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedProfileResponseDTO+Domain.swift"; sourceTree = "<group>"; };
 		D489D1B63018E23300E7A1DF /* SharedFamilyMemberDTO+Domain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedFamilyMemberDTO+Domain.swift"; sourceTree = "<group>"; };
-		D489D1B83018E26C00E7A1DF /* SharedFamilyMemberDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedFamilyMemberDTO.swift; sourceTree = "<group>"; };
-		D489D1BC3018E2D800E7A1DF /* SharedProfileRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileRepositoryProtocol.swift; sourceTree = "<group>"; };
+		D489D1B83018E26C00E7A1DF /* UserFamilyMemberDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserFamilyMemberDTO.swift; sourceTree = "<group>"; };
+		D489D1BC3018E2D800E7A1DF /* UserProfileRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRepositoryProtocol.swift; sourceTree = "<group>"; };
 		D489D1C13018E45500E7A1DF /* FetchAndCacheProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchAndCacheProfileUseCase.swift; sourceTree = "<group>"; };
 		D489D1C33018E47100E7A1DF /* ObserveProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserveProfileUseCase.swift; sourceTree = "<group>"; };
-		D489D1C63018E4C800E7A1DF /* SharedProfileDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileDataSource.swift; sourceTree = "<group>"; };
+		D489D1C63018E4C800E7A1DF /* UserProfileDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileDataSource.swift; sourceTree = "<group>"; };
 		D489D1C83018E50D00E7A1DF /* SharedProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileAssembly.swift; sourceTree = "<group>"; };
-		D489D1CA3018E66B00E7A1DF /* SharedProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileEndpoint.swift; sourceTree = "<group>"; };
-		D489D1CC3018E85000E7A1DF /* SharedProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedProfileRepository.swift; sourceTree = "<group>"; };
+		D489D1CA3018E66B00E7A1DF /* UserProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileEndpoint.swift; sourceTree = "<group>"; };
+		D489D1CC3018E85000E7A1DF /* UserProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRepository.swift; sourceTree = "<group>"; };
 		D489D1CE3018E92B00E7A1DF /* UpdateFamilyMembersUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateFamilyMembersUseCase.swift; sourceTree = "<group>"; };
 		D489D1D03018E95900E7A1DF /* GetStreakUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStreakUseCase.swift; sourceTree = "<group>"; };
 		D489D1D23018E9C200E7A1DF /* UpdateStreakUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStreakUseCase.swift; sourceTree = "<group>"; };
@@ -3599,7 +3599,7 @@
 		D489D1AC3018E02900E7A1DF /* SharedProfileStore */ = {
 			isa = PBXGroup;
 			children = (
-				D489D1AD3018E03400E7A1DF /* SharedProfileStore.swift */,
+				D489D1AD3018E03400E7A1DF /* UserProfileStore.swift */,
 			);
 			path = SharedProfileStore;
 			sourceTree = "<group>";
@@ -3618,8 +3618,8 @@
 		D489D1B03018E1C400E7A1DF /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
-				D489D1B83018E26C00E7A1DF /* SharedFamilyMemberDTO.swift */,
-				D489D1B13018E1CE00E7A1DF /* SharedProfileResponseDTO.swift */,
+				D489D1B83018E26C00E7A1DF /* UserFamilyMemberDTO.swift */,
+				D489D1B13018E1CE00E7A1DF /* UserProfileResponseDTO.swift */,
 			);
 			path = DTOs;
 			sourceTree = "<group>";
@@ -3636,7 +3636,7 @@
 		D489D1BA3018E2B500E7A1DF /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				D489D1CC3018E85000E7A1DF /* SharedProfileRepository.swift */,
+				D489D1CC3018E85000E7A1DF /* UserProfileRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -3644,7 +3644,7 @@
 		D489D1BB3018E2CC00E7A1DF /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				D489D1BC3018E2D800E7A1DF /* SharedProfileRepositoryProtocol.swift */,
+				D489D1BC3018E2D800E7A1DF /* UserProfileRepositoryProtocol.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -3664,8 +3664,8 @@
 		D489D1C53018E4AC00E7A1DF /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				D489D1CA3018E66B00E7A1DF /* SharedProfileEndpoint.swift */,
-				D489D1C63018E4C800E7A1DF /* SharedProfileDataSource.swift */,
+				D489D1CA3018E66B00E7A1DF /* UserProfileEndpoint.swift */,
+				D489D1C63018E4C800E7A1DF /* UserProfileDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4083,10 +4083,10 @@
 				5190CD659C9CDE9928D88D48 /* Color+EditProfileSemantics.swift in Sources */,
 				2C7708F93015783B00A8FCCE /* MenuRowView.swift in Sources */,
 				3E8463A20AFA905AFCCABD44 /* Color+HomeSemantic.swift in Sources */,
-				D489D1AE3018E03700E7A1DF /* SharedProfileStore.swift in Sources */,
+				D489D1AE3018E03700E7A1DF /* UserProfileStore.swift in Sources */,
 				77343C2892B0D7DD403F50F5 /* Color+OnboardingSemantic.swift in Sources */,
 				6F1A8EDC3012C5BB00E1ACC5 /* RAGVoiceChatView.swift in Sources */,
-				D489D1CD3018E85200E7A1DF /* SharedProfileRepository.swift in Sources */,
+				D489D1CD3018E85200E7A1DF /* UserProfileRepository.swift in Sources */,
 				83BCED67AF3D310ED2A792A7 /* Color+SettingsSemantic.swift in Sources */,
 				8FB0F02C301685C800D84471 /* FavoritesRepository.swift in Sources */,
 				87CDFD7A6B4A9E03D3672A78 /* Colors+Extension.swift in Sources */,
@@ -4135,7 +4135,7 @@
 				6F1A8E863012AAE100E1ACC5 /* NewsAPIConfig.swift in Sources */,
 				D49E8C01301538F00043F8D4 /* DeleteTextButtonStyle.swift in Sources */,
 				6F1A8E873012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift in Sources */,
-				D489D1B93018E26E00E7A1DF /* SharedFamilyMemberDTO.swift in Sources */,
+				D489D1B93018E26E00E7A1DF /* UserFamilyMemberDTO.swift in Sources */,
 				6F1A8E883012AAE100E1ACC5 /* NewsViewModel.swift in Sources */,
 				6F1A8E893012AAE100E1ACC5 /* NewsResponseDTO.swift in Sources */,
 				6F1A8E8A3012AAE100E1ACC5 /* SearchArticlesUseCase.swift in Sources */,
@@ -4209,7 +4209,7 @@
 				D489D1DE3018F7F500E7A1DF /* HomeAssembly.swift in Sources */,
 				DAF8A7D00000000000000001 /* AppTabBarVisibility.swift in Sources */,
 				A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */,
-				D489D1B23018E1D000E7A1DF /* SharedProfileResponseDTO.swift in Sources */,
+				D489D1B23018E1D000E7A1DF /* UserProfileResponseDTO.swift in Sources */,
 				E819F50A7311DC9A0B9515CB /* MealDetailViewModel.swift in Sources */,
 				C546296B301239330032F885 /* ActiveAlert.swift in Sources */,
 				C546296C301239330032F885 /* CustomAlert.swift in Sources */,
@@ -4282,7 +4282,7 @@
 				2C78ED26300E6C7E0092E6B2 /* RegisterFormFieldsSection.swift in Sources */,
 				2C78ED27300E6C7E0092E6B2 /* LoginViewModel.swift in Sources */,
 				6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */,
-				D489D1C73018E4CB00E7A1DF /* SharedProfileDataSource.swift in Sources */,
+				D489D1C73018E4CB00E7A1DF /* UserProfileDataSource.swift in Sources */,
 				2C78ED28300E6C7E0092E6B2 /* LoginView.swift in Sources */,
 				2C78ED29300E6C7E0092E6B2 /* RegisterResult.swift in Sources */,
 				8AE05AEC0DCD40A73044A0EA /* NutriScanApp.swift in Sources */,
@@ -4397,7 +4397,7 @@
 				2C78ED30300E6CC50092E6B2 /* HTTPMethod.swift in Sources */,
 				2C78ED31300E6CC50092E6B2 /* NetworkError.swift in Sources */,
 				7E1042EF21D7A5286650D434 /* empty80.swift in Sources */,
-				D489D1BD3018E2DA00E7A1DF /* SharedProfileRepositoryProtocol.swift in Sources */,
+				D489D1BD3018E2DA00E7A1DF /* UserProfileRepositoryProtocol.swift in Sources */,
 				8F16ED1E3012AA0700CF43B2 /* ProfileSetupUserProfile.swift in Sources */,
 				2C78ECDE300E6C700092E6B2 /* AuthEndpoint.swift in Sources */,
 				2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */,
@@ -4427,7 +4427,7 @@
 				C51E9D4A30155E56009DF262 /* NutritionFactUIState.swift in Sources */,
 				C51E9D4B30155E56009DF262 /* ProductDetailsScanDTO.swift in Sources */,
 				C51E9D4C30155E56009DF262 /* ProductDetailsEndPoint.swift in Sources */,
-				D489D1CB3018E66D00E7A1DF /* SharedProfileEndpoint.swift in Sources */,
+				D489D1CB3018E66D00E7A1DF /* UserProfileEndpoint.swift in Sources */,
 				C51E9D4D30155E56009DF262 /* ProductNutritionUIState.swift in Sources */,
 				C51E9D4E30155E56009DF262 /* ProductDetailsUIState.swift in Sources */,
 				2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */,

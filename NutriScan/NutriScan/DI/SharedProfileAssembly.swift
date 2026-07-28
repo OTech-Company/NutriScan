@@ -10,16 +10,16 @@ import Foundation
 struct SharedProfileAssembly: Assembly {
     func assemble(container: DIContainer) {
         container.register(
-            type: SharedProfileStore.self, component: SharedProfileStore())
+            type: UserProfileStore.self, component: UserProfileStore())
 
         container.register(
-            type: SharedProfileDataSourceProtocol.self,
-            component: SharedProfileDataSource()
+            type: UserProfileDataSourceProtocol.self,
+            component: UserProfileDataSource()
         )
 
         container.register(
-            type: SharedProfileRepositoryProtocol.self,
-            component: SharedProfileRepository()
+            type: UserProfileRepositoryProtocol.self,
+            component: UserProfileRepository()
         )
 
         container.register(

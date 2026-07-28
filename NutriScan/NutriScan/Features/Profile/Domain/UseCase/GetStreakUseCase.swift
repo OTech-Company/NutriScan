@@ -12,8 +12,8 @@ protocol GetStreakUseCaseProtocol {
 }
 
 struct GetStreakUseCase: GetStreakUseCaseProtocol {
-    private let repository: SharedProfileRepositoryProtocol
-    init(repository: SharedProfileRepositoryProtocol = DIContainer.shared.resolve(type: SharedProfileRepositoryProtocol.self)) { self.repository = repository }
+    private let repository: UserProfileRepositoryProtocol
+    init(repository: UserProfileRepositoryProtocol = DIContainer.shared.resolve(type: UserProfileRepositoryProtocol.self)) { self.repository = repository }
     
     func execute() async throws -> Int {
         try await repository.getStreak()

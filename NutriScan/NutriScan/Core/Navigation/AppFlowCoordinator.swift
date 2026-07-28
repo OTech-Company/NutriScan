@@ -111,7 +111,7 @@ final class AppFlowCoordinator: ObservableObject {
         try? KeychainManager.shared.delete(key: .refreshToken)
 
         // Clear the shared cache so the next user doesn't see old data
-        let store = DIContainer.shared.resolve(type: SharedProfileStore.self)
+        let store = DIContainer.shared.resolve(type: UserProfileStore.self)
         store.clear()
 
         flow = .auth

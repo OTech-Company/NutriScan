@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SharedProfileResponseDTO: Codable {
+struct UserProfileResponseDTO: Codable {
     let id: String
     let email: String
     let username: String
@@ -22,6 +22,6 @@ struct SharedProfileResponseDTO: Codable {
     let tdee: Double?
     let allergies: [ReferenceItemDTO]?
     let diseases: [ReferenceItemDTO]?
-    let familyMembers: [SharedFamilyMemberDTO]?
+    let familyMembers: [UserFamilyMemberDTO]?
     let updatedAt: String?
 }

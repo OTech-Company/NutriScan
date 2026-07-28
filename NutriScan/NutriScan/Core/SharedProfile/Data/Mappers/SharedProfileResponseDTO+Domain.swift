@@ -5,7 +5,7 @@
 //  Created by Mina_Wagdy on 28/07/2026.
 //
 import Foundation
-extension SharedProfileResponseDTO {
+extension UserProfileResponseDTO {
     func toDomain() -> ProfileInfo {
         let dob: Date? = {
             guard let dateStr = dateOfBirth else { return nil }

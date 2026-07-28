@@ -7,12 +7,12 @@
 
 import Foundation
 
-protocol SharedProfileDataSourceProtocol {
-    func getProfile() async throws -> SharedProfileResponseDTO
+protocol UserProfileDataSourceProtocol {
+    func getProfile() async throws -> UserProfileResponseDTO
     func updateProfile(requestDTO: EditProfileUpdateRequestDTO) async throws
-        -> SharedProfileResponseDTO
+        -> UserProfileResponseDTO
     func updateFamilyMembers(_ requestDTO: FamilyMembersUpdateRequestDTO)
-        async throws -> SharedProfileResponseDTO
+        async throws -> UserProfileResponseDTO
     func getAllergies() async throws -> [ReferenceItemDTO]
     func getDiseases() async throws -> [ReferenceItemDTO]
 
@@ -22,7 +22,7 @@ protocol SharedProfileDataSourceProtocol {
     func uploadProfileImage(data: Data) async throws
 }
 
-final class SharedProfileDataSource: SharedProfileDataSourceProtocol {
+final class UserProfileDataSource: UserProfileDataSourceProtocol {
     private let networkService: NetworkServiceProtocol
 
     // MARK: - Streak Mock Properties
@@ -37,30 +37,30 @@ final class SharedProfileDataSource: SharedProfileDataSourceProtocol {
         self.networkService = networkService
     }
 
-    func getProfile() async throws -> SharedProfileResponseDTO {
-        try await networkService.request(SharedProfileEndpoint.getProfile)
+    func getProfile() async throws -> UserProfileResponseDTO {
+        try await networkService.request(UserProfileEndpoint.getProfile)
     }
 
     func updateProfile(requestDTO: EditProfileUpdateRequestDTO) async throws
-        -> SharedProfileResponseDTO
+        -> UserProfileResponseDTO
     {
         try await networkService.request(
-            SharedProfileEndpoint.updateProfile(requestDTO))
+            UserProfileEndpoint.updateProfile(requestDTO))
     }
 
     func updateFamilyMembers(_ requestDTO: FamilyMembersUpdateRequestDTO)
-        async throws -> SharedProfileResponseDTO
+        async throws -> UserProfileResponseDTO
     {
         try await networkService.request(
-            SharedProfileEndpoint.updateFamilyMembers(requestDTO))
+            UserProfileEndpoint.updateFamilyMembers(requestDTO))
     }
 
     func getAllergies() async throws -> [ReferenceItemDTO] {
-        try await networkService.request(SharedProfileEndpoint.getAllergies)
+        try await networkService.request(UserProfileEndpoint.getAllergies)
     }
 
     func getDiseases() async throws -> [ReferenceItemDTO] {
-        try await networkService.request(SharedProfileEndpoint.getDiseases)
+        try await networkService.request(UserProfileEndpoint.getDiseases)
     }
 
     // MARK: - Streak Logic (Mock)
@@ -91,7 +91,7 @@ final class SharedProfileDataSource: SharedProfileDataSourceProtocol {
         defaults.set(now, forKey: lastVisitKey)
     }
     func uploadProfileImage(data: Data) async throws {
-        let endpoint = SharedProfileEndpoint.uploadImage(data)
+        let endpoint = UserProfileEndpoint.uploadImage(data)
 
         // This leverages your NetworkService's built-in token injection,
         // multipart encoding, and retry logic.

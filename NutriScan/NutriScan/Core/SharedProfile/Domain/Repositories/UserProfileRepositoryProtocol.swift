@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SharedProfileRepositoryProtocol {
+protocol UserProfileRepositoryProtocol {
     func getProfile() async throws
     func updateProfile(update: ProfileUpdate) async throws
     func updateFamilyMembers(_ members: [FamilyMemberInput]) async throws

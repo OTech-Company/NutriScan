@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 @Observable
-final class SharedProfileStore {
+final class UserProfileStore {
     var currentProfile: ProfileInfo?
     
     // We can also store the streak here since it's an app-wide concept

@@ -8,17 +8,17 @@
 import Foundation
 
 protocol ObserveProfileUseCaseProtocol {
-    func execute() -> SharedProfileStore
+    func execute() -> UserProfileStore
 }
 
 struct ObserveProfileUseCase: ObserveProfileUseCaseProtocol {
-    private let sharedStore: SharedProfileStore
+    private let sharedStore: UserProfileStore
     
-    init(sharedStore: SharedProfileStore = DIContainer.shared.resolve(type: SharedProfileStore.self)) {
+    init(sharedStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self)) {
         self.sharedStore = sharedStore
     }
     
-    func execute() -> SharedProfileStore {
+    func execute() -> UserProfileStore {
         return sharedStore
     }
 }
