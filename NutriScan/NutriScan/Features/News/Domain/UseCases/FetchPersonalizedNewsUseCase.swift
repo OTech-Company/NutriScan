@@ -6,20 +6,26 @@ protocol FetchPersonalizedNewsUseCaseProtocol {
 
 final class FetchPersonalizedNewsUseCase: FetchPersonalizedNewsUseCaseProtocol {
     private let newsRepository: NewsRepositoryProtocol
-    private let profileUseCase: GetEditProfileUseCaseProtocol
+    private let fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol
+    private let observeProfileUseCase: ObserveProfileUseCaseProtocol
 
     init(
         newsRepository: NewsRepositoryProtocol = NewsRepository(
             remoteDataSource: NewsRemoteDataSource(networkService: NetworkService())
         ),
-        profileUseCase: GetEditProfileUseCaseProtocol = GetEditProfileUseCase()
+        fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol = FetchAndCacheProfileUseCase(),
+        observeProfileUseCase: ObserveProfileUseCaseProtocol = ObserveProfileUseCase()
     ) {
         self.newsRepository = newsRepository
-        self.profileUseCase = profileUseCase
+        self.fetchAndCacheProfileUseCase = fetchAndCacheProfileUseCase
+        self.observeProfileUseCase = observeProfileUseCase
     }
 
     func execute() async throws -> [Article] {
-        let (profile, _, _) = try await profileUseCase.execute()
+        try await fetchAndCacheProfileUseCase.execute()
+        let store = observeProfileUseCase.execute()
+
+        guard let profile = store.currentProfile else { return [] }
 
         var terms: [String] = []
 
