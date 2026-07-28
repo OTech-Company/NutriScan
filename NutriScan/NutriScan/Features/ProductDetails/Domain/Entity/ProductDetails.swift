@@ -70,7 +70,7 @@ extension ProductDetails {
     }
 
     init(from dto: ProductDetailsScanDTO) {
-        self.scanId = dto.scanId
+        self.scanId = dto.scanId ?? "No ID"
         self.scannedAt = dto.scannedAt ?? "No date"
         self.imageUrl = dto.imageUrl ?? "No Image"
         self.productName = dto.productName ?? "Unknown Product"
