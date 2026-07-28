@@ -35,7 +35,7 @@ struct ProductDetailsFlagedIngredient {
 extension ProductDetails {
     init(from scan: ScanDetail, imageData: Data? = nil) {
         let displayFormatter = DateFormatter()
-        displayFormatter.dateFormat = "MMM d, yyyy"
+        displayFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
 
         let scannedAtString: String
         if let date = scan.scannedAt {
@@ -69,9 +69,17 @@ extension ProductDetails {
     }
 
     init(from dto: ProductDetailsScanDTO) {
-        self.scanId = dto.scanId ?? "No ID"
-        self.scannedAt = dto.scannedAt ?? "No date"
-        self.imageUrl = dto.imageUrl ?? "No Image"
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
+
+        self.scanId = dto.scanId
+        if let dateString = dto.scannedAt,
+           let date = ISO8601DateFormatter().date(from: dateString) {
+            self.scannedAt = displayFormatter.string(from: date)
+        } else {
+            self.scannedAt = dto.scannedAt ?? "No date"
+        }
+        self.imageUrl = dto.imageUrl ?? ""
         self.productName = dto.productName ?? "Unknown Product"
         self.verdict = dto.foodSafetyResponse?.verdict ?? "No verdict"
         self.summary = dto.foodSafetyResponse?.summary ?? "No summary"
