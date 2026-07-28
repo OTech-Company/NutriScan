@@ -33,6 +33,42 @@ struct ProductDetailsFlagedIngredient {
 }
 
 extension ProductDetails {
+    init(from scan: ScanDetail, imageData: Data? = nil) {
+        let dateFormatter = ISO8601DateFormatter()
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "MMM d, yyyy"
+
+        let scannedAtString: String
+        if let date = scan.scannedAt {
+            scannedAtString = displayFormatter.string(from: date)
+        } else {
+            scannedAtString = "Unknown date"
+        }
+
+        self.scanId = scan.scanId
+        self.scannedAt = scannedAtString
+        self.imageUrl = scan.imageUrl ?? ""
+        self.productName = scan.productName ?? "Unknown Product"
+        self.verdict = scan.foodSafetyResponse?.verdict.rawValue.capitalized ?? "Unknown"
+        self.summary = scan.foodSafetyResponse?.summary ?? "No summary"
+        self.flagedIngredients = scan.foodSafetyResponse?.flaggedIngredients.map {
+            ProductDetailsFlagedIngredient(
+                ingredient: $0.ingredient,
+                reason: $0.reason,
+                type: $0.type.rawValue,
+                name: $0.name
+            )
+        } ?? []
+        self.calories = scan.nutritionFacts?.calories ?? 0
+        self.proteinGrams = scan.nutritionFacts?.proteinGrams ?? 0
+        self.carbsGrams = scan.nutritionFacts?.carbsGrams ?? 0
+        self.fatG = scan.nutritionFacts?.fatG ?? 0
+        self.fiberGrams = scan.nutritionFacts?.fiberGrams ?? 0
+        self.sugarG = scan.nutritionFacts?.sugarG ?? 0
+        self.sodiumMg = scan.nutritionFacts?.sodiumMg ?? 0
+        self.isFavorite = false
+    }
+
     init(from dto: ProductDetailsScanDTO) {
         self.scanId = dto.scanId
         self.scannedAt = dto.scannedAt ?? "No date"

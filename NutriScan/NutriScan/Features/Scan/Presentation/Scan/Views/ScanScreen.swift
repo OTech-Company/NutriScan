@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ScanScreen: View {
 
+    @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
 
     private let viewfinderHeight: CGFloat = 520
@@ -17,7 +18,6 @@ struct ScanScreen: View {
             let viewfinderY = (geo.size.height - viewfinderHeight) / 2
 
             ZStack {
-                // Camera feed (full screen including safe areas)
                 BarcodeScannerView(
                     onDetect: { code, position in
                         viewModel.onBarcodeDetected(code, at: position)
@@ -28,16 +28,13 @@ struct ScanScreen: View {
                 )
                 .ignoresSafeArea()
 
-                // Dark overlay with scan window cutout
                 ScanMask(windowHeight: viewfinderHeight)
                     .ignoresSafeArea()
 
-                // Viewfinder brackets + scanning wave
                 ScanViewfinderView()
                     .frame(width: viewfinderWidth, height: viewfinderHeight)
                     .position(x: geo.size.width / 2, y: viewfinderY + (viewfinderHeight / 2))
 
-                // Barcode detected overlay pill
                 if let barcode = viewModel.detectedBarcode,
                    let position = viewModel.barcodePosition {
                     BarcodeOverlayView(barcode: barcode) {
@@ -45,6 +42,26 @@ struct ScanScreen: View {
                     }
                     .position(x: position.x, y: position.y - 30)
                     .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
+                }
+
+                VStack {
+                    Spacer()
+                    ScanStateCardView(
+                        isSubmitting: viewModel.isSubmitting,
+                        latestScan: viewModel.latestScan,
+                        isLoadingDetail: viewModel.isLoadingDetail,
+                        scanDetail: viewModel.scanDetail,
+                        capturedImageData: viewModel.capturedImageData,
+                        onSave: { viewModel.toggleSaveFavorite() },
+                        onRetry: { viewModel.reset() },
+                        onTapDetail: { detail in
+                            router.path.append(AnyRoute(
+                                ScanRoute.scanDetail(detail: detail, imageData: viewModel.capturedImageData ?? Data())
+                            ))
+                        }
+                    )
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 100)
                 }
             }
         }
@@ -67,8 +84,6 @@ struct ScanScreen: View {
         )
     }
 }
-
-// MARK: - Preview
 
 #Preview {
     ScanScreen()
