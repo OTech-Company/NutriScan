@@ -10,21 +10,23 @@ struct WorkoutPausedControlsView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            // Stepper Chips (Sets & Reps)
-            HStack(spacing: 12) {
-                WorkoutStepperChip(
-                    title: "Sets",
-                    value: viewModel.setsCount,
-                    onIncrement: { viewModel.incrementSets() },
-                    onDecrement: { viewModel.decrementSets() }
-                )
+            if viewModel.exercise.category.lowercased() != "cardio" {
+                // Stepper Chips (Sets & Reps)
+                HStack(spacing: 12) {
+                    WorkoutStepperChip(
+                        title: "Sets",
+                        value: viewModel.setsCount,
+                        onIncrement: { viewModel.incrementSets() },
+                        onDecrement: { viewModel.decrementSets() }
+                    )
 
-                WorkoutStepperChip(
-                    title: "Reps",
-                    value: viewModel.repsCount,
-                    onIncrement: { viewModel.incrementReps() },
-                    onDecrement: { viewModel.decrementReps() }
-                )
+                    WorkoutStepperChip(
+                        title: "Reps",
+                        value: viewModel.repsCount,
+                        onIncrement: { viewModel.incrementReps() },
+                        onDecrement: { viewModel.decrementReps() }
+                    )
+                }
             }
 
             HStack(spacing: 16) {

@@ -12,7 +12,6 @@ struct LoginView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var activeAlert: ActiveAlert = .none
-    @State private var errorMessage = ""
     @State private var viewModel: LoginViewModel
 
     init(viewModel: LoginViewModel) {
@@ -83,8 +82,7 @@ struct LoginView: View {
             
         }
         .onChange(of: viewModel.generalError) { _, error in
-            if let error = error {
-                errorMessage = error
+            if error != nil {
                 activeAlert = .error
             }
         }
@@ -94,12 +92,12 @@ struct LoginView: View {
                 return CustomAlertConfig(
                     type: .error,
                     title: "Login Failed",
-                    description: errorMessage,
+                    description: viewModel.generalError ?? "An unknown error occurred",
                     primaryButtonTitle: "Try Again",
                     primaryButtonColor: Color.Red.red500
                 )
             default:
-                return CustomAlertConfig(type: .error, title: "Error", description: errorMessage)
+                return CustomAlertConfig(type: .error, title: "Error", description: viewModel.generalError ?? "")
             }
         }, primaryAction: { _ in
             viewModel.generalError = nil

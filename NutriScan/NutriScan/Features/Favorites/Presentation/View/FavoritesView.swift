@@ -15,14 +15,18 @@ struct FavoritesView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            FavoritesSearchBar(text: $searchText, onSearch: {
-                appliedSearchText = searchText
-                Task {
-                    let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
-                    await viewModel.loadFavorites(search: searchParam)
+            CustomSearchBar(
+                text: $searchText,
+                prompt: "Search favorites",
+                onSearch: {
+                    appliedSearchText = searchText
+                    Task {
+                        let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
+                        await viewModel.loadFavorites(search: searchParam)
+                    }
                 }
-            })
-                .padding(.horizontal, 20)
+            )
+            .padding(.horizontal, 20)
                 .padding(.top, 24)
             
             if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
