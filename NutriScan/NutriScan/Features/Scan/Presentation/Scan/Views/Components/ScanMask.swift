@@ -5,11 +5,12 @@ import SwiftUI
 struct ScanMask: View {
     var windowHeight: CGFloat = 520
     var windowCornerRadius: CGFloat = 20
+    var verticalOffset: CGFloat = 0
 
     var body: some View {
         GeometryReader { geo in
             let windowWidth = geo.size.width - 40
-            let windowY = (geo.size.height - windowHeight) / 2
+            let windowY = (geo.size.height - windowHeight) / 2 + verticalOffset
 
             Canvas { context, size in
                 var path = Rectangle().path(in: CGRect(origin: .zero, size: size))

@@ -7,6 +7,7 @@ struct ScanScreen: View {
 
     private let viewfinderHeight: CGFloat = 520
     private let viewfinderHorizontalPadding: CGFloat = 20
+    private let viewfinderOffsetY: CGFloat = -40
 
     init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -15,7 +16,7 @@ struct ScanScreen: View {
     var body: some View {
         GeometryReader { geo in
             let viewfinderWidth = geo.size.width - (viewfinderHorizontalPadding * 2)
-            let viewfinderY = (geo.size.height - viewfinderHeight) / 2
+            let viewfinderY = (geo.size.height - viewfinderHeight) / 2 + viewfinderOffsetY
 
             ZStack {
                 BarcodeScannerView(
@@ -28,7 +29,7 @@ struct ScanScreen: View {
                 )
                 .ignoresSafeArea()
 
-                ScanMask(windowHeight: viewfinderHeight)
+                ScanMask(windowHeight: viewfinderHeight, verticalOffset: viewfinderOffsetY)
                     .ignoresSafeArea()
 
                 ScanViewfinderView()
@@ -61,7 +62,7 @@ struct ScanScreen: View {
                         }
                     )
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 100)
+                    .padding(.bottom, 130)
                 }
             }
         }

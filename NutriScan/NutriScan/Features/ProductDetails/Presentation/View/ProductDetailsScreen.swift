@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProductDetailsScreen: View {
-    @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ProductDetailsViewModel
     @State private var activeAlert: ActiveAlert = .none
 
@@ -19,7 +19,7 @@ struct ProductDetailsScreen: View {
         VStack(spacing: 0) {
             HStack {
                 HStack(spacing: 16) {
-                    BackButton(action: { dismiss() }, style: .onTeal)
+                    BackButton(action: { router.pop() }, style: .onTeal)
                     Text("Product Details")
                         .font(Font.AppFont.subtitle1)
                         .foregroundStyle(Color.white)
@@ -62,6 +62,7 @@ struct ProductDetailsScreen: View {
         }
         .background(Color.Teal.teal1000)
         .ignoresSafeArea(.container, edges: .bottom)
+        .navigationBarBackButtonHidden(true)
         .task {
             await viewModel.loadProductDetails()
         }

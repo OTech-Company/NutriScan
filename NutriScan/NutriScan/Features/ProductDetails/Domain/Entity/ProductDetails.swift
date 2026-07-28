@@ -34,7 +34,6 @@ struct ProductDetailsFlagedIngredient {
 
 extension ProductDetails {
     init(from scan: ScanDetail, imageData: Data? = nil) {
-        let dateFormatter = ISO8601DateFormatter()
         let displayFormatter = DateFormatter()
         displayFormatter.dateFormat = "MMM d, yyyy"
 
@@ -42,7 +41,7 @@ extension ProductDetails {
         if let date = scan.scannedAt {
             scannedAtString = displayFormatter.string(from: date)
         } else {
-            scannedAtString = "Unknown date"
+            scannedAtString = displayFormatter.string(from: Date())
         }
 
         self.scanId = scan.scanId
