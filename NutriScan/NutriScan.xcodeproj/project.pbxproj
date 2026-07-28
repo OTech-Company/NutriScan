@@ -445,6 +445,7 @@
 		D489D1D53018EB4200E7A1DF /* UpdateProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1D43018EB4000E7A1DF /* UpdateProfileUseCase.swift */; };
 		D489D1D73018EB5C00E7A1DF /* GetReferenceDataUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1D63018EB5A00E7A1DF /* GetReferenceDataUseCase.swift */; };
 		D489D1DB3018EFF100E7A1DF /* ProfileUpdate+DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1DA3018EFEF00E7A1DF /* ProfileUpdate+DTO.swift */; };
+		D489D1DE3018F7F500E7A1DF /* HomeAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D489D1DD3018F7F200E7A1DF /* HomeAssembly.swift */; };
 		D48A24363011534F0004D95E /* ChipSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2435301153460004D95E /* ChipSelectionManager.swift */; };
 		D48A2438301154AB0004D95E /* UpdateEditProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2437301154A20004D95E /* UpdateEditProfileUseCase.swift */; };
 		D48A243A301155DC0004D95E /* GetProfileDataUseCaseProtocol .swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2439301155DA0004D95E /* GetProfileDataUseCaseProtocol .swift */; };
@@ -958,6 +959,7 @@
 		D489D1D43018EB4000E7A1DF /* UpdateProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProfileUseCase.swift; sourceTree = "<group>"; };
 		D489D1D63018EB5A00E7A1DF /* GetReferenceDataUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetReferenceDataUseCase.swift; sourceTree = "<group>"; };
 		D489D1DA3018EFEF00E7A1DF /* ProfileUpdate+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileUpdate+DTO.swift"; sourceTree = "<group>"; };
+		D489D1DD3018F7F200E7A1DF /* HomeAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAssembly.swift; sourceTree = "<group>"; };
 		D48A2435301153460004D95E /* ChipSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipSelectionManager.swift; sourceTree = "<group>"; };
 		D48A2437301154A20004D95E /* UpdateEditProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateEditProfileUseCase.swift; sourceTree = "<group>"; };
 		D48A2439301155DA0004D95E /* GetProfileDataUseCaseProtocol .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GetProfileDataUseCaseProtocol .swift"; sourceTree = "<group>"; };
@@ -2440,6 +2442,7 @@
 		842B622A03802EFC7500077D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D489D1DC3018F7E800E7A1DF /* DI */,
 				AED6916AA4974A01A8D1FB43 /* Extensions */,
 				207F05E41407E5E619E92D9B /* Routing */,
 				DA96C98D77AF2F412FAA4422 /* View */,
@@ -3682,6 +3685,14 @@
 			path = DataSources;
 			sourceTree = "<group>";
 		};
+		D489D1DC3018F7E800E7A1DF /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				D489D1DD3018F7F200E7A1DF /* HomeAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		D48A24443011594B0004D95E /* DI */ = {
 			isa = PBXGroup;
 			children = (
@@ -4214,6 +4225,7 @@
 				2CC033C53017BF9B009B42D3 /* AuthFactory.swift in Sources */,
 				2CC033E53017BF9B009B42E3 /* ExerciseFactory.swift in Sources */,
 				3228C765F03FD2424DB3CC11 /* MainTabView.swift in Sources */,
+				D489D1DE3018F7F500E7A1DF /* HomeAssembly.swift in Sources */,
 				DAF8A7D00000000000000001 /* AppTabBarVisibility.swift in Sources */,
 				A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */,
 				D489D1B23018E1D000E7A1DF /* SharedProfileResponseDTO.swift in Sources */,

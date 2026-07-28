@@ -24,7 +24,8 @@ final class FamilyMemberSheetViewModel {
     var isLoading = false
     var errorMessage: String?
 
-    private let getReferenceDataUseCase: GetEditProfileUseCaseProtocol
+    // Updated to use the shared reference data use case protocol
+    private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
     private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
 
     var isEditMode: Bool { existingMember != nil }
@@ -32,7 +33,7 @@ final class FamilyMemberSheetViewModel {
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
-        getReferenceDataUseCase: GetEditProfileUseCaseProtocol = DIContainer.shared.resolve(type: GetEditProfileUseCaseProtocol.self),
+        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
         updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self)
     ) {
         self.existingMember = existingMember
@@ -52,6 +53,7 @@ final class FamilyMemberSheetViewModel {
         errorMessage = nil
 
         do {
+            // The unified use case returns a tuple of (allergies, diseases)
             let data = try await getReferenceDataUseCase.execute()
 
             conditions.configure(

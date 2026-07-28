@@ -15,8 +15,11 @@ struct HomeView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
-                HomeGreetingSection(userName: viewModel.userName)
-                    .padding(.top, 22)
+                HomeGreetingSection(
+                    userName: viewModel.userName,
+                    userImageURL: viewModel.userImageURL
+                )
+                .padding(.top, 22)
 
                 HomeDailyTipSection(tipMessage: viewModel.dailyTip)
                     .padding(.top, 16)

@@ -26,6 +26,7 @@ struct AppDependencies {
         RAGAssembly(),
         SettingsAssembly(),
         ProductDetailsAssembly(),
+        HomeAssembly()
     ]
 
     static func setup() {

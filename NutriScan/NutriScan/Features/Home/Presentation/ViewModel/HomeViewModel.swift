@@ -14,8 +14,11 @@ final class HomeViewModel {
     // MARK: - Reactive Profile Data
     var userName: String {
         let profile = observeProfileUseCase.execute().currentProfile
-        // Return their first name if available, fallback to a friendly default
         return profile?.firstName ?? "User"
+    }
+
+    var userImageURL: String? {
+        observeProfileUseCase.execute().currentProfile?.imageUrl
     }
 
     init(
