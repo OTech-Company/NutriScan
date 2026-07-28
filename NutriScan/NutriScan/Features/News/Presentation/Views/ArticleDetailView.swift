@@ -47,7 +47,6 @@ struct ArticleDetailView: View {
             Spacer()
 
             HStack(spacing: 12) {
-
                 Button {
                     showShareSheet = true
                 } label: {
@@ -73,20 +72,31 @@ struct ArticleDetailView: View {
                 .clipped()
 
             LinearGradient(
-                colors: [.black.opacity(0.5), .black.opacity(0.1), .clear],
+                colors: [.black.opacity(0.6), .black.opacity(0.2), .clear],
                 startPoint: .bottom,
                 endPoint: .top
             )
             .frame(width: UIScreen.main.bounds.width, height: 320)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text(categoryName)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(NewsFeedPalette.accent)
-                    .clipShape(Capsule())
+                HStack(spacing: 8) {
+                    Text(categoryName)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(NewsFeedPalette.accent)
+                        .clipShape(Capsule())
+
+                    if let author = article.author, !author.isEmpty {
+                        Text("•")
+                            .foregroundStyle(.white.opacity(0.6))
+                        Text(author)
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.white.opacity(0.8))
+                            .lineLimit(1)
+                    }
+                }
 
                 Text(article.title)
                     .font(.system(size: 22, weight: .bold))
@@ -95,10 +105,14 @@ struct ArticleDetailView: View {
                     .multilineTextAlignment(.leading)
 
                 HStack(spacing: 6) {
-                    Text("Trending")
-                        .foregroundStyle(.white.opacity(0.7))
+                    Text(article.source.name)
+                        .foregroundStyle(.white.opacity(0.9))
+                        .fontWeight(.medium)
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 11))
+                        .foregroundStyle(NewsFeedPalette.accent)
                     Text("•")
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(.white.opacity(0.6))
                     Text(article.publishedAt.relativeShortString)
                         .foregroundStyle(.white.opacity(0.7))
                 }
@@ -109,30 +123,51 @@ struct ArticleDetailView: View {
         .frame(height: 320)
     }
 
-    // MARK: - Content
+    // MARK: - Content Section
 
     private var contentSection: some View {
         VStack(alignment: .leading, spacing: 20) {
+            // Source & Meta Details Row
             sourceRow
 
             Divider()
                 .background(NewsFeedPalette.divider)
 
+            // Description / Lead paragraph
             if let description = article.description, !description.isEmpty {
                 Text(description)
-                    .font(.system(size: 16))
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                     .lineSpacing(6)
             }
 
+            // Main Content Body
             if let content = article.content, !content.isEmpty {
-                Text(content)
+                Text(cleanedContent(content))
                     .font(.system(size: 16))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
-                    .lineSpacing(6)
+                    .foregroundStyle(NewsFeedPalette.textSecondary)
+                    .lineSpacing(7)
+            }
+
+            // External Link Button to view full article on web if available
+            if let url = article.articleURL {
+                Link(destination: url) {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "safari")
+                        Text("Read Full Article on Web")
+                            .fontWeight(.semibold)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(NewsFeedPalette.accentSoft)
+                    .foregroundStyle(NewsFeedPalette.accent)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+                .padding(.top, 10)
             }
         }
-        .padding(16)
+        .padding(20)
         .background(NewsFeedPalette.surface)
         .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
         .offset(y: -20)
@@ -160,13 +195,22 @@ struct ArticleDetailView: View {
                         .font(.system(size: 12))
                         .foregroundStyle(NewsFeedPalette.accent)
                 }
+                
+                if let author = article.author, !author.isEmpty {
+                    Text("By \(author)")
+                        .font(.system(size: 13))
+                        .foregroundStyle(NewsFeedPalette.textTertiary)
+                        .lineLimit(1)
+                }
             }
 
             Spacer()
 
-            Text(article.publishedAt.relativeShortString)
-                .font(.system(size: 13))
-                .foregroundStyle(NewsFeedPalette.textTertiary)
+            VStack(alignment: .trailing, spacing: 2) {
+                Text(article.publishedAt.relativeShortString)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(NewsFeedPalette.textTertiary)
+            }
         }
     }
 
@@ -178,33 +222,37 @@ struct ArticleDetailView: View {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: UIScreen.main.bounds.width, height: 320)
+                        .clipped()
                 default:
-                    Rectangle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color.Teal.teal300, Color.Teal.teal600],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                    placeholderGradient
                 }
             }
+            .frame(width: UIScreen.main.bounds.width, height: 320)
+            .clipped()
         } else {
-            Rectangle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color.Teal.teal300, Color.Teal.teal600],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+            placeholderGradient
                 .overlay {
                     Image(systemName: "newspaper")
                         .font(.system(size: 40))
                         .foregroundStyle(.white.opacity(0.3))
                 }
         }
+    }
+
+    private var placeholderGradient: some View {
+        Rectangle()
+            .fill(
+                LinearGradient(
+                    colors: [Color.Teal.teal300, Color.Teal.teal600],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(width: UIScreen.main.bounds.width, height: 320)
     }
 
     private var categoryName: String {
@@ -219,6 +267,14 @@ struct ArticleDetailView: View {
             return "World"
         }
         return "News"
+    }
+
+    /// NewsAPI frequently appends truncation indicators like ` [+1234 chars]` at the end of the content field. This helper strips that cleanly.
+    private func cleanedContent(_ text: String) -> String {
+        if let range = text.range(of: " \\[\\+\\d+ chars\\]", options: .regularExpression) {
+            return String(text[..<range.lowerBound])
+        }
+        return text
     }
 }
 
