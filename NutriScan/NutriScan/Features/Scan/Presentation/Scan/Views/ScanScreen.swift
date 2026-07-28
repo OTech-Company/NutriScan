@@ -24,7 +24,7 @@ struct ScanScreen: View {
                         viewModel.onBarcodeDetected(code, at: position, size: size)
                     },
                     onLost: {
-                        viewModel.dismissBarcode()
+                        viewModel.scheduleDismissBarcode()
                     },
                     onPhotoCapture: { imageData in
                         viewModel.onPhotoCaptured(imageData)
@@ -47,7 +47,7 @@ struct ScanScreen: View {
                     ) {
                         viewModel.lookupByBarcode()
                     }
-                    .position(x: position.x, y: position.y - (viewModel.barcodeSize.height / 2) - 24)
+                    .position(x: position.x, y: position.y + (viewModel.barcodeSize.height / 2) + 24)
                     .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
                 }
 

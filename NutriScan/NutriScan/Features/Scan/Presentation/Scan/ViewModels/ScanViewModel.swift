@@ -17,6 +17,7 @@ final class ScanViewModel: ObservableObject {
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
     private let fetchScanDetailUseCase: FetchScanDetailUseCase
+    private var pendingLostTask: Task<Void, Never>?
 
     nonisolated init(
         submitScanImageUseCase: SubmitScanImageUseCase,
@@ -37,6 +38,7 @@ final class ScanViewModel: ObservableObject {
 
     func onBarcodeDetected(_ barcode: String, at position: CGPoint, size: CGSize) {
         guard !isSubmitting else { return }
+        pendingLostTask?.cancel()
         detectedBarcode = barcode
         barcodePosition = position
         barcodeSize = size
@@ -47,7 +49,17 @@ final class ScanViewModel: ObservableObject {
         print("Looking up barcode: \(barcode)")
     }
 
+    func scheduleDismissBarcode() {
+        pendingLostTask?.cancel()
+        pendingLostTask = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled else { return }
+            dismissBarcode()
+        }
+    }
+
     func dismissBarcode() {
+        pendingLostTask?.cancel()
         detectedBarcode = nil
         barcodePosition = nil
         barcodeSize = .zero
@@ -97,6 +109,7 @@ final class ScanViewModel: ObservableObject {
     }
 
     func reset() {
+        pendingLostTask?.cancel()
         capturedImageData = nil
         latestScan = nil
         scanDetail = nil
