@@ -408,7 +408,6 @@
 		D40DD1C23010208F001CF496 /* ReferenceItemDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C13010208D001CF496 /* ReferenceItemDTO.swift */; };
 		D40DD1C6301020B9001CF496 /* EditProfileUpdateRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1C5301020B6001CF496 /* EditProfileUpdateRequestDTO.swift */; };
 		D40DD1CB301022B0001CF496 /* ProfileUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1CA301022AE001CF496 /* ProfileUpdate.swift */; };
-		D40DD1CD301022DC001CF496 /* EditProfileRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1CC301022CD001CF496 /* EditProfileRepositoryProtocol.swift */; };
 		D40DD1D5301026F0001CF496 /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1D4301026EB001CF496 /* DIContainer.swift */; };
 		D40DD1D730102706001CF496 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1D630102704001CF496 /* AppDependencies.swift */; };
 		D40DD1DC30102BC0001CF496 /* ProfileChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40DD1DB30102BBE001CF496 /* ProfileChipItem.swift */; };
@@ -917,7 +916,6 @@
 		D40DD1C13010208D001CF496 /* ReferenceItemDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceItemDTO.swift; sourceTree = "<group>"; };
 		D40DD1C5301020B6001CF496 /* EditProfileUpdateRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileUpdateRequestDTO.swift; sourceTree = "<group>"; };
 		D40DD1CA301022AE001CF496 /* ProfileUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUpdate.swift; sourceTree = "<group>"; };
-		D40DD1CC301022CD001CF496 /* EditProfileRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileRepositoryProtocol.swift; sourceTree = "<group>"; };
 		D40DD1D4301026EB001CF496 /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		D40DD1D630102704001CF496 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		D40DD1DB30102BBE001CF496 /* ProfileChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChipItem.swift; sourceTree = "<group>"; };
@@ -2672,7 +2670,6 @@
 		8F029F5E301277B5008B6CB1 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				D40DD1CC301022CD001CF496 /* EditProfileRepositoryProtocol.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -4459,10 +4456,8 @@
 				6F1A8EDE3012C5CE00E1ACC5 /* RAGVoiceWaveformView.swift in Sources */,
 				D4BAA31030137DA3006EDB11 /* ProfileHeaderDecoration.swift in Sources */,
 				D40DD1AF301005A5001CF496 /* SearchSelectionSheet.swift in Sources */,
-				D40DD1CD301022DC001CF496 /* EditProfileRepositoryProtocol.swift in Sources */,
 				D40DD1A8300FF62A001CF496 /* MeasureFieldView.swift in Sources */,
 				D40DD1C6301020B9001CF496 /* EditProfileUpdateRequestDTO.swift in Sources */,
-				D40DD1CD301022DC001CF496 /* EditProfileRepositoryProtocol.swift in Sources */,
 				D40DD1A8300FF62A001CF496 /* MeasureFieldView.swift in Sources */,
 				D40DD1C6301020B9001CF496 /* EditProfileUpdateRequestDTO.swift in Sources */,
 				D489D1D53018EB4200E7A1DF /* UpdateProfileUseCase.swift in Sources */,
