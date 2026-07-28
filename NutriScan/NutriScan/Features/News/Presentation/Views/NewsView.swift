@@ -100,13 +100,13 @@ struct NewsView: View {
                 }
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
+                    HStack(spacing: 16) {
                         ForEach(viewModel.articles.prefix(5)) { article in
                             Button {
                                 viewModel.onArticleTapped(article)
                             } label: {
                                 BreakingNewsHeroCard(article: article)
-                                    .frame(width: UIScreen.main.bounds.width - 80)
+                                    .frame(width: UIScreen.main.bounds.width - 120)
                             }
                             .buttonStyle(.plain)
                             .id(article.id)
