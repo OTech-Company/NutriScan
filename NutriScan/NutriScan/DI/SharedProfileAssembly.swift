@@ -30,21 +30,29 @@ struct SharedProfileAssembly: Assembly {
             type: ObserveProfileUseCaseProtocol.self,
             component: ObserveProfileUseCase()
         )
-        
+
         container.register(
             type: GetStreakUseCaseProtocol.self,
             component: GetStreakUseCase()
         )
-        
+
         container.register(
             type: UpdateStreakUseCaseProtocol.self,
             component: UpdateStreakUseCase()
         )
-        
+
         container.register(
             type: UpdateFamilyMembersUseCaseProtocol.self,
             component: UpdateFamilyMembersUseCase()
         )
-        
+
+        container.register(
+            type: UpdateProfileUseCaseProtocol.self,
+            component: UpdateProfileUseCase()
+        )
+        container.register(
+            type: GetReferenceDataUseCaseProtocol.self,
+            component: GetReferenceDataUseCase()
+        )
     }
 }

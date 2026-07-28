@@ -77,6 +77,7 @@ struct FamilyMembersSectionView: View {
                     id: "1",
                     name: "Sara",
                     relation: "Daughter",
+                    imageUrl: nil,
                     allergies: [],
                     diseases: []
                 ),
@@ -84,6 +85,7 @@ struct FamilyMembersSectionView: View {
                     id: "2",
                     name: "Omar",
                     relation: "Son",
+                    imageUrl: nil,
                     allergies: [],
                     diseases: []
                 )

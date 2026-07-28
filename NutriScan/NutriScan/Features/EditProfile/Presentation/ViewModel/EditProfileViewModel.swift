@@ -4,7 +4,6 @@
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
-
 import Combine
 import SwiftUI
 
@@ -12,8 +11,9 @@ import SwiftUI
 final class EditProfileViewModel {
 
     // MARK: - Dependencies
-    private let getProfileDataUseCase: GetEditProfileUseCaseProtocol
-    private let updateProfileUseCase: UpdateEditProfileUseCaseProtocol
+    private let observeProfileUseCase: ObserveProfileUseCaseProtocol
+    private let updateProfileUseCase: UpdateProfileUseCaseProtocol
+    private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
 
     // MARK: - Validated Fields
     var firstName = ValidatedField(value: "")
@@ -38,72 +38,87 @@ final class EditProfileViewModel {
     private var revertAction: (() -> Void)?
 
     init(
-        getProfileDataUseCase: GetEditProfileUseCaseProtocol = DIContainer.shared.resolve(type: GetEditProfileUseCaseProtocol.self),
-        updateProfileUseCase: UpdateEditProfileUseCaseProtocol = DIContainer.shared.resolve(type: UpdateEditProfileUseCaseProtocol.self)
+        observeProfileUseCase: ObserveProfileUseCaseProtocol = DIContainer.shared.resolve(type: ObserveProfileUseCaseProtocol.self),
+        updateProfileUseCase: UpdateProfileUseCaseProtocol = DIContainer.shared.resolve(type: UpdateProfileUseCaseProtocol.self),
+        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self)
     ) {
-        self.getProfileDataUseCase = getProfileDataUseCase
+        self.observeProfileUseCase = observeProfileUseCase
         self.updateProfileUseCase = updateProfileUseCase
+        self.getReferenceDataUseCase = getReferenceDataUseCase
+        
+        // Populate fields immediately upon initialization
+        populateFromStore()
     }
 
-    // MARK: - Networking: Load Data
+    // MARK: - Instant Population
+    private func populateFromStore() {
+        guard let profile = observeProfileUseCase.execute().currentProfile else { return }
+        
+        self.email = profile.email
+        self.firstName.value = profile.firstName
+        self.lastName.value = profile.lastName
 
+        if let h = profile.heightCm { self.height.value = String(Int(h)) } else { self.height.value = "" }
+        if let w = profile.weightKg { self.weight.value = String(Int(w)) } else { self.weight.value = "" }
+        if let g = profile.gender { self.gender = g }
+        if let dob = profile.dateOfBirth { self.birthdate = dob }
+
+        // We set existing selections immediately, but wait for loadReferenceData() to provide the full available list
+        conditions.configure(availableItems: profile.diseases, existingSelections: profile.diseases)
+        allergies.configure(availableItems: profile.allergies, existingSelections: profile.allergies)
+
+        captureSnapshot()
+        setupRevertAction(from: profile)
+    }
+
+    private func setupRevertAction(from profile: ProfileInfo) {
+        let origEmail = profile.email
+        let origFirstName = profile.firstName
+        let origLastName = profile.lastName
+        let origHeightCm = profile.heightCm
+        let origWeightKg = profile.weightKg
+        let origGender = profile.gender
+        let origDOB = profile.dateOfBirth
+        let existDiseases = profile.diseases
+        let existAllergies = profile.allergies
+        
+        self.revertAction = { [weak self] in
+            guard let self = self else { return }
+            self.email = origEmail
+            self.firstName.value = origFirstName
+            self.lastName.value = origLastName
+            if let h = origHeightCm { self.height.value = String(Int(h)) } else { self.height.value = "" }
+            if let w = origWeightKg { self.weight.value = String(Int(w)) } else { self.weight.value = "" }
+            if let g = origGender { self.gender = g }
+            if let dob = origDOB { self.birthdate = dob }
+            
+            // Re-apply existing selections to whatever the current available items are
+            self.conditions.configure(availableItems: self.conditions.availableItems, existingSelections: existDiseases)
+            self.allergies.configure(availableItems: self.allergies.availableItems, existingSelections: existAllergies)
+            
+            self.firstName.state = .normal
+            self.lastName.state = .normal
+            self.height.state = .normal
+            self.weight.state = .normal
+        }
+    }
+
+    // MARK: - Networking: Load Reference Data
     @MainActor
-    func loadInitialData() async {
-        isLoading = true
-        errorMessage = nil
-
+    func loadReferenceData() async {
         do {
-            let data = try await getProfileDataUseCase.execute()
-
-            self.email = data.profile.email
-            self.firstName.value = data.profile.firstName
-            self.lastName.value = data.profile.lastName
-
-            if let h = data.profile.heightCm { self.height.value = String(Int(h)) } else { self.height.value = "" }
-            if let w = data.profile.weightKg { self.weight.value = String(Int(w)) } else { self.weight.value = "" }
-            if let g = data.profile.gender { self.gender = g }
-            if let dob = data.profile.dateOfBirth { self.birthdate = dob }
-
-            conditions.configure(availableItems: data.diseases, existingSelections: data.profile.diseases)
-            allergies.configure(availableItems: data.allergies, existingSelections: data.profile.allergies)
-
-            captureSnapshot()
+            let refData = try await getReferenceDataUseCase.execute()
+            guard let profile = observeProfileUseCase.execute().currentProfile else { return }
             
-            // Capture local revert closure to avoid network call on discard
-            let origEmail = data.profile.email
-            let origFirstName = data.profile.firstName
-            let origLastName = data.profile.lastName
-            let origHeightCm = data.profile.heightCm
-            let origWeightKg = data.profile.weightKg
-            let origGender = data.profile.gender
-            let origDOB = data.profile.dateOfBirth
-            let availDiseases = data.diseases
-            let existDiseases = data.profile.diseases
-            let availAllergies = data.allergies
-            let existAllergies = data.profile.allergies
-            
-            self.revertAction = { [weak self] in
-                guard let self = self else { return }
-                self.email = origEmail
-                self.firstName.value = origFirstName
-                self.lastName.value = origLastName
-                if let h = origHeightCm { self.height.value = String(Int(h)) } else { self.height.value = "" }
-                if let w = origWeightKg { self.weight.value = String(Int(w)) } else { self.weight.value = "" }
-                if let g = origGender { self.gender = g }
-                if let dob = origDOB { self.birthdate = dob }
-                self.conditions.configure(availableItems: availDiseases, existingSelections: existDiseases)
-                self.allergies.configure(availableItems: availAllergies, existingSelections: existAllergies)
-            }
-
+            // Now we inject the full lists into the Chip Managers so the search sheets work
+            self.conditions.configure(availableItems: refData.diseases, existingSelections: profile.diseases)
+            self.allergies.configure(availableItems: refData.allergies, existingSelections: profile.allergies)
         } catch {
             self.errorMessage = error.localizedDescription
         }
-
-        isLoading = false
     }
 
     // MARK: - Dirty Checking & Reverting
-
     private func captureSnapshot() {
         snapshot = buildUpdateRequest()
     }
@@ -114,9 +129,6 @@ final class EditProfileViewModel {
         errorMessage = nil
     }
 
-    /// Builds the exact ProfileUpdate that would be sent to the backend,
-    /// from current field/chip state. Single source of truth used both
-    /// for the real Save request and as the dirty-check comparison target.
     private func buildUpdateRequest() -> ProfileUpdate {
         ProfileUpdate(
             firstName: firstName.value,
@@ -130,7 +142,6 @@ final class EditProfileViewModel {
         )
     }
 
-    /// True if current form state differs from the last loaded/saved snapshot.
     var hasUnsavedChanges: Bool {
         guard let snapshot else { return false }
         let current = buildUpdateRequest()
@@ -154,19 +165,20 @@ final class EditProfileViewModel {
     }
 
     // MARK: - Networking: Save Data
-
     @MainActor
     func performSave() async {
         isLoading = true
         errorMessage = nil
 
         do {
-            _ = try await updateProfileUseCase.execute(update: buildUpdateRequest())
-            await loadInitialData() // also re-captures snapshot and stops loading
-            print("Profile saved and refreshed successfully!")
+            // Firing this automatically updates the SharedStore in the Repository!
+            try await updateProfileUseCase.execute(update: buildUpdateRequest())
+            populateFromStore() // Re-capture the new baseline
+            print("Profile saved and synced globally!")
         } catch {
             self.errorMessage = error.localizedDescription
-            isLoading = false
         }
+        
+        isLoading = false
     }
 }

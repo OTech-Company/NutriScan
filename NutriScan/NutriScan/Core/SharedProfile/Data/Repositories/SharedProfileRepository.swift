@@ -25,7 +25,7 @@ final class SharedProfileRepository: SharedProfileRepositoryProtocol {
     }
 
     func updateProfile(update: ProfileUpdate) async throws {
-        let requestDTO = EditProfileMapper.map(update: update)
+        let requestDTO = update.toRequestDTO()
         let dto: SharedProfileResponseDTO = try await dataSource.updateProfile(requestDTO: requestDTO)
         await MainActor.run { self.sharedStore.currentProfile = dto.toDomain() }
     }
