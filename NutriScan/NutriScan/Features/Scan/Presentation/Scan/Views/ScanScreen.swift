@@ -2,56 +2,59 @@ import SwiftUI
 
 struct ScanScreen: View {
 
-    @Environment(\.dismiss) private var dismiss
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
 
     private let viewfinderHeight: CGFloat = 520
+    private let viewfinderHorizontalPadding: CGFloat = 20
 
     init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
-        ZStack {
-            // Camera feed (full screen background)
-            BarcodeScannerView(
-                onDetect: { code, position in
-                    viewModel.onBarcodeDetected(code, at: position)
-                },
-                onPhotoCapture: { imageData in
-                    viewModel.onPhotoCaptured(imageData)
+        GeometryReader { geo in
+            let viewfinderWidth = geo.size.width - (viewfinderHorizontalPadding * 2)
+            let viewfinderY = (geo.size.height - viewfinderHeight) / 2
+
+            ZStack {
+                // Camera feed (full screen including safe areas)
+                BarcodeScannerView(
+                    onDetect: { code, position in
+                        viewModel.onBarcodeDetected(code, at: position)
+                    },
+                    onPhotoCapture: { imageData in
+                        viewModel.onPhotoCaptured(imageData)
+                    }
+                )
+                .ignoresSafeArea()
+
+                // Dark overlay with scan window cutout
+                ScanMask(windowHeight: viewfinderHeight)
+                    .ignoresSafeArea()
+
+                // Viewfinder brackets + scanning wave (positioned exactly over the cutout)
+                viewfinder
+                    .frame(width: viewfinderWidth, height: viewfinderHeight)
+                    .position(x: geo.size.width / 2, y: viewfinderY + (viewfinderHeight / 2))
+
+                // Barcode detected overlay pill
+                if let barcode = viewModel.detectedBarcode,
+                   let position = viewModel.barcodePosition {
+                    barcodeOverlay(barcode: barcode, position: position)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
                 }
-            )
-            .ignoresSafeArea()
 
-            // Dark overlay with scan window cutout
-            ScanMask(windowHeight: viewfinderHeight)
-
-            // Viewfinder with corner brackets + scanning wave
-            viewfinder
-
-            // Barcode detected overlay pill
-            if let barcode = viewModel.detectedBarcode,
-               let position = viewModel.barcodePosition {
-                barcodeOverlay(barcode: barcode, position: position)
-                    .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
-            }
-
-            // Top bar (fixed at top)
-            VStack {
-                topBar
-                Spacer()
-            }
-
-            // Product card (fixed at bottom, not affected by other elements)
-            VStack {
-                Spacer()
-                scanStateCard
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 40)
+                // Product card (fixed at bottom, above the tab bar)
+                VStack {
+                    Spacer()
+                    scanStateCard
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 100)
+                }
             }
         }
+        .ignoresSafeArea()
         .toolbar(.hidden, for: .navigationBar)
         .onDisappear {
             viewModel.reset()
@@ -73,26 +76,18 @@ struct ScanScreen: View {
     // MARK: - Viewfinder
 
     private var viewfinder: some View {
-        VStack {
-            Spacer()
-            ZStack {
-                // Viewfinder rectangle border
-                RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.white.opacity(0.3), lineWidth: 1)
-                    .frame(height: viewfinderHeight)
+        ZStack {
+            // Viewfinder rectangle border
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(Color.white.opacity(0.3), lineWidth: 1)
 
-                // Corner brackets
-                CornerBracketsShape(cornerLength: 32, cornerRadius: 20)
-                    .stroke(Color.white, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
-                    .frame(height: viewfinderHeight)
+            // Corner brackets
+            CornerBracketsShape(cornerLength: 32, cornerRadius: 20)
+                .stroke(Color.white, style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
 
-                // Scanning wave animation
-                scanningWave
-                    .frame(height: viewfinderHeight)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-            }
-            .padding(.horizontal, 20)
-            Spacer()
+            // Scanning wave animation
+            scanningWave
+                .clipShape(RoundedRectangle(cornerRadius: 20))
         }
     }
 
@@ -264,17 +259,6 @@ struct ScanScreen: View {
         .onTapGesture {
             viewModel.reset()
         }
-    }
-
-    // MARK: - Top Bar
-
-    private var topBar: some View {
-        HStack {
-            BackButton(action: { dismiss() }, style: .onTeal)
-            Spacer()
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
     }
 }
 
