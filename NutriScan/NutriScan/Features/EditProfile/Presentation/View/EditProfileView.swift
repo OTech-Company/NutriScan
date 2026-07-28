@@ -4,163 +4,150 @@
 //
 //  Created by Mina_Wagdy on 19/07/2026.
 //
-
 import SwiftUI
 
 struct EditProfileView: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel = EditProfileViewModel()
     @State private var isEditingMode = false
-    @State private var isFetchingProfile = true
     @State private var activeAlert: ActiveAlert = .none
-    @State private var alertMessage = ""
 
     var body: some View {
         ZStack {
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
 
-            if isFetchingProfile {
-                VStack(spacing: 16) {
-                    ProgressView()
-                        .scaleEffect(1.5)
-                        .tint(Color.EditProfileSemantics.titlePrimary)
+            ScrollView(showsIndicators: false) {
+                VStack(
+                    alignment: .leading,
+                    spacing: EditProfileSemantics.Spacing.sectionVertical
+                ) {
+                    BackButton(action: { router.pop() }).padding(
+                        .bottom,
+                        EditProfileSemantics.Spacing.sectionVertical)
 
-                    Text("Loading Profile...")
-                        .font(.subheadline)
-                        .foregroundColor(
-                            Color.EditProfileSemantics.textSecondary)
-                }
-            } else {
-                ScrollView(showsIndicators: false) {
+                    EditProfileHeaderView(
+                        name: viewModel.firstName.value + " "
+                            + viewModel.lastName.value,
+                        email: viewModel.email,
+                        avatarURL: viewModel.avatarURL,
+                        customImage: viewModel.avatarUIImage,
+                        isEditing: isEditingMode,
+                        selectedItem: $viewModel.selectedPhotoItem
+                    )
+                    .disabled(!isEditingMode)
+
                     VStack(
-                        alignment: .leading,
-                        spacing: EditProfileSemantics.Spacing.sectionVertical
+                        spacing: EditProfileSemantics.Spacing.fieldVertical
                     ) {
-                        BackButton(action: { router.pop() }).padding(
-                            .bottom,
-                            EditProfileSemantics.Spacing.sectionVertical)
 
-                        EditProfileHeaderView(
-                            name: viewModel.firstName.value + " "
-                                + viewModel.lastName.value,
-                            email: viewModel.email
-                        )
-                        .disabled(!isEditingMode)
-
-                        VStack(
-                            spacing: EditProfileSemantics.Spacing.fieldVertical
-                        ) {
-
-                            VStack(spacing: 4) {
-                                EditableFieldView(
-                                    placeholder: "first name",
-                                    text: $viewModel.firstName.value,
-                                    isEditing: isEditingMode)
-                                if viewModel.firstName.state == .error {
-                                    CustomTextFieldError(
-                                        errorMessage: viewModel.firstName.error)
-                                }
-                            }
-
-                            VStack(spacing: 4) {
-                                EditableFieldView(
-                                    placeholder: "last name",
-                                    text: $viewModel.lastName.value,
-                                    isEditing: isEditingMode)
-                                if viewModel.lastName.state == .error {
-                                    CustomTextFieldError(
-                                        errorMessage: viewModel.lastName.error)
-                                }
-                            }
-
-                            DateSelectionField(
-                                date: $viewModel.birthdate,
+                        VStack(spacing: 4) {
+                            EditableFieldView(
+                                placeholder: "first name",
+                                text: $viewModel.firstName.value,
                                 isEditing: isEditingMode)
-
-                            HStack(alignment: .top, spacing: 12) {
-                                VStack(spacing: 4) {
-                                    MeasureFieldView(
-                                        label: "Height",
-                                        value: $viewModel.height.value,
-                                        unit: "cm", isEditing: isEditingMode)
-                                    if viewModel.height.state == .error {
-                                        CustomTextFieldError(
-                                            errorMessage: viewModel.height.error
-                                        )
-                                    }
-                                }
-
-                                VStack(spacing: 4) {
-                                    MeasureFieldView(
-                                        label: "Weight",
-                                        value: $viewModel.weight.value,
-                                        unit: "kg", isEditing: isEditingMode)
-                                    if viewModel.weight.state == .error {
-                                        CustomTextFieldError(
-                                            errorMessage: viewModel.weight.error
-                                        )
-                                    }
-                                }
+                            if viewModel.firstName.state == .error {
+                                CustomTextFieldError(
+                                    errorMessage: viewModel.firstName.error)
                             }
                         }
 
-                        SelectableChipsSectionView(
-                            title: "Chronic Conditions",
-                            items: viewModel.conditions.chips,
-                            onAddOther: {
-                                viewModel.conditions.showSearchSheet = true
-                            },
-                            onToggle: { viewModel.conditions.toggle($0) },
-                            onRemove: { viewModel.conditions.remove($0) }
-                        )
-                        .disabled(!isEditingMode)
+                        VStack(spacing: 4) {
+                            EditableFieldView(
+                                placeholder: "last name",
+                                text: $viewModel.lastName.value,
+                                isEditing: isEditingMode)
+                            if viewModel.lastName.state == .error {
+                                CustomTextFieldError(
+                                    errorMessage: viewModel.lastName.error)
+                            }
+                        }
 
-                        SelectableChipsSectionView(
-                            title: "Allergies",
-                            items: viewModel.allergies.chips,
-                            onAddOther: {
-                                viewModel.allergies.showSearchSheet = true
-                            },
-                            onToggle: { viewModel.allergies.toggle($0) },
-                            onRemove: { viewModel.allergies.remove($0) }
-                        )
-                        .disabled(!isEditingMode)
+                        DateSelectionField(
+                            date: $viewModel.birthdate,
+                            isEditing: isEditingMode)
 
-                        CustomPuffedButton(
-                            title: isEditingMode ? "Save" : "Edit",
-                            action: {
-                                if isEditingMode {
-                                    if viewModel.validateFields() {
-                                        if viewModel.hasUnsavedChanges {
-                                            activeAlert = .warning
-                                        } else {
-                                            // Exit edit mode smoothly if no data changed
-                                            withAnimation { isEditingMode = false }
-                                        }
-                                    }
-                                } else {
-                                    withAnimation {
-                                        isEditingMode = true
+                        HStack(alignment: .top, spacing: 12) {
+                            VStack(spacing: 4) {
+                                MeasureFieldView(
+                                    label: "Height",
+                                    value: $viewModel.height.value,
+                                    unit: "cm", isEditing: isEditingMode)
+                                if viewModel.height.state == .error {
+                                    CustomTextFieldError(
+                                        errorMessage: viewModel.height.error
+                                    )
+                                }
+                            }
+
+                            VStack(spacing: 4) {
+                                MeasureFieldView(
+                                    label: "Weight",
+                                    value: $viewModel.weight.value,
+                                    unit: "kg", isEditing: isEditingMode)
+                                if viewModel.weight.state == .error {
+                                    CustomTextFieldError(
+                                        errorMessage: viewModel.weight.error
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    SelectableChipsSectionView(
+                        title: "Chronic Conditions",
+                        items: viewModel.conditions.chips,
+                        onAddOther: {
+                            viewModel.conditions.showSearchSheet = true
+                        },
+                        onToggle: { viewModel.conditions.toggle($0) },
+                        onRemove: { viewModel.conditions.remove($0) }
+                    )
+                    .disabled(!isEditingMode)
+
+                    SelectableChipsSectionView(
+                        title: "Allergies",
+                        items: viewModel.allergies.chips,
+                        onAddOther: {
+                            viewModel.allergies.showSearchSheet = true
+                        },
+                        onToggle: { viewModel.allergies.toggle($0) },
+                        onRemove: { viewModel.allergies.remove($0) }
+                    )
+                    .disabled(!isEditingMode)
+
+                    CustomPuffedButton(
+                        title: isEditingMode ? "Save" : "Edit",
+                        action: {
+                            if isEditingMode {
+                                if viewModel.validateFields() {
+                                    if viewModel.hasUnsavedChanges {
+                                        activeAlert = .warning
+                                    } else {
+                                        // Exit edit mode smoothly if no data changed
+                                        withAnimation { isEditingMode = false }
                                     }
                                 }
-                            },
-                            isLoading: viewModel.isLoading
-                        )
-                        .animation(.easeInOut, value: viewModel.isLoading)
-                        .padding(.top, 8)
-
-                    }
-                    .padding(
-                        .horizontal,
-                        EditProfileSemantics.Spacing.screenHorizontal
+                            } else {
+                                withAnimation {
+                                    isEditingMode = true
+                                }
+                            }
+                        },
+                        isLoading: viewModel.isLoading
                     )
-                    .padding(.bottom, 120)
+                    .animation(.easeInOut, value: viewModel.isLoading)
+                    .padding(.top, 8)
+
                 }
+                .padding(
+                    .horizontal,
+                    EditProfileSemantics.Spacing.screenHorizontal
+                )
+                .padding(.bottom, 120)
             }
         }
         .onChange(of: viewModel.errorMessage) { _, error in
-            if let error = error {
-                alertMessage = error
+            if error != nil {
                 activeAlert = .error
             }
         }
@@ -172,7 +159,7 @@ struct EditProfileView: View {
                     return CustomAlertConfig(
                         type: .error,
                         title: "Action Failed",
-                        description: alertMessage,
+                        description: viewModel.errorMessage ?? "An unknown error occurred",
                         primaryButtonTitle: "OK",
                         primaryButtonColor: Color.Red.red500
                     )
@@ -180,13 +167,15 @@ struct EditProfileView: View {
                     return CustomAlertConfig(
                         type: .warning,
                         title: "Save Changes",
-                        description: "You have modified your profile data. Are you sure you want to save these changes?",
+                        description:
+                            "You have modified your profile data. Are you sure you want to save these changes?",
                         primaryButtonTitle: "Save",
                         primaryButtonColor: Color.Teal.teal1000,
                         secondaryButtonTitle: "Discard"
                     )
                 default:
-                    return CustomAlertConfig(type: .warning, title: "", description: "")
+                    return CustomAlertConfig(
+                        type: .warning, title: "", description: "")
                 }
             },
             primaryAction: { alert in
@@ -213,11 +202,8 @@ struct EditProfileView: View {
         )
         .navigationBarHidden(true)
         .task {
-            isFetchingProfile = true
-            await viewModel.loadInitialData()
-            withAnimation(.easeIn(duration: 0.3)) {
-                isFetchingProfile = false
-            }
+            // Background fetch just the reference items (allergies/diseases lists)
+            await viewModel.loadReferenceData()
         }
         .sheet(isPresented: $viewModel.conditions.showSearchSheet) {
             SearchSelectionSheet(
@@ -238,6 +224,11 @@ struct EditProfileView: View {
                     viewModel.allergies.select(selectedAllergy)
                 }
             )
+        }
+        .onChange(of: viewModel.selectedPhotoItem) { _, _ in
+            Task {
+                await viewModel.loadSelectedImage()
+            }
         }
     }
 }
