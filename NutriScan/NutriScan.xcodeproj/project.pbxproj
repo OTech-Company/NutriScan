@@ -261,6 +261,7 @@
 		6F8C4F0A30190709000067BC /* BarcodeOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4F0430190709000067BC /* BarcodeOverlayView.swift */; };
 		6F8C4F0B30190709000067BC /* ScanningWaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4F0530190709000067BC /* ScanningWaveView.swift */; };
 		6F8C4F0C30190709000067BC /* ScanViewfinderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4F0730190709000067BC /* ScanViewfinderView.swift */; };
+		6F8C4F0E30191F3C000067BC /* FetchPersonalizedNewsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4F0D30191F3C000067BC /* FetchPersonalizedNewsUseCase.swift */; };
 		70194BD42355274AA58293FC /* ScanHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E80073E894D687BAD89874B /* ScanHistoryViewModel.swift */; };
 		722F72BCC74AA2788DB5C62D /* ProductMatchCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2550A33566860771C07AAB9 /* ProductMatchCard.swift */; };
 		764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB294EB0DF9DEBB41F600F58 /* AppProfileSetupBackgroundModifier.swift */; };
@@ -783,6 +784,7 @@
 		6F8C4F0530190709000067BC /* ScanningWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanningWaveView.swift; sourceTree = "<group>"; };
 		6F8C4F0630190709000067BC /* ScanStateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanStateCardView.swift; sourceTree = "<group>"; };
 		6F8C4F0730190709000067BC /* ScanViewfinderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewfinderView.swift; sourceTree = "<group>"; };
+		6F8C4F0D30191F3C000067BC /* FetchPersonalizedNewsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchPersonalizedNewsUseCase.swift; sourceTree = "<group>"; };
 		6FC3C2513010144A00ACB5EE /* NutriScan.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NutriScan.entitlements; sourceTree = "<group>"; };
 		6FFAB9839C62C2DB156A28BD /* CategoryResponseDTO.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CategoryResponseDTO.swift; sourceTree = "<group>"; };
 		702881CEB0053AD3B4F54F8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -1944,6 +1946,7 @@
 		6F1A8E673012AAE100E1ACC5 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				6F8C4F0D30191F3C000067BC /* FetchPersonalizedNewsUseCase.swift */,
 				6F1A8E653012AAE100E1ACC5 /* FetchTopHeadlinesUseCase.swift */,
 				6F1A8E663012AAE100E1ACC5 /* SearchArticlesUseCase.swift */,
 			);
@@ -4135,6 +4138,7 @@
 				6F8C4E9C301455AC000067BC /* ScanPageDTO.swift in Sources */,
 				9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */,
 				0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */,
+				6F8C4F0E30191F3C000067BC /* FetchPersonalizedNewsUseCase.swift in Sources */,
 				88CAD96BC98D8EBCC6D9CBC3 /* KeychainManager.swift in Sources */,
 				A1DD6F5AE5B509897CB8FD52 /* LookupProductUseCase.swift in Sources */,
 				2CC033A23017BF9B009B42A1 /* AuthAssembly.swift in Sources */,
