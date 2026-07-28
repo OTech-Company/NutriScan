@@ -3,6 +3,7 @@ import SwiftUI
 struct NewsView: View {
     @StateObject private var viewModel: NewsViewModel
     @EnvironmentObject var router: AppRouter
+    @State private var currentHeroIndex = 0
 
     init(viewModel: NewsViewModel? = nil) {
         if let viewModel {
@@ -26,19 +27,13 @@ struct NewsView: View {
 
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
+                    topBar
                     breakingNewsSection
-                        .padding(.bottom, 8)
-
                     recommendationSection
                 }
-                .padding(.top, 12)
+                .padding(.top, 8)
                 .padding(.bottom, 100)
             }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            topBar
-                .padding(.vertical, 12)
-                .background(NewsFeedPalette.background)
         }
         .navigationBarBackButtonHidden(true)
         .task {
@@ -55,10 +50,8 @@ struct NewsView: View {
 
     private var topBar: some View {
         HStack {
-            Button {} label: {
-                Image(systemName: "back.arrow")
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
+            BackButton {
+                router.pop()
             }
 
             Spacer()
@@ -72,6 +65,18 @@ struct NewsView: View {
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                 }
 
+                Button {} label: {
+                    ZStack(alignment: .topTrailing) {
+                        Image(systemName: "bell")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.textPrimary)
+
+                        Circle()
+                            .fill(NewsFeedPalette.accent)
+                            .frame(width: 8, height: 8)
+                            .offset(x: 2, y: -2)
+                    }
+                }
             }
         }
         .padding(.horizontal, NewsFeedMetrics.screenPadding)
@@ -86,51 +91,50 @@ struct NewsView: View {
                     .font(.system(size: 20, weight: .bold, design: .rounded))
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                 Spacer()
-
+                Button {} label: {
+                    Text("View all")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(NewsFeedPalette.accent)
+                }
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
-            Group {
-                if viewModel.viewState == .loading || viewModel.viewState == .idle {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 14) {
-                            BreakingNewsHeroSkeleton()
-                                .frame(width: UIScreen.main.bounds.width - 64)
-                            BreakingNewsHeroSkeleton()
-                                .frame(width: UIScreen.main.bounds.width - 64)
-                                .opacity(0.5)
-                        }
-                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            if viewModel.viewState == .loading || viewModel.viewState == .idle {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 14) {
+                        BreakingNewsHeroSkeleton()
+                            .frame(width: UIScreen.main.bounds.width - 64)
+                        BreakingNewsHeroSkeleton()
+                            .frame(width: UIScreen.main.bounds.width - 64)
+                            .opacity(0.5)
                     }
-                } else {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 14) {
-                            ForEach(viewModel.articles.prefix(5)) { article in
-                                Button {
-                                    viewModel.onArticleTapped(article)
-                                } label: {
-                                    BreakingNewsHeroCard(article: article)
-                                        .frame(width: UIScreen.main.bounds.width - 64)
-                                }
-                                .buttonStyle(.plain)
-                            }
+                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                }
+            } else {
+                TabView(selection: $currentHeroIndex) {
+                    ForEach(Array(viewModel.articles.prefix(5).enumerated()), id: \.element.id) { index, article in
+                        Button {
+                            viewModel.onArticleTapped(article)
+                        } label: {
+                            BreakingNewsHeroCard(article: article)
                         }
-                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                        .buttonStyle(.plain)
+                        .tag(index)
                     }
                 }
-            }
-            .animation(.easeInOut(duration: 0.3), value: viewModel.viewState)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .frame(height: 260)
+                .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
-            if viewModel.viewState != .loading && viewModel.viewState != .idle {
                 HStack(spacing: 6) {
                     ForEach(0..<min(viewModel.articles.count, 5), id: \.self) { index in
                         Capsule()
-                            .fill(index == 0 ? NewsFeedPalette.accent : NewsFeedPalette.divider)
-                            .frame(width: index == 0 ? 20 : 6, height: 6)
+                            .fill(index == currentHeroIndex ? NewsFeedPalette.accent : NewsFeedPalette.divider)
+                            .frame(width: index == currentHeroIndex ? 20 : 6, height: 6)
+                            .animation(.easeInOut(duration: 0.2), value: currentHeroIndex)
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .animation(.easeInOut, value: viewModel.articles.count)
             }
         }
     }
@@ -146,7 +150,11 @@ struct NewsView: View {
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Spacer()
-
+                    Button {} label: {
+                        Text("View all")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.accent)
+                    }
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
@@ -164,6 +172,11 @@ struct NewsView: View {
                         .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Spacer()
+                    Button {} label: {
+                        Text("View all")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.accent)
+                    }
                 }
                 .padding(.horizontal, NewsFeedMetrics.screenPadding)
 

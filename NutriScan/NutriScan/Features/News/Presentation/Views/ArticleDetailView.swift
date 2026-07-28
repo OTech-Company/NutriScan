@@ -3,6 +3,7 @@ import SwiftUI
 struct ArticleDetailView: View {
     let article: Article
     @EnvironmentObject var router: AppRouter
+    @Environment(\.dismiss) private var dismiss
     @State private var isBookmarked = false
 
     var body: some View {
@@ -13,11 +14,10 @@ struct ArticleDetailView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     heroSection
                     contentSection
-                        .padding(.bottom, 32)
                 }
             }
-            .ignoresSafeArea(edges: .top)
         }
+        .navigationBarBackButtonHidden(true)
         .overlay(alignment: .top) {
             topBar
         }
@@ -28,10 +28,10 @@ struct ArticleDetailView: View {
     private var topBar: some View {
         HStack {
             Button {
-                router.pop()
+                dismiss()
             } label: {
-                Image(systemName: "chevron.left")
-                    .font(.system(size: 16, weight: .semibold))
+                Image(systemName: "xmark")
+                    .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(width: 40, height: 40)
                     .background(.black.opacity(0.3))
@@ -41,8 +41,19 @@ struct ArticleDetailView: View {
             Spacer()
 
             HStack(spacing: 12) {
+                Button {
+                    isBookmarked.toggle()
+                } label: {
+                    Image(systemName: isBookmarked ? "bookmark.fill" : "bookmark")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 40, height: 40)
+                        .background(.black.opacity(0.3))
+                        .clipShape(Circle())
+                }
+
                 Button {} label: {
-                    Image(systemName: "square.and.arrow.up")
+                    Image(systemName: "ellipsis")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(width: 40, height: 40)
@@ -52,7 +63,7 @@ struct ArticleDetailView: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.top, 56)
+        .padding(.top, 50)
     }
 
     // MARK: - Hero Section
@@ -60,15 +71,14 @@ struct ArticleDetailView: View {
     private var heroSection: some View {
         ZStack(alignment: .bottomLeading) {
             heroImage
-                .frame(height: 340)
-                .clipped()
+                .frame(height: 320)
 
             LinearGradient(
-                colors: [.black.opacity(0.75), .black.opacity(0.3), .clear],
+                colors: [.black.opacity(0.5), .black.opacity(0.1), .clear],
                 startPoint: .bottom,
                 endPoint: .top
             )
-            .frame(height: 340)
+            .frame(height: 320)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(categoryName)
@@ -84,8 +94,6 @@ struct ArticleDetailView: View {
                     .foregroundStyle(.white)
                     .lineLimit(4)
                     .multilineTextAlignment(.leading)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 6) {
                     Text("Trending")
@@ -97,10 +105,9 @@ struct ArticleDetailView: View {
                 }
                 .font(.system(size: 13))
             }
-            .padding(20)
-            .padding(.bottom, 8)
+            .padding(16)
         }
-        .frame(height: 340)
+        .frame(height: 320)
     }
 
     // MARK: - Content
@@ -112,111 +119,24 @@ struct ArticleDetailView: View {
             Divider()
                 .background(NewsFeedPalette.divider)
 
-            // Author row
-            if let author = article.author, !author.isEmpty {
-                HStack(spacing: 10) {
-                    Image(systemName: "person.circle.fill")
-                        .font(.system(size: 18))
-                        .foregroundStyle(NewsFeedPalette.accent)
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Author")
-                            .font(.system(size: 11, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.textTertiary)
-                            .textCase(.uppercase)
-                        Text(author)
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundStyle(NewsFeedPalette.textPrimary)
-                    }
-                }
-
-                Divider()
-                    .background(NewsFeedPalette.divider)
-            }
-
-            // Published date
-            HStack(spacing: 10) {
-                Image(systemName: "calendar")
-                    .font(.system(size: 18))
-                    .foregroundStyle(NewsFeedPalette.accent)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Published")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(NewsFeedPalette.textTertiary)
-                        .textCase(.uppercase)
-                    Text(article.publishedAt.formatted(date: .long, time: .shortened))
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                }
-            }
-
-            Divider()
-                .background(NewsFeedPalette.divider)
-
-            // Description
             if let description = article.description, !description.isEmpty {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Summary")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(NewsFeedPalette.textTertiary)
-                        .textCase(.uppercase)
-                        .tracking(0.5)
-
-                    Text(description)
-                        .font(.system(size: 16))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                        .lineSpacing(6)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+                Text(description)
+                    .font(.system(size: 16))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+                    .lineSpacing(6)
             }
 
-            // Full content (cleaned of NewsAPI truncation marker)
-            if let raw = article.content, !raw.isEmpty {
-                let cleaned = raw.replacingOccurrences(
-                    of: #"\s*\[\+\d+ chars\]"#,
-                    with: "",
-                    options: .regularExpression
-                )
-                if !cleaned.isEmpty {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Article")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(NewsFeedPalette.textTertiary)
-                            .textCase(.uppercase)
-                            .tracking(0.5)
-
-                        Text(cleaned)
-                            .font(.system(size: 16))
-                            .foregroundStyle(NewsFeedPalette.textPrimary)
-                            .lineSpacing(6)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-            }
-
-            // Read full article button
-            if let url = article.articleURL {
-                Link(destination: url) {
-                    HStack(spacing: 8) {
-                        Text("Read Full Article")
-                            .font(.system(size: 15, weight: .semibold))
-                        Image(systemName: "arrow.up.right")
-                            .font(.system(size: 13, weight: .semibold))
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(NewsFeedPalette.accent)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                }
-                .padding(.top, 4)
+            if let content = article.content, !content.isEmpty {
+                Text(content)
+                    .font(.system(size: 16))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+                    .lineSpacing(6)
             }
         }
-        .padding(20)
+        .padding(16)
         .background(NewsFeedPalette.surface)
-        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
-        .padding(.top, -24)
+        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .offset(y: -20)
     }
 
     // MARK: - Source Row
@@ -259,39 +179,33 @@ struct ArticleDetailView: View {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        // Lock the width strictly to the screen width
-                        .frame(width: UIScreen.main.bounds.width, height: 340)
-                        .clipped()
+                    image.resizable().scaledToFill()
                 default:
-                    placeholderView
+                    Rectangle()
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.Teal.teal300, Color.Teal.teal600],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                 }
             }
-            // Strict frame on the wrapper as well
-            .frame(width: UIScreen.main.bounds.width, height: 340)
-            .clipped()
         } else {
-            placeholderView
-        }
-    }
-    
-    private var placeholderView: some View {
-        Rectangle()
-            .fill(
-                LinearGradient(
-                    colors: [Color.Teal.teal300, Color.Teal.teal600],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        colors: [Color.Teal.teal300, Color.Teal.teal600],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
                 )
-            )
-            .frame(width: UIScreen.main.bounds.width, height: 340)
-            .overlay {
-                Image(systemName: "newspaper")
-                    .font(.system(size: 40))
-                    .foregroundStyle(.white.opacity(0.3))
-            }
+                .overlay {
+                    Image(systemName: "newspaper")
+                        .font(.system(size: 40))
+                        .foregroundStyle(.white.opacity(0.3))
+                }
+        }
     }
 
     private var categoryName: String {

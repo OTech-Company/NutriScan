@@ -36,17 +36,6 @@ struct DiscoverView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    router.pop()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                }
-            }
-        }
         .task {
             await viewModel.onAppear()
         }
@@ -60,14 +49,21 @@ struct DiscoverView: View {
     // MARK: - Header
 
     private var headerSection: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("Discover")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundStyle(NewsFeedPalette.textPrimary)
+        HStack(alignment: .top) {
+            BackButton {
+                router.pop()
+            }
 
-            Text("News from all around the world")
-                .font(.system(size: 15))
-                .foregroundStyle(NewsFeedPalette.textSecondary)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Discover")
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+
+                Text("News from all around the world")
+                    .font(.system(size: 15))
+                    .foregroundStyle(NewsFeedPalette.textSecondary)
+            }
+            .padding(.top, 8)
         }
         .padding(.horizontal, NewsFeedMetrics.screenPadding)
     }
