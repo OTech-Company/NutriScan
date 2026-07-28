@@ -6,13 +6,11 @@
 import Foundation
 
 // MARK: - Protocol
-
 protocol GetProfileUseCaseProtocol {
     func execute() async throws -> ProfileInfo
 }
 
 // MARK: - Implementation
-
 final class GetProfileUseCase: GetProfileUseCaseProtocol {
     private let repository: ProfileRepositoryProtocol
 
