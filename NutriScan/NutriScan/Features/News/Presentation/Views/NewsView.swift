@@ -4,6 +4,7 @@ struct NewsView: View {
     @StateObject private var viewModel: NewsViewModel
     @EnvironmentObject var router: AppRouter
     @State private var currentHeroIndex = 0
+    @State private var heroScrollPosition: String?
 
     init(viewModel: NewsViewModel? = nil) {
         if let viewModel {
@@ -98,23 +99,28 @@ struct NewsView: View {
                     .padding(.horizontal, NewsFeedMetrics.screenPadding)
                 }
             } else {
-                TabView(selection: $currentHeroIndex) {
-                    ForEach(Array(viewModel.articles.prefix(5).enumerated()), id: \.element.id) { index, article in
-                        Button {
-                            viewModel.onArticleTapped(article)
-                        } label: {
-                            BreakingNewsHeroCard(article: article)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 14) {
+                        ForEach(viewModel.articles.prefix(5)) { article in
+                            Button {
+                                viewModel.onArticleTapped(article)
+                            } label: {
+                                BreakingNewsHeroCard(article: article)
+                                    .frame(width: UIScreen.main.bounds.width - 80)
+                            }
+                            .buttonStyle(.plain)
+                            .id(article.id)
                         }
-                        .buttonStyle(.plain)
-                        .tag(index)
                     }
+                    .scrollTargetLayout()
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
+                .scrollTargetBehavior(.viewAligned)
+                .safeAreaPadding(.horizontal, NewsFeedMetrics.screenPadding)
                 .frame(height: 260)
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                .scrollPosition(id: $heroScrollPosition)
 
                 HStack(spacing: 6) {
-                    ForEach(0..<min(viewModel.articles.count, 5), id: \.self) { index in
+                    ForEach(Array(viewModel.articles.prefix(5).enumerated()), id: \.offset) { index, article in
                         Capsule()
                             .fill(index == currentHeroIndex ? NewsFeedPalette.accent : NewsFeedPalette.divider)
                             .frame(width: index == currentHeroIndex ? 20 : 6, height: 6)
@@ -122,6 +128,11 @@ struct NewsView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+                .onChange(of: heroScrollPosition) { _, newValue in
+                    if let id = newValue, let index = viewModel.articles.prefix(5).firstIndex(where: { $0.id == id }) {
+                        currentHeroIndex = index
+                    }
+                }
             }
         }
     }
