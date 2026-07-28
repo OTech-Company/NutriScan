@@ -23,6 +23,9 @@ struct ScanScreen: View {
                     onDetect: { code, position, size in
                         viewModel.onBarcodeDetected(code, at: position, size: size)
                     },
+                    onLost: {
+                        viewModel.dismissBarcode()
+                    },
                     onPhotoCapture: { imageData in
                         viewModel.onPhotoCaptured(imageData)
                     }
