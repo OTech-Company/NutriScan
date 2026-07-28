@@ -4,27 +4,32 @@ struct BreakingNewsHeroCard: View {
     let article: Article
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        ZStack(alignment: .bottom) {
             heroImage
                 .frame(height: 260)
+                .clipped()
 
             LinearGradient(
-                colors: [.black.opacity(0.6), .black.opacity(0.15), .clear],
+                colors: [.black.opacity(0.75), .black.opacity(0.3), .clear],
                 startPoint: .bottom,
                 endPoint: .top
             )
             .frame(height: 260)
 
+            // Content overlay sits inside the fixed ZStack bounds
             VStack(alignment: .leading, spacing: 0) {
-                Text(categoryName)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(NewsFeedPalette.accent)
-                    .clipShape(Capsule())
-                    .padding(.top, 16)
-                    .padding(.leading, 16)
+                HStack {
+                    Text(categoryName)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(NewsFeedPalette.accent)
+                        .clipShape(Capsule())
+                    Spacer()
+                }
+                .padding(.top, 16)
+                .padding(.horizontal, 16)
 
                 Spacer()
 
@@ -33,6 +38,7 @@ struct BreakingNewsHeroCard: View {
                         Text(article.source.name)
                             .font(.system(size: 13, weight: .medium))
                             .foregroundStyle(.white)
+                            .lineLimit(1)
                         Image(systemName: "checkmark.seal.fill")
                             .font(.system(size: 11))
                             .foregroundStyle(NewsFeedPalette.accent)
@@ -41,6 +47,7 @@ struct BreakingNewsHeroCard: View {
                         Text(article.publishedAt.relativeShortString)
                             .font(.system(size: 13))
                             .foregroundStyle(.white.opacity(0.7))
+                        Spacer()
                     }
 
                     Text(article.title)
@@ -48,9 +55,11 @@ struct BreakingNewsHeroCard: View {
                         .foregroundStyle(.white)
                         .lineLimit(3)
                         .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 .padding(16)
             }
+            .frame(height: 260, alignment: .top)
         }
         .frame(height: 260)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -74,7 +83,11 @@ struct BreakingNewsHeroCard: View {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 260)
+                        .clipped()
                 default:
                     Rectangle()
                         .fill(
@@ -84,6 +97,7 @@ struct BreakingNewsHeroCard: View {
                                 endPoint: .bottomTrailing
                             )
                         )
+                        .frame(height: 260)
                 }
             }
         } else {
@@ -95,6 +109,7 @@ struct BreakingNewsHeroCard: View {
                         endPoint: .bottomTrailing
                     )
                 )
+                .frame(height: 260)
                 .overlay {
                     Image(systemName: "newspaper")
                         .font(.system(size: 40))

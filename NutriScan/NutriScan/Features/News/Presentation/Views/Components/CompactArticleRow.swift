@@ -19,6 +19,7 @@ struct CompactArticleRow: View {
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 6) {
                     Circle()
@@ -43,7 +44,9 @@ struct CompactArticleRow: View {
                         .foregroundStyle(NewsFeedPalette.textTertiary)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .frame(minHeight: 90)
         .padding(10)
         .background(NewsFeedPalette.surface)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -73,13 +76,20 @@ struct CompactArticleRow: View {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 100, height: 90)
+                        .clipped()
                 default:
                     thumbnailPlaceholder
+                        .frame(width: 100, height: 90)
                 }
             }
+            .frame(width: 100, height: 90)
         } else {
             thumbnailPlaceholder
+                .frame(width: 100, height: 90)
         }
     }
 

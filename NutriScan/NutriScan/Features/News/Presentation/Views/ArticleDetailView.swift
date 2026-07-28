@@ -13,10 +13,11 @@ struct ArticleDetailView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     heroSection
                     contentSection
+                        .padding(.bottom, 32)
                 }
             }
+            .ignoresSafeArea(edges: .top)
         }
-        .navigationBarBackButtonHidden(true)
         .overlay(alignment: .top) {
             topBar
         }
@@ -62,7 +63,7 @@ struct ArticleDetailView: View {
             }
         }
         .padding(.horizontal, 16)
-        .padding(.top, 50)
+        .padding(.top, 56)
     }
 
     // MARK: - Hero Section
@@ -70,14 +71,15 @@ struct ArticleDetailView: View {
     private var heroSection: some View {
         ZStack(alignment: .bottomLeading) {
             heroImage
-                .frame(height: 320)
+                .frame(height: 340)
+                .clipped()
 
             LinearGradient(
-                colors: [.black.opacity(0.5), .black.opacity(0.1), .clear],
+                colors: [.black.opacity(0.75), .black.opacity(0.3), .clear],
                 startPoint: .bottom,
                 endPoint: .top
             )
-            .frame(height: 320)
+            .frame(height: 340)
 
             VStack(alignment: .leading, spacing: 8) {
                 Text(categoryName)
@@ -93,6 +95,7 @@ struct ArticleDetailView: View {
                     .foregroundStyle(.white)
                     .lineLimit(4)
                     .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 HStack(spacing: 6) {
                     Text("Trending")
@@ -104,9 +107,10 @@ struct ArticleDetailView: View {
                 }
                 .font(.system(size: 13))
             }
-            .padding(16)
+            .padding(20)
+            .padding(.bottom, 8)
         }
-        .frame(height: 320)
+        .frame(height: 340)
     }
 
     // MARK: - Content
@@ -118,24 +122,109 @@ struct ArticleDetailView: View {
             Divider()
                 .background(NewsFeedPalette.divider)
 
-            if let description = article.description, !description.isEmpty {
-                Text(description)
-                    .font(.system(size: 16))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
-                    .lineSpacing(6)
+            // Author row
+            if let author = article.author, !author.isEmpty {
+                HStack(spacing: 10) {
+                    Image(systemName: "person.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundStyle(NewsFeedPalette.accent)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Author")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.textTertiary)
+                            .textCase(.uppercase)
+                        Text(author)
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundStyle(NewsFeedPalette.textPrimary)
+                    }
+                }
+
+                Divider()
+                    .background(NewsFeedPalette.divider)
             }
 
-            if let content = article.content, !content.isEmpty {
-                Text(content)
-                    .font(.system(size: 16))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
-                    .lineSpacing(6)
+            // Published date
+            HStack(spacing: 10) {
+                Image(systemName: "calendar")
+                    .font(.system(size: 18))
+                    .foregroundStyle(NewsFeedPalette.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Published")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(NewsFeedPalette.textTertiary)
+                        .textCase(.uppercase)
+                    Text(article.publishedAt.formatted(date: .long, time: .shortened))
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(NewsFeedPalette.textPrimary)
+                }
+            }
+
+            Divider()
+                .background(NewsFeedPalette.divider)
+
+            // Description
+            if let description = article.description, !description.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Summary")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(NewsFeedPalette.textTertiary)
+                        .textCase(.uppercase)
+                        .tracking(0.5)
+
+                    Text(description)
+                        .font(.system(size: 16))
+                        .foregroundStyle(NewsFeedPalette.textPrimary)
+                        .lineSpacing(6)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
+            // Full content (cleaned of NewsAPI truncation marker)
+            if let raw = article.content, !raw.isEmpty {
+                let cleaned = raw.replacingOccurrences(
+                    of: #"\s*\[\+\d+ chars\]"#,
+                    with: "",
+                    options: .regularExpression
+                )
+                if !cleaned.isEmpty {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Article")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(NewsFeedPalette.textTertiary)
+                            .textCase(.uppercase)
+                            .tracking(0.5)
+
+                        Text(cleaned)
+                            .font(.system(size: 16))
+                            .foregroundStyle(NewsFeedPalette.textPrimary)
+                            .lineSpacing(6)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+            }
+
+            // Read full article button
+            if let url = article.articleURL {
+                Link(destination: url) {
+                    HStack(spacing: 8) {
+                        Text("Read Full Article")
+                            .font(.system(size: 15, weight: .semibold))
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 13, weight: .semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(NewsFeedPalette.accent)
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                }
+                .padding(.top, 4)
             }
         }
-        .padding(16)
+        .padding(20)
         .background(NewsFeedPalette.surface)
-        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
-        .offset(y: -20)
+        .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+        .padding(.top, -24)
     }
 
     // MARK: - Source Row
@@ -178,7 +267,11 @@ struct ArticleDetailView: View {
             AsyncImage(url: imageURL) { phase in
                 switch phase {
                 case .success(let image):
-                    image.resizable().scaledToFill()
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(height: 340)
+                        .clipped()
                 default:
                     Rectangle()
                         .fill(
@@ -188,6 +281,7 @@ struct ArticleDetailView: View {
                                 endPoint: .bottomTrailing
                             )
                         )
+                        .frame(height: 340)
                 }
             }
         } else {
@@ -199,6 +293,7 @@ struct ArticleDetailView: View {
                         endPoint: .bottomTrailing
                     )
                 )
+                .frame(height: 340)
                 .overlay {
                     Image(systemName: "newspaper")
                         .font(.system(size: 40))

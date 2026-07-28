@@ -26,15 +26,19 @@ struct NewsView: View {
 
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 24) {
-                    topBar
                     breakingNewsSection
-                        .padding(.bottom, 24)
+                        .padding(.bottom, 8)
 
                     recommendationSection
                 }
-                .padding(.top, 8)
+                .padding(.top, 12)
                 .padding(.bottom, 100)
             }
+        }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            topBar
+                .padding(.vertical, 12)
+                .background(NewsFeedPalette.background)
         }
         .navigationBarBackButtonHidden(true)
         .task {
@@ -102,33 +106,36 @@ struct NewsView: View {
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
 
-            if viewModel.viewState == .loading || viewModel.viewState == .idle {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
-                        BreakingNewsHeroSkeleton()
-                            .frame(width: UIScreen.main.bounds.width - 64)
-                        BreakingNewsHeroSkeleton()
-                            .frame(width: UIScreen.main.bounds.width - 64)
-                            .opacity(0.5)
-                    }
-                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
-                }
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
-                        ForEach(viewModel.articles.prefix(5)) { article in
-                            Button {
-                                viewModel.onArticleTapped(article)
-                            } label: {
-                                BreakingNewsHeroCard(article: article)
-                                    .frame(width: UIScreen.main.bounds.width - 64)
-                            }
-                            .buttonStyle(.plain)
+            Group {
+                if viewModel.viewState == .loading || viewModel.viewState == .idle {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 14) {
+                            BreakingNewsHeroSkeleton()
+                                .frame(width: UIScreen.main.bounds.width - 64)
+                            BreakingNewsHeroSkeleton()
+                                .frame(width: UIScreen.main.bounds.width - 64)
+                                .opacity(0.5)
                         }
+                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
                     }
-                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                } else {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 14) {
+                            ForEach(viewModel.articles.prefix(5)) { article in
+                                Button {
+                                    viewModel.onArticleTapped(article)
+                                } label: {
+                                    BreakingNewsHeroCard(article: article)
+                                        .frame(width: UIScreen.main.bounds.width - 64)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .padding(.horizontal, NewsFeedMetrics.screenPadding)
+                    }
                 }
             }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.viewState)
 
             if viewModel.viewState != .loading && viewModel.viewState != .idle {
                 HStack(spacing: 6) {
@@ -139,6 +146,7 @@ struct NewsView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+                .animation(.easeInOut, value: viewModel.articles.count)
             }
         }
     }
