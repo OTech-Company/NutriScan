@@ -20,8 +20,8 @@ struct ScanScreen: View {
 
             ZStack {
                 BarcodeScannerView(
-                    onDetect: { code, position in
-                        viewModel.onBarcodeDetected(code, at: position)
+                    onDetect: { code, position, size in
+                        viewModel.onBarcodeDetected(code, at: position, size: size)
                     },
                     onPhotoCapture: { imageData in
                         viewModel.onPhotoCaptured(imageData)
@@ -38,10 +38,13 @@ struct ScanScreen: View {
 
                 if let barcode = viewModel.detectedBarcode,
                    let position = viewModel.barcodePosition {
-                    BarcodeOverlayView(barcode: barcode) {
+                    BarcodeOverlayView(
+                        barcode: barcode,
+                        barcodeSize: viewModel.barcodeSize
+                    ) {
                         viewModel.lookupByBarcode()
                     }
-                    .position(x: position.x, y: position.y - 30)
+                    .position(x: position.x, y: position.y - (viewModel.barcodeSize.height / 2) - 24)
                     .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
                 }
 
