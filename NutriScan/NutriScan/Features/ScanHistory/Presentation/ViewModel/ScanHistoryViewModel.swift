@@ -32,6 +32,12 @@ final class ScanHistoryViewModel {
     
     // MARK: - Public API
     
+    /// Only fetches if data is empty and there's no previous error.
+    func loadScanHistoryIfNeeded() async {
+        guard scans.isEmpty && initialLoadError == nil else { return }
+        await loadScanHistory()
+    }
+    
     /// Initial load — resets pagination and fetches page 0.
     func loadScanHistory() async {
         currentPage = 0

@@ -93,7 +93,7 @@ struct ScanHistoryView: View {
         .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
         .task {
-            await viewModel.loadScanHistory()
+            await viewModel.loadScanHistoryIfNeeded()
         }
     }
     
