@@ -17,7 +17,6 @@ struct EditProfileHeaderView: View {
 
     var body: some View {
         HStack(spacing: EditProfileSemantics.Spacing.headerRowSpacing) {
-            // Wrap the avatar stack in a PhotosPicker if editing is active
             Group {
                 if isEditing {
                     PhotosPicker(selection: $selectedItem, matching: .images) {
@@ -56,7 +55,6 @@ struct EditProfileHeaderView: View {
                         height: EditProfileSemantics.Sizes.outerAvatarDiameter
                     )
 
-                // Show local picked image if available, otherwise fall back to URL string
                 if let uiImage = customImage {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -80,30 +78,32 @@ struct EditProfileHeaderView: View {
                 }
             }
 
-            // Pencil badge overlay
-            ZStack {
-                Circle()
-                    .fill(Color.white)
-                    .stroke(Color.white, lineWidth: 2)
-                    .frame(
-                        width: EditProfileSemantics.Sizes.outerEditBadgeDiameter,
-                        height: EditProfileSemantics.Sizes.outerEditBadgeDiameter
-                    )
+            if isEditing {
+                ZStack {
+                    Circle()
+                        .fill(Color.white)
+                        .stroke(Color.white, lineWidth: 2)
+                        .frame(
+                            width: EditProfileSemantics.Sizes.outerEditBadgeDiameter,
+                            height: EditProfileSemantics.Sizes.outerEditBadgeDiameter
+                        )
 
-                Image(systemName: "pencil")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(
-                        Color.EditProfileSemantics.editBadgeIcon
-                    )
-                    .frame(
-                        width: EditProfileSemantics.Sizes.editBadgeDiameter,
-                        height: EditProfileSemantics.Sizes.editBadgeDiameter
-                    )
-                    .background(
-                        Circle().fill(
-                            Color.EditProfileSemantics.editBadgeBackground))
+                    Image(systemName: "pencil")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(
+                            Color.EditProfileSemantics.editBadgeIcon
+                        )
+                        .frame(
+                            width: EditProfileSemantics.Sizes.editBadgeDiameter,
+                            height: EditProfileSemantics.Sizes.editBadgeDiameter
+                        )
+                        .background(
+                            Circle().fill(
+                                Color.EditProfileSemantics.editBadgeBackground))
+                }
+                .offset(x: 4, y: -4)
+                .transition(.scale.combined(with: .opacity))
             }
-            .offset(x: 4, y: -4)
         }
     }
 }
