@@ -7,20 +7,35 @@
 
 import Foundation
 
-struct ProductDetailsResponse : Decodable {
-    let product : ProductDetailsScanDTO
-}
-
-struct ProductDetailsScanDTO: Decodable {
-    let scanId: String
-    let status: String
+struct ProductDetailsResponse: Decodable {
+    let scanId: String?
+    let status: String?
     let scannedAt: String?
     let imageUrl: String?
     let productName: String?
     let foodSafetyResponse: ProductDetailsFoodSafetyResponseDTO?
     let nutritionFacts: ProductDetailsNutritionFactsDTO?
-    let favorite: Bool
+    let favorite: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case scanId, status, scannedAt, imageUrl, productName
+        case foodSafetyResponse, nutritionFacts, favorite
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        scanId = try container.decodeIfPresent(String.self, forKey: .scanId)
+        status = try container.decodeIfPresent(String.self, forKey: .status)
+        scannedAt = try container.decodeIfPresent(String.self, forKey: .scannedAt)
+        imageUrl = try container.decodeIfPresent(String.self, forKey: .imageUrl)
+        productName = try container.decodeIfPresent(String.self, forKey: .productName)
+        foodSafetyResponse = try container.decodeIfPresent(ProductDetailsFoodSafetyResponseDTO.self, forKey: .foodSafetyResponse)
+        nutritionFacts = try container.decodeIfPresent(ProductDetailsNutritionFactsDTO.self, forKey: .nutritionFacts)
+        favorite = try container.decodeIfPresent(Bool.self, forKey: .favorite)
+    }
 }
+
+typealias ProductDetailsScanDTO = ProductDetailsResponse
 
 struct ProductDetailsFoodSafetyResponseDTO: Decodable {
     let verdict: String?
