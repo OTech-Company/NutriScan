@@ -16,6 +16,7 @@ struct AppDependencies {
     /// that depends on it (e.g. NetworkServiceProtocol before ProfileAssembly).
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
+        SharedProfileAssembly(),
         AuthAssembly(),
         ExerciseAssembly(),
         ProfileAssembly(),
@@ -24,7 +25,8 @@ struct AppDependencies {
         StepTrackerAssembly(),
         RAGAssembly(),
         SettingsAssembly(),
-        ProductDetailsAssembly()
+        ProductDetailsAssembly(),
+        HomeAssembly()
     ]
 
     static func setup() {
@@ -32,7 +34,6 @@ struct AppDependencies {
         assemblies.forEach { $0.assemble(container: container) }
     }
 }
-
 
 struct ScanAssembly: Assembly {
     func assemble(container: DIContainer) {
@@ -64,7 +65,7 @@ struct RAGAssembly: Assembly {
 struct StepTrackerAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
         let repository = StepRepositoryImpl()
-        
+
         // Register step tracker use cases
         container.register(
             type: ObserveDailyStepsUseCase.self,
@@ -78,12 +79,13 @@ struct StepTrackerAssembly: Assembly {
             type: FetchStepsHistoryUseCase.self,
             component: FetchStepsHistoryUseCase(repository: repository)
         )
-        
-        // Register user profile service for height/weight
+
+        // Register user profile service using the shared observer use case
         container.register(
             type: UserProfileService.self,
             component: UserProfileService(
-                getProfileUseCase: container.resolve(type: GetEditProfileUseCaseProtocol.self)
+                observeProfileUseCase: container.resolve(
+                    type: ObserveProfileUseCaseProtocol.self)
             )
         )
     }

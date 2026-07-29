@@ -11,30 +11,31 @@ struct WorkoutActiveControlsView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            HStack(spacing: 16) {
-                // Start / Restart Button
-                Button {
-                    if viewModel.hasStarted {
+            if !viewModel.hasStarted {
+                // Start Button
+                CustomPuffedButton(title: "Start", action: {
+                    viewModel.startWorkout()
+                })
+            } else {
+                HStack(spacing: 16) {
+                    // Restart Button
+                    Button {
                         viewModel.showRestartAlert = true
-                    } else {
-                        viewModel.startWorkout()
+                    } label: {
+                        Text("Restart")
+                            .font(Font.AppFont.subtitle2)
+                            .foregroundColor(Color.ExerciseSemantic.outlineButtonText)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(Color.ExerciseSemantic.screenBackground)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .strokeBorder(Color.ExerciseSemantic.outlineButtonBorder, lineWidth: 1)
+                            )
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
                     }
-                } label: {
-                    Text(viewModel.hasStarted ? "Restart" : "Start")
-                        .font(Font.AppFont.subtitle2)
-                        .foregroundColor(viewModel.hasStarted ? Color.ExerciseSemantic.outlineButtonText : .white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(viewModel.hasStarted ? Color.ExerciseSemantic.screenBackground : Color.Teal.teal1000)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .strokeBorder(viewModel.hasStarted ? Color.ExerciseSemantic.outlineButtonBorder : Color.clear, lineWidth: 1)
-                        )
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                }
 
-                // Pause Button (visible once started)
-                if viewModel.hasStarted {
+                    // Pause Button
                     Button {
                         viewModel.pauseTimer()
                     } label: {

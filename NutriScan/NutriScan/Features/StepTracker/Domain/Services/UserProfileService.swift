@@ -1,45 +1,28 @@
 import Foundation
 
-/// Fetches and caches the user's profile (height/weight) for use in step analytics.
+/// Provides user profile data (height/weight) for step analytics by reading from the shared store.
 @MainActor
 @Observable
 final class UserProfileService {
-    private let getProfileUseCase: GetEditProfileUseCaseProtocol
-    private(set) var cachedProfile: Profile?
-    private(set) var isLoading = false
-    private(set) var loadError: String?
+    private let observeProfileUseCase: ObserveProfileUseCaseProtocol
 
-    init(getProfileUseCase: GetEditProfileUseCaseProtocol) {
-        self.getProfileUseCase = getProfileUseCase
+    init(observeProfileUseCase: ObserveProfileUseCaseProtocol = DIContainer.shared.resolve(type: ObserveProfileUseCaseProtocol.self)) {
+        self.observeProfileUseCase = observeProfileUseCase
     }
 
-    /// Current height in cm, nil if not set or not loaded.
+    /// Current height in cm, pulled directly from the reactive store.
     var heightCm: Double? {
-        cachedProfile?.heightCm
+        observeProfileUseCase.execute().currentProfile?.heightCm
     }
 
-    /// Current weight in kg, nil if not set or not loaded.
+    /// Current weight in kg, pulled directly from the reactive store.
     var weightKg: Double? {
-        cachedProfile?.weightKg
+        observeProfileUseCase.execute().currentProfile?.weightKg
     }
 
-    /// Loads the profile if not already cached.
-    func loadProfileIfNeeded() async {
-        guard cachedProfile == nil, !isLoading else { return }
-        isLoading = true
-        loadError = nil
-        do {
-            let result = try await getProfileUseCase.execute()
-            cachedProfile = result.profile
-        } catch {
-            loadError = error.localizedDescription
-        }
-        isLoading = false
-    }
+    /// No-op kept for backward compatibility with existing calls. Data is already pre-loaded on app launch.
+    func loadProfileIfNeeded() async {}
 
-    /// Forces a reload of the profile.
-    func reloadProfile() async {
-        cachedProfile = nil
-        await loadProfileIfNeeded()
-    }
+    /// No-op kept for backward compatibility.
+    func reloadProfile() async {}
 }
