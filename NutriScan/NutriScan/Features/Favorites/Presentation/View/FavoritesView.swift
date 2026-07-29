@@ -22,24 +22,63 @@ struct FavoritesView: View {
                     await viewModel.loadFavorites(search: searchParam)
                 }
             })
-                .padding(.horizontal, 20)
-                .padding(.top, 24)
+            .padding(.horizontal, 20)
+            .padding(.top, 24)
             
-            if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // MARK: - State-driven content
+            if viewModel.isLoadingInitial && viewModel.favorites.isEmpty {
+                shimmerGrid
+                
+            } else if let error = viewModel.initialLoadError, viewModel.favorites.isEmpty {
+                ListErrorView(message: error) {
+                    Task {
+                        await viewModel.loadFavorites()
+                    }
+                }
+                
             } else if !viewModel.favorites.isEmpty {
-                FavoritesGridView(savedItems: viewModel.favorites, onItemAppear: { item in
-                    let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
-                    viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
-                })
+                FavoritesGridView(
+                    savedItems: viewModel.favorites,
+                    isLoadingNextPage: viewModel.isLoadingNextPage,
+                    paginationError: viewModel.paginationError,
+                    onItemAppear: { item in
+                        let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
+                        viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
+                    },
+                    onRetryPagination: {
+                        viewModel.retryPagination()
+                    }
+                )
+                .refreshable {
+                    await viewModel.refreshFavorites()
+                }
+                
             } else {
                 FavoritesEmptyStateView()
             }
         }
         .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
-        .task {
-            await viewModel.loadFavorites()
+        .onAppear {
+            Task {
+                await viewModel.loadIfNeeded()
+            }
+        }
+    }
+    
+    // MARK: - Shimmer Grid
+    
+    private var shimmerGrid: some View {
+        ScrollView {
+            LazyVGrid(columns: [
+                GridItem(.flexible(), spacing: 12),
+                GridItem(.flexible(), spacing: 12)
+            ], spacing: 12) {
+                ForEach(0..<6, id: \.self) { _ in
+                    FavoriteCardShimmerView()
+                }
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 12)
         }
     }
 }

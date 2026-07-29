@@ -11,8 +11,14 @@ import Observation
 @Observable
 final class ScanHistoryViewModel {
     var scans: [ScanHistoryEntity] = []
-    var isLoading: Bool = false
-    var errorMessage: String? = nil
+    var isLoadingInitial: Bool = false
+    var isLoadingNextPage: Bool = false
+    var isRefreshing: Bool = false
+    
+    /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
+    var initialLoadError: String? = nil
+    /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
+    var paginationError: String? = nil
     
     private var currentPage: Int = 0
     private var hasMorePages: Bool = true
@@ -24,40 +30,103 @@ final class ScanHistoryViewModel {
         self.scanHistoryUseCase = scanHistoryUseCase
     }
     
+    // MARK: - Public API
+    
+    /// Initial load — resets pagination and fetches page 0.
     func loadScanHistory() async {
         currentPage = 0
         hasMorePages = true
+        initialLoadError = nil
+        paginationError = nil
+        isLoadingInitial = true
         scans.removeAll()
-        await fetchScanHistory()
+        
+        await fetchPage()
     }
     
+    /// Pull-to-refresh — keeps existing data if the refresh fails.
+    func refreshScanHistory() async {
+        isRefreshing = true
+        paginationError = nil
+        
+        let previousScans = scans
+        let previousPage = currentPage
+        let previousHasMore = hasMorePages
+        
+        currentPage = 0
+        hasMorePages = true
+        
+        do {
+            let result = try await scanHistoryUseCase.getScanHistory(page: 0, size: pageSize)
+            scans = result.scans
+            currentPage = 1
+            hasMorePages = currentPage < result.totalPages
+            initialLoadError = nil
+        } catch {
+            // Failure — restore previous data
+            scans = previousScans
+            currentPage = previousPage
+            hasMorePages = previousHasMore
+        }
+        
+        isRefreshing = false
+    }
+    
+    /// Triggered by onAppear of the last item in the list.
     func loadNextPageIfNeeded(currentItem: ScanHistoryEntity) {
         guard let lastItem = scans.last, lastItem.id == currentItem.id else { return }
-        guard !isLoading && hasMorePages else { return }
+        guard !isLoadingNextPage && !isLoadingInitial && hasMorePages else { return }
+        guard paginationError == nil else { return }
         
         Task {
-            await fetchScanHistory()
+            await fetchNextPage()
         }
     }
     
-    func fetchScanHistory() async {
-        guard !isLoading && hasMorePages else { return }
-        isLoading = true
-        errorMessage = nil
+    /// Retry loading the next page after a pagination error.
+    func retryPagination() {
+        paginationError = nil
+        Task {
+            await fetchNextPage()
+        }
+    }
+    
+    // MARK: - Private Fetch Methods
+    
+    private func fetchPage() async {
+        do {
+            let result = try await scanHistoryUseCase.getScanHistory(page: 0, size: pageSize)
+            scans = result.scans
+            currentPage = 1
+            hasMorePages = currentPage < result.totalPages
+            initialLoadError = nil
+        } catch {
+            if scans.isEmpty {
+                initialLoadError = error.localizedDescription
+            }
+        }
+        
+        isLoadingInitial = false
+    }
+    
+    private func fetchNextPage() async {
+        guard !isLoadingNextPage && hasMorePages else { return }
+        isLoadingNextPage = true
+        paginationError = nil
         
         do {
             let result = try await scanHistoryUseCase.getScanHistory(page: currentPage, size: pageSize)
-            
             scans.append(contentsOf: result.scans)
-            
             currentPage += 1
             hasMorePages = currentPage < result.totalPages
         } catch {
-            errorMessage = error.localizedDescription
+            paginationError = error.localizedDescription
         }
         
-        isLoading = false
+        isLoadingNextPage = false
     }
+    
+    // MARK: - Helpers
     
     /// Formats an ISO 8601 date string into a relative, human-readable format
     /// matching the style used in the Home screen (e.g. "Today, 9:24 AM")

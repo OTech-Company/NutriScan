@@ -29,18 +29,25 @@ struct ScanHistoryView: View {
             .padding(.top, 16)
             .padding(.bottom, 16)
             
-            if viewModel.isLoading && viewModel.scans.isEmpty {
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let error = viewModel.errorMessage, viewModel.scans.isEmpty {
-                ScanHistoryErrorView(errorMessage: error) {
+            // MARK: - State-driven content
+            if viewModel.isLoadingInitial && viewModel.scans.isEmpty {
+                // Shimmer placeholder during initial load
+                shimmerList
+                
+            } else if let error = viewModel.initialLoadError, viewModel.scans.isEmpty {
+                // Full-screen error when initial load fails with no data
+                ListErrorView(message: error) {
                     Task {
                         await viewModel.loadScanHistory()
                     }
                 }
+                
             } else if viewModel.scans.isEmpty {
+                // Empty state
                 ScanHistoryEmptyStateView()
+                
             } else {
+                // Populated list with pagination
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.scans) { scan in
@@ -58,14 +65,23 @@ struct ScanHistoryView: View {
                             }
                         }
                         
-                        if viewModel.isLoading {
+                        // MARK: - Pagination Footer
+                        if viewModel.isLoadingNextPage {
                             ProgressView()
+                                .tint(Color.Teal.teal1000)
                                 .padding()
+                        } else if viewModel.paginationError != nil {
+                            PaginationRetryFooter {
+                                viewModel.retryPagination()
+                            }
                         }
                     }
                     .padding(.horizontal, 22)
                     .padding(.top, 8)
                     .padding(.bottom, 24)
+                }
+                .refreshable {
+                    await viewModel.refreshScanHistory()
                 }
             }
         }
@@ -73,6 +89,20 @@ struct ScanHistoryView: View {
         .navigationBarBackButtonHidden(true)
         .task {
             await viewModel.loadScanHistory()
+        }
+    }
+    
+    // MARK: - Shimmer List
+    
+    private var shimmerList: some View {
+        ScrollView {
+            LazyVStack(spacing: 8) {
+                ForEach(0..<6, id: \.self) { _ in
+                    ListRowShimmerView()
+                }
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 8)
         }
     }
 }
@@ -96,22 +126,6 @@ struct ScanHistoryView: View {
                     calories: 240,
                     scannedAt: "2026-07-26T14:30:00Z",
                     status: .caution
-                ),
-                ScanHistoryEntity(
-                    id: "3",
-                    productName: "Coca Cola Regular",
-                    imageUrl: "",
-                    calories: 140,
-                    scannedAt: "2026-07-25T09:00:00Z",
-                    status: .unsafe
-                ),
-                ScanHistoryEntity(
-                    id: "4",
-                    productName: "Quaker Oats",
-                    imageUrl: "",
-                    calories: 150,
-                    scannedAt: "2026-07-24T08:15:00Z",
-                    status: .safe
                 )
             ]
             return (scans: mockData, totalPages: 1)
