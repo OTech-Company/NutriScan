@@ -24,7 +24,8 @@ struct FamilyMemberSheetView: View {
         onSave: @escaping (FamilyMemberInput) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
-        let vm = FamilyMemberSheetViewModel(existingMember: existingMember, allMembers: allMembers)
+        let vm = FamilyMemberSheetViewModel(
+            existingMember: existingMember, allMembers: allMembers)
         _viewModel = State(initialValue: vm)
         // If it's a new member, start directly in editing mode. If editing, start locked.
         _isEditingMode = State(initialValue: existingMember == nil)
@@ -36,25 +37,38 @@ struct FamilyMemberSheetView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: EditProfileSemantics.Spacing.sectionVertical) {
 
-                RoundedRectangle(cornerRadius: ProfileSemantics.Radius.dragHandle)
-                    .fill(Color.Gray.gray400)
-                    .frame(
-                        width: ProfileSemantics.Sizes.sheetDragHandleWidth,
-                        height: ProfileSemantics.Sizes.sheetDragHandleHeight
-                    )
-                    .padding(.top, ProfileSemantics.Spacing.smallSpacing)
+                RoundedRectangle(
+                    cornerRadius: ProfileSemantics.Radius.dragHandle
+                )
+                .fill(Color.Gray.gray400)
+                .frame(
+                    width: ProfileSemantics.Sizes.sheetDragHandleWidth,
+                    height: ProfileSemantics.Sizes.sheetDragHandleHeight
+                )
+                .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
                 ZStack {
                     Circle()
-                        .stroke(Color.Teal.teal700, lineWidth: ProfileSemantics.Border.avatarThickBorderWidth)
+                        .stroke(
+                            Color.Teal.teal700,
+                            lineWidth: ProfileSemantics.Border
+                                .avatarThickBorderWidth
+                        )
                         .frame(
                             width: ProfileSemantics.Sizes.sheetAvatarSize,
                             height: ProfileSemantics.Sizes.sheetAvatarSize
                         )
 
-                    Image(systemName: viewModel.isEditMode ? "person.fill" : "plus")
-                        .font(.system(size: ProfileSemantics.Sizes.sheetAvatarIconSize, weight: .medium))
-                        .foregroundColor(Color.Teal.teal700)
+                    Image(
+                        systemName: viewModel.isEditMode
+                            ? "person.fill" : "plus"
+                    )
+                    .font(
+                        .system(
+                            size: ProfileSemantics.Sizes.sheetAvatarIconSize,
+                            weight: .medium)
+                    )
+                    .foregroundColor(Color.Teal.teal700)
                 }
                 .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
@@ -66,7 +80,8 @@ struct FamilyMemberSheetView: View {
                             isEditing: isEditingMode
                         )
                         if viewModel.name.state == .error {
-                            CustomTextFieldError(errorMessage: viewModel.name.error)
+                            CustomTextFieldError(
+                                errorMessage: viewModel.name.error)
                         }
                     }
 
@@ -77,7 +92,8 @@ struct FamilyMemberSheetView: View {
                             isEditing: isEditingMode
                         )
                         if viewModel.relation.state == .error {
-                            CustomTextFieldError(errorMessage: viewModel.relation.error)
+                            CustomTextFieldError(
+                                errorMessage: viewModel.relation.error)
                         }
                     }
                 }
@@ -100,7 +116,7 @@ struct FamilyMemberSheetView: View {
                 )
                 .disabled(!isEditingMode)
 
-                // Dynamic Button Text: "Edit" -> "Save Changes" / "Add Member"
+                // Dynamic Button Text: "Edit" -> "Save" / "Add Member"
                 let buttonTitle: String = {
                     if !viewModel.isEditMode { return "Add Member" }
                     return isEditingMode ? "Save" : "Edit"
@@ -119,18 +135,21 @@ struct FamilyMemberSheetView: View {
                                 dismiss()
                             }
                         } else {
+                            // Editing existing member flow
                             if isEditingMode {
                                 if viewModel.validateFieldsOrInputs() {
-                                    if viewModel.hasUnsavedChanges {
+                                    if viewModel.isDuplicate() {
+                                        viewModel.alertContext = .duplicate
+                                        activeAlert = .warning
+                                    } else if viewModel.hasUnsavedChanges {
                                         viewModel.alertContext = .unsavedChanges
                                         activeAlert = .warning
                                     } else {
-                                        // No changes made, just toggle UI state back to read-only smoothly
                                         withAnimation { isEditingMode = false }
                                     }
                                 }
                             } else {
-                                // Switch from "Edit" to "Save Changes" mode
+                                // Switch from "Edit" to "Save" mode
                                 withAnimation { isEditingMode = true }
                             }
                         }
@@ -145,7 +164,10 @@ struct FamilyMemberSheetView: View {
                         activeAlert = .warning
                     }) {
                         Text("Delete")
-                            .font(.system(size: ProfileSemantics.Sizes.buttonTextSize, weight: .medium))
+                            .font(
+                                .system(
+                                    size: ProfileSemantics.Sizes.buttonTextSize,
+                                    weight: .medium))
                     }
                     .buttonStyle(DeleteTextButtonStyle())
                     .padding(.top, ProfileSemantics.Spacing.tinySpacing)
@@ -154,7 +176,9 @@ struct FamilyMemberSheetView: View {
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
             .padding(.bottom, ProfileSemantics.Spacing.sheetBottomPadding)
         }
-        .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
+        .background(
+            Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
+        )
         .task {
             await viewModel.loadReferenceData()
         }
@@ -193,7 +217,8 @@ struct FamilyMemberSheetView: View {
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Save Changes",
-                            description: "You have modified this family member's details. Are you sure you want to save?",
+                            description:
+                                "You have modified this family member's details. Are you sure you want to save?",
                             primaryButtonTitle: "Save",
                             primaryButtonColor: Color.Teal.teal1000,
                             secondaryButtonTitle: "Discard"
@@ -202,14 +227,16 @@ struct FamilyMemberSheetView: View {
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Delete Member",
-                            description: "Are you sure you want to delete this family member? This action cannot be undone.",
+                            description:
+                                "Are you sure you want to delete this family member? This action cannot be undone.",
                             primaryButtonTitle: "Delete",
                             primaryButtonColor: Color.Red.red500,
                             secondaryButtonTitle: "Cancel"
                         )
                     }
                 default:
-                    return CustomAlertConfig(type: .warning, title: "", description: "")
+                    return CustomAlertConfig(
+                        type: .warning, title: "", description: "")
                 }
             },
             primaryAction: { alert in
