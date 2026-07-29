@@ -11,11 +11,9 @@ struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
 
-    // MARK: - Alert State
+    // MARK: - Local Edit & Alert States
+    @State private var isEditingMode: Bool
     @State private var activeAlert: ActiveAlert = .none
-    
-    // Tracks if the form is currently editable
-    @State private var isEditingForm: Bool
 
     let onSave: (FamilyMemberInput) -> Void
     let onDelete: (() -> Void)?
@@ -26,9 +24,10 @@ struct FamilyMemberSheetView: View {
         onSave: @escaping (FamilyMemberInput) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
-        _viewModel = State(initialValue: FamilyMemberSheetViewModel(existingMember: existingMember, allMembers: allMembers))
-        // New members are editable by default, existing members start in view-only mode
-        _isEditingForm = State(initialValue: existingMember == nil)
+        let vm = FamilyMemberSheetViewModel(existingMember: existingMember, allMembers: allMembers)
+        _viewModel = State(initialValue: vm)
+        // If it's a new member, start directly in editing mode. If editing, start locked.
+        _isEditingMode = State(initialValue: existingMember == nil)
         self.onSave = onSave
         self.onDelete = onDelete
     }
@@ -64,7 +63,7 @@ struct FamilyMemberSheetView: View {
                         EditableFieldView(
                             placeholder: "Member name",
                             text: $viewModel.name.value,
-                            isEditing: isEditingForm
+                            isEditing: isEditingMode
                         )
                         if viewModel.name.state == .error {
                             CustomTextFieldError(errorMessage: viewModel.name.error)
@@ -75,7 +74,7 @@ struct FamilyMemberSheetView: View {
                         EditableFieldView(
                             placeholder: "Relation (e.g. Son, Mother)",
                             text: $viewModel.relation.value,
-                            isEditing: isEditingForm
+                            isEditing: isEditingMode
                         )
                         if viewModel.relation.state == .error {
                             CustomTextFieldError(errorMessage: viewModel.relation.error)
@@ -90,7 +89,7 @@ struct FamilyMemberSheetView: View {
                     onToggle: { viewModel.conditions.toggle($0) },
                     onRemove: { viewModel.conditions.remove($0) }
                 )
-                .disabled(!isEditingForm)
+                .disabled(!isEditingMode)
 
                 SelectableChipsSectionView(
                     title: "Allergies",
@@ -99,13 +98,19 @@ struct FamilyMemberSheetView: View {
                     onToggle: { viewModel.allergies.toggle($0) },
                     onRemove: { viewModel.allergies.remove($0) }
                 )
-                .disabled(!isEditingForm)
+                .disabled(!isEditingMode)
+
+                // Dynamic Button Text: "Edit" -> "Save Changes" / "Add Member"
+                let buttonTitle: String = {
+                    if !viewModel.isEditMode { return "Add Member" }
+                    return isEditingMode ? "Save" : "Edit"
+                }()
 
                 CustomPuffedButton(
-                    title: viewModel.isEditMode ? (isEditingForm ? "Save" : "Edit") : "Add Member",
+                    title: buttonTitle,
                     action: {
                         if !viewModel.isEditMode {
-                            // Flow for adding a NEW member
+                            // Adding new member flow
                             if viewModel.isDuplicate() {
                                 viewModel.alertContext = .duplicate
                                 activeAlert = .warning
@@ -114,33 +119,27 @@ struct FamilyMemberSheetView: View {
                                 dismiss()
                             }
                         } else {
-                            // Flow for editing an EXISTING member
-                            if isEditingForm {
-                                if viewModel.validate() {
+                            if isEditingMode {
+                                if viewModel.validateFieldsOrInputs() {
                                     if viewModel.hasUnsavedChanges {
-                                        if viewModel.isDuplicate() {
-                                            viewModel.alertContext = .duplicate
-                                            activeAlert = .warning
-                                        } else {
-                                            // Trigger confirmation alert for unsaved changes
-                                            viewModel.alertContext = .unsavedChanges
-                                            activeAlert = .warning
-                                        }
+                                        viewModel.alertContext = .unsavedChanges
+                                        activeAlert = .warning
                                     } else {
-                                        // No changes made, seamlessly switch back to view mode
-                                        withAnimation { isEditingForm = false }
+                                        // No changes made, just toggle UI state back to read-only smoothly
+                                        withAnimation { isEditingMode = false }
                                     }
                                 }
                             } else {
-                                // Switch to edit mode
-                                withAnimation { isEditingForm = true }
+                                // Switch from "Edit" to "Save Changes" mode
+                                withAnimation { isEditingMode = true }
                             }
                         }
                     },
                     isLoading: viewModel.isLoading
                 )
+                .animation(.easeInOut, value: isEditingMode)
 
-                if onDelete != nil {
+                if viewModel.isEditMode, onDelete != nil {
                     Button(action: {
                         viewModel.alertContext = .delete
                         activeAlert = .warning
@@ -181,24 +180,25 @@ struct FamilyMemberSheetView: View {
             config: { alert in
                 switch alert {
                 case .warning:
-                    if viewModel.alertContext == .duplicate {
+                    switch viewModel.alertContext {
+                    case .duplicate:
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Duplicate Member",
-                            description: "this family member already exist",
+                            description: "This family member already exists.",
                             primaryButtonTitle: "Ok",
                             primaryButtonColor: Color.Teal.teal1000
                         )
-                    } else if viewModel.alertContext == .unsavedChanges {
+                    case .unsavedChanges:
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Save Changes",
-                            description: "You have modified this family member's data. Are you sure you want to save these changes?",
+                            description: "You have modified this family member's details. Are you sure you want to save?",
                             primaryButtonTitle: "Save",
                             primaryButtonColor: Color.Teal.teal1000,
                             secondaryButtonTitle: "Discard"
                         )
-                    } else {
+                    case .delete:
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Delete Member",
@@ -214,23 +214,27 @@ struct FamilyMemberSheetView: View {
             },
             primaryAction: { alert in
                 if alert == .warning {
-                    if viewModel.alertContext == .delete {
+                    switch viewModel.alertContext {
+                    case .delete:
                         onDelete?()
                         dismiss()
-                    } else if viewModel.alertContext == .unsavedChanges {
-                        // User confirmed changes, trigger save and dismiss
-                        if let input = viewModel.submit() {
+                    case .unsavedChanges:
+                        if viewModel.isDuplicate() {
+                            viewModel.alertContext = .duplicate
+                            activeAlert = .warning
+                        } else if let input = viewModel.submit() {
                             onSave(input)
-                            dismiss()
+                            withAnimation { isEditingMode = false }
                         }
+                    case .duplicate:
+                        viewModel.errorMessage = nil
                     }
                 }
             },
-            secondaryAction: { alert in
-                if alert == .warning && viewModel.alertContext == .unsavedChanges {
-                    // User opted to discard changes
+            secondaryAction: { _ in
+                if viewModel.alertContext == .unsavedChanges {
                     viewModel.revertChanges()
-                    withAnimation { isEditingForm = false }
+                    withAnimation { isEditingMode = false }
                 }
             }
         )

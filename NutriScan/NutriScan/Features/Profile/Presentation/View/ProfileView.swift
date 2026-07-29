@@ -4,15 +4,15 @@
 //
 //  Created by Mina_Wagdy on 24/07/2026.
 //
-
 import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     var viewModel: ProfileViewModel
-    @State private var isFetchingProfile = true
+    
     @State private var sheetMember: FamilyMember?  // nil sentinel for "not shown"
     @State private var isAddingNewMember = false
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color.ProfileSemantics.headerBackground
@@ -21,7 +21,7 @@ struct ProfileView: View {
 
             ProfileHeaderView(
                 state: viewModel.state,
-                isLoading: isFetchingProfile,
+                isLoading: false, // UI is instant now
                 onEdit: { router.push(ProfileRoute.editProfile) }
             ).padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
 
@@ -32,29 +32,21 @@ struct ProfileView: View {
                         spacing: ProfileSemantics.Spacing.sectionSpacing
                     ) {
                         FamilyMembersSectionView(
-                            members: viewModel.state.familyMembers,
-                            isLoading: isFetchingProfile,
+                            members: viewModel.familyMembers,
+                            isLoading: false,
                             onAddMember: { isAddingNewMember = true },
                             onShowDetails: { member in sheetMember = member }
                         )
 
                         SettingsSectionView(
-                            onScanHistory: {
-                                router.push(ProfileRoute.scanHistory)
-                            },
-                            onNotifications: { /* TODO: no ProfileRoute case for notifications yet */
-                            },
-                            onSettings: {
-                                router.push(ProfileRoute.settings)
-                            }
+                            onScanHistory: { router.push(ProfileRoute.scanHistory) },
+                            onNotifications: { /* TODO: no ProfileRoute case for notifications yet */ },
+                            onSettings: { router.push(ProfileRoute.settings) }
                         )
                     }
-                    .padding(
-                        .horizontal,
-                        ProfileSemantics.Spacing.horizontalPadding
-                    )
+                    .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
                     .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
-                    .padding(.bottom, ProfileSemantics.Spacing.bottomTabBarClearance)  // clearance above bottom tab bar
+                    .padding(.bottom, ProfileSemantics.Spacing.bottomTabBarClearance)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
@@ -70,19 +62,15 @@ struct ProfileView: View {
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .task {
-            isFetchingProfile = !viewModel.hasLoaded
-            await viewModel.loadProfile()
-            withAnimation(ProfileSemantics.Animation.fetchTransition) {
-                isFetchingProfile = false
-            }
+            // The profile data is already loaded!
+            // We just background sync the streak when the view appears.
+            await viewModel.updateAndFetchStreak()
         }
         .sheet(isPresented: $isAddingNewMember) {
             FamilyMemberSheetView(
                 existingMember: nil,
-                allMembers: viewModel.state.familyMembers,
-                onSave: { input in
-                    Task { await viewModel.addFamilyMember(input) }
-                }
+                allMembers: viewModel.familyMembers,
+                onSave: { input in Task { await viewModel.addFamilyMember(input) } }
             )
             .presentationDetents([.large])
             .presentationCornerRadius(ProfileSemantics.Radius.sheetPresentation)
@@ -90,12 +78,9 @@ struct ProfileView: View {
         .sheet(item: $sheetMember) { member in
             FamilyMemberSheetView(
                 existingMember: member,
-                allMembers: viewModel.state.familyMembers,
+                allMembers: viewModel.familyMembers,
                 onSave: { input in
-                    Task {
-                        await viewModel.updateFamilyMember(
-                            id: member.id, with: input)
-                    }
+                    Task { await viewModel.updateFamilyMember(id: member.id, with: input) }
                 },
                 onDelete: {
                     Task { await viewModel.deleteFamilyMember(id: member.id) }
@@ -104,6 +89,5 @@ struct ProfileView: View {
             .presentationDetents([.large])
             .presentationCornerRadius(ProfileSemantics.Radius.sheetPresentation)
         }
-
     }
 }
