@@ -37,7 +37,7 @@ struct HomeView: View {
 
                 VStack {
                     MenuRowView(icon: "newspaper.fill", title: "Health News") {
-                        // Add action when news button pressed
+                        router.push(HomeRoute.news)
                     }
                     MenuRowView(
                         icon: "bubble.left.and.bubble.right.fill",

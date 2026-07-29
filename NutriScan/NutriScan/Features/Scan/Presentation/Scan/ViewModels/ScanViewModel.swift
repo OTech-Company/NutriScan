@@ -12,10 +12,12 @@ final class ScanViewModel: ObservableObject {
     @Published private(set) var isSaved: Bool = false
     @Published private(set) var detectedBarcode: String?
     @Published private(set) var barcodePosition: CGPoint?
+    @Published private(set) var barcodeSize: CGSize = .zero
     @Published var errorMessage: String?
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
     private let fetchScanDetailUseCase: FetchScanDetailUseCase
+    private var pendingLostTask: Task<Void, Never>?
 
     nonisolated init(
         submitScanImageUseCase: SubmitScanImageUseCase,
@@ -34,22 +36,33 @@ final class ScanViewModel: ObservableObject {
 
     // MARK: - Barcode Detection
 
-    func onBarcodeDetected(_ barcode: String, at position: CGPoint) {
+    func onBarcodeDetected(_ barcode: String, at position: CGPoint, size: CGSize) {
         guard !isSubmitting else { return }
+        pendingLostTask?.cancel()
         detectedBarcode = barcode
         barcodePosition = position
+        barcodeSize = size
     }
 
     func lookupByBarcode() {
         guard let barcode = detectedBarcode, !isSubmitting else { return }
-        // TODO: Implement barcode lookup API call
-        // This will be called when the user taps the barcode pill button
         print("Looking up barcode: \(barcode)")
     }
 
+    func scheduleDismissBarcode() {
+        pendingLostTask?.cancel()
+        pendingLostTask = Task { @MainActor in
+            try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled else { return }
+            dismissBarcode()
+        }
+    }
+
     func dismissBarcode() {
+        pendingLostTask?.cancel()
         detectedBarcode = nil
         barcodePosition = nil
+        barcodeSize = .zero
     }
 
     // MARK: - Photo Capture
@@ -60,6 +73,7 @@ final class ScanViewModel: ObservableObject {
         isSubmitting = true
         isSaved = false
         detectedBarcode = nil
+        barcodeSize = .zero
 
         Task {
             do {
@@ -81,7 +95,6 @@ final class ScanViewModel: ObservableObject {
 
     func toggleSaveFavorite() {
         isSaved.toggle()
-        // TODO: Implement save to favorites API call
     }
 
     func loadScanDetail(scanId: String) {
@@ -96,12 +109,14 @@ final class ScanViewModel: ObservableObject {
     }
 
     func reset() {
+        pendingLostTask?.cancel()
         capturedImageData = nil
         latestScan = nil
         scanDetail = nil
         isSaved = false
         detectedBarcode = nil
         barcodePosition = nil
+        barcodeSize = .zero
     }
 
     private func pollScanDetail(scanId: String) async {
