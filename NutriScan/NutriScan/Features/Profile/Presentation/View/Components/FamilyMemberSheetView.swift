@@ -145,7 +145,7 @@ struct FamilyMemberSheetView: View {
                                         viewModel.alertContext = .unsavedChanges
                                         activeAlert = .warning
                                     } else {
-                                        dismiss()
+                                        withAnimation { isEditingMode = false }
                                     }
                                 }
                             } else {
