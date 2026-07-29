@@ -51,15 +51,20 @@ struct ScanHistoryView: View {
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.scans) { scan in
-                            HistoryRowView(
-                                item: UiStateHistoryItem(
-                                    id: scan.id,
-                                    title: scan.productName,
-                                    scannedAt: viewModel.formatDate(scan.scannedAt),
-                                    imageName: scan.imageUrl,
-                                    status: scan.status
+                            Button(action: {
+                                router.push(ProfileRoute.scanDetail(scanId: scan.id))
+                            }) {
+                                HistoryRowView(
+                                    item: UiStateHistoryItem(
+                                        id: scan.id,
+                                        title: scan.productName,
+                                        scannedAt: viewModel.formatDate(scan.scannedAt),
+                                        imageName: scan.imageUrl,
+                                        status: scan.status
+                                    )
                                 )
-                            )
+                            }
+                            .buttonStyle(.plain)
                             .onAppear {
                                 viewModel.loadNextPageIfNeeded(currentItem: scan)
                             }
