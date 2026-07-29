@@ -34,9 +34,6 @@ final class AppFlowCoordinator: ObservableObject {
         }
     }
 
-    // Replace these with real checks (Keychain token, UserDefaults flag, etc.)
-    // NOTE: key matches @AppStorage("hasSeenOnboarding") used in OnboardingScreen —
-    // keep these in sync, or better, centralize the key name as a constant.
     private var hasCompletedOnboarding: Bool {
         UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     }
@@ -51,13 +48,9 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private var hasCompletedProfileSetup: Bool {
-        // e.g. check the fetched User entity for required profile fields,
-        // or a dedicated flag from your ProfileRepository
         UserDefaults.standard.bool(forKey: "hasCompletedProfileSetup")
     }
 
-    /// Called once, e.g. after Splash finishes its minimum display time
-    /// and/or any startup checks (session validation, remote config, etc).
     @MainActor
     func finishSplash() {
         Task {
@@ -69,8 +62,6 @@ final class AppFlowCoordinator: ObservableObject {
                 flow = .profileSetup
             } else {
                 // EAGER LOAD: Fetch the profile data silently.
-                // If it fails (e.g. no internet), we still let them into the main app
-                // where the Home screen can handle the empty cache gracefully.
                 _ = try? await fetchAndCacheProfileUseCase.execute()
                 flow = .main
             }
@@ -82,6 +73,7 @@ final class AppFlowCoordinator: ObservableObject {
         flow = .auth
     }
 
+    @MainActor
     func didAuthenticate(isPendingSetup: Bool = false, email: String? = nil) {
         if isPendingSetup {
             UserDefaults.standard.set(false, forKey: "hasCompletedProfileSetup")
@@ -91,7 +83,17 @@ final class AppFlowCoordinator: ObservableObject {
             flow = .profileSetup
         } else {
             UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
-            flow = .main
+            
+            Task {
+                // EAGER LOAD for fresh logins:
+                // Fetch the profile data for the new session BEFORE transitioning
+                // to the main flow to prevent "Failed to load" errors.
+                _ = try? await fetchAndCacheProfileUseCase.execute()
+                
+                await MainActor.run {
+                    self.flow = .main
+                }
+            }
         }
     }
 
@@ -113,6 +115,9 @@ final class AppFlowCoordinator: ObservableObject {
         // Clear the shared cache so the next user doesn't see old data
         let store = DIContainer.shared.resolve(type: UserProfileStore.self)
         store.clear()
+        
+        // Navigation Reset: Ensure the next user starts on the Home tab
+        selectedTab = .home
 
         flow = .auth
     }

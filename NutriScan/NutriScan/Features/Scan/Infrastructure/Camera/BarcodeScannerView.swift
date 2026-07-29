@@ -5,14 +5,14 @@ import AVFoundation
 
 final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputObjectsDelegate, AVCapturePhotoCaptureDelegate {
 
-    var onDetect: ((String, CGPoint) -> Void)?
+    var onDetect: ((String, CGPoint, CGSize) -> Void)?
+    var onLost: (() -> Void)?
     var onPhotoCapture: ((Data) -> Void)?
 
     private let session = AVCaptureSession()
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var photoOutput = AVCapturePhotoOutput()
     private var lastDetectedCode: String?
-    private var lastDetectionTime: Date = .distantPast
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,35 +104,28 @@ final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputO
     func metadataOutput(_ output: AVCaptureMetadataOutput,
                          didOutput metadataObjects: [AVMetadataObject],
                          from connection: AVCaptureConnection) {
-        guard let object = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-              let stringValue = object.stringValue else { return }
-
-        // Convert normalized metadata coordinates (0-1) to layer coordinates.
-        // Works correctly with .resizeAspectFill since the video fills the layer.
-        let bounds = object.bounds
-        let center: CGPoint
-        if let previewLayer = previewLayer {
-            center = CGPoint(
-                x: bounds.midX * previewLayer.bounds.width,
-                y: bounds.midY * previewLayer.bounds.height
-            )
-        } else {
-            center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        guard let previewLayer = previewLayer,
+              let rawObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
+              let stringValue = rawObject.stringValue,
+              let transformed = previewLayer.transformedMetadataObject(for: rawObject) as? AVMetadataMachineReadableCodeObject
+        else {
+            if lastDetectedCode != nil {
+                lastDetectedCode = nil
+                onLost?()
+            }
+            return
         }
 
-        let now = Date()
-        let isFirstDetection = stringValue != lastDetectedCode || lastDetectedCode == nil
+        let bounds = transformed.bounds
+        let center = CGPoint(x: bounds.midX, y: bounds.midY)
+        let size = bounds.size
 
-        if isFirstDetection {
+        if stringValue != lastDetectedCode {
             lastDetectedCode = stringValue
-            lastDetectionTime = now
-
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
         }
 
-        // Always update position so the pill follows the barcode
-        onDetect?(stringValue, center)
+        onDetect?(stringValue, center, size)
     }
 
     func stop() {
@@ -149,12 +142,14 @@ final class BarcodeScannerController: UIViewController, AVCaptureMetadataOutputO
 }
 
 struct BarcodeScannerView: UIViewControllerRepresentable {
-    var onDetect: (String, CGPoint) -> Void
+    var onDetect: (String, CGPoint, CGSize) -> Void
+    var onLost: () -> Void
     var onPhotoCapture: ((Data) -> Void)?
 
     func makeUIViewController(context: Context) -> BarcodeScannerController {
         let controller = BarcodeScannerController()
         controller.onDetect = onDetect
+        controller.onLost = onLost
         controller.onPhotoCapture = onPhotoCapture
         return controller
     }

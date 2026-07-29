@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class NewsViewModel: ObservableObject {
+final class DiscoverViewModel: ObservableObject {
 
     enum ViewState: Equatable {
         case idle
@@ -11,11 +11,7 @@ final class NewsViewModel: ObservableObject {
         case error(String)
     }
 
-    // MARK: - Published state consumed by the View
-
     @Published private(set) var articles: [Article] = []
-    @Published private(set) var personalizedArticles: [Article] = []
-    @Published private(set) var isLoadingPersonalized: Bool = false
     @Published private(set) var viewState: ViewState = .idle
     @Published var selectedCategory: NewsFeedCategory = .topHealth {
         didSet {
@@ -27,31 +23,21 @@ final class NewsViewModel: ObservableObject {
     @Published var isSearching: Bool = false
     @Published var selectedArticleForReading: Article?
 
-    // MARK: - Dependencies
-
     private let fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol
     private let searchArticlesUseCase: SearchArticlesUseCaseProtocol
-    private let fetchPersonalizedNewsUseCase: FetchPersonalizedNewsUseCaseProtocol
     private var searchTask: Task<Void, Never>?
 
     init(
         fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol,
-        searchArticlesUseCase: SearchArticlesUseCaseProtocol,
-        fetchPersonalizedNewsUseCase: FetchPersonalizedNewsUseCaseProtocol = FetchPersonalizedNewsUseCase()
+        searchArticlesUseCase: SearchArticlesUseCaseProtocol
     ) {
         self.fetchTopHeadlinesUseCase = fetchTopHeadlinesUseCase
         self.searchArticlesUseCase = searchArticlesUseCase
-        self.fetchPersonalizedNewsUseCase = fetchPersonalizedNewsUseCase
     }
-
-    // MARK: - Intents
 
     func onAppear() async {
         if viewState == .idle {
             await loadCurrentCategory()
-        }
-        if personalizedArticles.isEmpty {
-            await loadPersonalizedNews()
         }
     }
 
@@ -61,7 +47,6 @@ final class NewsViewModel: ObservableObject {
         } else {
             await loadCurrentCategory()
         }
-        await loadPersonalizedNews()
     }
 
     func onSearchTextChanged(_ newValue: String) {
@@ -84,8 +69,6 @@ final class NewsViewModel: ObservableObject {
         selectedArticleForReading = article
     }
 
-    // MARK: - Private loading logic
-
     private func loadCurrentCategory() async {
         viewState = .loading
         do {
@@ -96,19 +79,10 @@ final class NewsViewModel: ObservableObject {
             } else {
                 result = try await fetchTopHeadlinesUseCase.execute(category: "health")
             }
-            apply(result)
+            articles = result
+            viewState = result.isEmpty ? .empty : .loaded
         } catch {
             viewState = .error(error.localizedDescription)
-        }
-    }
-
-    private func loadPersonalizedNews() async {
-        isLoadingPersonalized = true
-        defer { isLoadingPersonalized = false }
-        do {
-            personalizedArticles = try await fetchPersonalizedNewsUseCase.execute()
-        } catch {
-            personalizedArticles = []
         }
     }
 
@@ -116,14 +90,10 @@ final class NewsViewModel: ObservableObject {
         viewState = .loading
         do {
             let result = try await searchArticlesUseCase.execute(query: query)
-            apply(result)
+            articles = result
+            viewState = result.isEmpty ? .empty : .loaded
         } catch {
             viewState = .error(error.localizedDescription)
         }
-    }
-
-    private func apply(_ result: [Article]) {
-        articles = result
-        viewState = result.isEmpty ? .empty : .loaded
     }
 }
