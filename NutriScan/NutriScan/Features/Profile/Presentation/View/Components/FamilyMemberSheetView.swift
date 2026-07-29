@@ -145,7 +145,7 @@ struct FamilyMemberSheetView: View {
                                         viewModel.alertContext = .unsavedChanges
                                         activeAlert = .warning
                                     } else {
-                                        withAnimation { isEditingMode = false }
+                                        dismiss()
                                     }
                                 }
                             } else {
@@ -251,7 +251,7 @@ struct FamilyMemberSheetView: View {
                             activeAlert = .warning
                         } else if let input = viewModel.submit() {
                             onSave(input)
-                            withAnimation { isEditingMode = false }
+                            dismiss()
                         }
                     case .duplicate:
                         viewModel.errorMessage = nil
