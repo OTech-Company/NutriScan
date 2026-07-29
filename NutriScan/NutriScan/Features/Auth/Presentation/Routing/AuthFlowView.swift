@@ -13,7 +13,7 @@ struct AuthFlowView: View {
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            LoginView()
+            AuthFactory.makeLoginView()
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }

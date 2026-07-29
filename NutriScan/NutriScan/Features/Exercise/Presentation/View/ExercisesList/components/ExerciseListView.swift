@@ -71,5 +71,5 @@ struct ExerciseListView: View {
 // MARK: - Preview
 
 #Preview {
-    ExerciseListView(viewModel: ExerciseListViewModel())
+    ExerciseListView(viewModel: ExerciseFactory.makeExerciseListViewModel())
 }

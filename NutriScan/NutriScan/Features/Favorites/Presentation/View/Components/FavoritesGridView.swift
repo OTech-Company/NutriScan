@@ -13,6 +13,7 @@ struct FavoritesGridView: View {
     var isLoadingNextPage: Bool = false
     var paginationError: String? = nil
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
+    var onRemoveFavorite: ((String) -> Void)? = nil
     var onRetryPagination: (() -> Void)? = nil
     
     let columns = [
@@ -24,8 +25,11 @@ struct FavoritesGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(savedItems, id: \.id) { item in
-                    FavoriteCardView(favUIState:
-                                        FavUIState(entity: item)
+                    FavoriteCardView(
+                        favUIState: FavUIState(entity: item),
+                        onRemove: {
+                            onRemoveFavorite?(item.id)
+                        }
                     )
                     .onAppear {
                         onItemAppear?(item)

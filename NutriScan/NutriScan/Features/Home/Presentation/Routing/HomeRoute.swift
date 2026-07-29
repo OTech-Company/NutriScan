@@ -11,7 +11,7 @@ enum HomeRoute: Route {
     case summary
     case news
     case scanDetail(scanId: String)
-
+@MainActor
     @ViewBuilder
     var destination: some View {
         switch self {

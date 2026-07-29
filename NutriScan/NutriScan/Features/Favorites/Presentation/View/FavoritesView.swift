@@ -15,21 +15,27 @@ struct FavoritesView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            FavoritesSearchBar(text: $searchText, onSearch: {
-                appliedSearchText = searchText
-                Task {
-                    let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
-                    await viewModel.loadFavorites(search: searchParam)
+            CustomSearchBar(
+                text: $searchText,
+                prompt: "Search favorites",
+                onSearch: {
+                    appliedSearchText = searchText
+                    Task {
+                        let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
+                        await viewModel.loadFavorites(search: searchParam)
+                    }
                 }
-            })
+            )
             .padding(.horizontal, 20)
             .padding(.top, 24)
             
             // MARK: - State-driven content
             if viewModel.isLoadingInitial && viewModel.favorites.isEmpty {
+                // Shimmer placeholder during initial load
                 shimmerGrid
                 
             } else if let error = viewModel.initialLoadError, viewModel.favorites.isEmpty {
+                // Full-screen error when initial load fails with no data
                 ListErrorView(message: error) {
                     Task {
                         await viewModel.loadFavorites()
@@ -37,6 +43,7 @@ struct FavoritesView: View {
                 }
                 
             } else if !viewModel.favorites.isEmpty {
+                // Populated grid with pagination support
                 FavoritesGridView(
                     savedItems: viewModel.favorites,
                     isLoadingNextPage: viewModel.isLoadingNextPage,
@@ -44,6 +51,9 @@ struct FavoritesView: View {
                     onItemAppear: { item in
                         let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
                         viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
+                    },
+                    onRemoveFavorite: { scanId in
+                        viewModel.removeFavorite(scanId: scanId)
                     },
                     onRetryPagination: {
                         viewModel.retryPagination()

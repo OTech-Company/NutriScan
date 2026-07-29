@@ -12,10 +12,9 @@ struct VerificationPendingView: View {
     @State private var viewModel: VerificationPendingViewModel
     
     @State private var activeAlert: ActiveAlert = .none
-    @State private var errorMessage = ""
     
-    init(email: String) {
-        _viewModel = State(initialValue: VerificationPendingViewModel(email: email))
+    init(viewModel: VerificationPendingViewModel) {
+        _viewModel = State(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -54,8 +53,7 @@ struct VerificationPendingView: View {
             }
         }
         .onChange(of: viewModel.generalError) { _, error in
-            if let error = error {
-                errorMessage = error
+            if error != nil {
                 activeAlert = .error
             }
         }
@@ -73,7 +71,7 @@ struct VerificationPendingView: View {
                 return CustomAlertConfig(
                     type: .error,
                     title: "Action Failed",
-                    description: errorMessage,
+                    description: viewModel.generalError ?? "An unknown error occurred",
                     primaryButtonTitle: "Try Again",
                     primaryButtonColor: Color.Red.red500
                 )
@@ -97,7 +95,7 @@ struct VerificationPendingView: View {
 }
 
 #Preview {
-    VerificationPendingView(email: "user@example.com")
+    AuthFactory.makeVerificationPendingView(email: "user@example.com")
         .environmentObject(AppRouter())
 }
 

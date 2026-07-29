@@ -17,11 +17,11 @@ enum AuthRoute: Route {
     var destination: some View {
         switch self {
         case .register:
-            RegisterView()
+            AuthFactory.makeRegisterView()
         case .forgotPassword:
-            ForgotPasswordView()
+            AuthFactory.makeForgotPasswordView()
         case .verificationPending(let email):
-            VerificationPendingView(email: email)
+            AuthFactory.makeVerificationPendingView(email: email)
         }
     }
 }

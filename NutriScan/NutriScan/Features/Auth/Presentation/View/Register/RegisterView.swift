@@ -8,9 +8,12 @@ import SwiftUI
 struct RegisterView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @EnvironmentObject private var router: AppRouter
-    @State private var viewModel = RegisterViewModel()
+    @State private var viewModel: RegisterViewModel
     @State private var activeAlert: ActiveAlert = .none
-    @State private var errorMessage = ""
+
+    init(viewModel: RegisterViewModel) {
+        _viewModel = State(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
@@ -41,8 +44,7 @@ struct RegisterView: View {
             .ignoresSafeArea(edges: .top)
         }
         .onChange(of: viewModel.generalError) { _, error in
-            if let error = error {
-                errorMessage = error
+            if error != nil {
                 activeAlert = .error
             }
         }
@@ -60,7 +62,7 @@ struct RegisterView: View {
                 return CustomAlertConfig(
                     type: .error,
                     title: "Registration Failed",
-                    description: errorMessage,
+                    description: viewModel.generalError ?? "An unknown error occurred",
                     primaryButtonTitle: "Try Again",
                     primaryButtonColor: Color.Red.red500
                 )
@@ -88,7 +90,7 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    AuthFactory.makeRegisterView()
         .environmentObject(AppFlowCoordinator())
         .environmentObject(AppRouter())
 }

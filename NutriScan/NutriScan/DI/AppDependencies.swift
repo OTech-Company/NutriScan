@@ -16,14 +16,17 @@ struct AppDependencies {
     /// that depends on it (e.g. NetworkServiceProtocol before ProfileAssembly).
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
+        SharedProfileAssembly(),
+        AuthAssembly(),
+        ExerciseAssembly(),
         ProfileAssembly(),
         EditProfileAssembly(),
         ScanAssembly(),
         StepTrackerAssembly(),
-        RAGAssembly()
-        // Teammates: add your feature's Assembly here, e.g.
-        // HomeAssembly(),
-        // AuthAssembly(),
+        RAGAssembly(),
+        SettingsAssembly(),
+        ProductDetailsAssembly(),
+        HomeAssembly()
     ]
 
     static func setup() {
@@ -32,7 +35,6 @@ struct AppDependencies {
     }
 }
 
-// MARK: - Inline Assemblies (to avoid pbxproj conflicts)
 struct ScanAssembly: Assembly {
     func assemble(container: DIContainer) {
         let repository = ScanRepositoryImpl()
@@ -63,7 +65,7 @@ struct RAGAssembly: Assembly {
 struct StepTrackerAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
         let repository = StepRepositoryImpl()
-        
+
         // Register step tracker use cases
         container.register(
             type: ObserveDailyStepsUseCase.self,
@@ -77,12 +79,13 @@ struct StepTrackerAssembly: Assembly {
             type: FetchStepsHistoryUseCase.self,
             component: FetchStepsHistoryUseCase(repository: repository)
         )
-        
-        // Register user profile service for height/weight
+
+        // Register user profile service using the shared observer use case
         container.register(
             type: UserProfileService.self,
             component: UserProfileService(
-                getProfileUseCase: container.resolve(type: GetEditProfileUseCaseProtocol.self)
+                observeProfileUseCase: container.resolve(
+                    type: ObserveProfileUseCaseProtocol.self)
             )
         )
     }

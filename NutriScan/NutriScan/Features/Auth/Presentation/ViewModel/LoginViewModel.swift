@@ -20,9 +20,9 @@ final class LoginViewModel {
     var generalError: String? = nil
     var isEmailUnverified: Bool = false
 
-    private let loginUseCase: LoginUseCase
+    private let loginUseCase: LoginUseCaseProtocol
 
-    init(loginUseCase: LoginUseCase = LoginUseCase()) {
+    init(loginUseCase: LoginUseCaseProtocol) {
         self.loginUseCase = loginUseCase
     }
 

@@ -74,6 +74,6 @@ struct RegisterFormFieldsSection: View {
 }
 
 #Preview {
-    RegisterFormFieldsSection(viewModel: RegisterViewModel())
+    RegisterFormFieldsSection(viewModel: AuthFactory.makeRegisterViewModel())
         .background(Color.Teal.teal100)
 }

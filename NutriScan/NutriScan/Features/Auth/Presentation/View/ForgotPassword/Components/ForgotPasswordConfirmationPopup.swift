@@ -121,7 +121,7 @@ struct ForgotPasswordConfirmationPopup: View {
 
 #Preview {
     ForgotPasswordConfirmationPopup(
-        viewModel: ForgotPasswordViewModel(),
+        viewModel: AuthFactory.makeForgotPasswordViewModel(),
         onSendLink: {},
         onResendLink: {},
         onClose: {}

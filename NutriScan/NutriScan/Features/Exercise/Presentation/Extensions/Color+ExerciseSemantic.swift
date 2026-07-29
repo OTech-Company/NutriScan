@@ -12,14 +12,6 @@ extension Color {
         // MARK: Screen Background
         static let screenBackground  = Color(light: .white, dark: Color.Teal.teal1600)
 
-        // MARK: Search Bar
-        static let searchBackground  = Color(light: .white,              dark: Color.Teal.teal1600)
-        static let searchBorder      = Color(light: Color.Gray.gray300,  dark: Color.Teal.teal1200)
-        static let searchIcon        = Color(light: Color.Teal.teal800,  dark: Color.Teal.teal400)
-        static let searchText        = Color(light: Color.Gray.gray1400, dark: Color.Teal.teal200)
-        static let searchPlaceholder = Color(light: Color.Gray.gray600,  dark: Color.Teal.teal1200)
-        static let searchButtonBg    = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal800)
-
         // MARK: Category Chip
         static let categoryChipBg                = Color(light: .white,              dark: Color.Teal.teal1600)
         static let categoryChipBorderSelected    = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal1000)

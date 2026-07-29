@@ -11,7 +11,8 @@ struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
 
-    // MARK: - Alert State
+    // MARK: - Local Edit & Alert States
+    @State private var isEditingMode: Bool
     @State private var activeAlert: ActiveAlert = .none
 
     let onSave: (FamilyMemberInput) -> Void
@@ -23,7 +24,11 @@ struct FamilyMemberSheetView: View {
         onSave: @escaping (FamilyMemberInput) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
-        _viewModel = State(initialValue: FamilyMemberSheetViewModel(existingMember: existingMember, allMembers: allMembers))
+        let vm = FamilyMemberSheetViewModel(
+            existingMember: existingMember, allMembers: allMembers)
+        _viewModel = State(initialValue: vm)
+        // If it's a new member, start directly in editing mode. If editing, start locked.
+        _isEditingMode = State(initialValue: existingMember == nil)
         self.onSave = onSave
         self.onDelete = onDelete
     }
@@ -32,25 +37,38 @@ struct FamilyMemberSheetView: View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: EditProfileSemantics.Spacing.sectionVertical) {
 
-                RoundedRectangle(cornerRadius: ProfileSemantics.Radius.dragHandle)
-                    .fill(Color.Gray.gray400)
-                    .frame(
-                        width: ProfileSemantics.Sizes.sheetDragHandleWidth,
-                        height: ProfileSemantics.Sizes.sheetDragHandleHeight
-                    )
-                    .padding(.top, ProfileSemantics.Spacing.smallSpacing)
+                RoundedRectangle(
+                    cornerRadius: ProfileSemantics.Radius.dragHandle
+                )
+                .fill(Color.Gray.gray400)
+                .frame(
+                    width: ProfileSemantics.Sizes.sheetDragHandleWidth,
+                    height: ProfileSemantics.Sizes.sheetDragHandleHeight
+                )
+                .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
                 ZStack {
                     Circle()
-                        .stroke(Color.Teal.teal700, lineWidth: ProfileSemantics.Border.avatarThickBorderWidth)
+                        .stroke(
+                            Color.Teal.teal700,
+                            lineWidth: ProfileSemantics.Border
+                                .avatarThickBorderWidth
+                        )
                         .frame(
                             width: ProfileSemantics.Sizes.sheetAvatarSize,
                             height: ProfileSemantics.Sizes.sheetAvatarSize
                         )
 
-                    Image(systemName: viewModel.isEditMode ? "person.fill" : "plus")
-                        .font(.system(size: ProfileSemantics.Sizes.sheetAvatarIconSize, weight: .medium))
-                        .foregroundColor(Color.Teal.teal700)
+                    Image(
+                        systemName: viewModel.isEditMode
+                            ? "person.fill" : "plus"
+                    )
+                    .font(
+                        .system(
+                            size: ProfileSemantics.Sizes.sheetAvatarIconSize,
+                            weight: .medium)
+                    )
+                    .foregroundColor(Color.Teal.teal700)
                 }
                 .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
@@ -59,10 +77,11 @@ struct FamilyMemberSheetView: View {
                         EditableFieldView(
                             placeholder: "Member name",
                             text: $viewModel.name.value,
-                            isEditing: true
+                            isEditing: isEditingMode
                         )
                         if viewModel.name.state == .error {
-                            CustomTextFieldError(errorMessage: viewModel.name.error)
+                            CustomTextFieldError(
+                                errorMessage: viewModel.name.error)
                         }
                     }
 
@@ -70,10 +89,11 @@ struct FamilyMemberSheetView: View {
                         EditableFieldView(
                             placeholder: "Relation (e.g. Son, Mother)",
                             text: $viewModel.relation.value,
-                            isEditing: true
+                            isEditing: isEditingMode
                         )
                         if viewModel.relation.state == .error {
-                            CustomTextFieldError(errorMessage: viewModel.relation.error)
+                            CustomTextFieldError(
+                                errorMessage: viewModel.relation.error)
                         }
                     }
                 }
@@ -85,6 +105,7 @@ struct FamilyMemberSheetView: View {
                     onToggle: { viewModel.conditions.toggle($0) },
                     onRemove: { viewModel.conditions.remove($0) }
                 )
+                .disabled(!isEditingMode)
 
                 SelectableChipsSectionView(
                     title: "Allergies",
@@ -93,28 +114,60 @@ struct FamilyMemberSheetView: View {
                     onToggle: { viewModel.allergies.toggle($0) },
                     onRemove: { viewModel.allergies.remove($0) }
                 )
+                .disabled(!isEditingMode)
+
+                // Dynamic Button Text: "Edit" -> "Save" / "Add Member"
+                let buttonTitle: String = {
+                    if !viewModel.isEditMode { return "Add Member" }
+                    return isEditingMode ? "Save" : "Edit"
+                }()
 
                 CustomPuffedButton(
-                    title: viewModel.isEditMode ? "Save Changes" : "Add Member",
+                    title: buttonTitle,
                     action: {
-                        if viewModel.isDuplicate() {
-                            viewModel.alertContext = .duplicate
-                            activeAlert = .warning
-                        } else if let input = viewModel.submit() {
-                            onSave(input)
-                            dismiss()
+                        if !viewModel.isEditMode {
+                            // Adding new member flow
+                            if viewModel.isDuplicate() {
+                                viewModel.alertContext = .duplicate
+                                activeAlert = .warning
+                            } else if let input = viewModel.submit() {
+                                onSave(input)
+                                dismiss()
+                            }
+                        } else {
+                            // Editing existing member flow
+                            if isEditingMode {
+                                if viewModel.validateFieldsOrInputs() {
+                                    if viewModel.isDuplicate() {
+                                        viewModel.alertContext = .duplicate
+                                        activeAlert = .warning
+                                    } else if viewModel.hasUnsavedChanges {
+                                        viewModel.alertContext = .unsavedChanges
+                                        activeAlert = .warning
+                                    } else {
+                                        withAnimation { isEditingMode = false }
+                                    }
+                                }
+                            } else {
+                                // Switch from "Edit" to "Save" mode
+                                withAnimation { isEditingMode = true }
+                            }
                         }
                     },
                     isLoading: viewModel.isLoading
                 )
+                .animation(.easeInOut, value: isEditingMode)
 
-                if onDelete != nil {
+                if viewModel.isEditMode, onDelete != nil {
                     Button(action: {
                         viewModel.alertContext = .delete
                         activeAlert = .warning
                     }) {
                         Text("Delete")
-                            .font(.system(size: ProfileSemantics.Sizes.buttonTextSize, weight: .medium))
+                            .font(
+                                .system(
+                                    size: ProfileSemantics.Sizes.buttonTextSize,
+                                    weight: .medium))
                     }
                     .buttonStyle(DeleteTextButtonStyle())
                     .padding(.top, ProfileSemantics.Spacing.tinySpacing)
@@ -123,7 +176,9 @@ struct FamilyMemberSheetView: View {
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
             .padding(.bottom, ProfileSemantics.Spacing.sheetBottomPadding)
         }
-        .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
+        .background(
+            Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
+        )
         .task {
             await viewModel.loadReferenceData()
         }
@@ -149,37 +204,66 @@ struct FamilyMemberSheetView: View {
             config: { alert in
                 switch alert {
                 case .warning:
-                    if viewModel.alertContext == .duplicate {
+                    switch viewModel.alertContext {
+                    case .duplicate:
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Duplicate Member",
-                            description: "this family member already exist",
+                            description: "This family member already exists.",
                             primaryButtonTitle: "Ok",
                             primaryButtonColor: Color.Teal.teal1000
                         )
-                    } else {
+                    case .unsavedChanges:
+                        return CustomAlertConfig(
+                            type: .warning,
+                            title: "Save Changes",
+                            description:
+                                "You have modified this family member's details. Are you sure you want to save?",
+                            primaryButtonTitle: "Save",
+                            primaryButtonColor: Color.Teal.teal1000,
+                            secondaryButtonTitle: "Discard"
+                        )
+                    case .delete:
                         return CustomAlertConfig(
                             type: .warning,
                             title: "Delete Member",
-                            description: "Are you sure you want to delete this family member? This action cannot be undone.",
+                            description:
+                                "Are you sure you want to delete this family member? This action cannot be undone.",
                             primaryButtonTitle: "Delete",
                             primaryButtonColor: Color.Red.red500,
                             secondaryButtonTitle: "Cancel"
                         )
                     }
                 default:
-                    return CustomAlertConfig(type: .warning, title: "", description: "")
+                    return CustomAlertConfig(
+                        type: .warning, title: "", description: "")
                 }
             },
             primaryAction: { alert in
                 if alert == .warning {
-                    if viewModel.alertContext == .delete {
+                    switch viewModel.alertContext {
+                    case .delete:
                         onDelete?()
                         dismiss()
+                    case .unsavedChanges:
+                        if viewModel.isDuplicate() {
+                            viewModel.alertContext = .duplicate
+                            activeAlert = .warning
+                        } else if let input = viewModel.submit() {
+                            onSave(input)
+                            dismiss()
+                        }
+                    case .duplicate:
+                        viewModel.errorMessage = nil
                     }
                 }
             },
-            secondaryAction: { _ in }
+            secondaryAction: { _ in
+                if viewModel.alertContext == .unsavedChanges {
+                    viewModel.revertChanges()
+                    withAnimation { isEditingMode = false }
+                }
+            }
         )
     }
 }

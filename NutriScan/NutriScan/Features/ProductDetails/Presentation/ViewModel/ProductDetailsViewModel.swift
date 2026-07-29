@@ -1,101 +1,66 @@
+//
+//  ProductDetailsViewModel.swift
+//  NutriScan
+//
+//  Created by albaraa alsayed on 12/02/1448 AH.
+//
+
 import Foundation
+import Observation
 
+@Observable
 @MainActor
-final class ProductDetailsViewModel: ObservableObject {
-
-    @Published private(set) var uiState: ProductDetailsUIState?
-    @Published private(set) var isLoading = false
-    @Published var errorMessage: String?
-
-    private let scanId: String?
-    private let fetchScanDetailUseCase: FetchScanDetailUseCase?
-
-    init(scanId: String, fetchScanDetailUseCase: FetchScanDetailUseCase = DIContainer.shared.resolve(type: FetchScanDetailUseCase.self)) {
+final class ProductDetailsViewModel {
+    var uiState: ProductDetailsUIState?
+    var isLoading = false
+    var failureMessage: String?
+    
+    private let useCase: GetProductDetailsUseCase
+    private let repo: ProductDetailsRepo
+    private let scanId: String
+    
+    init(scanId: String, 
+         useCase: GetProductDetailsUseCase = DIContainer.shared.resolve(type: GetProductDetailsUseCase.self),
+         repo: ProductDetailsRepo = DIContainer.shared.resolve(type: ProductDetailsRepo.self)) {
         self.scanId = scanId
-        self.fetchScanDetailUseCase = fetchScanDetailUseCase
+        self.useCase = useCase
+        self.repo = repo
     }
-
-    init(detail: ScanDetail) {
-        self.scanId = nil
-        self.fetchScanDetailUseCase = nil
-        self.uiState = detail.toUIState()
-    }
-
-    func loadIfNeeded() {
-        guard uiState == nil, let scanId, let useCase = fetchScanDetailUseCase else { return }
+    
+    func loadProductDetails() async {
         isLoading = true
-        Task {
-            do {
-                let detail = try await useCase.execute(scanId: scanId)
-                self.uiState = detail.toUIState()
-            } catch {
-                self.errorMessage = error.localizedDescription
-            }
-            isLoading = false
+        failureMessage = nil
+        defer { isLoading = false }
+        
+        do {
+            let details = try await useCase.execute(scanId: scanId)
+            self.uiState = ProductDetailsUIState(from: details)
+        } catch let error as NetworkError {
+            failureMessage = error.localizedDescription
+        } catch {
+            failureMessage = "An unexpected error occurred."
         }
     }
-}
-
-// MARK: - ScanDetail → ProductDetailsUIState Mapping
-
-private extension ScanDetail {
-
-    func toUIState() -> ProductDetailsUIState {
-        let safety = foodSafetyResponse
-
-        let safetyLevel: SafetyLevel = {
-            guard let verdict = safety?.verdict else { return .caution }
-            switch verdict {
-            case .safe: return .safe
-            case .unsafe: return .unsafe
-            case .caution, .unknown: return .caution
+    
+    func toggleFavorite() {
+        guard var currentState = uiState else { return }
+        
+        // Optimistic UI update
+        let newFavoriteStatus = !currentState.isFavorite
+        currentState.isFavorite = newFavoriteStatus
+        self.uiState = currentState
+        
+        Task {
+            do {
+                try await repo.updateFavorite(scanId: scanId, isFavorite: newFavoriteStatus)
+                FavoritesNotifier.shared.setNeedsRefresh()
+            } catch {
+                // Revert on failure
+                var revertedState = self.uiState
+                revertedState?.isFavorite = !newFavoriteStatus
+                self.uiState = revertedState
+                self.failureMessage = "Failed to update favorite status."
             }
-        }()
-
-        let headerState = ProductHeaderUIState(
-            imageUrl: imageUrl ?? "",
-            productName: productName ?? "Scanned Product",
-            scannedAt: scannedAt.map { ISO8601DateFormatter().string(from: $0) } ?? ""
-        )
-
-        let safetyState = ProductSafetyUIState(
-            safetyLevel: safetyLevel,
-            safetyDescription: safety?.summary ?? "No safety data available."
-        )
-
-        let ingredientsState = ProductIngredientsUIState(
-            safetyLevel: safetyLevel,
-            unsafeIngredients: (safety?.flaggedIngredients ?? []).map { ingredient in
-                UnsafeIngredientUIState(
-                    name: ingredient.ingredient,
-                    allergyMatch: ingredient.type.rawValue,
-                    description: ingredient.reason
-                )
-            }
-        )
-
-        let nutritionState = ProductNutritionUIState(
-            nutritionFacts: buildNutritionFacts(from: nutritionFacts)
-        )
-
-        return ProductDetailsUIState(
-            headerState: headerState,
-            safetyState: safetyState,
-            ingredientsState: ingredientsState,
-            nutritionState: nutritionState
-        )
-    }
-
-    private func buildNutritionFacts(from facts: ScanNutritionFacts?) -> [NutritionFactUIState] {
-        guard let facts else { return [] }
-        return [
-            NutritionFactUIState(title: "Calories", value: "\(facts.calories) kcal"),
-            NutritionFactUIState(title: "Protein", value: String(format: "%.1fg", facts.proteinGrams)),
-            NutritionFactUIState(title: "Carbs", value: String(format: "%.1fg", facts.carbsGrams)),
-            NutritionFactUIState(title: "Fat", value: String(format: "%.1fg", facts.fatG)),
-            NutritionFactUIState(title: "Fiber", value: String(format: "%.1fg", facts.fiberGrams)),
-            NutritionFactUIState(title: "Sugar", value: String(format: "%.1fg", facts.sugarG)),
-            NutritionFactUIState(title: "Sodium", value: String(format: "%.0fmg", facts.sodiumMg))
-        ]
+        }
     }
 }

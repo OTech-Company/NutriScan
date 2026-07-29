@@ -63,4 +63,8 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# OS generated files
 .DS_Store
+.AppleDouble
+.LSOverride

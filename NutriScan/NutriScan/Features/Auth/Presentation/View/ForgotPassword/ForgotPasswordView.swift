@@ -9,7 +9,11 @@ import SwiftUI
 
 struct ForgotPasswordView: View {
     @EnvironmentObject private var router: AppRouter
-    @State private var viewModel = ForgotPasswordViewModel()
+    @State private var viewModel: ForgotPasswordViewModel
+
+    init(viewModel: ForgotPasswordViewModel) {
+        _viewModel = State(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
@@ -72,6 +76,6 @@ struct ForgotPasswordView: View {
 }
 
 #Preview {
-    ForgotPasswordView()
+    AuthFactory.makeForgotPasswordView()
         .environmentObject(AppRouter())
 }

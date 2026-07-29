@@ -9,6 +9,7 @@ import Foundation
 
 protocol FavoritesUseCaseProtocol {
     func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int)
+    func removeFavorite(scanId: String) async throws
 }
 
 class FavoritesUseCase: FavoritesUseCaseProtocol {
@@ -21,6 +22,10 @@ class FavoritesUseCase: FavoritesUseCaseProtocol {
     
     func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int) {
         return try await favoritesRepository.getFavorites(page: page, size: size)
+    }
+    
+    func removeFavorite(scanId: String) async throws {
+        try await favoritesRepository.removeFavorite(scanId: scanId)
     }
     
 }

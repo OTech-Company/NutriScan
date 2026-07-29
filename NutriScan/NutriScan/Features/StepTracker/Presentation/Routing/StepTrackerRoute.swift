@@ -17,7 +17,7 @@ enum StepTrackerRoute: Route {
         case .stepHistory(let viewModel):
             StepHistoryScreen(viewModel: viewModel)
         case .exercises:
-            ExercisesView()
+            ExerciseFactory.makeExercisesView()
         }
     }
 
