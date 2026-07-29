@@ -10,8 +10,14 @@ import Foundation
 @Observable
 class FavoritesViewModel {
     var favorites: [FavoritesScanEntity] = []
-    var isLoadingFavorites: Bool = false
-    var loadFavoritesError: String? = nil
+    var isLoadingInitial: Bool = false
+    var isLoadingNextPage: Bool = false
+    var isRefreshing: Bool = false
+    
+    /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
+    var initialLoadError: String? = nil
+    /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
+    var paginationError: String? = nil
     
     private var currentPage: Int = 0
     private var hasMorePages: Bool = true
@@ -25,44 +31,133 @@ class FavoritesViewModel {
         self.notifier = notifier
     }
     
+    // MARK: - Public API
+    
     /// Called every time the screen appears. Only fetches if data is stale.
     func loadIfNeeded() async {
         guard notifier.needsRefresh else { return }
         await loadFavorites()
     }
     
+    /// Initial load or search — resets pagination and fetches page 0.
     func loadFavorites(search: String? = nil) async {
         currentPage = 0
         hasMorePages = true
-        favorites.removeAll()
+        initialLoadError = nil
+        paginationError = nil
         
         if let search = search, !search.isEmpty {
+            favorites.removeAll()
             await fetchAllAndFilter(search: search)
         } else {
-            await fetchFavorites()
+            // For initial load, clear and show shimmer
+            if favorites.isEmpty {
+                isLoadingInitial = true
+            }
+            await fetchPage(isInitialLoad: true)
         }
         
-        // Mark as refreshed only when not searching (search is a transient view)
+        // Mark as refreshed only when not searching
         if search == nil || search!.isEmpty {
             notifier.didRefresh()
         }
     }
     
+    /// Pull-to-refresh — keeps existing data if the refresh fails.
+    func refreshFavorites() async {
+        isRefreshing = true
+        paginationError = nil
+        
+        let previousFavorites = favorites
+        let previousPage = currentPage
+        let previousHasMore = hasMorePages
+        
+        currentPage = 0
+        hasMorePages = true
+        
+        do {
+            let result = try await favoritesUseCase.getFavorites(page: 0, size: pageSize)
+            // Success — replace data
+            favorites = result.favorites
+            currentPage = 1
+            hasMorePages = currentPage < result.totalPages
+            initialLoadError = nil
+            notifier.didRefresh()
+        } catch {
+            // Failure — restore previous data, do NOT show full-screen error
+            favorites = previousFavorites
+            currentPage = previousPage
+            hasMorePages = previousHasMore
+        }
+        
+        isRefreshing = false
+    }
     
+    /// Triggered by onAppear of the last item in the grid.
     func loadNextPageIfNeeded(currentItem: FavoritesScanEntity, search: String? = nil) {
         guard let lastItem = favorites.last, lastItem.id == currentItem.id else { return }
-        guard !isLoadingFavorites && hasMorePages else { return }
+        guard !isLoadingNextPage && !isLoadingInitial && hasMorePages else { return }
+        guard paginationError == nil else { return }
         
         if search == nil || search!.isEmpty {
             Task {
-                await fetchFavorites()
+                await fetchNextPage()
             }
         }
     }
     
+    /// Retry loading the next page after a pagination error.
+    func retryPagination() {
+        paginationError = nil
+        Task {
+            await fetchNextPage()
+        }
+    }
+    
+    // MARK: - Private Fetch Methods
+    
+    /// Fetches a page for initial load. On failure with empty list, sets initialLoadError.
+    private func fetchPage(isInitialLoad: Bool) async {
+        if isInitialLoad {
+            isLoadingInitial = true
+        }
+        
+        do {
+            let result = try await favoritesUseCase.getFavorites(page: 0, size: pageSize)
+            favorites = result.favorites
+            currentPage = 1
+            hasMorePages = currentPage < result.totalPages
+            initialLoadError = nil
+        } catch {
+            if favorites.isEmpty {
+                initialLoadError = error.localizedDescription
+            }
+        }
+        
+        isLoadingInitial = false
+    }
+    
+    /// Fetches the next page. On failure, sets paginationError without clearing existing data.
+    private func fetchNextPage() async {
+        guard !isLoadingNextPage && hasMorePages else { return }
+        isLoadingNextPage = true
+        paginationError = nil
+        
+        do {
+            let result = try await favoritesUseCase.getFavorites(page: currentPage, size: pageSize)
+            favorites.append(contentsOf: result.favorites)
+            currentPage += 1
+            hasMorePages = currentPage < result.totalPages
+        } catch {
+            paginationError = error.localizedDescription
+        }
+        
+        isLoadingNextPage = false
+    }
+    
+    /// Fetches all pages and filters locally (used for search).
     private func fetchAllAndFilter(search: String) async {
-        isLoadingFavorites = true
-        loadFavoritesError = nil
+        isLoadingInitial = true
         
         var allFetched: [FavoritesScanEntity] = []
         var page = 0
@@ -80,30 +175,15 @@ class FavoritesViewModel {
             favorites = allFetched.filter { $0.productName.localizedCaseInsensitiveContains(search) }
             hasMorePages = false
         } catch {
-            loadFavoritesError = error.localizedDescription
+            if favorites.isEmpty {
+                initialLoadError = error.localizedDescription
+            }
         }
         
-        isLoadingFavorites = false
+        isLoadingInitial = false
     }
     
-    func fetchFavorites() async {
-        guard !isLoadingFavorites && hasMorePages else { return }
-        isLoadingFavorites = true
-        loadFavoritesError = nil
-        
-        do {
-            let result = try await favoritesUseCase.getFavorites(page: currentPage, size: pageSize)
-            
-            favorites.append(contentsOf: result.favorites)
-            
-            currentPage += 1
-            hasMorePages = currentPage < result.totalPages
-        } catch {
-            loadFavoritesError = error.localizedDescription
-        }
-        
-        isLoadingFavorites = false
-    }
+    // MARK: - Remove Favorite
     
     func removeFavorite(scanId: String) {
         guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return }

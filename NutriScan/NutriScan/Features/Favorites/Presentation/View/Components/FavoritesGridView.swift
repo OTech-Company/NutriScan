@@ -10,8 +10,11 @@ import SwiftUI
 struct FavoritesGridView: View {
     
     let savedItems: [FavoritesScanEntity]
+    var isLoadingNextPage: Bool = false
+    var paginationError: String? = nil
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
     var onRemoveFavorite: ((String) -> Void)? = nil
+    var onRetryPagination: (() -> Void)? = nil
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -35,10 +38,19 @@ struct FavoritesGridView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 12)
+            
+            // MARK: - Pagination Footer
+            if isLoadingNextPage {
+                ProgressView()
+                    .tint(Color.Teal.teal1000)
+                    .padding(.vertical, 16)
+            } else if paginationError != nil, let onRetry = onRetryPagination {
+                PaginationRetryFooter(onRetry: onRetry)
+            }
         }
     }
 }
 
 #Preview {
-    FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
+    FavoritesFactory.makeFavoritesView()
 }

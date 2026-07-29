@@ -27,29 +27,44 @@ struct FavoritesView: View {
                 }
             )
             .padding(.horizontal, 20)
-                .padding(.top, 24)
+            .padding(.top, 24)
             
-            if viewModel.isLoadingFavorites && viewModel.favorites.isEmpty {
-                ScrollView {
-                    LazyVGrid(columns: [
-                        GridItem(.flexible(), spacing: 12),
-                        GridItem(.flexible(), spacing: 12)
-                    ], spacing: 12) {
-                        ForEach(0..<6, id: \.self) { _ in
-                            FavoriteCardShimmerView()
-                        }
+            // MARK: - State-driven content
+            if viewModel.isLoadingInitial && viewModel.favorites.isEmpty {
+                // Shimmer placeholder during initial load
+                shimmerGrid
+                
+            } else if let error = viewModel.initialLoadError, viewModel.favorites.isEmpty {
+                // Full-screen error when initial load fails with no data
+                FavoritesErrorView(message: error) {
+                    Task {
+                        await viewModel.loadFavorites()
                     }
-                    .padding(.horizontal, 22)
-                    .padding(.top, 12)
                 }
+                
             } else if !viewModel.favorites.isEmpty {
-                FavoritesGridView(savedItems: viewModel.favorites, onItemAppear: { item in
-                    let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
-                    viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
-                }, onRemoveFavorite: { scanId in
-                    viewModel.removeFavorite(scanId: scanId)
-                })
+                // Populated grid with pagination support
+                FavoritesGridView(
+                    savedItems: viewModel.favorites,
+                    isLoadingNextPage: viewModel.isLoadingNextPage,
+                    paginationError: viewModel.paginationError,
+                    onItemAppear: { item in
+                        let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
+                        viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
+                    },
+                    onRemoveFavorite: { scanId in
+                        viewModel.removeFavorite(scanId: scanId)
+                    },
+                    onRetryPagination: {
+                        viewModel.retryPagination()
+                    }
+                )
+                .refreshable {
+                    await viewModel.refreshFavorites()
+                }
+                
             } else {
+                // Empty state — no favorites saved yet
                 FavoritesEmptyStateView()
             }
         }
@@ -58,6 +73,23 @@ struct FavoritesView: View {
             Task {
                 await viewModel.loadIfNeeded()
             }
+        }
+    }
+    
+    // MARK: - Shimmer Grid
+    
+    private var shimmerGrid: some View {
+        ScrollView {
+            LazyVGrid(columns: [
+                GridItem(.flexible(), spacing: 12),
+                GridItem(.flexible(), spacing: 12)
+            ], spacing: 12) {
+                ForEach(0..<6, id: \.self) { _ in
+                    FavoriteCardShimmerView()
+                }
+            }
+            .padding(.horizontal, 22)
+            .padding(.top, 12)
         }
     }
 }
