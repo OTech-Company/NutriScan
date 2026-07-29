@@ -1,7 +1,7 @@
 import SwiftUI
 import Shimmer
 
-struct ListRowShimmerView: View {
+struct ScanHistoryCardShimmerView: View {
     var body: some View {
         HStack(spacing: 8) {
             Circle()
@@ -35,9 +35,9 @@ struct ListRowShimmerView: View {
 
 #Preview {
     VStack(spacing: 8) {
-        ListRowShimmerView()
-        ListRowShimmerView()
-        ListRowShimmerView()
+        ScanHistoryCardShimmerView()
+        ScanHistoryCardShimmerView()
+        ScanHistoryCardShimmerView()
     }
     .padding(.horizontal, 22)
 }

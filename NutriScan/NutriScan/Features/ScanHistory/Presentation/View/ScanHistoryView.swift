@@ -103,7 +103,7 @@ struct ScanHistoryView: View {
         ScrollView {
             LazyVStack(spacing: 8) {
                 ForEach(0..<6, id: \.self) { _ in
-                    ListRowShimmerView()
+                    ScanHistoryCardShimmerView()
                 }
             }
             .padding(.horizontal, 22)
