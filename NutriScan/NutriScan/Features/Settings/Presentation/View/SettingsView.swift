@@ -44,15 +44,13 @@ struct SettingsView: View {
                         title: "Terms and Conditions"
                     )
 
-                    Button(action: {
-                        router.push(SettingsRoute.help)
-                    }) {
-                        MenuRowView(
-                            icon: "questionmark.circle",
-                            title: "Help"
-                        )
-                    }
-                    .buttonStyle(.plain)
+                    MenuRowView(
+                        icon: "questionmark.circle",
+                        title: "Help",
+                        action: {
+                            router.push(SettingsRoute.help)
+                        }
+                    )
 
                     SettingsLogoutButton {
                         viewModel.requestLogout()
