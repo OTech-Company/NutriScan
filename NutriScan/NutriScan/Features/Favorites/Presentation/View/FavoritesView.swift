@@ -13,6 +13,14 @@ struct FavoritesView: View {
     @State private var searchText = ""
     @State private var appliedSearchText = ""
     
+    // MARK: - Alert States
+    @State private var showRemoveAlert = false
+    @State private var itemToRemove: FavoritesScanEntity? = nil
+    
+    @State private var showAddMealErrorAlert = false
+    @State private var itemToRetryAddMeal: String? = nil
+    @State private var addMealErrorMessage = ""
+    
     var body: some View {
         VStack(spacing: 16) {
             CustomSearchBar(
@@ -52,14 +60,22 @@ struct FavoritesView: View {
                         let searchParam = appliedSearchText.isEmpty ? nil : appliedSearchText
                         viewModel.loadNextPageIfNeeded(currentItem: item, search: searchParam)
                     },
-                    onRemoveFavorite: { scanId in
-                        viewModel.removeFavorite(scanId: scanId)
+                    onRemoveRequest: { item in
+                        itemToRemove = item
+                        showRemoveAlert = true
                     },
                     onRetryPagination: {
                         viewModel.retryPagination()
                     },
                     onAddToDaily: { scanId, completion in
-                        viewModel.addMealToDaily(scanId: scanId, completion: completion)
+                        viewModel.addMealToDaily(scanId: scanId) { success in
+                            completion(success)
+                            if !success {
+                                addMealErrorMessage = viewModel.addMealError ?? "Something went wrong while adding this product to your daily meals. Please try again."
+                                itemToRetryAddMeal = scanId
+                                showAddMealErrorAlert = true
+                            }
+                        }
                     }
                 )
                 .refreshable {
@@ -76,6 +92,44 @@ struct FavoritesView: View {
                 await viewModel.loadIfNeeded()
             }
         }
+        // MARK: - Remove Confirmation Alert
+        .customAlert(
+            isPresented: $showRemoveAlert,
+            type: .delete,
+            title: "Remove Product",
+            description: "Are you sure you want to remove \"\(itemToRemove?.productName ?? "")\" from your favorites?",
+            primaryButtonTitle: "Remove",
+            primaryButtonColor: Color.Red.red500,
+            primaryAction: {
+                if let scanId = itemToRemove?.id {
+                    viewModel.removeFavorite(scanId: scanId)
+                }
+            },
+            secondaryButtonTitle: "Cancel",
+            secondaryAction: { }
+        )
+        // MARK: - Add Meal Failure Alert
+        .customAlert(
+            isPresented: $showAddMealErrorAlert,
+            type: .error,
+            title: "Couldn't Add Meal",
+            description: addMealErrorMessage,
+            primaryButtonTitle: "Try Again",
+            primaryAction: {
+                if let scanId = itemToRetryAddMeal {
+                    viewModel.addMealToDaily(scanId: scanId) { success in
+                        if !success {
+                            addMealErrorMessage = viewModel.addMealError ?? "Something went wrong. Please try again."
+                            showAddMealErrorAlert = true
+                        }
+                    }
+                }
+            },
+            secondaryButtonTitle: "Dismiss",
+            secondaryAction: {
+                addMealErrorMessage = ""
+            }
+        )
     }
     
     // MARK: - Shimmer Grid

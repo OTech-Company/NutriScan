@@ -16,17 +16,8 @@ struct FavoriteCardView: View {
     /// `onResult(_ success: Bool)` which the parent must invoke with the API result.
     var onAddToDaily: ((_ onResult: @escaping (Bool) -> Void) -> Void)? = nil
 
-    // MARK: - Local State
-
-    /// Controls the "Are you sure?" removal confirmation alert.
-    @State private var showRemoveAlert = false
-
     /// When true, the SwipeToActionButton snaps back — used after an API failure.
     @State private var resetSwipe = false
-
-    /// Controls the add-meal failure alert.
-    @State private var showAddMealErrorAlert = false
-    @State private var addMealErrorMessage = ""
 
     var body: some View {
         VStack(spacing: 12) {
@@ -39,9 +30,9 @@ struct FavoriteCardView: View {
                 .frame(height: 140)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
-                // Bookmark / Remove button — shows confirmation alert before removing
+                // Bookmark / Remove button — triggers parent to show confirmation alert
                 Button(action: {
-                    showRemoveAlert = true
+                    onRemove?()
                 }) {
                     Image("bookmark-fill")
                         .resizable()
@@ -93,18 +84,14 @@ struct FavoriteCardView: View {
                 actionTitle: "Swipe right to add",
                 action: {
                     onAddToDaily? { success in
-                        if success {
-                            // "Added!" is already showing inside SwipeToActionButton —
-                            // it will auto-reset after 1.5s. Nothing more needed here.
-                        } else {
-                            // Force the slider back and show an error alert
+                        if !success {
+                            // Force the slider back
                             resetSwipe = true
                             // Give onChange a moment to fire, then flip back so the
                             // binding is ready for the next swipe
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                                 resetSwipe = false
                             }
-                            showAddMealErrorAlert = true
                         }
                     }
                 },
@@ -116,42 +103,6 @@ struct FavoriteCardView: View {
         .background(Color.Favorites.cardColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .customLightShadow()
-        // MARK: - Remove Confirmation Alert
-        .customAlert(
-            isPresented: $showRemoveAlert,
-            type: .delete,
-            title: "Remove Product",
-            description: "Are you sure you want to remove \"\(favUIState.title)\" from your favorites?",
-            primaryButtonTitle: "Remove",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                onRemove?()
-            },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: { }
-        )
-        // MARK: - Add Meal Failure Alert
-        .customAlert(
-            isPresented: $showAddMealErrorAlert,
-            type: .error,
-            title: "Couldn't Add Meal",
-            description: addMealErrorMessage.isEmpty
-                ? "Something went wrong while adding this product to your daily meals. Please try again."
-                : addMealErrorMessage,
-            primaryButtonTitle: "Try Again",
-            primaryAction: {
-                // Re-trigger the swipe action
-                onAddToDaily? { success in
-                    if !success {
-                        showAddMealErrorAlert = true
-                    }
-                }
-            },
-            secondaryButtonTitle: "Dismiss",
-            secondaryAction: {
-                addMealErrorMessage = ""
-            }
-        )
     }
 }
 
