@@ -21,6 +21,17 @@ extension Color {
         static let dailyProductsKcalLabel = Color.Teal.teal1000
         static let dailyProductsCardBorder = Color(light: Color.Gray.gray600, dark: Color.Teal.teal1200)
         static let dailyProductsAddFoodText = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal700)
+        static let dailyProductCardBackground = Color(light: .white, dark: Color.Teal.teal1600)
+        static let dailyProductCardBorder = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1200)
+        static let dailyProductTitleText = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal300)
+        static let dailyProductQuantityBadgeBackground = Color(light: Color.Teal.teal1000, dark: Color.Teal.teal1200)
+        static let dailyProductQuantityBadgeText = Color(light: Color.Teal.teal100, dark: Color.Teal.teal200)
+        static let dailyProductKcalBadgeBackground = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1300)
+        static let dailyProductKcalBadgeText = Color(light: Color.Teal.teal1200, dark: Color.Teal.teal300)
+        static let dailyProductAddCardText = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal400)
+        static let dailyProductRemoveOneBackground = Color(light: Color.Yellow.yellow500, dark: Color.Yellow.yellow500)
+        static let dailyProductRemoveAllBackground = Color(light: Color.Red.red500, dark: Color.Red.red500)
+        static let dailyProductActionIcon = Color(light: Color.Gray.gray100, dark: Color.Gray.gray100)
         
         // MARK: Calorie Goals Section
         static let goalsBackground = Color.Teal.teal500
