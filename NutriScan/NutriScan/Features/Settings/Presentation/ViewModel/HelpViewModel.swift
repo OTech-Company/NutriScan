@@ -17,7 +17,7 @@ final class HelpViewModel {
     var activeAlert: ActiveAlert = .none
     
     private let getFaqUseCase: GetFaqUseCaseProtocol
-    let supportEmail = "ahmedtayseer424@gmail.com"
+    let supportEmail = "minawagdy2228@gmail.com"
     let emailSubject = "NutriScan Support Request"
     
     init(
