@@ -19,7 +19,7 @@ struct HelpScreen: View {
             
             VStack(spacing: 0) {
                 // Ensure SettingsHeaderSection is imported or available in this scope
-                SettingsHeaderSection {
+                SettingsHeaderSection(title: "Help", subtitle: nil){
                     router.pop()
                 }
                 

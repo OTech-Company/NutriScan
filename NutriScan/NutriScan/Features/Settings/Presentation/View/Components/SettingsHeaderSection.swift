@@ -2,11 +2,17 @@
 //  SettingsHeaderSection.swift
 //  NutriScan
 //
+//
+//  SettingsHeaderSection.swift
+//  NutriScan
+//
 
 import SwiftUI
 
 // MARK: - Settings Header Section
 struct SettingsHeaderSection: View {
+    var title: String? = "App Settings"
+    var subtitle: String? = "Change application settings here"
     var onBack: () -> Void
 
     var body: some View {
@@ -17,17 +23,22 @@ struct SettingsHeaderSection: View {
 
             // Text Block
             VStack(alignment: .leading, spacing: 8) {
-                Text("App Settings")
-                    .font(Font.AppFont.plusJakartaSansBold28)
-                    .foregroundColor(Color.SettingsSemantic.headerTitle)
+                if let title = title {
+                    Text(title)
+                        .font(Font.AppFont.plusJakartaSansBold28)
+                        .foregroundColor(Color.SettingsSemantic.headerTitle)
+                }
 
-                Text("Change application settings here")
-                    .font(Font.AppFont.lexendDecaMedium16)
-                    .foregroundColor(Color.SettingsSemantic.headerSubtitle)
+                if let subtitle = subtitle {
+                    Text(subtitle)
+                        .font(Font.AppFont.lexendDecaMedium16)
+                        .foregroundColor(Color.SettingsSemantic.headerSubtitle)
+                }
             }
             .padding(.bottom, 28)
         }
         .padding(.horizontal, 24)
+        .navigationBarHidden(true)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.SettingsSemantic.headerBackground)
         .clipShape(
@@ -41,6 +52,12 @@ struct SettingsHeaderSection: View {
 }
 
 #Preview {
-    SettingsHeaderSection(onBack: {})
-        .background(Color.SettingsSemantic.screenBackground)
+    VStack(spacing: 20) {
+        // Default usage (Settings main screen)
+        SettingsHeaderSection(onBack: {})
+        
+        // Custom usage (Help screen)
+        SettingsHeaderSection(title: "Help", subtitle: nil, onBack: {})
+    }
+    .background(Color.SettingsSemantic.screenBackground)
 }
