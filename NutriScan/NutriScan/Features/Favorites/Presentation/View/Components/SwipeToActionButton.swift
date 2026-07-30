@@ -10,26 +10,30 @@ import SwiftUI
 struct SwipeToActionButton: View {
     var actionTitle: String = "Swipe right to add"
     var action: () -> Void
-    
+
+    /// When the parent sets this to `true`, the slider snaps back to idle.
+    /// The parent is responsible for resetting it back to `false` after.
+    var shouldReset: Bool = false
+
     @State private var dragOffset: CGFloat = 0
     @State private var isCompleted: Bool = false
-    
+
     private let thumbWidth: CGFloat = 36
     private let thumbHeight: CGFloat = 18
     private let trackInset: CGFloat = 4 // The horizontal padding inside the track
-    
+
     var body: some View {
         GeometryReader { geometry in
             let trackWidth = geometry.size.width
             // Correct maxDrag calculation: Total width minus the thumb width and track padding on both sides
             let maxDrag = trackWidth - thumbWidth - (trackInset * 2)
-            
+
             ZStack(alignment: .leading) {
                 // Background Track
                 Capsule()
                     .fill(Color.Favorites.swipeBackgroundColor)
                     .frame(height: 24)
-                
+
                 // Text Instruction (Centered dynamically)
                 HStack {
                     Spacer()
@@ -39,7 +43,7 @@ struct SwipeToActionButton: View {
                         .padding(.leading, isCompleted ? 0 : 28) // Offset a bit to balance the thumb visually
                     Spacer()
                 }
-                
+
                 // Sliding Thumb / Button
                 HStack {
                     ZStack {
@@ -65,8 +69,9 @@ struct SwipeToActionButton: View {
                                         isCompleted = true
                                     }
                                     action()
-                                    
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+
+                                    // Auto-reset after 1.5s so the card returns to idle state
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         resetSlider()
                                     }
                                 } else {
@@ -80,8 +85,13 @@ struct SwipeToActionButton: View {
             }
         }
         .frame(height: 24)
+        .onChange(of: shouldReset) { _, newValue in
+            if newValue {
+                resetSlider()
+            }
+        }
     }
-    
+
     private func resetSlider() {
         withAnimation(.spring()) {
             dragOffset = 0

@@ -57,6 +57,9 @@ struct FavoritesView: View {
                     },
                     onRetryPagination: {
                         viewModel.retryPagination()
+                    },
+                    onAddToDaily: { scanId, completion in
+                        viewModel.addMealToDaily(scanId: scanId, completion: completion)
                     }
                 )
                 .refreshable {

@@ -15,6 +15,7 @@ struct FavoritesGridView: View {
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
     var onRemoveFavorite: ((String) -> Void)? = nil
     var onRetryPagination: (() -> Void)? = nil
+    var onAddToDaily: ((String, @escaping (Bool) -> Void) -> Void)? = nil
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -29,6 +30,9 @@ struct FavoritesGridView: View {
                         favUIState: FavUIState(entity: item),
                         onRemove: {
                             onRemoveFavorite?(item.id)
+                        },
+                        onAddToDaily: { onResult in
+                            onAddToDaily?(item.id, onResult)
                         }
                     )
                     .onAppear {
