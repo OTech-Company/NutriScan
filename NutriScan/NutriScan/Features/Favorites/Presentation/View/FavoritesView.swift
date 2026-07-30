@@ -78,6 +78,7 @@ struct FavoritesView: View {
                         }
                     }
                 )
+                .padding(.bottom, 60)
                 .refreshable {
                     await viewModel.refreshFavorites()
                 }
