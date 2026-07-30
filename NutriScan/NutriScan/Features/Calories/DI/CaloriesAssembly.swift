@@ -10,20 +10,20 @@ import Foundation
 struct CaloriesAssembly: @preconcurrency Assembly {
     @MainActor func assemble(container: DIContainer) {
 
-        let service = DailyTrackingServiceImpl()
-        let repository: DailyTrackingRepo = DailyTrackingRepoImpl(service: service)
-        container.register(type: DailyTrackingRepo.self, component: repository)
+        let service = CaloriesTrackingServiceImpl()
+        let repository: CaloriesTrackingRepo = CaloriesTrackingRepoImpl(service: service)
+        container.register(type: CaloriesTrackingRepo.self, component: repository)
 
-        let activityStore = DailyActivityStore()
-        container.register(type: DailyActivityStore.self, component: activityStore)
+        let caloriesActivityStore = CaloriesActivityStore()
+        container.register(type: CaloriesActivityStore.self, component: caloriesActivityStore)
 
         container.register(
-            type: GetTodayTrackingUseCase.self,
-            component: GetTodayTrackingUseCase(repository: repository)
+            type: GetTodayCaloriesTrackingUseCase.self,
+            component: GetTodayCaloriesTrackingUseCase(repository: repository)
         )
         container.register(
-            type: GetTrackingByDateUseCase.self,
-            component: GetTrackingByDateUseCase(repository: repository)
+            type: GetCaloriesTrackingByDateUseCase.self,
+            component: GetCaloriesTrackingByDateUseCase(repository: repository)
         )
         container.register(
             type: AddMealUseCase.self,
@@ -43,12 +43,12 @@ struct CaloriesAssembly: @preconcurrency Assembly {
         )
 
         container.register(
-            type: DailyActivitySyncCoordinator.self,
-            component: DailyActivitySyncCoordinator(
-                activityStore: activityStore,
+            type: CaloriesActivitySyncCoordinator.self,
+            component: CaloriesActivitySyncCoordinator(
+                caloriesActivityStore: caloriesActivityStore,
                 profileStore: container.resolve(type: UserProfileStore.self),
-                getTrackingByDateUseCase: GetTrackingByDateUseCase(repository: repository),
-                updateTrackingUseCase: UpdateWaterUseCase(repository: repository),
+                getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCase(repository: repository),
+                updateWaterUseCase: UpdateWaterUseCase(repository: repository),
                 fetchHistoryUseCase: container.resolve(type: FetchStepsHistoryUseCase.self)
             )
         )

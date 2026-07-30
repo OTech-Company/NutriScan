@@ -13,7 +13,7 @@ enum MealRemovalKind: Equatable {
 }
 
 struct MealRemovalRequest: Identifiable {
-    let meal: Meal
+    let meal: CalorieMeal
     let kind: MealRemovalKind
 
     var id: String { "\(meal.scanId)-\(kind == .one ? "one" : "all")" }
@@ -21,7 +21,7 @@ struct MealRemovalRequest: Identifiable {
 
 struct DailyProductsSection: View {
     let dailyKcal: Int
-    let meals: [Meal]
+    let meals: [CalorieMeal]
     var onAddFoodTap: () -> Void = {}
     var onRemoveMealRequest: ((MealRemovalRequest) -> Void)? = nil
 
@@ -131,7 +131,7 @@ struct DailyProductsSection: View {
 }
 
 private struct MealSwipeRow: View {
-    let meal: Meal
+    let meal: CalorieMeal
     let onRemoveOne: () -> Void
     let onRemoveAll: () -> Void
 
@@ -210,7 +210,7 @@ private struct MealSwipeRow: View {
 }
 
 private struct MealRowView: View {
-    let meal: Meal
+    let meal: CalorieMeal
 
     var body: some View {
         HStack(spacing: 10) {
@@ -257,7 +257,7 @@ private struct MealRowView: View {
 }
 
 #Preview("Light — With Meals") {
-    let mockMeal = Meal(
+    let mockMeal = CalorieMeal(
         scanId: "abc-123",
         productName: "Greek Yogurt",
         imageUrl: "",

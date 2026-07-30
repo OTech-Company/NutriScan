@@ -8,9 +8,9 @@
 import Foundation
 
 final class DeleteMealUseCase {
-    private let repository: DailyTrackingRepo
+    private let repository: CaloriesTrackingRepo
 
-    init(repository: DailyTrackingRepo) {
+    init(repository: CaloriesTrackingRepo) {
         self.repository = repository
     }
 

@@ -25,16 +25,16 @@ final class ExerciseWorkoutPlayerViewModel {
     private(set) var hasRecordedWorkout: Bool = false
 
     private var timerTask: Task<Void, Never>?
-    private let activityStore: DailyActivityStore
+    private let caloriesActivityStore: CaloriesActivityStore
     private let profileStore: UserProfileStore
 
     init(
         exercise: Exercise,
-        activityStore: DailyActivityStore = DIContainer.shared.resolve(type: DailyActivityStore.self),
+        caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
         profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self)
     ) {
         self.exercise = exercise
-        self.activityStore = activityStore
+        self.caloriesActivityStore = caloriesActivityStore
         self.profileStore = profileStore
         self.hasStarted = false
         self.isPaused = true
@@ -151,9 +151,9 @@ final class ExerciseWorkoutPlayerViewModel {
             return
         }
         stopTimer()
-        activityStore.recordWorkout(
+        caloriesActivityStore.recordWorkout(
             profileID: profileID,
-            date: DailyTracking.todayString,
+            date: CaloriesTracking.todayString,
             calories: roundedCalories,
             elapsedSeconds: elapsedSeconds
         )

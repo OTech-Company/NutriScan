@@ -108,7 +108,7 @@ final class NetworkService: NetworkServiceProtocol {
                 throw NetworkError.serverError(statusCode: httpResponse.statusCode)
             }
 
-            if httpResponse.statusCode == 204 || data.isEmpty, let empty = EmptyResponse() as? T {
+            if let empty = EmptyResponse() as? T {
                 return empty
             }
 

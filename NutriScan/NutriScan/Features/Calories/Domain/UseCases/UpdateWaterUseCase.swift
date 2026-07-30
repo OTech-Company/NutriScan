@@ -8,9 +8,9 @@
 import Foundation
 
 final class UpdateWaterUseCase {
-    private let repository: DailyTrackingRepo
+    private let repository: CaloriesTrackingRepo
 
-    init(repository: DailyTrackingRepo) {
+    init(repository: CaloriesTrackingRepo) {
         self.repository = repository
     }
 
@@ -23,8 +23,8 @@ final class UpdateWaterUseCase {
         exerciseKcal: Int? = nil,
         exerciseMin: Double? = nil,
         totalMealKcal: Int? = nil
-    ) async throws -> DailyTracking {
-        try await repository.updateTracking(
+    ) async throws -> CaloriesTracking {
+        try await repository.updateCaloriesTracking(
             date: date,
             targetWaterCnt: targetWaterCnt,
             waterCnt: waterCnt,

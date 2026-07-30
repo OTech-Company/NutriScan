@@ -22,7 +22,9 @@ struct CaloriesScreen: View {
     @State private var activeAlert: ActiveAlert = .none
 
     @State private var mealRemovalRequest: MealRemovalRequest? = nil
+    @State private var showMealRemovalConfirmation = false
     @State private var unfillCupIndex: Int? = nil
+    @State private var showWaterRemovalConfirmation = false
     @State private var deleteTargetCupRequested = false
     @State private var stepPersistenceTask: Task<Void, Never>?
 
@@ -52,6 +54,7 @@ struct CaloriesScreen: View {
                         },
                         onRemoveMealRequest: { request in
                             mealRemovalRequest = request
+                            showMealRemovalConfirmation = true
                         }
                     )
                     .opacity(showDailyProducts ? 1 : 0)
@@ -100,6 +103,7 @@ struct CaloriesScreen: View {
                         },
                         onUnfillCupRequest: { index in
                             unfillCupIndex = index
+                            showWaterRemovalConfirmation = true
                         },
                         onDeleteTargetCupRequest: {
                             deleteTargetCupRequested = true
@@ -109,6 +113,7 @@ struct CaloriesScreen: View {
                     .offset(y: showWater ? 0 : 30)
                 }
                 .padding(22)
+                Spacer(minLength: 60)
             }
             .refreshable {
                 await caloriesViewModel.fetchTodayTracking()
@@ -193,10 +198,7 @@ struct CaloriesScreen: View {
             activeAlert = .none
         })
         .customAlert(
-            isPresented: Binding(
-                get: { mealRemovalRequest != nil },
-                set: { if !$0 { mealRemovalRequest = nil } }
-            ),
+            isPresented: $showMealRemovalConfirmation,
             type: .delete,
             title: mealRemovalRequest?.kind == .one ? "Remove One Serving?" : "Remove Meal?",
             description: mealRemovalRequest?.kind == .one
@@ -214,29 +216,33 @@ struct CaloriesScreen: View {
                     }
                 }
                 mealRemovalRequest = nil
+                showMealRemovalConfirmation = false
             },
             secondaryButtonTitle: "Cancel",
-            secondaryAction: { mealRemovalRequest = nil }
+            secondaryAction: {
+                mealRemovalRequest = nil
+                showMealRemovalConfirmation = false
+            }
         )
         .customAlert(
-            isPresented: Binding(
-                get: { unfillCupIndex != nil },
-                set: { if !$0 { unfillCupIndex = nil } }
-            ),
+            isPresented: $showWaterRemovalConfirmation,
             type: .delete,
             title: "Remove Water?",
             description: "Do you want to mark this cup as undrunk?",
             primaryButtonTitle: "Remove",
             primaryButtonColor: Color.red,
             primaryAction: {
-                if let idx = unfillCupIndex {
-                    _ = idx
+                if unfillCupIndex != nil {
                     caloriesViewModel.removeConsumedCup()
                 }
                 unfillCupIndex = nil
+                showWaterRemovalConfirmation = false
             },
             secondaryButtonTitle: "Cancel",
-            secondaryAction: { unfillCupIndex = nil }
+            secondaryAction: {
+                unfillCupIndex = nil
+                showWaterRemovalConfirmation = false
+            }
         )
         .customAlert(
             isPresented: $deleteTargetCupRequested,

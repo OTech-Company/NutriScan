@@ -18,13 +18,13 @@ struct MealNutritionFacts {
 }
 
 extension MealNutritionFacts {
-    init(from dto: MealNutritionFactsDTO) {
-        self.calories = dto.calories
-        self.proteinGrams = dto.proteinGrams
-        self.carbsGrams = dto.carbsGrams
-        self.fatG = dto.fatG
-        self.fiberGrams = dto.fiberGrams
-        self.sugarG = dto.sugarG
-        self.sodiumMg = dto.sodiumMg
+    init(from dto: MealNutritionFactsDTO?) {
+        self.calories = dto?.calories ?? 0
+        self.proteinGrams = dto?.proteinGrams ?? 0
+        self.carbsGrams = dto?.carbsGrams ?? 0
+        self.fatG = dto?.fatG ?? 0
+        self.fiberGrams = dto?.fiberGrams ?? 0
+        self.sugarG = dto?.sugarG ?? 0
+        self.sodiumMg = dto?.sodiumMg ?? 0
     }
 }

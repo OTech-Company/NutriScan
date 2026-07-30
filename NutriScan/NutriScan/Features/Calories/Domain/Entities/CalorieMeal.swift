@@ -1,5 +1,5 @@
 //
-//  Meal.swift
+//  CalorieMeal.swift
 //  NutriScan
 //
 //  Created by albaraa alsayed on 28/07/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Meal {
+struct CalorieMeal {
     let scanId: String
     let productName: String
     let imageUrl: String
@@ -15,12 +15,12 @@ struct Meal {
     let nutritionFacts: MealNutritionFacts
 }
 
-extension Meal {
-    init(from dto: MealDTO) {
-        self.scanId = dto.scanId
-        self.productName = dto.productName
-        self.imageUrl = dto.imageUrl
-        self.mealCnt = dto.mealCnt
+extension CalorieMeal {
+    init(from dto: CalorieMealsDTO) {
+        self.scanId = dto.scanId ?? ""
+        self.productName = dto.productName ?? ""
+        self.imageUrl = dto.imageUrl ?? ""
+        self.mealCnt = dto.mealCnt ?? 0
         self.nutritionFacts = MealNutritionFacts(from: dto.nutritionFacts)
     }
 }

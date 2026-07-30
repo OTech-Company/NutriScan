@@ -22,7 +22,7 @@ struct RootCoordinatorView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var flowCoordinator = AppFlowCoordinator()
     @State private var dailyActivitySyncCoordinator = DIContainer.shared.resolve(
-        type: DailyActivitySyncCoordinator.self
+        type: CaloriesActivitySyncCoordinator.self
     )
     @AppStorage("appAppearance") private var appAppearance: AppAppearance = .system
 

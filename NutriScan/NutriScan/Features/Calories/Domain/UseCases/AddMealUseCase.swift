@@ -8,13 +8,13 @@
 import Foundation
 
 final class AddMealUseCase {
-    private let repository: DailyTrackingRepo
+    private let repository: CaloriesTrackingRepo
 
-    init(repository: DailyTrackingRepo) {
+    init(repository: CaloriesTrackingRepo) {
         self.repository = repository
     }
 
-    func execute(date: String, scanId: String, mealCnt: Int) async throws -> Meal {
+    func execute(date: String, scanId: String, mealCnt: Int) async throws -> CalorieMeal {
         try await repository.addMeal(date: date, scanId: scanId, mealCnt: mealCnt)
     }
 }

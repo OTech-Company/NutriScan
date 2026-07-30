@@ -1,5 +1,5 @@
 //
-//  DailyTracking.swift
+//  CaloriesTracking.swift
 //  NutriScan
 //
 //  Created by albaraa alsayed on 28/07/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DailyTracking {
+struct CaloriesTracking {
     let id: Int
     let date: String
     let targetWaterCnt: Int
@@ -17,7 +17,7 @@ struct DailyTracking {
     let exerciseKcal: Int
     let exerciseMin: Double
     let totalMealKcal: Int
-    let meals: [Meal]
+    let meals: [CalorieMeal]
 
     init(
         id: Int,
@@ -29,7 +29,7 @@ struct DailyTracking {
         exerciseKcal: Int = 0,
         exerciseMin: Double = 0,
         totalMealKcal: Int = 0,
-        meals: [Meal]
+        meals: [CalorieMeal]
     ) {
         self.id = id
         self.date = date
@@ -44,7 +44,7 @@ struct DailyTracking {
     }
 }
 
-extension DailyTracking {
+extension CaloriesTracking {
     var totalCalories: Int {
         meals.reduce(0) { $0 + $1.nutritionFacts.calories * $1.mealCnt }
     }
@@ -84,17 +84,17 @@ extension DailyTracking {
     }
 }
 
-extension DailyTracking {
-    init(from dto: DailyTrackingDTO) {
-        self.id = dto.id
-        self.date = dto.date
-        self.targetWaterCnt = dto.targetWaterCnt
-        self.waterCnt = dto.waterCnt
-        self.stepsCnt = dto.stepsCnt
-        self.stepsKcal = dto.stepsKcal
-        self.exerciseKcal = dto.exerciseKcal
-        self.exerciseMin = dto.exerciseMin
-        self.totalMealKcal = dto.totalMealKcal
-        self.meals = dto.meals.map { Meal(from: $0) }
+extension CaloriesTracking {
+    init(from dto: CaloriesTrackingDTO) {
+        self.id = dto.id ?? 0
+        self.date = dto.date ?? Self.todayString
+        self.targetWaterCnt = dto.targetWaterCnt ?? 0
+        self.waterCnt = dto.waterCnt ?? 0
+        self.stepsCnt = dto.stepsCnt ?? 0
+        self.stepsKcal = dto.stepsKcal ?? 0
+        self.exerciseKcal = dto.exerciseKcal ?? 0
+        self.exerciseMin = dto.exerciseMin ?? 0
+        self.totalMealKcal = dto.totalMealKcal ?? 0
+        self.meals = (dto.meals ?? []).map { CalorieMeal(from: $0) }
     }
 }

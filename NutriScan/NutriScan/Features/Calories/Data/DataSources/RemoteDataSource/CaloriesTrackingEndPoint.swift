@@ -1,5 +1,5 @@
 //
-//  DailyTrackingEndPoint.swift
+//  CaloriesTrackingEndPoint.swift
 //  NutriScan
 //
 //  Created by albaraa alsayed on 28/07/2026.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DailyTrackingEndPoint: APIEndpoint {
+enum CaloriesTrackingEndPoint: APIEndpoint {
 
     case getToday
     case getByDate(date: String)
@@ -15,7 +15,7 @@ enum DailyTrackingEndPoint: APIEndpoint {
     case addMeal(date: String, request: AddMealRequestDTO)
     case updateMeal(date: String, scanId: String, request: UpdateMealCountRequestDTO)
     case deleteMeal(date: String, scanId: String)
-    case patchTracking(date: String, body: PatchDailyTrackingDTO)
+    case patchTracking(date: String, body: PatchCaloriesTrackingDTO)
     case deleteTracking(date: String)
 
     var baseURL: String { AppNetworkConfig.core.baseURL }

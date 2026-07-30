@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+private enum CalorieGoalMood: Hashable {
+    case sad
+    case normal
+    case happy
+    case angry
+
+    var imageResource: ImageResource {
+        switch self {
+        case .sad: .sadFace
+        case .normal: .normalFace
+        case .happy: .happyFace
+        case .angry: .angryFace
+        }
+    }
+}
+
 struct CalorieGoalsSection: View {
     let mealCalories: Int
     let targetCalories: Double?
@@ -25,14 +41,24 @@ struct CalorieGoalsSection: View {
     }
 
     private var isOverTDEE: Bool {
-        guard let targetCalories else { return false }
-        return Double(rawNetCalories) > targetCalories
+        mood == .angry
+    }
+
+    private var mood: CalorieGoalMood {
+        guard let targetCalories, targetCalories > 0 else { return .normal }
+        let progress = Double(netCalories) / targetCalories
+        switch progress {
+        case ..<0.5: return .sad
+        case ..<0.8: return .normal
+        case ...1.0: return .happy
+        default: return .angry
+        }
     }
 
     var body: some View {
         ZStack {
             VStack {
-                HStack(alignment: .top) {
+                HStack {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 4) {
                             Image("calories-fill")
@@ -61,13 +87,8 @@ struct CalorieGoalsSection: View {
                     }
                     Spacer(minLength: 16)
 
-                    Group {
-                        if isOverTDEE {
-                            Image(.angryFace)
-                        } else {
-                            Image(.normalFace)
-                        }
-                    }
+                    Image(mood.imageResource)
+                    .id(mood)
                     .transition(
                         .asymmetric(
                             insertion: .scale(scale: 0.6).combined(with: .opacity),
@@ -75,8 +96,8 @@ struct CalorieGoalsSection: View {
                         )
                     )
                     .scaleEffect(isTapped ? 1.3 : 1.0)
-                    .rotationEffect(.degrees(isOverTDEE && isTapped ? -15 : 0))
-                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isOverTDEE)
+                    .rotationEffect(.degrees(mood == .angry && isTapped ? -15 : 0))
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: mood)
                 }
 
                 Spacer()
@@ -100,7 +121,7 @@ struct CalorieGoalsSection: View {
             }
         }
         .padding(16)
-        .frame(height: 185)
+        .frame(height: 175)
         .background(
             RoundedRectangle(cornerRadius: 24)
                 .fill(Color.CaloriesSemantic.goalsBackground)
@@ -127,6 +148,11 @@ struct CalorieGoalsSection: View {
             }
         }
         .onChange(of: caloriesBurned) { _, _ in
+            withAnimation(.easeOut(duration: 0.5)) {
+                animatedProgress = targetProgress
+            }
+        }
+        .onChange(of: targetCalories) { _, _ in
             withAnimation(.easeOut(duration: 0.5)) {
                 animatedProgress = targetProgress
             }

@@ -1,5 +1,5 @@
 //
-//  DailyTrackingLocalDataSource.swift
+//  CaloriesTrackingLocalDataSource.swift
 //  NutriScan
 //
 //  Created by albaraa alsayed on 16/02/1448 AH.
@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-struct DailyActivityDraft: Codable, Equatable, Identifiable {
+struct CaloriesActivityDraft: Codable, Equatable, Identifiable {
     let profileID: String
     let date: String
     var stepsCnt: Int
@@ -27,8 +27,8 @@ struct DailyActivityDraft: Codable, Equatable, Identifiable {
 
 @MainActor
 @Observable
-final class DailyActivityStore {
-    private(set) var drafts: [String: DailyActivityDraft]
+final class CaloriesActivityStore {
+    private(set) var drafts: [String: CaloriesActivityDraft]
 
     private let defaults: UserDefaults
     private let storageKey = "nutriscan.daily-activity-drafts.v1"
@@ -36,19 +36,19 @@ final class DailyActivityStore {
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         if let data = defaults.data(forKey: storageKey),
-           let decoded = try? JSONDecoder().decode([String: DailyActivityDraft].self, from: data) {
+           let decoded = try? JSONDecoder().decode([String: CaloriesActivityDraft].self, from: data) {
             drafts = decoded
         } else {
             drafts = [:]
         }
     }
 
-    func draft(profileID: String, date: String) -> DailyActivityDraft? {
+    func draft(profileID: String, date: String) -> CaloriesActivityDraft? {
         drafts[key(profileID: profileID, date: date)]
     }
 
     @discardableResult
-    func seedIfNeeded(profileID: String, tracking: DailyTracking) -> DailyActivityDraft {
+    func seedIfNeeded(profileID: String, tracking: CaloriesTracking) -> CaloriesActivityDraft {
         let draftKey = key(profileID: profileID, date: tracking.date)
         if var existing = drafts[draftKey] {
             guard !existing.isSeededFromServer else { return existing }
@@ -63,7 +63,7 @@ final class DailyActivityStore {
             return existing
         }
 
-        let draft = DailyActivityDraft(
+        let draft = CaloriesActivityDraft(
             profileID: profileID,
             date: tracking.date,
             stepsCnt: tracking.stepsCnt,
@@ -80,7 +80,7 @@ final class DailyActivityStore {
 
     func updateSteps(profileID: String, date: String, steps: Int, calories: Int) {
         let draftKey = key(profileID: profileID, date: date)
-        var draft = drafts[draftKey] ?? DailyActivityDraft(
+        var draft = drafts[draftKey] ?? CaloriesActivityDraft(
             profileID: profileID,
             date: date,
             stepsCnt: 0,
@@ -106,7 +106,7 @@ final class DailyActivityStore {
 
     func recordWorkout(profileID: String, date: String, calories: Int, elapsedSeconds: Int) {
         let draftKey = key(profileID: profileID, date: date)
-        var draft = drafts[draftKey] ?? DailyActivityDraft(
+        var draft = drafts[draftKey] ?? CaloriesActivityDraft(
             profileID: profileID,
             date: date,
             stepsCnt: 0,
@@ -122,7 +122,7 @@ final class DailyActivityStore {
         persist()
     }
 
-    func pendingDrafts(profileID: String, before date: String) -> [DailyActivityDraft] {
+    func pendingDrafts(profileID: String, before date: String) -> [CaloriesActivityDraft] {
         drafts.values
             .filter { $0.profileID == profileID && $0.date < date }
             .sorted { $0.date < $1.date }
