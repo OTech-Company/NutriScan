@@ -244,6 +244,13 @@
 		8F029F49301271C3008B6CB1 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730AFF30092E71004399C5 /* Kingfisher */; };
 		8F029F4A301271C3008B6CB1 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 2C730B0230092ED1004399C5 /* Shimmer */; };
 		8F029F4B301271C3008B6CB1 /* AppAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D4AED0FC3009683200CB773F /* AppAuth */; };
+		8F119D3F301B81D000496267 /* DailyTrackingEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D3E301B81D000496267 /* DailyTrackingEndpoint.swift */; };
+		8F119D41301B81D700496267 /* DailyTrackingRemoteDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D40301B81D700496267 /* DailyTrackingRemoteDataSource.swift */; };
+		8F119D43301B81FF00496267 /* DailyTrackingMealDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D42301B81FF00496267 /* DailyTrackingMealDTO.swift */; };
+		8F119D45301B820C00496267 /* DailyTrackingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D44301B820B00496267 /* DailyTrackingRepository.swift */; };
+		8F119D47301B825300496267 /* DailyTrackingRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D46301B825300496267 /* DailyTrackingRepositoryProtocol.swift */; };
+		8F119D49301B825D00496267 /* AddMealUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D48301B825D00496267 /* AddMealUseCase.swift */; };
+		8F119D4B301B8D9800496267 /* DailyTrackingTodayDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D4A301B8D9800496267 /* DailyTrackingTodayDTO.swift */; };
 		8F16ED0E3012A96B00CF43B2 /* ProfileSetupResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED0B3012A96A00CF43B2 /* ProfileSetupResponseDTO.swift */; };
 		8F16ED103012A96B00CF43B2 /* ProfileSetupUpdateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED0D3012A96B00CF43B2 /* ProfileSetupUpdateDTO.swift */; };
 		8F16ED123012A9C500CF43B2 /* ProfileSetupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED113012A9C500CF43B2 /* ProfileSetupRepository.swift */; };
@@ -822,6 +829,13 @@
 		8C8BF72F529571DA910FBB27 /* ScanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlowView.swift; sourceTree = "<group>"; };
 		8C9FCB95B1BB5CFB86039766 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		8E2478F7BB592188D447103B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8F119D3E301B81D000496267 /* DailyTrackingEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingEndpoint.swift; sourceTree = "<group>"; };
+		8F119D40301B81D700496267 /* DailyTrackingRemoteDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingRemoteDataSource.swift; sourceTree = "<group>"; };
+		8F119D42301B81FF00496267 /* DailyTrackingMealDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingMealDTO.swift; sourceTree = "<group>"; };
+		8F119D44301B820B00496267 /* DailyTrackingRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingRepository.swift; sourceTree = "<group>"; };
+		8F119D46301B825300496267 /* DailyTrackingRepositoryProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingRepositoryProtocol.swift; sourceTree = "<group>"; };
+		8F119D48301B825D00496267 /* AddMealUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMealUseCase.swift; sourceTree = "<group>"; };
+		8F119D4A301B8D9800496267 /* DailyTrackingTodayDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingTodayDTO.swift; sourceTree = "<group>"; };
 		8F16ED0B3012A96A00CF43B2 /* ProfileSetupResponseDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupResponseDTO.swift; sourceTree = "<group>"; };
 		8F16ED0D3012A96B00CF43B2 /* ProfileSetupUpdateDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupUpdateDTO.swift; sourceTree = "<group>"; };
 		8F16ED113012A9C500CF43B2 /* ProfileSetupRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupRepository.swift; sourceTree = "<group>"; };
@@ -2641,6 +2655,7 @@
 		8FB0F01E30167AC100D84471 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				8F119D48301B825D00496267 /* AddMealUseCase.swift */,
 				8FB0F02430167E8900D84471 /* FavoritesUseCase.swift */,
 			);
 			path = UseCases;
@@ -2649,6 +2664,7 @@
 		8FB0F01F30167AC900D84471 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				8F119D46301B825300496267 /* DailyTrackingRepositoryProtocol.swift */,
 				8FB0F02030167B6A00D84471 /* FavoritesRepositoryProtocol.swift */,
 			);
 			path = Repository;
@@ -2668,6 +2684,7 @@
 		8FB0F02D301685FF00D84471 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				8F119D44301B820B00496267 /* DailyTrackingRepository.swift */,
 				8FB0F02B301685C800D84471 /* FavoritesRepository.swift */,
 			);
 			path = Repository;
@@ -2676,6 +2693,8 @@
 		8FB0F02E3016861700D84471 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				8F119D40301B81D700496267 /* DailyTrackingRemoteDataSource.swift */,
+				8F119D3E301B81D000496267 /* DailyTrackingEndpoint.swift */,
 				8FB0F0393016979500D84471 /* FavoritesEndpoint.swift */,
 				8FB0F02F3016863300D84471 /* FavoritesRemoteDataSource.swift */,
 			);
@@ -2685,6 +2704,8 @@
 		8FB0F03130168D8000D84471 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
+				8F119D4A301B8D9800496267 /* DailyTrackingTodayDTO.swift */,
+				8F119D42301B81FF00496267 /* DailyTrackingMealDTO.swift */,
 				8FB0F03230168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift */,
 				8FB0F03430168DBC00D84471 /* FavoritesScanItemDTO.swift */,
 			);
@@ -4359,6 +4380,7 @@
 				6F8C4F0C30190709000067BC /* ScanViewfinderView.swift in Sources */,
 				D47700073016000100000002 /* AppLanguage.swift in Sources */,
 				D47700093016000100000002 /* GetLanguageUseCase.swift in Sources */,
+				8F119D49301B825D00496267 /* AddMealUseCase.swift in Sources */,
 				D47700113016000100000002 /* UpdateLanguageUseCase.swift in Sources */,
 				D47700133016000100000002 /* SettingsLocalDataSourceProtocol.swift in Sources */,
 				D47700143016000100000002 /* SettingsLocalDataSourceImpl.swift in Sources */,
@@ -4405,6 +4427,7 @@
 				764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */,
 				D8622591DADC3E1B3935454A /* AppRouter.swift in Sources */,
 				D489D1C93018E50E00E7A1DF /* SharedProfileAssembly.swift in Sources */,
+				8F119D3F301B81D000496267 /* DailyTrackingEndpoint.swift in Sources */,
 				03FB29FBFAC4BC298B1AC07B /* AppTab.swift in Sources */,
 				88CC3382C6A545FA3E93E2F5 /* AppValidator.swift in Sources */,
 				D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */,
@@ -4435,6 +4458,7 @@
 				8FB0F03A3016979500D84471 /* FavoritesEndpoint.swift in Sources */,
 				8FB0F03330168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift in Sources */,
 				220A9D85BF87CAAF2E16FE75 /* CustomAnimatedTabBar.swift in Sources */,
+				8F119D43301B81FF00496267 /* DailyTrackingMealDTO.swift in Sources */,
 				DC73ACADE5B3296996297205 /* CustomPuffedButton.swift in Sources */,
 				7D2767545C9B74D3BA022068 /* CustomTextField.swift in Sources */,
 				526136CC5A7326A6B5784EC2 /* CustomTextFieldError.swift in Sources */,
@@ -4523,6 +4547,7 @@
 				EEC0C0F7B84E3B39F14FAEE7 /* HomeSummaryView.swift in Sources */,
 				CD69B359FF5E093173E1137D /* HomeView.swift in Sources */,
 				D48A2441301158DA0004D95E /* Assembly.swift in Sources */,
+				8F119D4B301B8D9800496267 /* DailyTrackingTodayDTO.swift in Sources */,
 				6F8C4E9C301455AC000067BC /* ScanPageDTO.swift in Sources */,
 				9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */,
 				0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */,
@@ -4605,6 +4630,7 @@
 				8FD8BB8D3017900F00FB37DD /* ScanHistoryEmptyStateView.swift in Sources */,
 				2C78ED27300E6C7E0092E6B2 /* LoginViewModel.swift in Sources */,
 				6F1A8EE830138FAE00E1ACC5 /* RAGStrings.swift in Sources */,
+				8F119D47301B825300496267 /* DailyTrackingRepositoryProtocol.swift in Sources */,
 				D489D1C73018E4CB00E7A1DF /* UserProfileDataSource.swift in Sources */,
 				2C78ED28300E6C7E0092E6B2 /* LoginView.swift in Sources */,
 				8FE9B83F301A53C6001E14B6 /* ScanHistoryCardShimmerView.swift in Sources */,
@@ -4623,6 +4649,7 @@
 				2305D7797A178FEA10CFD101 /* ProductAPIService.swift in Sources */,
 				D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */,
 				D4BAA30630137BE9006EDB11 /* ProfileState.swift in Sources */,
+				8F119D45301B820C00496267 /* DailyTrackingRepository.swift in Sources */,
 				AACB8FDACC2DCC73FBFBF5AD /* ProductError.swift in Sources */,
 				D4BAA31A30137F7C006EDB11 /* ProfileViewModel.swift in Sources */,
 				8F16ED203012AA2900CF43B2 /* ProfileSetupRepositoryProtocol.swift in Sources */,
@@ -4663,6 +4690,7 @@
 				8FB0F0293016842500D84471 /* FavoritesView.swift in Sources */,
 				E793F38D6EC3860F4CF460AB /* SelectableChipsSectionView.swift in Sources */,
 				F6426B5047C2B85892E4E41C /* SelectionIndicatorTriangle.swift in Sources */,
+				8F119D41301B81D700496267 /* DailyTrackingRemoteDataSource.swift in Sources */,
 				DFF4648294180FB01E671903 /* SettingsHeaderSection.swift in Sources */,
 				8F305C293014EC1A0002A179 /* FavoriteCardView.swift in Sources */,
 				8F16ED0E3012A96B00CF43B2 /* ProfileSetupResponseDTO.swift in Sources */,

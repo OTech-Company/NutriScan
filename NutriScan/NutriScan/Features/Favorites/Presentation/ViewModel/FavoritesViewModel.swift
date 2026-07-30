@@ -13,11 +13,20 @@ class FavoritesViewModel {
     var isLoadingInitial: Bool = false
     var isLoadingNextPage: Bool = false
     var isRefreshing: Bool = false
-    
+
     /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
     var initialLoadError: String? = nil
     /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
     var paginationError: String? = nil
+
+    // MARK: - Add Meal State
+
+    /// True while the add-meal network call is in-flight for a given card.
+    var isAddingMeal: Bool = false
+    /// Non-nil when an add-meal call succeeds, holding the scanId that was just added.
+    var lastAddedMealScanId: String? = nil
+    /// Non-nil when an add-meal call fails.
+    var addMealError: String? = nil
     
     private var currentPage: Int = 0
     private var hasMorePages: Bool = true
@@ -25,10 +34,16 @@ class FavoritesViewModel {
     
     let favoritesUseCase: FavoritesUseCaseProtocol
     private let notifier: FavoritesNotifier
-    
-    init(favoritesUseCase: FavoritesUseCaseProtocol, notifier: FavoritesNotifier = .shared) {
+    private let addMealUseCase: AddMealUseCaseProtocol
+
+    init(
+        favoritesUseCase: FavoritesUseCaseProtocol,
+        notifier: FavoritesNotifier = .shared,
+        addMealUseCase: AddMealUseCaseProtocol = AddMealUseCase()
+    ) {
         self.favoritesUseCase = favoritesUseCase
         self.notifier = notifier
+        self.addMealUseCase = addMealUseCase
     }
     
     // MARK: - Public API
@@ -173,11 +188,11 @@ class FavoritesViewModel {
     }
     
     // MARK: - Remove Favorite
-    
+
     func removeFavorite(scanId: String) {
         guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return }
         let removed = favorites.remove(at: index)
-        
+
         Task {
             do {
                 try await favoritesUseCase.removeFavorite(scanId: scanId)
@@ -187,6 +202,35 @@ class FavoritesViewModel {
                     self.favorites.insert(removed, at: min(index, self.favorites.count))
                 }
                 print("Error removing favorite: \(error)")
+            }
+        }
+    }
+
+    // MARK: - Add to Daily Meals
+
+    /// Calls POST to add the product, or PUT to increment if it already exists.
+    /// Observable state: `isAddingMeal`, `lastAddedMealScanId`, `addMealError`.
+    func addMealToDaily(scanId: String, completion: @escaping (Bool) -> Void) {
+        guard !isAddingMeal else { return }
+        isAddingMeal = true
+        addMealError = nil
+        lastAddedMealScanId = nil
+
+        Task {
+            do {
+                try await addMealUseCase.execute(scanId: scanId)
+                await MainActor.run {
+                    self.lastAddedMealScanId = scanId
+                    self.isAddingMeal = false
+                    completion(true)
+                }
+            } catch {
+                await MainActor.run {
+                    self.addMealError = error.localizedDescription
+                    self.isAddingMeal = false
+                    completion(false)
+                }
+                print("Error adding meal to daily tracking: \(error)")
             }
         }
     }

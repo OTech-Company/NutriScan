@@ -8,10 +8,17 @@
 import SwiftUI
 
 struct FavoriteCardView: View {
-    
+
     let favUIState: FavUIState
     var onRemove: (() -> Void)? = nil
-    
+
+    /// Called when the user completes a swipe. The closure receives a callback
+    /// `onResult(_ success: Bool)` which the parent must invoke with the API result.
+    var onAddToDaily: ((_ onResult: @escaping (Bool) -> Void) -> Void)? = nil
+
+    /// When true, the SwipeToActionButton snaps back — used after an API failure.
+    @State private var resetSwipe = false
+
     var body: some View {
         VStack(spacing: 12) {
             ZStack(alignment: .topTrailing) {
@@ -22,7 +29,8 @@ struct FavoriteCardView: View {
                 )
                 .frame(height: 140)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
-                
+
+                // Bookmark / Remove button — triggers parent to show confirmation alert
                 Button(action: {
                     onRemove?()
                 }) {
@@ -38,15 +46,14 @@ struct FavoriteCardView: View {
                 }
                 .padding(8)
             }
-            
+
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(favUIState.title)
                         .font(Font.AppFont.textSecondary)
                         .foregroundStyle(Color.Favorites.titleColor)
                         .lineLimit(1)
-                        
-                    
+
                     Text(favUIState.condition.rawValue)
                         .font(Font.AppFont.textCaption)
                         .padding(.horizontal, 6)
@@ -58,9 +65,9 @@ struct FavoriteCardView: View {
                             )
                         )
                 }
-                
+
                 Spacer()
-                
+
                 VStack(spacing: 0) {
                     Text(String(favUIState.calories))
                     Text("Kcal")
@@ -72,19 +79,30 @@ struct FavoriteCardView: View {
                 .background(Color.Teal.teal300)
                 .clipShape(RoundedRectangle(cornerRadius: 4))
             }
-            
-            SwipeToActionButton(actionTitle: "Swipe right to add") {
-                print("Product successfully added...")
-            }
-  
+
+            SwipeToActionButton(
+                actionTitle: "Swipe right to add",
+                action: {
+                    onAddToDaily? { success in
+                        if !success {
+                            // Force the slider back
+                            resetSwipe = true
+                            // Give onChange a moment to fire, then flip back so the
+                            // binding is ready for the next swipe
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                resetSwipe = false
+                            }
+                        }
+                    }
+                },
+                shouldReset: resetSwipe
+            )
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 8)
         .background(Color.Favorites.cardColor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .customLightShadow()
-        
-
     }
 }
 
