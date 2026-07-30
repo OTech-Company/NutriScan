@@ -485,6 +485,8 @@
 		D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F233014175500ACE567 /* EditProfileAssembly.swift */; };
 		D49E8BFF3015300C0043F8D4 /* ShowDetailsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */; };
 		D49E8C01301538F00043F8D4 /* DeleteTextButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */; };
+		D4B2B293301BB6D6008F1EA4 /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B292301BB6D3008F1EA4 /* SettingsRoute.swift */; };
+		D4B2B295301BB700008F1EA4 /* SettingsFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B294301BB6FD008F1EA4 /* SettingsFlowView.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
 		D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30230137BB6006EDB11 /* ProfileSemantics.swift */; };
 		D4BAA30630137BE9006EDB11 /* ProfileState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30530137BE4006EDB11 /* ProfileState.swift */; };
@@ -1020,6 +1022,8 @@
 		D49D9F233014175500ACE567 /* EditProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileAssembly.swift; sourceTree = "<group>"; };
 		D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailsButton.swift; sourceTree = "<group>"; };
 		D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTextButtonStyle.swift; sourceTree = "<group>"; };
+		D4B2B292301BB6D3008F1EA4 /* SettingsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoute.swift; sourceTree = "<group>"; };
+		D4B2B294301BB6FD008F1EA4 /* SettingsFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFlowView.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
 		D4BAA30230137BB6006EDB11 /* ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSemantics.swift; sourceTree = "<group>"; };
 		D4BAA30530137BE4006EDB11 /* ProfileState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileState.swift; sourceTree = "<group>"; };
@@ -2605,6 +2609,7 @@
 		8F029F4C301274E3008B6CB1 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B291301BB6CA008F1EA4 /* Routing */,
 				D47700103016000100000001 /* DI */,
 				8F029F4E301275C9008B6CB1 /* ViewModel */,
 				8F029F4D30127500008B6CB1 /* View */,
@@ -3836,6 +3841,15 @@
 			path = DI;
 			sourceTree = "<group>";
 		};
+		D4B2B291301BB6CA008F1EA4 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				D4B2B294301BB6FD008F1EA4 /* SettingsFlowView.swift */,
+				D4B2B292301BB6D3008F1EA4 /* SettingsRoute.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
 		D4BAA2FF30137B2E006EDB11 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -4368,6 +4382,7 @@
 				8FD8BB6F301787F400FB37DD /* ScanHistoryItemDTO.swift in Sources */,
 				2C78ED12300E6C7E0092E6B2 /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */,
+				D4B2B293301BB6D6008F1EA4 /* SettingsRoute.swift in Sources */,
 				D4BAA30E30137D60006EDB11 /* SettingsSectionView.swift in Sources */,
 				8F16ED143012A9D900CF43B2 /* ProfileSetupEndpoint.swift in Sources */,
 				6F1A8EE23012C5EB00E1ACC5 /* RAGTypingDotsView.swift in Sources */,
@@ -4583,6 +4598,7 @@
 				C51E9D4D30155E56009DF262 /* ProductNutritionUIState.swift in Sources */,
 				C51E9D4E30155E56009DF262 /* ProductDetailsUIState.swift in Sources */,
 				2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */,
+				D4B2B295301BB700008F1EA4 /* SettingsFlowView.swift in Sources */,
 				2C78ECE1300E6C700092E6B2 /* AuthRemoteService.swift in Sources */,
 				2C78ECE2300E6C700092E6B2 /* RegisterRequest+DTO.swift in Sources */,
 				2C78ECE3300E6C700092E6B2 /* RegisterResponseDTO+Domain.swift in Sources */,
