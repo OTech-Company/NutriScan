@@ -13,7 +13,7 @@ enum HomeRoute: Route {
     case discover
     case articleDetail(Article)
     case scanDetail(scanId: String)
-
+@MainActor
     @ViewBuilder
     var destination: some View {
         switch self {
