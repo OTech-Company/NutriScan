@@ -14,12 +14,25 @@ final class UpdateWaterUseCase {
         self.repository = repository
     }
 
-    func execute(date: String, targetWaterCnt: Int? = nil, waterCnt: Int? = nil, stepsCnt: Int? = nil) async throws {
-        try await repository.updateWaterAndSteps(
+    func execute(
+        date: String,
+        targetWaterCnt: Int? = nil,
+        waterCnt: Int? = nil,
+        stepsCnt: Int? = nil,
+        stepsKcal: Int? = nil,
+        exerciseKcal: Int? = nil,
+        exerciseMin: Double? = nil,
+        totalMealKcal: Int? = nil
+    ) async throws -> DailyTracking {
+        try await repository.updateTracking(
             date: date,
             targetWaterCnt: targetWaterCnt,
             waterCnt: waterCnt,
-            stepsCnt: stepsCnt
+            stepsCnt: stepsCnt,
+            stepsKcal: stepsKcal,
+            exerciseKcal: exerciseKcal,
+            exerciseMin: exerciseMin,
+            totalMealKcal: totalMealKcal
         )
     }
 }

@@ -12,4 +12,8 @@ struct PatchDailyTrackingDTO: Encodable {
     let targetWaterCnt: Int?
     let waterCnt: Int?
     let stepsCnt: Int?
+    let stepsKcal: Int?
+    let exerciseKcal: Int?
+    let exerciseMin: Double?
+    let totalMealKcal: Int?
 }

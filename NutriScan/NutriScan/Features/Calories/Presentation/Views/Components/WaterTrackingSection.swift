@@ -10,6 +10,7 @@ import SwiftUI
 struct WaterTrackingSection: View {
     let currentGlasses: Int
     let goalGlasses: Int
+    var isUpdating: Bool = false
 
     var onAddTargetCupTap: () -> Void = {}
 
@@ -47,12 +48,24 @@ struct WaterTrackingSection: View {
                                 isAnimatingFill: fillingCupIndex == index,
                                 showCups: showCups
                             )
-                            .onTapGesture {
-                                handleCupTap(index: index, isFilled: isFilled)
-                            }
-                            .onLongPressGesture(minimumDuration: 0.6) {
-                                handleCupLongPress(index: index, isFilled: isFilled)
-                            }
+                            .gesture(
+                                LongPressGesture(minimumDuration: 0.6)
+                                    .exclusively(before: TapGesture())
+                                    .onEnded { result in
+                                        switch result {
+                                        case .first:
+                                            if goalGlasses > 1 {
+                                                onDeleteTargetCupRequest()
+                                            }
+                                        case .second:
+                                            handleCupTap(index: index, isFilled: isFilled)
+                                        }
+                                    }
+                            )
+                            .allowsHitTesting(!isUpdating)
+                            .accessibilityLabel("Water cup \(index + 1) of \(goalGlasses)")
+                            .accessibilityValue(isFilled ? "Drunk" : "Not drunk")
+                            .accessibilityHint("Tap to change consumed water. Long press to reduce the target.")
                         }
                     }
                     .padding(.vertical, 4)
@@ -63,6 +76,8 @@ struct WaterTrackingSection: View {
                 AddCircleButton {
                     onAddTargetCupTap()
                 }
+                .allowsHitTesting(!isUpdating)
+                .opacity(isUpdating ? 0.5 : 1)
             }
             .padding(16)
             .frame(height: 74)
@@ -91,11 +106,6 @@ struct WaterTrackingSection: View {
         }
     }
 
-    private func handleCupLongPress(index: Int, isFilled: Bool) {
-        if !isFilled {
-            onDeleteTargetCupRequest()
-        }
-    }
 }
 
 private struct CupView: View {

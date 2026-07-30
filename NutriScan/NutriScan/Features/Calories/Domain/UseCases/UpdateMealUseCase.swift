@@ -14,7 +14,7 @@ final class UpdateMealUseCase {
         self.repository = repository
     }
 
-    func execute(date: String, scanId: String, meal: Meal) async throws -> Meal {
-        try await repository.updateMeal(date: date, scanId: scanId, meal: meal)
+    func execute(date: String, scanId: String, mealCnt: Int) async throws -> Meal {
+        try await repository.updateMealCount(date: date, scanId: scanId, mealCnt: mealCnt)
     }
 }

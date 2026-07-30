@@ -26,7 +26,7 @@ struct AppDependencies {
         RAGAssembly(),
         SettingsAssembly(),
         ProductDetailsAssembly(),
-        CaloriesAssembly()
+        CaloriesAssembly(),
         HomeAssembly()
     ]
 

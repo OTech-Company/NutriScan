@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CaloriesScreen: View {
+    @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @State private var caloriesViewModel = CaloriesViewModel()
@@ -20,9 +21,10 @@ struct CaloriesScreen: View {
 
     @State private var activeAlert: ActiveAlert = .none
 
-    @State private var mealToDelete: String? = nil
+    @State private var mealRemovalRequest: MealRemovalRequest? = nil
     @State private var unfillCupIndex: Int? = nil
     @State private var deleteTargetCupRequested = false
+    @State private var stepPersistenceTask: Task<Void, Never>?
 
     init() {
         let stepViewModel = StepCounterViewModel(
@@ -30,11 +32,11 @@ struct CaloriesScreen: View {
             requestAuthUseCase: DIContainer.shared.resolve(type: RequestStepAuthorizationUseCase.self),
             fetchHistoryUseCase: DIContainer.shared.resolve(type: FetchStepsHistoryUseCase.self)
         )
-        _stepViewModel = State(wrappedValue: stepViewModel)
+        _stepViewModel = State(initialValue: stepViewModel)
     }
 
     init(stepViewModel: StepCounterViewModel) {
-        _stepViewModel = State(wrappedValue: stepViewModel)
+        _stepViewModel = State(initialValue: stepViewModel)
     }
 
     var body: some View {
@@ -48,17 +50,20 @@ struct CaloriesScreen: View {
                         onAddFoodTap: {
                             flowCoordinator.selectedTab = .bookmark
                         },
-                        onDeleteMealRequest: { scanId in
-                            mealToDelete = scanId
+                        onRemoveMealRequest: { request in
+                            mealRemovalRequest = request
                         }
                     )
                     .opacity(showDailyProducts ? 1 : 0)
                     .offset(y: showDailyProducts ? 0 : 30)
 
                     CalorieGoalsSection(
-                        currentTdee: caloriesViewModel.currentTdee,
-                        maxTdee: caloriesViewModel.maxTdee,
-                        caloriesBurned: caloriesViewModel.exerciseKcal
+                        mealCalories: caloriesViewModel.dailyKcal,
+                        targetCalories: caloriesViewModel.calorieGoal,
+                        caloriesBurned: caloriesViewModel.totalBurnedKcal,
+                        onCompleteProfileTap: {
+                            router.push(ProfileRoute.personalInformation)
+                        }
                     )
                     .opacity(showCalorieGoals ? 1 : 0)
                     .offset(y: showCalorieGoals ? 0 : 30)
@@ -86,6 +91,7 @@ struct CaloriesScreen: View {
                     WaterTrackingSection(
                         currentGlasses: caloriesViewModel.waterCurrent,
                         goalGlasses: caloriesViewModel.waterGoal,
+                        isUpdating: caloriesViewModel.isUpdatingWater,
                         onAddTargetCupTap: {
                             caloriesViewModel.addTargetCup()
                         },
@@ -130,7 +136,22 @@ struct CaloriesScreen: View {
             }
         }
         .onDisappear {
+            stepPersistenceTask?.cancel()
+            persistCurrentSteps()
             stepViewModel.onDisappear()
+        }
+        .onChange(of: stepViewModel.todaySteps) { _, _ in
+            stepPersistenceTask?.cancel()
+            stepPersistenceTask = Task {
+                try? await Task.sleep(for: .seconds(5))
+                guard !Task.isCancelled else { return }
+                persistCurrentSteps()
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase != .active else { return }
+            stepPersistenceTask?.cancel()
+            persistCurrentSteps()
         }
         .onChange(of: stepViewModel.errorMessage) { _, error in
             if error != nil {
@@ -173,22 +194,29 @@ struct CaloriesScreen: View {
         })
         .customAlert(
             isPresented: Binding(
-                get: { mealToDelete != nil },
-                set: { if !$0 { mealToDelete = nil } }
+                get: { mealRemovalRequest != nil },
+                set: { if !$0 { mealRemovalRequest = nil } }
             ),
             type: .delete,
-            title: "Remove Meal?",
-            description: "This meal will be removed from today's log.",
-            primaryButtonTitle: "Delete",
+            title: mealRemovalRequest?.kind == .one ? "Remove One Serving?" : "Remove Meal?",
+            description: mealRemovalRequest?.kind == .one
+                ? "One serving will be removed from today's log."
+                : "All servings of this meal will be removed from today's log.",
+            primaryButtonTitle: "Remove",
             primaryButtonColor: Color.red,
             primaryAction: {
-                if let scanId = mealToDelete {
-                    caloriesViewModel.deleteMeal(scanId: scanId)
+                if let request = mealRemovalRequest {
+                    switch request.kind {
+                    case .one:
+                        caloriesViewModel.removeOneMeal(scanId: request.meal.scanId)
+                    case .all:
+                        caloriesViewModel.deleteMeal(scanId: request.meal.scanId)
+                    }
                 }
-                mealToDelete = nil
+                mealRemovalRequest = nil
             },
             secondaryButtonTitle: "Cancel",
-            secondaryAction: { mealToDelete = nil }
+            secondaryAction: { mealRemovalRequest = nil }
         )
         .customAlert(
             isPresented: Binding(
@@ -202,7 +230,8 @@ struct CaloriesScreen: View {
             primaryButtonColor: Color.red,
             primaryAction: {
                 if let idx = unfillCupIndex {
-                    caloriesViewModel.unfillCup(index: idx)
+                    _ = idx
+                    caloriesViewModel.removeConsumedCup()
                 }
                 unfillCupIndex = nil
             },
@@ -233,16 +262,26 @@ struct CaloriesScreen: View {
         withAnimation(spring.delay(0.35)) { showStepsAndExercise = true }
         withAnimation(spring.delay(0.5)) { showWater = true }
     }
+
+    private func persistCurrentSteps() {
+        let analytics = stepViewModel.todayAnalytics()
+        caloriesViewModel.updateSteps(
+            stepViewModel.todaySteps,
+            calories: analytics.caloriesBurned
+        )
+    }
 }
 
 #Preview("Light") {
     CaloriesScreen()
         .environmentObject(AppRouter())
+        .environmentObject(AppFlowCoordinator())
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
     CaloriesScreen()
         .environmentObject(AppRouter())
+        .environmentObject(AppFlowCoordinator())
         .preferredColorScheme(.dark)
 }

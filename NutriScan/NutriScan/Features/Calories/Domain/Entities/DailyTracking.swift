@@ -13,7 +13,35 @@ struct DailyTracking {
     let targetWaterCnt: Int
     let waterCnt: Int
     let stepsCnt: Int
+    let stepsKcal: Int
+    let exerciseKcal: Int
+    let exerciseMin: Double
+    let totalMealKcal: Int
     let meals: [Meal]
+
+    init(
+        id: Int,
+        date: String,
+        targetWaterCnt: Int,
+        waterCnt: Int,
+        stepsCnt: Int,
+        stepsKcal: Int = 0,
+        exerciseKcal: Int = 0,
+        exerciseMin: Double = 0,
+        totalMealKcal: Int = 0,
+        meals: [Meal]
+    ) {
+        self.id = id
+        self.date = date
+        self.targetWaterCnt = targetWaterCnt
+        self.waterCnt = waterCnt
+        self.stepsCnt = stepsCnt
+        self.stepsKcal = stepsKcal
+        self.exerciseKcal = exerciseKcal
+        self.exerciseMin = exerciseMin
+        self.totalMealKcal = totalMealKcal
+        self.meals = meals
+    }
 }
 
 extension DailyTracking {
@@ -34,9 +62,25 @@ extension DailyTracking {
     }
 
     static var todayString: String {
+        dateString(from: Date())
+    }
+
+    static func dateString(from date: Date) -> String {
         let formatter = DateFormatter()
+        formatter.calendar = Calendar.current
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = Calendar.current.timeZone
         formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: Date())
+        return formatter.string(from: date)
+    }
+
+    static func date(from string: String) -> Date? {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar.current
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = Calendar.current.timeZone
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: string)
     }
 }
 
@@ -47,6 +91,10 @@ extension DailyTracking {
         self.targetWaterCnt = dto.targetWaterCnt
         self.waterCnt = dto.waterCnt
         self.stepsCnt = dto.stepsCnt
+        self.stepsKcal = dto.stepsKcal
+        self.exerciseKcal = dto.exerciseKcal
+        self.exerciseMin = dto.exerciseMin
+        self.totalMealKcal = dto.totalMealKcal
         self.meals = dto.meals.map { Meal(from: $0) }
     }
 }

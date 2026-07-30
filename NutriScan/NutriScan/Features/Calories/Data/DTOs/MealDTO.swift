@@ -15,6 +15,15 @@ struct MealDTO: Codable {
     let nutritionFacts: MealNutritionFactsDTO
 }
 
+struct AddMealRequestDTO: Encodable {
+    let scanId: String
+    let mealCnt: Int
+}
+
+struct UpdateMealCountRequestDTO: Encodable {
+    let mealCnt: Int
+}
+
 extension MealDTO {
     init(from meal: Meal) {
         self.scanId = meal.scanId

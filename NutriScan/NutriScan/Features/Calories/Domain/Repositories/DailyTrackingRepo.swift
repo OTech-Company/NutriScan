@@ -13,10 +13,19 @@ protocol DailyTrackingRepo {
     func getTrackingByDate(date: String) async throws -> DailyTracking
     func getAllTracking(page: Int, size: Int) async throws -> (items: [DailyTrackingSummary], totalPages: Int)
 
-    func addMeal(date: String, meal: Meal) async throws -> Meal
-    func updateMeal(date: String, scanId: String, meal: Meal) async throws -> Meal
+    func addMeal(date: String, scanId: String, mealCnt: Int) async throws -> Meal
+    func updateMealCount(date: String, scanId: String, mealCnt: Int) async throws -> Meal
     func deleteMeal(date: String, scanId: String) async throws
 
-    func updateWaterAndSteps(date: String, targetWaterCnt: Int?, waterCnt: Int?, stepsCnt: Int?) async throws
+    func updateTracking(
+        date: String,
+        targetWaterCnt: Int?,
+        waterCnt: Int?,
+        stepsCnt: Int?,
+        stepsKcal: Int?,
+        exerciseKcal: Int?,
+        exerciseMin: Double?,
+        totalMealKcal: Int?
+    ) async throws -> DailyTracking
     func deleteTracking(date: String) async throws
 }

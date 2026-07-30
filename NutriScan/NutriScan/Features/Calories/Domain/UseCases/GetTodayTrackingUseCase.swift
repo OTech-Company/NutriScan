@@ -18,3 +18,15 @@ final class GetTodayTrackingUseCase {
         try await repository.getTodayTracking()
     }
 }
+
+final class GetTrackingByDateUseCase {
+    private let repository: DailyTrackingRepo
+
+    init(repository: DailyTrackingRepo) {
+        self.repository = repository
+    }
+
+    func execute(date: String) async throws -> DailyTracking {
+        try await repository.getTrackingByDate(date: date)
+    }
+}

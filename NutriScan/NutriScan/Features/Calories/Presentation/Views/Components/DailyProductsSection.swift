@@ -7,11 +7,23 @@
 
 import SwiftUI
 
+enum MealRemovalKind: Equatable {
+    case one
+    case all
+}
+
+struct MealRemovalRequest: Identifiable {
+    let meal: Meal
+    let kind: MealRemovalKind
+
+    var id: String { "\(meal.scanId)-\(kind == .one ? "one" : "all")" }
+}
+
 struct DailyProductsSection: View {
     let dailyKcal: Int
     let meals: [Meal]
     var onAddFoodTap: () -> Void = {}
-    var onDeleteMealRequest: ((_ scanId: String) -> Void)? = nil
+    var onRemoveMealRequest: ((MealRemovalRequest) -> Void)? = nil
 
     @State private var showCard = false
     @State private var isTapped = false
@@ -62,14 +74,19 @@ struct DailyProductsSection: View {
                         ScrollView {
                             LazyVStack(spacing: 0) {
                                 ForEach(meals, id: \.scanId) { meal in
-                                    MealRowView(meal: meal)
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                            Button(role: .destructive) {
-                                                onDeleteMealRequest?(meal.scanId)
-                                            } label: {
-                                                Label("Delete", systemImage: "trash")
-                                            }
+                                    MealSwipeRow(
+                                        meal: meal,
+                                        onRemoveOne: {
+                                            onRemoveMealRequest?(
+                                                MealRemovalRequest(meal: meal, kind: .one)
+                                            )
+                                        },
+                                        onRemoveAll: {
+                                            onRemoveMealRequest?(
+                                                MealRemovalRequest(meal: meal, kind: .all)
+                                            )
                                         }
+                                    )
                                 }
                             }
                         }
@@ -110,6 +127,85 @@ struct DailyProductsSection: View {
                 }
             }
         }
+    }
+}
+
+private struct MealSwipeRow: View {
+    let meal: Meal
+    let onRemoveOne: () -> Void
+    let onRemoveAll: () -> Void
+
+    @State private var offset: CGFloat = 0
+    private let actionWidth: CGFloat = 84
+
+    private var totalActionWidth: CGFloat {
+        meal.mealCnt > 1 ? actionWidth * 2 : actionWidth
+    }
+
+    var body: some View {
+        ZStack(alignment: .trailing) {
+            HStack(spacing: 0) {
+                if meal.mealCnt > 1 {
+                    actionButton(title: "One", icon: "minus.circle", color: Color.orange) {
+                        closeAndRun(onRemoveOne)
+                    }
+                }
+                actionButton(title: meal.mealCnt > 1 ? "All" : "Remove", icon: "trash", color: Color.red) {
+                    closeAndRun(onRemoveAll)
+                }
+            }
+
+            MealRowView(meal: meal)
+                .background(Color.CaloriesSemantic.cardBackground)
+                .offset(x: offset)
+                .gesture(
+                    DragGesture(minimumDistance: 12)
+                        .onChanged { value in
+                            guard abs(value.translation.width) > abs(value.translation.height) else { return }
+                            offset = min(0, max(-totalActionWidth, value.translation.width))
+                        }
+                        .onEnded { value in
+                            let shouldOpen = value.translation.width < -(totalActionWidth * 0.3)
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                offset = shouldOpen ? -totalActionWidth : 0
+                            }
+                        }
+                )
+        }
+        .clipped()
+        .accessibilityAction(named: "Remove one serving") {
+            if meal.mealCnt > 1 { onRemoveOne() }
+        }
+        .accessibilityAction(named: "Remove all servings") {
+            onRemoveAll()
+        }
+    }
+
+    private func actionButton(
+        title: String,
+        icon: String,
+        color: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
+            VStack(spacing: 4) {
+                Image(systemName: icon)
+                Text(title)
+                    .font(Font.AppFont.textCaption)
+            }
+            .foregroundStyle(.white)
+            .frame(width: actionWidth)
+            .frame(maxHeight: .infinity)
+            .background(color)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func closeAndRun(_ action: @escaping () -> Void) {
+        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+            offset = 0
+        }
+        action()
     }
 }
 

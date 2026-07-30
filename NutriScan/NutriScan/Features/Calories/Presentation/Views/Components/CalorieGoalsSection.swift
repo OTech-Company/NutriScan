@@ -8,21 +8,26 @@
 import SwiftUI
 
 struct CalorieGoalsSection: View {
-    let currentTdee: Float
-    let maxTdee: Float
+    let mealCalories: Int
+    let targetCalories: Double?
     let caloriesBurned: Int
+    var onCompleteProfileTap: () -> Void = {}
 
     @State private var animatedProgress: CGFloat = 0
     @State private var isTapped = false
 
-    private var netCalories: Float { currentTdee - Float(caloriesBurned) }
+    private var rawNetCalories: Int { mealCalories - caloriesBurned }
+    private var netCalories: Int { max(rawNetCalories, 0) }
 
     private var targetProgress: CGFloat {
-        guard maxTdee > 0 else { return 0 }
-        return min(CGFloat(netCalories / maxTdee), 1.0)
+        guard let targetCalories, targetCalories > 0 else { return 0 }
+        return min(max(CGFloat(Double(netCalories) / targetCalories), 0), 1.0)
     }
 
-    private var isOverTDEE: Bool { netCalories > maxTdee }
+    private var isOverTDEE: Bool {
+        guard let targetCalories else { return false }
+        return Double(rawNetCalories) > targetCalories
+    }
 
     var body: some View {
         ZStack {
@@ -37,9 +42,21 @@ struct CalorieGoalsSection: View {
                         }
 
                         VStack(spacing: 8) {
-                            tdeeRow(title: "Your TDEE", calories: maxTdee)
-                            tdeeRow(title: "Calories Gained", calories: currentTdee)
-                            tdeeRow(title: "Calories Burned", calories: Float(caloriesBurned))
+                            if let targetCalories {
+                                calorieRow(title: "Your TDEE", calories: Int(targetCalories.rounded()))
+                            } else {
+                                Button(action: onCompleteProfileTap) {
+                                    HStack(spacing: 4) {
+                                        Text("Complete Personal Information")
+                                        Image(systemName: "chevron.right")
+                                    }
+                                    .font(Font.AppFont.textCaption)
+                                    .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
+                                }
+                                .accessibilityHint("Opens Personal Information to set your calorie goal")
+                            }
+                            calorieRow(title: "Calories Gained", calories: mealCalories)
+                            calorieRow(title: "Calories Burned", calories: caloriesBurned)
                         }
                     }
                     Spacer(minLength: 16)
@@ -104,7 +121,7 @@ struct CalorieGoalsSection: View {
                 animatedProgress = targetProgress
             }
         }
-        .onChange(of: currentTdee) { _, _ in
+        .onChange(of: mealCalories) { _, _ in
             withAnimation(.easeOut(duration: 0.5)) {
                 animatedProgress = targetProgress
             }
@@ -116,13 +133,13 @@ struct CalorieGoalsSection: View {
         }
     }
 
-    private func tdeeRow(title: String, calories: Float) -> some View {
+    private func calorieRow(title: String, calories: Int) -> some View {
         HStack {
             Text(title)
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color.CaloriesSemantic.goalsLabelText)
             Spacer()
-            Text("\(Int(calories)) Kcal")
+            Text("\(calories) Kcal")
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
                 .contentTransition(.numericText())
@@ -137,21 +154,21 @@ struct CalorieGoalsSection: View {
 }
 
 #Preview("Light — Under TDEE") {
-    CalorieGoalsSection(currentTdee: 1200, maxTdee: 2350, caloriesBurned: 100)
+    CalorieGoalsSection(mealCalories: 1200, targetCalories: 2350, caloriesBurned: 100)
         .padding()
         .background(Color.CaloriesSemantic.background)
         .preferredColorScheme(.light)
 }
 
 #Preview("Light — Over TDEE") {
-    CalorieGoalsSection(currentTdee: 2500, maxTdee: 2350, caloriesBurned: 0)
+    CalorieGoalsSection(mealCalories: 2500, targetCalories: 2350, caloriesBurned: 0)
         .padding()
         .background(Color.CaloriesSemantic.background)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-    CalorieGoalsSection(currentTdee: 1200, maxTdee: 2350, caloriesBurned: 200)
+    CalorieGoalsSection(mealCalories: 0, targetCalories: nil, caloriesBurned: 0)
         .padding()
         .background(Color.Teal.teal1600)
         .preferredColorScheme(.dark)

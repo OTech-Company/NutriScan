@@ -12,8 +12,8 @@ enum DailyTrackingEndPoint: APIEndpoint {
     case getToday
     case getByDate(date: String)
     case getAll(page: Int, size: Int)
-    case addMeal(date: String, meal: MealDTO)
-    case updateMeal(date: String, scanId: String, meal: MealDTO)
+    case addMeal(date: String, request: AddMealRequestDTO)
+    case updateMeal(date: String, scanId: String, request: UpdateMealCountRequestDTO)
     case deleteMeal(date: String, scanId: String)
     case patchTracking(date: String, body: PatchDailyTrackingDTO)
     case deleteTracking(date: String)
@@ -53,10 +53,10 @@ enum DailyTrackingEndPoint: APIEndpoint {
 
     var body: RequestBody {
         switch self {
-        case .addMeal(_, let meal):
-            return .json(meal)
-        case .updateMeal(_, _, let meal):
-            return .json(meal)
+        case .addMeal(_, let request):
+            return .json(request)
+        case .updateMeal(_, _, let request):
+            return .json(request)
         case .patchTracking(_, let patchBody):
             return .json(patchBody)
         default:
