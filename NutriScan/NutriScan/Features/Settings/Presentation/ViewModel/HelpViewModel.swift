@@ -7,18 +7,19 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 
 @Observable
 final class HelpViewModel {
     var faqItems: [FaqItem] = []
     var expandedFaqId: Int? = nil
     var isLoading: Bool = false
+    var activeAlert: ActiveAlert = .none
     
     private let getFaqUseCase: GetFaqUseCaseProtocol
-    let supportEmail = "minawagdy2228@gmail.com"
+    let supportEmail = "ahmedtayseer424@gmail.com"
     let emailSubject = "NutriScan Support Request"
     
-    // Injecting via your DIContainer
     init(
         getFaqUseCase: GetFaqUseCaseProtocol = DIContainer.shared.resolve(type: GetFaqUseCaseProtocol.self)
     ) {
@@ -37,10 +38,20 @@ final class HelpViewModel {
     }
     
     func toggleFaq(id: Int) {
-        if expandedFaqId == id {
-            expandedFaqId = nil
-        } else {
-            expandedFaqId = id
-        }
+        expandedFaqId = (expandedFaqId == id) ? nil : id
+    }
+    
+    // MARK: - Support Logic
+    
+    /// Constructs and formats the URL for the mail app
+    func getMailURL() -> URL? {
+        let subject = emailSubject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        return URL(string: "mailto:\(supportEmail)?subject=\(subject)")
+    }
+    
+    /// Handles the fallback logic if the device cannot open a mail app
+    func handleMailAppFailure() {
+        UIPasteboard.general.string = supportEmail
+        activeAlert = .warning
     }
 }
