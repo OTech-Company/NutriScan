@@ -14,7 +14,10 @@ extension Color {
         
         static let cardBackground = Color.SettingsSemantic.rowBackground
         static let questionText = Color.SettingsSemantic.rowTitle
-        static let answerText = Color.Gray.gray600
+        static let answerText = Color(
+            light: Color.Gray.gray600,
+            dark: Color.Teal.teal100
+        )
         
         static let iconTint = Color.Gray.gray500
         static let creditsText = Color.Gray.gray500

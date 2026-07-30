@@ -18,8 +18,7 @@ struct HelpScreen: View {
             Color.HelperSemantic.background.ignoresSafeArea()
             
             VStack(spacing: 0) {
-                // Ensure SettingsHeaderSection is imported or available in this scope
-                SettingsHeaderSection(title: "Help", subtitle: nil){
+                SettingsHeaderSection(title: "Help", subtitle: nil) {
                     router.pop()
                 }
                 
@@ -73,6 +72,7 @@ struct HelpScreen: View {
                     .padding(.bottom, 40)
                 }
             }
+            .ignoresSafeArea(edges: .top)
         }
         .task {
             await viewModel.loadFaqs()
