@@ -19,6 +19,10 @@ class FavoritesRepository: FavoritesRepositoryProtocol {
         let entities = response.content?.map { FavoritesScanEntity(dto: $0) } ?? []
         return (favorites: entities, totalPages: response.totalPages ?? 0)
     }
+    
+    func removeFavorite(scanId: String) async throws {
+        try await remoteDataSource.removeFavorite(scanId: scanId)
+    }
 }
 
 

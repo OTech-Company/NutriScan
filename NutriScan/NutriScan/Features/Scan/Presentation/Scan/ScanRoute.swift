@@ -4,6 +4,7 @@ enum ScanRoute: Route {
     case scan
     case scanDetail(detail: ScanDetail, imageData: Data)
 
+    @MainActor
     @ViewBuilder
     var destination: some View {
         switch self {

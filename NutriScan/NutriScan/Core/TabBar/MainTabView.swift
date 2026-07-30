@@ -20,7 +20,7 @@ struct MainTabView: View {
     @Environment(\.colorScheme) private var colorScheme
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @StateObject private var tabBarVisibility = AppTabBarVisibility.shared
-    
+    @State private var favoritesViewModel = FavoritesFactory.makeFavoritesViewModel()
 
     init() {
         UITabBar.appearance().isHidden = true
@@ -46,7 +46,7 @@ struct MainTabView: View {
 //                    .background(colorScheme == .light ? .white : Color.Teal.teal1600)
 //                    .tag(AppTab.bookmark)
                 
-                FavoritesFactory.makeFavoritesView()
+                FavoritesView(viewModel: favoritesViewModel)
                     .tag(AppTab.bookmark)
 
                 ProfileFlowView()

@@ -4,8 +4,7 @@ struct ProductDetailsScreen: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ProductDetailsViewModel
     @State private var activeAlert: ActiveAlert = .none
-
-    /// Init with scanId — fetches data from API.
+    @MainActor
     init(scanId: String) {
         _viewModel = State(wrappedValue: ProductDetailsViewModel(scanId: scanId))
     }

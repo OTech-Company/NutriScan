@@ -9,4 +9,5 @@ import Foundation
 
 protocol FavoritesRepositoryProtocol {
     func getFavorites(page: Int, size: Int) async throws -> (favorites: [FavoritesScanEntity], totalPages: Int)
+    func removeFavorite(scanId: String) async throws
 }

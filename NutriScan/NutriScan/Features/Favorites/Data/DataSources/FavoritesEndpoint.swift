@@ -2,6 +2,7 @@ import Foundation
 
 enum FavoritesEndpoint: APIEndpoint {
     case getFavorites(page: Int, size: Int)
+    case removeFavorite(scanId: String)
     
     var baseURL: String {
         return AppNetworkConfig.core.baseURL
@@ -11,11 +12,18 @@ enum FavoritesEndpoint: APIEndpoint {
         switch self {
         case .getFavorites:
             return "/api/v1/scans/favorites"
+        case .removeFavorite(let scanId):
+            return "/api/v1/scans/\(scanId)"
         }
     }
     
     var method: HTTPMethod {
-        return .get
+        switch self {
+        case .getFavorites:
+            return .get
+        case .removeFavorite:
+            return .patch
+        }
     }
     
     var queryParameters: [String : String]? {
@@ -25,6 +33,17 @@ enum FavoritesEndpoint: APIEndpoint {
                 "page": "\(page)",
                 "size": "\(size)"
             ]
+        case .removeFavorite:
+            return nil
+        }
+    }
+    
+    var body: RequestBody {
+        switch self {
+        case .getFavorites:
+            return .none
+        case .removeFavorite:
+            return .json(["favorite": false])
         }
     }
     
