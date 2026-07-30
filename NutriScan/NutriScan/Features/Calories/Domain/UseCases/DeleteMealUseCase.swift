@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class DeleteMealUseCase {
+protocol DeleteMealUseCaseProtocol {
+    func execute(date: String, scanId: String) async throws
+}
+
+final class DeleteMealUseCase: DeleteMealUseCaseProtocol {
     private let repository: CaloriesTrackingRepo
 
     init(repository: CaloriesTrackingRepo) {

@@ -7,7 +7,15 @@
 
 import Foundation
 
-final class GetTodayCaloriesTrackingUseCase {
+protocol GetTodayCaloriesTrackingUseCaseProtocol {
+    func execute() async throws -> CaloriesTracking
+}
+
+protocol GetCaloriesTrackingByDateUseCaseProtocol {
+    func execute(date: String) async throws -> CaloriesTracking
+}
+
+final class GetTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol {
     private let repository: CaloriesTrackingRepo
 
     init(repository: CaloriesTrackingRepo) {
@@ -19,7 +27,7 @@ final class GetTodayCaloriesTrackingUseCase {
     }
 }
 
-final class GetCaloriesTrackingByDateUseCase {
+final class GetCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol {
     private let repository: CaloriesTrackingRepo
 
     init(repository: CaloriesTrackingRepo) {

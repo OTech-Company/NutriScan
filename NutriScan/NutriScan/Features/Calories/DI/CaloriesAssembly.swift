@@ -17,29 +17,36 @@ struct CaloriesAssembly: @preconcurrency Assembly {
         let caloriesActivityStore = CaloriesActivityStore()
         container.register(type: CaloriesActivityStore.self, component: caloriesActivityStore)
 
+        let getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol = GetTodayCaloriesTrackingUseCase(repository: repository)
+        let getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol = GetCaloriesTrackingByDateUseCase(repository: repository)
+        let addCaloriesMealUseCase: AddCaloriesMealUseCaseProtocol = AddCaloriesMealUseCase(repository: repository)
+        let updateMealUseCase: UpdateMealUseCaseProtocol = UpdateMealUseCase(repository: repository)
+        let deleteMealUseCase: DeleteMealUseCaseProtocol = DeleteMealUseCase(repository: repository)
+        let updateWaterUseCase: UpdateWaterUseCaseProtocol = UpdateWaterUseCase(repository: repository)
+
         container.register(
-            type: GetTodayCaloriesTrackingUseCase.self,
-            component: GetTodayCaloriesTrackingUseCase(repository: repository)
+            type: GetTodayCaloriesTrackingUseCaseProtocol.self,
+            component: getTodayCaloriesTrackingUseCase
         )
         container.register(
-            type: GetCaloriesTrackingByDateUseCase.self,
-            component: GetCaloriesTrackingByDateUseCase(repository: repository)
+            type: GetCaloriesTrackingByDateUseCaseProtocol.self,
+            component: getCaloriesTrackingByDateUseCase
         )
         container.register(
-            type: AddMealUseCase.self,
-            component: AddMealUseCase(repository: repository)
+            type: AddCaloriesMealUseCaseProtocol.self,
+            component: addCaloriesMealUseCase
         )
         container.register(
-            type: UpdateMealUseCase.self,
-            component: UpdateMealUseCase(repository: repository)
+            type: UpdateMealUseCaseProtocol.self,
+            component: updateMealUseCase
         )
         container.register(
-            type: DeleteMealUseCase.self,
-            component: DeleteMealUseCase(repository: repository)
+            type: DeleteMealUseCaseProtocol.self,
+            component: deleteMealUseCase
         )
         container.register(
-            type: UpdateWaterUseCase.self,
-            component: UpdateWaterUseCase(repository: repository)
+            type: UpdateWaterUseCaseProtocol.self,
+            component: updateWaterUseCase
         )
 
         container.register(
@@ -47,8 +54,8 @@ struct CaloriesAssembly: @preconcurrency Assembly {
             component: CaloriesActivitySyncCoordinator(
                 caloriesActivityStore: caloriesActivityStore,
                 profileStore: container.resolve(type: UserProfileStore.self),
-                getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCase(repository: repository),
-                updateWaterUseCase: UpdateWaterUseCase(repository: repository),
+                getCaloriesTrackingByDateUseCase: getCaloriesTrackingByDateUseCase,
+                updateWaterUseCase: updateWaterUseCase,
                 fetchHistoryUseCase: container.resolve(type: FetchStepsHistoryUseCase.self)
             )
         )

@@ -7,7 +7,11 @@
 
 import Foundation
 
-final class AddMealUseCase {
+protocol AddCaloriesMealUseCaseProtocol {
+    func execute(date: String, scanId: String, mealCnt: Int) async throws -> CalorieMeal
+}
+
+final class AddCaloriesMealUseCase: AddCaloriesMealUseCaseProtocol {
     private let repository: CaloriesTrackingRepo
 
     init(repository: CaloriesTrackingRepo) {

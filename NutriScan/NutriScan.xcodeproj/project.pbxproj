@@ -379,7 +379,7 @@
 		C5038882301B55B00045358F /* PaginatedExercisesResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038817301B55B00045358F /* PaginatedExercisesResult.swift */; };
 		C5038883301B55B00045358F /* ExerciseCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038813301B55B00045358F /* ExerciseCategory.swift */; };
 		C5038884301B55B00045358F /* ExerciseInstructionText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038815301B55B00045358F /* ExerciseInstructionText.swift */; };
-		C5038885301B55B00045358F /* AddMealUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387ED301B55B00045358F /* AddMealUseCase.swift */; };
+		C5038885301B55B00045358F /* AddCaloriesMealUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387ED301B55B00045358F /* AddCaloriesMealUseCase.swift */; };
 		C5038886301B55B00045358F /* CaloriesRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387F7301B55B00045358F /* CaloriesRoute.swift */; };
 		C5038887301B55B00045358F /* FetchExercisesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038816301B55B00045358F /* FetchExercisesRequest.swift */; };
 		C5038888301B55B00045358F /* CaloriesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387E4301B55B00045358F /* CaloriesAssembly.swift */; };
@@ -936,7 +936,7 @@
 		C50387E8301B55B00045358F /* CalorieMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieMeal.swift; sourceTree = "<group>"; };
 		C50387E9301B55B00045358F /* MealNutritionFacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealNutritionFacts.swift; sourceTree = "<group>"; };
 		C50387EB301B55B00045358F /* CaloriesTrackingRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTrackingRepo.swift; sourceTree = "<group>"; };
-		C50387ED301B55B00045358F /* AddMealUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMealUseCase.swift; sourceTree = "<group>"; };
+		C50387ED301B55B00045358F /* AddCaloriesMealUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCaloriesMealUseCase.swift; sourceTree = "<group>"; };
 		C50387EE301B55B00045358F /* DeleteMealUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteMealUseCase.swift; sourceTree = "<group>"; };
 		C50387EF301B55B00045358F /* GetCaloriesTrackingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCaloriesTrackingUseCase.swift; sourceTree = "<group>"; };
 		C50387F0301B55B00045358F /* UpdateMealUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateMealUseCase.swift; sourceTree = "<group>"; };
@@ -3107,7 +3107,7 @@
 		C50387F2301B55B00045358F /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				C50387ED301B55B00045358F /* AddMealUseCase.swift */,
+				C50387ED301B55B00045358F /* AddCaloriesMealUseCase.swift */,
 				C50387EE301B55B00045358F /* DeleteMealUseCase.swift */,
 				C50387EF301B55B00045358F /* GetCaloriesTrackingUseCase.swift */,
 				C50387F0301B55B00045358F /* UpdateMealUseCase.swift */,
@@ -4720,12 +4720,8 @@
 				8F16ED283012AAF000CF43B2 /* ProfileSetupFlowFactory.swift in Sources */,
 				0C2D027E18F236ECAAECD826 /* ValueCard.swift in Sources */,
 				8F6F705730191C6E008232DC /* FavoritesNotifier.swift in Sources */,
-				6F8C4EE83016CFD1000067BC /* RangePickerView.swift in Sources */,
-				6F8C4EE93016CFD1000067BC /* StatCardView.swift in Sources */,
-				6F8C4EEA3016CFD1000067BC /* DailyInsightCardView.swift in Sources */,
 				58AA67D9B4015E70DE6D16E1 /* View+Extensions.swift in Sources */,
 				8F72738A30192D82001A25C4 /* FavoriteCardShimmerView.swift in Sources */,
-				2CC4280630140DAD00099E64 /* EmptyExerciseStateView.swift in Sources */,
 				69F7CF833CED2D891AECC55E /* WeightSelectionView.swift in Sources */,
 				A5D7E326B2F6B7CEBDC67198 /* empty.swift in Sources */,
 				F35D7F2D858B87C57D5B34AC /* empty1.swift in Sources */,
@@ -4788,7 +4784,7 @@
 				C5038882301B55B00045358F /* PaginatedExercisesResult.swift in Sources */,
 				C5038883301B55B00045358F /* ExerciseCategory.swift in Sources */,
 				C5038884301B55B00045358F /* ExerciseInstructionText.swift in Sources */,
-				C5038885301B55B00045358F /* AddMealUseCase.swift in Sources */,
+				C5038885301B55B00045358F /* AddCaloriesMealUseCase.swift in Sources */,
 				C5038886301B55B00045358F /* CaloriesRoute.swift in Sources */,
 				C5038887301B55B00045358F /* FetchExercisesRequest.swift in Sources */,
 				C5038888301B55B00045358F /* CaloriesAssembly.swift in Sources */,

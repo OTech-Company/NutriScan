@@ -35,21 +35,21 @@ final class CaloriesViewModel {
         return caloriesActivityStore.draft(profileID: profileID, date: CaloriesTracking.todayString)
     }
 
-    private let getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCase
-    private let addMealUseCase: AddMealUseCase
-    private let deleteMealUseCase: DeleteMealUseCase
-    private let updateMealUseCase: UpdateMealUseCase
-    private let updateWaterUseCase: UpdateWaterUseCase
+    private let getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol
+    private let addMealUseCase: AddCaloriesMealUseCaseProtocol
+    private let deleteMealUseCase: DeleteMealUseCaseProtocol
+    private let updateMealUseCase: UpdateMealUseCaseProtocol
+    private let updateWaterUseCase: UpdateWaterUseCaseProtocol
     private let caloriesActivityStore: CaloriesActivityStore
     private let profileStore: UserProfileStore
     private let caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator
 
     init(
-        getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCase = DIContainer.shared.resolve(type: GetTodayCaloriesTrackingUseCase.self),
-        addMealUseCase: AddMealUseCase = DIContainer.shared.resolve(type: AddMealUseCase.self),
-        deleteMealUseCase: DeleteMealUseCase = DIContainer.shared.resolve(type: DeleteMealUseCase.self),
-        updateMealUseCase: UpdateMealUseCase = DIContainer.shared.resolve(type: UpdateMealUseCase.self),
-        updateWaterUseCase: UpdateWaterUseCase = DIContainer.shared.resolve(type: UpdateWaterUseCase.self),
+        getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol = DIContainer.shared.resolve(type: GetTodayCaloriesTrackingUseCaseProtocol.self),
+        addMealUseCase: AddCaloriesMealUseCaseProtocol = DIContainer.shared.resolve(type: AddCaloriesMealUseCaseProtocol.self),
+        deleteMealUseCase: DeleteMealUseCaseProtocol = DIContainer.shared.resolve(type: DeleteMealUseCaseProtocol.self),
+        updateMealUseCase: UpdateMealUseCaseProtocol = DIContainer.shared.resolve(type: UpdateMealUseCaseProtocol.self),
+        updateWaterUseCase: UpdateWaterUseCaseProtocol = DIContainer.shared.resolve(type: UpdateWaterUseCaseProtocol.self),
         caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
         profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self),
         caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator = DIContainer.shared.resolve(type: CaloriesActivitySyncCoordinator.self)
@@ -175,7 +175,12 @@ final class CaloriesViewModel {
             caloriesTracking = try await updateWaterUseCase.execute(
                 date: current.date,
                 targetWaterCnt: target,
-                waterCnt: water
+                waterCnt: water,
+                stepsCnt: nil,
+                stepsKcal: nil,
+                exerciseKcal: nil,
+                exerciseMin: nil,
+                totalMealKcal: nil
             )
         } catch {
             caloriesTracking = current
@@ -208,15 +213,15 @@ final class CaloriesActivitySyncCoordinator {
 
     private let caloriesActivityStore: CaloriesActivityStore
     private let profileStore: UserProfileStore
-    private let getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCase
-    private let updateWaterUseCase: UpdateWaterUseCase
+    private let getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol
+    private let updateWaterUseCase: UpdateWaterUseCaseProtocol
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
 
     init(
         caloriesActivityStore: CaloriesActivityStore,
         profileStore: UserProfileStore,
-        getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCase,
-        updateWaterUseCase: UpdateWaterUseCase,
+        getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol,
+        updateWaterUseCase: UpdateWaterUseCaseProtocol,
         fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
     ) {
         self.caloriesActivityStore = caloriesActivityStore

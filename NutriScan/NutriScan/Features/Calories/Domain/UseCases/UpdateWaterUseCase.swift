@@ -7,7 +7,20 @@
 
 import Foundation
 
-final class UpdateWaterUseCase {
+protocol UpdateWaterUseCaseProtocol {
+    func execute(
+        date: String,
+        targetWaterCnt: Int?,
+        waterCnt: Int?,
+        stepsCnt: Int?,
+        stepsKcal: Int?,
+        exerciseKcal: Int?,
+        exerciseMin: Double?,
+        totalMealKcal: Int?
+    ) async throws -> CaloriesTracking
+}
+
+final class UpdateWaterUseCase: UpdateWaterUseCaseProtocol {
     private let repository: CaloriesTrackingRepo
 
     init(repository: CaloriesTrackingRepo) {
