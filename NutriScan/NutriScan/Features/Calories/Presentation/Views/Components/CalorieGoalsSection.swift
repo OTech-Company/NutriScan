@@ -7,22 +7,58 @@
 
 import SwiftUI
 
+private enum CalorieGoalMood: Hashable {
+    case sad
+    case normal
+    case happy
+    case angry
+
+    var imageResource: ImageResource {
+        switch self {
+        case .sad: .sadFace
+        case .normal: .normalFace
+        case .happy: .happyFace
+        case .angry: .angryFace
+        }
+    }
+}
+
 struct CalorieGoalsSection: View {
-    let currentTdee: Float
-    let maxTdee: Float
-    
+    let mealCalories: Int
+    let targetCalories: Double?
+    let caloriesBurned: Int
+    var onCompleteProfileTap: () -> Void = {}
+
     @State private var animatedProgress: CGFloat = 0
     @State private var isTapped = false
-    
+
+    private var rawNetCalories: Int { mealCalories - caloriesBurned }
+    private var netCalories: Int { max(rawNetCalories, 0) }
+
     private var targetProgress: CGFloat {
-        guard maxTdee > 0 else { return 0 }
-        return min(CGFloat(currentTdee / maxTdee), 1.0)
+        guard let targetCalories, targetCalories > 0 else { return 0 }
+        return min(max(CGFloat(Double(netCalories) / targetCalories), 0), 1.0)
     }
-    
+
+    private var isOverTDEE: Bool {
+        mood == .angry
+    }
+
+    private var mood: CalorieGoalMood {
+        guard let targetCalories, targetCalories > 0 else { return .normal }
+        let progress = Double(netCalories) / targetCalories
+        switch progress {
+        case ..<0.5: return .sad
+        case ..<0.8: return .normal
+        case ...1.0: return .happy
+        default: return .angry
+        }
+    }
+
     var body: some View {
         ZStack {
             VStack {
-                HStack(alignment: .top) {
+                HStack {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 4) {
                             Image("calories-fill")
@@ -30,33 +66,62 @@ struct CalorieGoalsSection: View {
                                 .font(Font.AppFont.subtitle1)
                                 .foregroundStyle(Color.CaloriesSemantic.goalsTitle)
                         }
+
                         VStack(spacing: 8) {
-                            tdeeRow(title: "Your TDEE", calories: maxTdee)
-                            tdeeRow(title: "Current", calories: currentTdee)
+                            if let targetCalories {
+                                calorieRow(title: "Your TDEE", calories: Int(targetCalories.rounded()))
+                            } else {
+                                Button(action: onCompleteProfileTap) {
+                                    HStack(spacing: 4) {
+                                        Text("Complete Personal Information")
+                                        Image(systemName: "chevron.right")
+                                    }
+                                    .font(Font.AppFont.textCaption)
+                                    .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
+                                }
+                                .accessibilityHint("Opens Personal Information to set your calorie goal")
+                            }
+                            calorieRow(title: "Calories Gained", calories: mealCalories)
+                            calorieRow(title: "Calories Burned", calories: caloriesBurned)
                         }
                     }
                     Spacer(minLength: 16)
-                    Image(.angryFace)
-                        .scaleEffect(isTapped ? 1.3 : 1.0)
-                        .rotationEffect(.degrees(isTapped ? -15 : 0))
+
+                    Image(mood.imageResource)
+                    .id(mood)
+                    .transition(
+                        .asymmetric(
+                            insertion: .scale(scale: 0.6).combined(with: .opacity),
+                            removal: .scale(scale: 0.6).combined(with: .opacity)
+                        )
+                    )
+                    .scaleEffect(isTapped ? 1.3 : 1.0)
+                    .rotationEffect(.degrees(mood == .angry && isTapped ? -15 : 0))
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: mood)
                 }
+
                 Spacer()
-                // Progress bar — animates from 0 on appear
+
                 GeometryReader { geometry in
                     ZStack(alignment: .leading) {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(Color.CaloriesSemantic.goalsProgressTrack)
-                        
+
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.CaloriesSemantic.goalsProgressFill)
+                            .fill(
+                                isOverTDEE
+                                    ? Color.red.opacity(0.75)
+                                    : Color.CaloriesSemantic.goalsProgressFill
+                            )
                             .frame(width: geometry.size.width * animatedProgress)
+                            .animation(.easeOut(duration: 0.5), value: isOverTDEE)
                     }
                 }
                 .frame(height: 5)
             }
         }
         .padding(16)
-        .frame(height: 160)
+        .frame(height: 175)
         .background(
             RoundedRectangle(cornerRadius: 24)
                 .fill(Color.CaloriesSemantic.goalsBackground)
@@ -77,22 +142,34 @@ struct CalorieGoalsSection: View {
                 animatedProgress = targetProgress
             }
         }
-        .onChange(of: currentTdee) { _, _ in
+        .onChange(of: mealCalories) { _, _ in
+            withAnimation(.easeOut(duration: 0.5)) {
+                animatedProgress = targetProgress
+            }
+        }
+        .onChange(of: caloriesBurned) { _, _ in
+            withAnimation(.easeOut(duration: 0.5)) {
+                animatedProgress = targetProgress
+            }
+        }
+        .onChange(of: targetCalories) { _, _ in
             withAnimation(.easeOut(duration: 0.5)) {
                 animatedProgress = targetProgress
             }
         }
     }
-    
-    private func tdeeRow(title: String, calories: Float) -> some View {
+
+    private func calorieRow(title: String, calories: Int) -> some View {
         HStack {
             Text(title)
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color.CaloriesSemantic.goalsLabelText)
             Spacer()
-            Text("\(Int(calories)) Kcal")
+            Text("\(calories) Kcal")
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
+                .contentTransition(.numericText())
+                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: calories)
                 .padding(.horizontal, 4)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
@@ -102,15 +179,22 @@ struct CalorieGoalsSection: View {
     }
 }
 
-#Preview("Light") {
-    CalorieGoalsSection(currentTdee: 1200, maxTdee: 2350)
+#Preview("Light — Under TDEE") {
+    CalorieGoalsSection(mealCalories: 1200, targetCalories: 2350, caloriesBurned: 100)
+        .padding()
+        .background(Color.CaloriesSemantic.background)
+        .preferredColorScheme(.light)
+}
+
+#Preview("Light — Over TDEE") {
+    CalorieGoalsSection(mealCalories: 2500, targetCalories: 2350, caloriesBurned: 0)
         .padding()
         .background(Color.CaloriesSemantic.background)
         .preferredColorScheme(.light)
 }
 
 #Preview("Dark") {
-    CalorieGoalsSection(currentTdee: 1200, maxTdee: 2350)
+    CalorieGoalsSection(mealCalories: 0, targetCalories: nil, caloriesBurned: 0)
         .padding()
         .background(Color.Teal.teal1600)
         .preferredColorScheme(.dark)

@@ -19,7 +19,11 @@ import SwiftUI
 /// internal navigation — this view just decides which one is visible.
 /// 
 struct RootCoordinatorView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var flowCoordinator = AppFlowCoordinator()
+    @State private var dailyActivitySyncCoordinator = DIContainer.shared.resolve(
+        type: CaloriesActivitySyncCoordinator.self
+    )
     @AppStorage("appAppearance") private var appAppearance: AppAppearance = .system
 
     var body: some View {
@@ -27,6 +31,16 @@ struct RootCoordinatorView: View {
             .preferredColorScheme(appAppearance.colorScheme)
             .environmentObject(flowCoordinator)
             .animation(.default, value: flowCoordinator.flow)
+            .task(id: flowCoordinator.flow) {
+                guard flowCoordinator.flow == .main else { return }
+                await dailyActivitySyncCoordinator.synchronizePendingDates()
+            }
+            .onChange(of: scenePhase) { _, phase in
+                guard phase == .active, flowCoordinator.flow == .main else { return }
+                Task {
+                    await dailyActivitySyncCoordinator.synchronizePendingDates()
+                }
+            }
     }
 
     @ViewBuilder

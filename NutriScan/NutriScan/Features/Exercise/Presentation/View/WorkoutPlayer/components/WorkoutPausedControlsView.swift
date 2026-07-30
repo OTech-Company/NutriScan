@@ -10,7 +10,7 @@ struct WorkoutPausedControlsView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if viewModel.exercise.category.lowercased() != "cardio" {
+            if !viewModel.isCardio {
                 // Stepper Chips (Sets & Reps)
                 HStack(spacing: 12) {
                     WorkoutStepperChip(
@@ -49,7 +49,7 @@ struct WorkoutPausedControlsView: View {
 
                 // Finish Button
                 Button {
-                    viewModel.showSuccessDialog = true
+                    viewModel.finishWorkout()
                 } label: {
                     Text("Finish")
                         .font(Font.AppFont.subtitle2)
