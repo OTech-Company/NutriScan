@@ -12,6 +12,8 @@ protocol DailyTrackingRemoteDataSourceProtocol {
     func addMeal(date: String, scanId: String, mealCnt: Int) async throws -> DailyTrackingMealDTO
     /// Updates the meal count for an existing entry.
     func updateMeal(date: String, scanId: String, mealCnt: Int) async throws -> DailyTrackingMealDTO
+    /// Fetches today's daily tracking data
+    func getToday() async throws -> DailyTrackingTodayDTO
 }
 
 final class DailyTrackingRemoteDataSource: DailyTrackingRemoteDataSourceProtocol {
@@ -29,6 +31,11 @@ final class DailyTrackingRemoteDataSource: DailyTrackingRemoteDataSourceProtocol
 
     func updateMeal(date: String, scanId: String, mealCnt: Int) async throws -> DailyTrackingMealDTO {
         let endpoint = DailyTrackingEndpoint.updateMeal(date: date, scanId: scanId, mealCnt: mealCnt)
+        return try await networkService.request(endpoint)
+    }
+
+    func getToday() async throws -> DailyTrackingTodayDTO {
+        let endpoint = DailyTrackingEndpoint.getToday
         return try await networkService.request(endpoint)
     }
 }

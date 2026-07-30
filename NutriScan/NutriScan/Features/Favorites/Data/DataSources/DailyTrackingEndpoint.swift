@@ -32,6 +32,10 @@ enum DailyTrackingEndpoint: APIEndpoint {
     /// Updates the meal count for an existing product in today's daily meals.
     case updateMeal(date: String, scanId: String, mealCnt: Int)
 
+    /// GET /api/v1/daily-tracking/today
+    /// Fetches today's daily tracking data, including meals.
+    case getToday
+
     // MARK: - APIEndpoint
 
     var baseURL: String {
@@ -44,6 +48,8 @@ enum DailyTrackingEndpoint: APIEndpoint {
             return "/api/v1/daily-tracking/\(date)/meals"
         case .updateMeal(let date, let scanId, _):
             return "/api/v1/daily-tracking/\(date)/meals/\(scanId)"
+        case .getToday:
+            return "/api/v1/daily-tracking/today"
         }
     }
 
@@ -53,6 +59,8 @@ enum DailyTrackingEndpoint: APIEndpoint {
             return .post
         case .updateMeal:
             return .put
+        case .getToday:
+            return .get
         }
     }
 
@@ -66,6 +74,8 @@ enum DailyTrackingEndpoint: APIEndpoint {
             return .json(AddMealRequestBody(scanId: scanId, mealCnt: mealCnt))
         case .updateMeal(_, _, let mealCnt):
             return .json(UpdateMealRequestBody(mealCnt: mealCnt))
+        case .getToday:
+            return .none
         }
     }
 

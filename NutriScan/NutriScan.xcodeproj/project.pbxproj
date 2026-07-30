@@ -291,6 +291,7 @@
 		8F119D45301B820C00496267 /* DailyTrackingRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D44301B820B00496267 /* DailyTrackingRepository.swift */; };
 		8F119D47301B825300496267 /* DailyTrackingRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D46301B825300496267 /* DailyTrackingRepositoryProtocol.swift */; };
 		8F119D49301B825D00496267 /* AddMealUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D48301B825D00496267 /* AddMealUseCase.swift */; };
+		8F119D4B301B8D9800496267 /* DailyTrackingTodayDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F119D4A301B8D9800496267 /* DailyTrackingTodayDTO.swift */; };
 		8F16ED0E3012A96B00CF43B2 /* ProfileSetupResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED0B3012A96A00CF43B2 /* ProfileSetupResponseDTO.swift */; };
 		8F16ED103012A96B00CF43B2 /* ProfileSetupUpdateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED0D3012A96B00CF43B2 /* ProfileSetupUpdateDTO.swift */; };
 		8F16ED123012A9C500CF43B2 /* ProfileSetupRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F16ED113012A9C500CF43B2 /* ProfileSetupRepository.swift */; };
@@ -833,6 +834,7 @@
 		8F119D44301B820B00496267 /* DailyTrackingRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingRepository.swift; sourceTree = "<group>"; };
 		8F119D46301B825300496267 /* DailyTrackingRepositoryProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingRepositoryProtocol.swift; sourceTree = "<group>"; };
 		8F119D48301B825D00496267 /* AddMealUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddMealUseCase.swift; sourceTree = "<group>"; };
+		8F119D4A301B8D9800496267 /* DailyTrackingTodayDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingTodayDTO.swift; sourceTree = "<group>"; };
 		8F16ED0B3012A96A00CF43B2 /* ProfileSetupResponseDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupResponseDTO.swift; sourceTree = "<group>"; };
 		8F16ED0D3012A96B00CF43B2 /* ProfileSetupUpdateDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupUpdateDTO.swift; sourceTree = "<group>"; };
 		8F16ED113012A9C500CF43B2 /* ProfileSetupRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSetupRepository.swift; sourceTree = "<group>"; };
@@ -2947,6 +2949,7 @@
 		8FB0F03130168D8000D84471 /* DTOs */ = {
 			isa = PBXGroup;
 			children = (
+				8F119D4A301B8D9800496267 /* DailyTrackingTodayDTO.swift */,
 				8F119D42301B81FF00496267 /* DailyTrackingMealDTO.swift */,
 				8FB0F03230168DA400D84471 /* FavoritesPaginatedScanResponseDTO.swift */,
 				8FB0F03430168DBC00D84471 /* FavoritesScanItemDTO.swift */,
@@ -4353,6 +4356,7 @@
 				EEC0C0F7B84E3B39F14FAEE7 /* HomeSummaryView.swift in Sources */,
 				CD69B359FF5E093173E1137D /* HomeView.swift in Sources */,
 				D48A2441301158DA0004D95E /* Assembly.swift in Sources */,
+				8F119D4B301B8D9800496267 /* DailyTrackingTodayDTO.swift in Sources */,
 				6F8C4E9C301455AC000067BC /* ScanPageDTO.swift in Sources */,
 				9AA3D01168DD56A24DF5DB1C /* HomeViewModel.swift in Sources */,
 				0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */,
