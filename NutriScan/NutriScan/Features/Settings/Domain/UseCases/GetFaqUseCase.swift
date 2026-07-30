@@ -13,11 +13,14 @@ protocol GetFaqUseCaseProtocol {
 
 struct GetFaqUseCase: GetFaqUseCaseProtocol {
     private let repository: HelpRepositoryProtocol
-    
-    init(repository: HelpRepositoryProtocol = HelpRepository()) {
+
+    init(
+        repository: HelpRepositoryProtocol = DIContainer.shared.resolve(
+            type: HelpRepositoryProtocol.self)
+    ) {
         self.repository = repository
     }
-    
+
     func execute() async throws -> [FaqItem] {
         return try await repository.getFaqs()
     }

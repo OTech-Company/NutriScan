@@ -37,12 +37,22 @@ struct SettingsAssembly: Assembly {
             component: UpdateLanguageUseCase(repository: repository)
         )
 
-        // MARK: - Help Feature
+        // MARK: - Help Feature Data Sources
         container.register(
-            type: HelpRepositoryProtocol.self,
-            component: HelpRepository()
+            type: HelpLocalDataSourceProtocol.self,
+            component: HelpLocalDataSourceImpl()
         )
 
+        // MARK: - Help Feature Repositories
+        container.register(
+            type: HelpRepositoryProtocol.self,
+            component: HelpRepository(
+                localDataSource: container.resolve(
+                    type: HelpLocalDataSourceProtocol.self)
+            )
+        )
+
+        // MARK: - Help Feature Use Cases
         container.register(
             type: GetFaqUseCaseProtocol.self,
             component: GetFaqUseCase(

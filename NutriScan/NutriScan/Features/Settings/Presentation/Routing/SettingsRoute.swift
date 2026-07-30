@@ -30,7 +30,7 @@ enum SettingsRoute: Route {
             // TODO: Replace with actual Terms View
             Text("Terms & Conditions (Placeholder)")
         case .help:
-           // HelpScreen()
+            HelpScreen()
         }
     }
 }
