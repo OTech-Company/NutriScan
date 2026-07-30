@@ -74,6 +74,7 @@ final class CaloriesViewModel {
     func fetchTodayTracking() async {
         isLoading = true
         errorMessage = nil
+        defer { isLoading = false }
         do {
             let tracking = try await getTodayCaloriesTrackingUseCase.execute()
             caloriesTracking = tracking
@@ -86,9 +87,9 @@ final class CaloriesViewModel {
                 )
             }
         } catch {
+            guard !isCancellation(error) else { return }
             errorMessage = error.localizedDescription
         }
-        isLoading = false
     }
 
     func fillCup(index: Int) {
@@ -140,6 +141,7 @@ final class CaloriesViewModel {
                 )
                 await fetchTodayTracking()
             } catch {
+                guard !isCancellation(error) else { return }
                 errorMessage = error.localizedDescription
             }
         }
@@ -151,6 +153,7 @@ final class CaloriesViewModel {
                 try await deleteMealUseCase.execute(date: CaloriesTracking.todayString, scanId: scanId)
                 await fetchTodayTracking()
             } catch {
+                guard !isCancellation(error) else { return }
                 errorMessage = error.localizedDescription
             }
         }
@@ -183,10 +186,24 @@ final class CaloriesViewModel {
                 totalMealKcal: nil
             )
         } catch {
+            guard !isCancellation(error) else {
+                caloriesTracking = current
+                isUpdatingWater = false
+                return
+            }
             caloriesTracking = current
             errorMessage = error.localizedDescription
         }
         isUpdatingWater = false
+    }
+
+    private func isCancellation(_ error: Error) -> Bool {
+        if error is CancellationError { return true }
+        if let urlError = error as? URLError, urlError.code == .cancelled { return true }
+        if case NetworkError.unknown(let wrappedError) = error {
+            return isCancellation(wrappedError)
+        }
+        return false
     }
 
     private func copy(_ tracking: CaloriesTracking, targetWaterCnt: Int, waterCnt: Int) -> CaloriesTracking {
