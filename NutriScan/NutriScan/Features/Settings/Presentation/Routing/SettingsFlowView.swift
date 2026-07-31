@@ -10,12 +10,11 @@ import SwiftUI
 
 struct SettingsFlowView: View {
     @StateObject private var router = AppRouter()
-    @State private var viewModel = SettingsViewModel()
 
     var body: some View {
         NavigationStack(path: $router.path) {
-            // Your main settings list/dashboard view
-            SettingsView()
+            // Main settings view created via Factory
+            SettingsFactory.makeSettingsView()
                 .navigationDestination(for: AnyRoute.self) { route in
                     route.view()
                 }

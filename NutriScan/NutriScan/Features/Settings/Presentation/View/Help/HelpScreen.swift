@@ -11,7 +11,11 @@ struct HelpScreen: View {
     @EnvironmentObject private var router: AppRouter
     @Environment(\.openURL) private var openURL
 
-    @State private var viewModel = HelpViewModel()
+    @State private var viewModel: HelpViewModel
+
+    init(viewModel: HelpViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
 
     var body: some View {
         ZStack {

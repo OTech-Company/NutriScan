@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import UIKit
 
+@MainActor
 @Observable
 final class HelpViewModel {
     var faqItems: [FaqItem] = []
