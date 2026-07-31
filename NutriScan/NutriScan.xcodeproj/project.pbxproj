@@ -498,7 +498,6 @@
 		D4B2B2A8301BBDB5008F1EA4 /* FaqAccordionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2A7301BBDB3008F1EA4 /* FaqAccordionItem.swift */; };
 		D4B2B2AA301BBDDB008F1EA4 /* HelpContactSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2A9301BBDD9008F1EA4 /* HelpContactSection.swift */; };
 		D4B2B2AC301BBDED008F1EA4 /* HelpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2AB301BBDEB008F1EA4 /* HelpScreen.swift */; };
-		D4B2B2AE301BBF3C008F1EA4 /* SettingsActionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2AD301BBF3A008F1EA4 /* SettingsActionRow.swift */; };
 		D4B2B2B0301BC1F7008F1EA4 /* HelpLocalDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2AF301BC1F6008F1EA4 /* HelpLocalDataSourceProtocol.swift */; };
 		D4B2B2B2301BC211008F1EA4 /* HelpLocalDataSourceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2B1301BC20F008F1EA4 /* HelpLocalDataSourceImpl.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
@@ -1049,7 +1048,6 @@
 		D4B2B2A7301BBDB3008F1EA4 /* FaqAccordionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaqAccordionItem.swift; sourceTree = "<group>"; };
 		D4B2B2A9301BBDD9008F1EA4 /* HelpContactSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpContactSection.swift; sourceTree = "<group>"; };
 		D4B2B2AB301BBDEB008F1EA4 /* HelpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpScreen.swift; sourceTree = "<group>"; };
-		D4B2B2AD301BBF3A008F1EA4 /* SettingsActionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsActionRow.swift; sourceTree = "<group>"; };
 		D4B2B2AF301BC1F6008F1EA4 /* HelpLocalDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpLocalDataSourceProtocol.swift; sourceTree = "<group>"; };
 		D4B2B2B1301BC20F008F1EA4 /* HelpLocalDataSourceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpLocalDataSourceImpl.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
@@ -3909,7 +3907,6 @@
 		D4B2B2A6301BBDA7008F1EA4 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				D4B2B2AD301BBF3A008F1EA4 /* SettingsActionRow.swift */,
 				D4B2B2A9301BBDD9008F1EA4 /* HelpContactSection.swift */,
 				D4B2B2A7301BBDB3008F1EA4 /* FaqAccordionItem.swift */,
 			);
@@ -4476,7 +4473,6 @@
 				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
 				2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */,
 				2C78ED17300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift in Sources */,
-				D4B2B2AE301BBF3C008F1EA4 /* SettingsActionRow.swift in Sources */,
 				2C78ED18300E6C7E0092E6B2 /* RegisterHeaderSection.swift in Sources */,
 				2C78ED19300E6C7E0092E6B2 /* RegisterView.swift in Sources */,
 				8F75A3D93016425500C53524 /* FavoritesViewModel.swift in Sources */,
