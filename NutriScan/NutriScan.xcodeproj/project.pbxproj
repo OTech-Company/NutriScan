@@ -420,6 +420,8 @@
 		C5462971301239330032F885 /* CustomAlertModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462966301239330032F885 /* CustomAlertModifiers.swift */; };
 		C5462972301239330032F885 /* CustomAlertSemanticColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462968301239330032F885 /* CustomAlertSemanticColors.swift */; };
 		C5462973301239330032F885 /* CustomAlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462969301239330032F885 /* CustomAlertType.swift */; };
+		C5660E4F301D221200E9B856 /* EmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5660E4E301D221200E9B856 /* EmptyState.swift */; };
+		C5660E51301D24D900E9B856 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5660E50301D24D900E9B856 /* EmptyStateView.swift */; };
 		CC38E56702A3A63F4BDAF029 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68146A2418CAE3F883AE3FF3 /* Route.swift */; };
 		CCF4587EDFAE74FE820308CF /* empty99.swift in Sources */ = {isa = PBXBuildFile; fileRef = F301A6C8C079E48526C99939 /* empty99.swift */; };
 		CD69B359FF5E093173E1137D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 450281863B01847150CC5B1E /* HomeView.swift */; };
@@ -965,6 +967,8 @@
 		C5462967301239330032F885 /* CustomAlertPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertPreviews.swift; sourceTree = "<group>"; };
 		C5462968301239330032F885 /* CustomAlertSemanticColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertSemanticColors.swift; sourceTree = "<group>"; };
 		C5462969301239330032F885 /* CustomAlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertType.swift; sourceTree = "<group>"; };
+		C5660E4E301D221200E9B856 /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
+		C5660E50301D24D900E9B856 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		C568CEE0F7C4BBAC76C6E80E /* SelectableChipConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableChipConstants.swift; sourceTree = "<group>"; };
 		C620F9C76E0073412A856961 /* ProfileSetupStepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupStepView.swift; sourceTree = "<group>"; };
 		C6DCA189DBCCC73BD3A975CA /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -1879,6 +1883,7 @@
 		680237359DE65C4471FA56CE /* Shared Components */ = {
 			isa = PBXGroup;
 			children = (
+				C5660E4D301D21FD00E9B856 /* EmptyStates */,
 				8FE9B840301A53D2001E14B6 /* PaginationRetryFooter.swift */,
 				8FE9B83C301A53B8001E14B6 /* ListErrorView.swift */,
 				C546296A301239330032F885 /* Alerts */,
@@ -3535,6 +3540,15 @@
 			path = Alerts;
 			sourceTree = "<group>";
 		};
+		C5660E4D301D21FD00E9B856 /* EmptyStates */ = {
+			isa = PBXGroup;
+			children = (
+				C5660E4E301D221200E9B856 /* EmptyState.swift */,
+				C5660E50301D24D900E9B856 /* EmptyStateView.swift */,
+			);
+			path = EmptyStates;
+			sourceTree = "<group>";
+		};
 		C587477207AF141CE28207AA /* DI */ = {
 			isa = PBXGroup;
 			children = (
@@ -4242,6 +4256,7 @@
 				26E0850BA11B06E6A75AA2C5 /* AnyRoute.swift in Sources */,
 				6F1A8ED83012C58D00E1ACC5 /* RAGSpeechRecognizerService.swift in Sources */,
 				8FB0F02130167B6A00D84471 /* FavoritesRepositoryProtocol.swift in Sources */,
+				C5660E51301D24D900E9B856 /* EmptyStateView.swift in Sources */,
 				6F1A8EC03012BE2100E1ACC5 /* RAGChatViewModel.swift in Sources */,
 				6F1A8EC13012BE2100E1ACC5 /* RAGRepository.swift in Sources */,
 				6F1A8EC23012BE2100E1ACC5 /* RAGAPIService.swift in Sources */,
@@ -4323,6 +4338,7 @@
 				D489D1A93018DF9100E7A1DF /* FamilyMember.swift in Sources */,
 				2C78ED49300E6D180092E6B3 /* ResendVerificationUseCase.swift in Sources */,
 				2CC428043013F0CD00099E64 /* CachedAnimatedImage.swift in Sources */,
+				C5660E4F301D221200E9B856 /* EmptyState.swift in Sources */,
 				8FD8BB6D301787F400FB37DD /* ScanHistoryEndpoint.swift in Sources */,
 				2C78ED4A300E6D180092E6B3 /* VerificationPendingViewModel.swift in Sources */,
 				D49D9F1D3014092600ACE567 /* OpenRightRoundedRect.swift in Sources */,
