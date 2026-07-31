@@ -48,7 +48,10 @@ struct SettingsView: View {
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Terms and Conditions"
+                        title: "Terms and Conditions",
+                        action: {
+                            router.push(SettingsRoute.termsAndConditions)
+                        }
                     )
 
                     MenuRowView(

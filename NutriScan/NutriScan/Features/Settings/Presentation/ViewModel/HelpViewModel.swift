@@ -22,7 +22,7 @@ final class HelpViewModel {
     let emailSubject = "NutriScan Support Request"
     
     init(
-        getFaqUseCase: GetFaqUseCaseProtocol = DIContainer.shared.resolve(type: GetFaqUseCaseProtocol.self)
+        getFaqUseCase: GetFaqUseCaseProtocol
     ) {
         self.getFaqUseCase = getFaqUseCase
     }

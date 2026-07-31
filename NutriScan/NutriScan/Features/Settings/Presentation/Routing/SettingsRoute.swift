@@ -18,8 +18,7 @@ enum SettingsRoute: Route {
         case .profileSettings:
             EditProfileView()
         case .termsAndConditions:
-            // TODO: Replace with actual Terms View when available
-            Text("Terms & Conditions")
+            SettingsFactory.makeTermsScreen()
         case .help:
             SettingsFactory.makeHelpScreen()
         }
