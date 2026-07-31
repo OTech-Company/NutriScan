@@ -72,7 +72,7 @@ enum EmptyState {
         case .error404, .noConnection:
             return "Try again"
         case .noScans:
-            return "noScansPlaceholder"
+            return "Start Scanning"
         case .noNotificationPermission:
             return "Go to settings"
         case .noNotifications:
