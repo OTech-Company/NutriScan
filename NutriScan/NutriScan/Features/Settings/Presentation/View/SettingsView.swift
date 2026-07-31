@@ -11,7 +11,7 @@ struct SettingsView: View {
     @State private var viewModel = SettingsViewModel()
 
     var body: some View {
-        
+
         ScrollView(showsIndicators: false) {
             VStack(spacing: 0) {
 
@@ -46,7 +46,10 @@ struct SettingsView: View {
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Help"
+                        title: "Help",
+                        action: {
+                            router.push(SettingsRoute.help)
+                        }
                     )
 
                     SettingsLogoutButton {
