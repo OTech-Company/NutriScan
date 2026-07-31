@@ -485,6 +485,21 @@
 		D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9F233014175500ACE567 /* EditProfileAssembly.swift */; };
 		D49E8BFF3015300C0043F8D4 /* ShowDetailsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */; };
 		D49E8C01301538F00043F8D4 /* DeleteTextButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */; };
+		D4B2B293301BB6D6008F1EA4 /* SettingsRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B292301BB6D3008F1EA4 /* SettingsRoute.swift */; };
+		D4B2B295301BB700008F1EA4 /* SettingsFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B294301BB6FD008F1EA4 /* SettingsFlowView.swift */; };
+		D4B2B297301BBB1C008F1EA4 /* HelperSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B296301BB948008F1EA4 /* HelperSemantics.swift */; };
+		D4B2B299301BBB33008F1EA4 /* Color+HelperSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B298301BBB31008F1EA4 /* Color+HelperSemantics.swift */; };
+		D4B2B29B301BBB69008F1EA4 /* FaqItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B29A301BBB67008F1EA4 /* FaqItem.swift */; };
+		D4B2B29D301BBB85008F1EA4 /* HelpRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B29C301BBB82008F1EA4 /* HelpRepositoryProtocol.swift */; };
+		D4B2B29F301BBB95008F1EA4 /* GetFaqUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B29E301BBB94008F1EA4 /* GetFaqUseCase.swift */; };
+		D4B2B2A1301BBBBA008F1EA4 /* HelpRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2A0301BBBB9008F1EA4 /* HelpRepository.swift */; };
+		D4B2B2A3301BBCB2008F1EA4 /* HelpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2A2301BBCB0008F1EA4 /* HelpViewModel.swift */; };
+		D4B2B2A8301BBDB5008F1EA4 /* FaqAccordionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2A7301BBDB3008F1EA4 /* FaqAccordionItem.swift */; };
+		D4B2B2AA301BBDDB008F1EA4 /* HelpContactSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2A9301BBDD9008F1EA4 /* HelpContactSection.swift */; };
+		D4B2B2AC301BBDED008F1EA4 /* HelpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2AB301BBDEB008F1EA4 /* HelpScreen.swift */; };
+		D4B2B2AE301BBF3C008F1EA4 /* SettingsActionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2AD301BBF3A008F1EA4 /* SettingsActionRow.swift */; };
+		D4B2B2B0301BC1F7008F1EA4 /* HelpLocalDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2AF301BC1F6008F1EA4 /* HelpLocalDataSourceProtocol.swift */; };
+		D4B2B2B2301BC211008F1EA4 /* HelpLocalDataSourceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2B2B1301BC20F008F1EA4 /* HelpLocalDataSourceImpl.swift */; };
 		D4BAA30130137B49006EDB11 /* Color+ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */; };
 		D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30230137BB6006EDB11 /* ProfileSemantics.swift */; };
 		D4BAA30630137BE9006EDB11 /* ProfileState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAA30530137BE4006EDB11 /* ProfileState.swift */; };
@@ -1020,6 +1035,21 @@
 		D49D9F233014175500ACE567 /* EditProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileAssembly.swift; sourceTree = "<group>"; };
 		D49E8BFE301530090043F8D4 /* ShowDetailsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailsButton.swift; sourceTree = "<group>"; };
 		D49E8C00301538EB0043F8D4 /* DeleteTextButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteTextButtonStyle.swift; sourceTree = "<group>"; };
+		D4B2B292301BB6D3008F1EA4 /* SettingsRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRoute.swift; sourceTree = "<group>"; };
+		D4B2B294301BB6FD008F1EA4 /* SettingsFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsFlowView.swift; sourceTree = "<group>"; };
+		D4B2B296301BB948008F1EA4 /* HelperSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperSemantics.swift; sourceTree = "<group>"; };
+		D4B2B298301BBB31008F1EA4 /* Color+HelperSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+HelperSemantics.swift"; sourceTree = "<group>"; };
+		D4B2B29A301BBB67008F1EA4 /* FaqItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaqItem.swift; sourceTree = "<group>"; };
+		D4B2B29C301BBB82008F1EA4 /* HelpRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRepositoryProtocol.swift; sourceTree = "<group>"; };
+		D4B2B29E301BBB94008F1EA4 /* GetFaqUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFaqUseCase.swift; sourceTree = "<group>"; };
+		D4B2B2A0301BBBB9008F1EA4 /* HelpRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpRepository.swift; sourceTree = "<group>"; };
+		D4B2B2A2301BBCB0008F1EA4 /* HelpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewModel.swift; sourceTree = "<group>"; };
+		D4B2B2A7301BBDB3008F1EA4 /* FaqAccordionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaqAccordionItem.swift; sourceTree = "<group>"; };
+		D4B2B2A9301BBDD9008F1EA4 /* HelpContactSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpContactSection.swift; sourceTree = "<group>"; };
+		D4B2B2AB301BBDEB008F1EA4 /* HelpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpScreen.swift; sourceTree = "<group>"; };
+		D4B2B2AD301BBF3A008F1EA4 /* SettingsActionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsActionRow.swift; sourceTree = "<group>"; };
+		D4B2B2AF301BC1F6008F1EA4 /* HelpLocalDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpLocalDataSourceProtocol.swift; sourceTree = "<group>"; };
+		D4B2B2B1301BC20F008F1EA4 /* HelpLocalDataSourceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpLocalDataSourceImpl.swift; sourceTree = "<group>"; };
 		D4BAA30030137B3A006EDB11 /* Color+ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSemantics.swift"; sourceTree = "<group>"; };
 		D4BAA30230137BB6006EDB11 /* ProfileSemantics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSemantics.swift; sourceTree = "<group>"; };
 		D4BAA30530137BE4006EDB11 /* ProfileState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileState.swift; sourceTree = "<group>"; };
@@ -2605,6 +2635,7 @@
 		8F029F4C301274E3008B6CB1 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B291301BB6CA008F1EA4 /* Routing */,
 				D47700103016000100000001 /* DI */,
 				8F029F4E301275C9008B6CB1 /* ViewModel */,
 				8F029F4D30127500008B6CB1 /* View */,
@@ -2616,6 +2647,7 @@
 		8F029F4D30127500008B6CB1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B2A4301BBD8F008F1EA4 /* Help */,
 				860765E2A7DB4D76DFFE893F /* Components */,
 				4C355FBC4995FFA1F19C6DC5 /* SettingsView.swift */,
 			);
@@ -2625,6 +2657,7 @@
 		8F029F4E301275C9008B6CB1 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B2A2301BBCB0008F1EA4 /* HelpViewModel.swift */,
 				DE3E799F631DC0569701B9C0 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
@@ -3591,6 +3624,8 @@
 		D40B87DBD85ED851869C73C2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B298301BBB31008F1EA4 /* Color+HelperSemantics.swift */,
+				D4B2B296301BB948008F1EA4 /* HelperSemantics.swift */,
 				0DC479CD22A1728C7E9B9A57 /* Color+SettingsSemantic.swift */,
 			);
 			path = Extensions;
@@ -3634,6 +3669,7 @@
 		D477000B3016000100000001 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B29A301BBB67008F1EA4 /* FaqItem.swift */,
 				D47700013016000100000001 /* AppAppearance.swift */,
 				D47700073016000100000001 /* AppLanguage.swift */,
 			);
@@ -3643,6 +3679,7 @@
 		D477000C3016000100000001 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B29C301BBB82008F1EA4 /* HelpRepositoryProtocol.swift */,
 				D47700023016000100000001 /* SettingsRepositoryProtocol.swift */,
 			);
 			path = Repositories;
@@ -3651,6 +3688,7 @@
 		D477000D3016000100000001 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B29E301BBB94008F1EA4 /* GetFaqUseCase.swift */,
 				D47700033016000100000001 /* GetAppearanceUseCase.swift */,
 				D47700043016000100000001 /* UpdateAppearanceUseCase.swift */,
 				D47700093016000100000001 /* GetLanguageUseCase.swift */,
@@ -3671,6 +3709,7 @@
 		D477000F3016000100000001 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B2A0301BBBB9008F1EA4 /* HelpRepository.swift */,
 				D47700053016000100000001 /* SettingsRepositoryImpl.swift */,
 			);
 			path = Repositories;
@@ -3687,6 +3726,8 @@
 		D47700153016000100000001 /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				D4B2B2B1301BC20F008F1EA4 /* HelpLocalDataSourceImpl.swift */,
+				D4B2B2AF301BC1F6008F1EA4 /* HelpLocalDataSourceProtocol.swift */,
 				D47700133016000100000001 /* SettingsLocalDataSourceProtocol.swift */,
 				D47700143016000100000001 /* SettingsLocalDataSourceImpl.swift */,
 			);
@@ -3834,6 +3875,42 @@
 				D49D9F233014175500ACE567 /* EditProfileAssembly.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		D4B2B291301BB6CA008F1EA4 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				D4B2B294301BB6FD008F1EA4 /* SettingsFlowView.swift */,
+				D4B2B292301BB6D3008F1EA4 /* SettingsRoute.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		D4B2B2A4301BBD8F008F1EA4 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				D4B2B2A5301BBDA1008F1EA4 /* View */,
+			);
+			path = Help;
+			sourceTree = "<group>";
+		};
+		D4B2B2A5301BBDA1008F1EA4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D4B2B2AB301BBDEB008F1EA4 /* HelpScreen.swift */,
+				D4B2B2A6301BBDA7008F1EA4 /* Components */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D4B2B2A6301BBDA7008F1EA4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				D4B2B2AD301BBF3A008F1EA4 /* SettingsActionRow.swift */,
+				D4B2B2A9301BBDD9008F1EA4 /* HelpContactSection.swift */,
+				D4B2B2A7301BBDB3008F1EA4 /* FaqAccordionItem.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		D4BAA2FF30137B2E006EDB11 /* Extensions */ = {
@@ -4140,6 +4217,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D47700013016000100000002 /* AppAppearance.swift in Sources */,
+				D4B2B2AA301BBDDB008F1EA4 /* HelpContactSection.swift in Sources */,
 				D47700023016000100000002 /* SettingsRepositoryProtocol.swift in Sources */,
 				D47700033016000100000002 /* GetAppearanceUseCase.swift in Sources */,
 				D47700043016000100000002 /* UpdateAppearanceUseCase.swift in Sources */,
@@ -4195,6 +4273,7 @@
 				19A50853F5FFD8DA0A42CE8A /* AppFlowCoordinator.swift in Sources */,
 				6829FEC8CE0983991FCE2E05 /* AppNetworkConfig.swift in Sources */,
 				764F73C0C6C475D09F1BA1DF /* AppProfileSetupBackgroundModifier.swift in Sources */,
+				D4B2B2A1301BBBBA008F1EA4 /* HelpRepository.swift in Sources */,
 				D8622591DADC3E1B3935454A /* AppRouter.swift in Sources */,
 				D489D1C93018E50E00E7A1DF /* SharedProfileAssembly.swift in Sources */,
 				03FB29FBFAC4BC298B1AC07B /* AppTab.swift in Sources */,
@@ -4278,6 +4357,7 @@
 				6F1A8E8C3012AAE100E1ACC5 /* NewsRemoteDataSource.swift in Sources */,
 				6F8C4ECE3016C89E000067BC /* StepTrackerFlowView.swift in Sources */,
 				6F8C4ECF3016C89E000067BC /* Color+StepTrackerSemantic.swift in Sources */,
+				D4B2B2B2301BC211008F1EA4 /* HelpLocalDataSourceImpl.swift in Sources */,
 				6F8C4ED03016C89E000067BC /* StepTrackerRoute.swift in Sources */,
 				6F8C4ED13016C89E000067BC /* HealthKitStepDataSource.swift in Sources */,
 				D489D1D73018EB5C00E7A1DF /* GetReferenceDataUseCase.swift in Sources */,
@@ -4301,6 +4381,7 @@
 				6F1A8E923012AAE100E1ACC5 /* FeedStateViews.swift in Sources */,
 				6F1A8E933012AAE100E1ACC5 /* ArticleMapper.swift in Sources */,
 				6F1A8E943012AAE100E1ACC5 /* Date+Formatting.swift in Sources */,
+				D4B2B297301BBB1C008F1EA4 /* HelperSemantics.swift in Sources */,
 				6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */,
 				5BDFB387E5C37B41261F67A8 /* FloatingTabButton.swift in Sources */,
 				2C7708F3301573DC00A8FCCE /* ProfileHeaderLoadingView.swift in Sources */,
@@ -4368,6 +4449,7 @@
 				8FD8BB6F301787F400FB37DD /* ScanHistoryItemDTO.swift in Sources */,
 				2C78ED12300E6C7E0092E6B2 /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */,
+				D4B2B293301BB6D6008F1EA4 /* SettingsRoute.swift in Sources */,
 				D4BAA30E30137D60006EDB11 /* SettingsSectionView.swift in Sources */,
 				8F16ED143012A9D900CF43B2 /* ProfileSetupEndpoint.swift in Sources */,
 				6F1A8EE23012C5EB00E1ACC5 /* RAGTypingDotsView.swift in Sources */,
@@ -4390,6 +4472,7 @@
 				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
 				2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */,
 				2C78ED17300E6C7E0092E6B2 /* Color+ForgotPasswordSemantic.swift in Sources */,
+				D4B2B2AE301BBF3C008F1EA4 /* SettingsActionRow.swift in Sources */,
 				2C78ED18300E6C7E0092E6B2 /* RegisterHeaderSection.swift in Sources */,
 				2C78ED19300E6C7E0092E6B2 /* RegisterView.swift in Sources */,
 				8F75A3D93016425500C53524 /* FavoritesViewModel.swift in Sources */,
@@ -4443,6 +4526,7 @@
 				2305D7797A178FEA10CFD101 /* ProductAPIService.swift in Sources */,
 				D49D9F243014175700ACE567 /* EditProfileAssembly.swift in Sources */,
 				D4BAA30630137BE9006EDB11 /* ProfileState.swift in Sources */,
+				D4B2B2AC301BBDED008F1EA4 /* HelpScreen.swift in Sources */,
 				AACB8FDACC2DCC73FBFBF5AD /* ProductError.swift in Sources */,
 				D4BAA31A30137F7C006EDB11 /* ProfileViewModel.swift in Sources */,
 				8F16ED203012AA2900CF43B2 /* ProfileSetupRepositoryProtocol.swift in Sources */,
@@ -4467,6 +4551,7 @@
 				D489D1DB3018EFF100E7A1DF /* ProfileUpdate+DTO.swift in Sources */,
 				8FB0F0303016863300D84471 /* FavoritesRemoteDataSource.swift in Sources */,
 				C5144EA83013DD05007EE884 /* WaterTrackingSection.swift in Sources */,
+				D4B2B2A3301BBCB2008F1EA4 /* HelpViewModel.swift in Sources */,
 				C5144EAF3013DD05007EE884 /* CaloriesScreen.swift in Sources */,
 				C5144EB23013DD05007EE884 /* CaloriesFlowView.swift in Sources */,
 				6F8C4EF23016DFA8000067BC /* DailyInsightCardView.swift in Sources */,
@@ -4479,6 +4564,7 @@
 				C5144EB93013DD05007EE884 /* CaloriesViewModel.swift in Sources */,
 				A39BC4577AD209FF500E6E8F /* RecentHistoryListView.swift in Sources */,
 				20756B5A931C8F1D42FB2495 /* RootCoordinatorView.swift in Sources */,
+				D4B2B2A8301BBDB5008F1EA4 /* FaqAccordionItem.swift in Sources */,
 				CC38E56702A3A63F4BDAF029 /* Route.swift in Sources */,
 				909DF67C3792378F84AA70EA /* RulerDial.swift in Sources */,
 				5BB0E693C9F856FCF6110C2D /* ScanFlowView.swift in Sources */,
@@ -4523,6 +4609,7 @@
 				2C753183300F888C00DAC0BA /* KeychainKey.swift in Sources */,
 				0BC07D1A2158156E63F8F947 /* ValidatedField.swift in Sources */,
 				8F16ED283012AAF000CF43B2 /* ProfileSetupFlowFactory.swift in Sources */,
+				D4B2B29D301BBB85008F1EA4 /* HelpRepositoryProtocol.swift in Sources */,
 				0C2D027E18F236ECAAECD826 /* ValueCard.swift in Sources */,
 				8F6F705730191C6E008232DC /* FavoritesNotifier.swift in Sources */,
 				6F8C4EE83016CFD1000067BC /* RangePickerView.swift in Sources */,
@@ -4536,6 +4623,7 @@
 				F35D7F2D858B87C57D5B34AC /* empty1.swift in Sources */,
 				6F8C4EED3016D4DF000067BC /* StepAnalyticsCalculator.swift in Sources */,
 				5E36605E0CF7D90883B4136D /* empty12.swift in Sources */,
+				D4B2B299301BBB33008F1EA4 /* Color+HelperSemantics.swift in Sources */,
 				CE1644E9DB351B60402F1331 /* empty4.swift in Sources */,
 				37CBFAD2F65D78E634D04864 /* empty67.swift in Sources */,
 				6924E0FD08FF44F18D0B8D8F /* empty77.swift in Sources */,
@@ -4552,11 +4640,13 @@
 				2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */,
 				C51E9D3430155E56009DF262 /* ProductDetails.swift in Sources */,
 				C51E9D3530155E56009DF262 /* ProductHeaderSection.swift in Sources */,
+				D4B2B2B0301BC1F7008F1EA4 /* HelpLocalDataSourceProtocol.swift in Sources */,
 				C51E9D3630155E56009DF262 /* SafetyLaver+Colors.swift in Sources */,
 				C51E9D3730155E56009DF262 /* ProductSafetyUIState.swift in Sources */,
 				C51E9D3830155E56009DF262 /* ProductSafetySection.swift in Sources */,
 				C51E9D3930155E56009DF262 /* UnsafeIngredientUIState.swift in Sources */,
 				C51E9D3A30155E56009DF262 /* ProductIngredientsUIState.swift in Sources */,
+				D4B2B29B301BBB69008F1EA4 /* FaqItem.swift in Sources */,
 				D489D1D33018E9C500E7A1DF /* UpdateStreakUseCase.swift in Sources */,
 				C51E9D3B30155E56009DF262 /* ProductDetailsRepoImpl.swift in Sources */,
 				6F8C4F11301927EA000067BC /* CompactArticleRow.swift in Sources */,
@@ -4583,6 +4673,7 @@
 				C51E9D4D30155E56009DF262 /* ProductNutritionUIState.swift in Sources */,
 				C51E9D4E30155E56009DF262 /* ProductDetailsUIState.swift in Sources */,
 				2C78ECE0300E6C700092E6B2 /* RegisterRequestDTO.swift in Sources */,
+				D4B2B295301BB700008F1EA4 /* SettingsFlowView.swift in Sources */,
 				2C78ECE1300E6C700092E6B2 /* AuthRemoteService.swift in Sources */,
 				2C78ECE2300E6C700092E6B2 /* RegisterRequest+DTO.swift in Sources */,
 				2C78ECE3300E6C700092E6B2 /* RegisterResponseDTO+Domain.swift in Sources */,
@@ -4633,6 +4724,7 @@
 				1E18F2FE4F68D851AE283C20 /* CategoryResponseDTO.swift in Sources */,
 				795BC9ACFDE203401EE80B29 /* ExerciseEndpoint.swift in Sources */,
 				7BD78403528ADB0C9D5FAAF8 /* ExerciseCategory.swift in Sources */,
+				D4B2B29F301BBB95008F1EA4 /* GetFaqUseCase.swift in Sources */,
 				598E860BF736D05CDACB46EE /* FetchExerciseCategoriesUseCase.swift in Sources */,
 				1F4C5010FE3B8F54A385CB64 /* ExerciseResponseDTO.swift in Sources */,
 				2F32023795B7B6D55A5B428B /* FetchExercisesRequest.swift in Sources */,
