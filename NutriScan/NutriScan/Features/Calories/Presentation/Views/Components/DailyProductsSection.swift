@@ -86,9 +86,15 @@ struct DailyProductsSection: View {
                     .scrollIndicators(.hidden)
                 }
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: 140)
             .background(
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(Color.CaloriesSemantic.cardBackground)
+                    .fill(
+                        meals.isEmpty
+                            ? Color.CaloriesSemantic.dailyProductsEmptyCardBackground
+                            : Color.CaloriesSemantic.dailyProductsCarouselBackground
+                    )
             )
             .overlay {
                 RoundedRectangle(cornerRadius: 24)
@@ -97,7 +103,7 @@ struct DailyProductsSection: View {
                         style: StrokeStyle(lineWidth: 1, dash: [5])
                     )
             }
-            .frame(height: 140)
+            .contentShape(RoundedRectangle(cornerRadius: 24))
             .scaleEffect(showCard ? 1.0 : 0.85)
             .opacity(showCard ? 1 : 0)
             .scaleEffect(isTapped ? 0.97 : 1.0)

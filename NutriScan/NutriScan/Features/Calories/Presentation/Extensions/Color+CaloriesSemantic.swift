@@ -21,6 +21,8 @@ extension Color {
         static let dailyProductsKcalLabel = Color.Teal.teal1000
         static let dailyProductsCardBorder = Color(light: Color.Gray.gray600, dark: Color.Teal.teal1200)
         static let dailyProductsAddFoodText = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal700)
+        static let dailyProductsEmptyCardBackground = Color(light: .white, dark: Color.Teal.teal1600)
+        static let dailyProductsCarouselBackground = Color(light: .white, dark: Color.Teal.teal1400)
         static let dailyProductCardBackground = Color(light: .white, dark: Color.Teal.teal1600)
         static let dailyProductCardBorder = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1200)
         static let dailyProductTitleText = Color(light: Color.Teal.teal1400, dark: Color.Teal.teal300)
