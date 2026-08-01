@@ -474,6 +474,12 @@
 		D48A24363011534F0004D95E /* ChipSelectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2435301153460004D95E /* ChipSelectionManager.swift */; };
 		D48A2441301158DA0004D95E /* Assembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2440301158D80004D95E /* Assembly.swift */; };
 		D48A2443301158FF0004D95E /* CoreAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A2442301158FC0004D95E /* CoreAssembly.swift */; };
+		NF001A0130200001000000001 /* LocalNotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0130200001000000001R /* LocalNotificationType.swift */; };
+		NF001A0230200001000000001 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0230200001000000001R /* AppNotification.swift */; };
+		NF001A0330200001000000001 /* NotificationMuteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0330200001000000001R /* NotificationMuteStore.swift */; };
+		NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0430200001000000001R /* NotificationServiceProtocol.swift */; };
+		NF001A0530200001000000001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0530200001000000001R /* NotificationService.swift */; };
+		NF001A0630200001000000001 /* NotificationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0630200001000000001R /* NotificationAssembly.swift */; };
 		D48A24463011595F0004D95E /* ProfileAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48A24453011595C0004D95E /* ProfileAssembly.swift */; };
 		D4948B2F30190623003F86D7 /* UploadProfileImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4948B2E3019061F003F86D7 /* UploadProfileImageUseCase.swift */; };
 		D49D9EFC3013E18300ACE567 /* FamilyMemberInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49D9EFB3013E18000ACE567 /* FamilyMemberInput.swift */; };
@@ -1024,6 +1030,12 @@
 		D48A2435301153460004D95E /* ChipSelectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChipSelectionManager.swift; sourceTree = "<group>"; };
 		D48A2440301158D80004D95E /* Assembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assembly.swift; sourceTree = "<group>"; };
 		D48A2442301158FC0004D95E /* CoreAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAssembly.swift; sourceTree = "<group>"; };
+		NF001A0130200001000000001R /* LocalNotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationType.swift; sourceTree = "<group>"; };
+		NF001A0230200001000000001R /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
+		NF001A0330200001000000001R /* NotificationMuteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMuteStore.swift; sourceTree = "<group>"; };
+		NF001A0430200001000000001R /* NotificationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceProtocol.swift; sourceTree = "<group>"; };
+		NF001A0530200001000000001R /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		NF001A0630200001000000001R /* NotificationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAssembly.swift; sourceTree = "<group>"; };
 		D48A24453011595C0004D95E /* ProfileAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAssembly.swift; sourceTree = "<group>"; };
 		D4948B2E3019061F003F86D7 /* UploadProfileImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProfileImageUseCase.swift; sourceTree = "<group>"; };
 		D49D9EFB3013E18000ACE567 /* FamilyMemberInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemberInput.swift; sourceTree = "<group>"; };
@@ -3572,11 +3584,25 @@
 				7734F1E5636FB68820844CA1 /* Navigation */,
 				3661F24417E53BBF138D32A9 /* Network */,
 				81C67CC4F0083E0C53C34758 /* NetworkConfig */,
+				NF001A0720200001000000001 /* Notifications */,
 				8F98B9175D6145087D751784 /* Security */,
 				680237359DE65C4471FA56CE /* Shared Components */,
 				E018423AD5BD85B8BFB4C4FF /* TabBar */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		NF001A0720200001000000001 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				NF001A0130200001000000001R /* LocalNotificationType.swift */,
+				NF001A0230200001000000001R /* AppNotification.swift */,
+				NF001A0330200001000000001R /* NotificationMuteStore.swift */,
+				NF001A0430200001000000001R /* NotificationServiceProtocol.swift */,
+				NF001A0530200001000000001R /* NotificationService.swift */,
+				NF001A0630200001000000001R /* NotificationAssembly.swift */,
+			);
+			path = Notifications;
 			sourceTree = "<group>";
 		};
 		CD8972272E15B73AC669D594 /* DTOs */ = {
@@ -4543,6 +4569,12 @@
 				C10F7BA4E82DDB3682B14C75 /* ProfileRoute.swift in Sources */,
 				0D9FA09D05984ED4E4C4117F /* ProfileSetupFlowView.swift in Sources */,
 				D48A2443301158FF0004D95E /* CoreAssembly.swift in Sources */,
+				NF001A0130200001000000001 /* LocalNotificationType.swift in Sources */,
+				NF001A0230200001000000001 /* AppNotification.swift in Sources */,
+				NF001A0330200001000000001 /* NotificationMuteStore.swift in Sources */,
+				NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */,
+				NF001A0530200001000000001 /* NotificationService.swift in Sources */,
+				NF001A0630200001000000001 /* NotificationAssembly.swift in Sources */,
 				9A9ADDF48A3BBC4320C3738F /* ProfileSetupFlowViewModel.swift in Sources */,
 				CEB84D551C8D8247FA542164 /* ProfileSetupRoute.swift in Sources */,
 				F47A8EBA6FF78D365DE46055 /* ProfileSetupStep.swift in Sources */,
