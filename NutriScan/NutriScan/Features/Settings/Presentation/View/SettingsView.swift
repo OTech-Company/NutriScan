@@ -24,6 +24,14 @@ struct SettingsView: View {
                         icon: "person.badge.shield.checkmark.fill",
                         title: "Profile Settings"
                     )
+                    
+                    MenuRowView(
+                        icon: "bell.badge.fill",
+                        title: "Notification Settings",
+                        action: {
+                            router.push(SettingsRoute.notificationSettings)
+                        }
+                    )
 
                     SettingsSegmentRow(
                         icon: "circle.lefthalf.filled",

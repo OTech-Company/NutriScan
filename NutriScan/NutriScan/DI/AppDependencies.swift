@@ -17,6 +17,7 @@ struct AppDependencies {
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
         NotificationAssembly(),
+        NotificationSettingsAssembly(),
         SharedProfileAssembly(),
         AuthAssembly(),
         ExerciseAssembly(),

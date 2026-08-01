@@ -13,6 +13,7 @@ enum SettingsRoute: Route {
     case language
     case termsAndConditions
     case help
+    case notificationSettings
     
     @MainActor @ViewBuilder
     var destination: some View {
@@ -31,6 +32,8 @@ enum SettingsRoute: Route {
             Text("Terms & Conditions (Placeholder)")
         case .help:
             HelpScreen()
+        case .notificationSettings:
+            NotificationSettingsFactory.makeNotificationSettingsView()
         }
     }
 }
