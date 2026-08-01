@@ -19,29 +19,34 @@ struct NotificationSettingsView: View {
             SettingsHeaderSection(title: "Notification Settings", subtitle: nil) {
                 router.pop()
             }
-            
+
             ScrollView(showsIndicators: false) {
-                
-             LazyVStack(spacing: 12) {
+
+                LazyVStack(spacing: 12) {
                     
-                // MARK: - Notification Types Section
-                SectionHeader(title: "Notification Types")
-                    
-                ForEach(NotificationCategory.allCases) { category in
-                    NotificationToggleRow(
-                        category: category,
-                        isOn: Binding(
-                            get: { viewModel.toggleStates[category] ?? true },
-                            set: { newValue in viewModel.toggleCategory(category, isOn: newValue) }
-                        )
-                    )
+                    ForEach(NotificationSection.allCases, id: \.rawValue) { section in
+                        let categories = NotificationCategory.allCases.filter { $0.section == section }
+
+                        // Section header
+                        SectionHeader(title: section.rawValue)
+
+                        // Rows for this section
+                        ForEach(categories) { category in
+                            NotificationToggleRow(
+                                category: category,
+                                isOn: Binding(
+                                    get: { viewModel.toggleStates[category] ?? true },
+                                    set: { newValue in viewModel.toggleCategory(category, isOn: newValue) }
+                                )
+                            )
+                        }
+                    }
+
+                    Spacer(minLength: 40)
                 }
-                Spacer(minLength: 40)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 24)
             }
-            .padding(.horizontal, 16)
-            .padding(.bottom, 24)
-        }
-                
       }
       .background(Color.NotificationSemantic.screenBackground.ignoresSafeArea())
       .navigationBarHidden(true)
