@@ -16,7 +16,7 @@ struct HelpContactSection: View {
                 .font(Font.AppFont.subtitle1)
                 .foregroundColor(Color.HelperSemantic.sectionTitle)
             
-            SettingsActionRow(
+            MenuRowView(
                 icon: "envelope.fill",
                 title: "Contact Support",
                 action: onContactSupportClick

@@ -27,8 +27,9 @@ struct FaqAccordionItem: View {
                     
                     Spacer()
                     
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                    Image(systemName: "chevron.down")
                         .foregroundColor(Color.HelperSemantic.iconTint)
+                        .rotationEffect(.degrees(isExpanded ? 180 : 0))
                 }
             }
             .buttonStyle(.plain)
@@ -38,7 +39,12 @@ struct FaqAccordionItem: View {
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.HelperSemantic.answerText)
                     .padding(.top, 12)
-                    .transition(.opacity.combined(with: .move(edge: .top)))
+                    .transition(
+                        .asymmetric(
+                            insertion: .opacity.combined(with: .move(edge: .top)).combined(with: .scale(scale: 0.95, anchor: .top)),
+                            removal: .opacity
+                        )
+                    )
             }
         }
         .padding(HelperSemantics.Spacing.accordionPadding)

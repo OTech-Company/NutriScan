@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+import Shimmer
 
 struct HelpScreen: View {
     @EnvironmentObject private var router: AppRouter
     @Environment(\.openURL) private var openURL
 
-    @State private var viewModel = HelpViewModel()
+    @State private var viewModel: HelpViewModel
+
+    init(viewModel: HelpViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
@@ -39,11 +44,15 @@ struct HelpScreen: View {
                                     Color.HelperSemantic.sectionTitle)
 
                             if viewModel.isLoading {
-                                ProgressView()
-                                    .frame(
-                                        maxWidth: .infinity, alignment: .center
+                                ForEach(FaqItem.dummyItems) { item in
+                                    FaqAccordionItem(
+                                        item: item,
+                                        isExpanded: false,
+                                        onClick: {}
                                     )
-                                    .padding(.top, 24)
+                                    .redacted(reason: .placeholder)
+                                    .shimmering()
+                                }
                             } else {
                                 ForEach(viewModel.faqItems) { item in
                                     FaqAccordionItem(

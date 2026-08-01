@@ -59,5 +59,25 @@ struct SettingsAssembly: Assembly {
                 repository: container.resolve(type: HelpRepositoryProtocol.self)
             )
         )
+
+        // MARK: - Terms Feature
+        container.register(
+            type: TermsLocalDataSourceProtocol.self,
+            component: TermsLocalDataSourceImpl()
+        )
+
+        container.register(
+            type: TermsRepositoryProtocol.self,
+            component: TermsRepositoryImpl(
+                localDataSource: container.resolve(type: TermsLocalDataSourceProtocol.self)
+            )
+        )
+
+        container.register(
+            type: GetTermsUseCaseProtocol.self,
+            component: GetTermsUseCase(
+                repository: container.resolve(type: TermsRepositoryProtocol.self)
+            )
+        )
     }
 }

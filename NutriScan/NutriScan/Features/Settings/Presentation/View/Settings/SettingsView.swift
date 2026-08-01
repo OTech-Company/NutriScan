@@ -8,7 +8,11 @@ import SwiftUI
 struct SettingsView: View {
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
-    @State private var viewModel = SettingsViewModel()
+    @State private var viewModel: SettingsViewModel
+
+    init(viewModel: SettingsViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
 
     var body: some View {
 
@@ -22,7 +26,10 @@ struct SettingsView: View {
                 VStack(spacing: 12) {
                     MenuRowView(
                         icon: "person.badge.shield.checkmark.fill",
-                        title: "Profile Settings"
+                        title: "Profile Settings",
+                        action: {
+                            router.push(SettingsRoute.profileSettings)
+                        }
                     )
 
                     SettingsSegmentRow(
@@ -41,7 +48,10 @@ struct SettingsView: View {
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Terms and Conditions"
+                        title: "Terms and Conditions",
+                        action: {
+                            router.push(SettingsRoute.termsAndConditions)
+                        }
                     )
 
                     MenuRowView(
@@ -85,7 +95,7 @@ struct SettingsView: View {
 
 #Preview {
     NavigationStack {
-        SettingsView()
+        SettingsFactory.makeSettingsView()
             .environmentObject(AppRouter())
     }
 }
