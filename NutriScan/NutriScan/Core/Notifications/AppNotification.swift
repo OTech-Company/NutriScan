@@ -6,7 +6,7 @@
 
 import UserNotifications
 
-enum AppNotification: LocalNotificationType {
+enum AppNotification: LocalNotification {
 
     case favoriteAdded(itemTitle: String, itemSubtitle: String)
     case streakReminder
@@ -27,11 +27,11 @@ enum AppNotification: LocalNotificationType {
 
     // MARK: - category (stable per case, used for muting)
 
-    var category: String {
+    var category: NotificationCategory {
         switch self {
-        case .favoriteAdded:    return "favoriteAdded"
-        case .streakReminder:   return "streakReminder"
-        case .scanComplete:     return "scanComplete"
+        case .favoriteAdded:    return .scanReminders
+        case .streakReminder:   return .streak
+        case .scanComplete:     return .scanReminders
         }
     }
 

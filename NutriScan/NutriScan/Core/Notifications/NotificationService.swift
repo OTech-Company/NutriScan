@@ -56,7 +56,7 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
     
     // MARK: - Scheduling
 
-    func schedule<T: LocalNotificationType>(_ notification: T) async throws {
+    func schedule<T: LocalNotification>(_ notification: T) async throws {
         // Silently skip muted categories — not an error
         guard !muteStore.isMuted(category: notification.category) else { return }
         guard await hasAuthorization() else { return }
@@ -68,7 +68,7 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
         }
         content.body = notification.body
         content.sound = notification.sound
-        content.categoryIdentifier = notification.category
+        content.categoryIdentifier = notification.category.rawValue
 
         let request = UNNotificationRequest(
             identifier: notification.identifier,
@@ -93,11 +93,11 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
 
     // MARK: - Mute pass-throughs
 
-    func setMuted(_ muted: Bool, category: String) {
+    func setMuted(_ muted: Bool, category: NotificationCategory) {
         muteStore.setMuted(muted, category: category)
     }
 
-    func isMuted(category: String) -> Bool {
+    func isMuted(category: NotificationCategory) -> Bool {
         muteStore.isMuted(category: category)
     }
 }

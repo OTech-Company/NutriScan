@@ -1,5 +1,5 @@
 //
-//  LocalNotificationType.swift
+//  LocalNotification.swift
 //  NutriScan
 //
 //  Created by Ahmed Nageh on 01/08/2026.
@@ -10,12 +10,12 @@
 
 import UserNotifications
 
-protocol LocalNotificationType {
+protocol LocalNotification {
     // Unique per notification instance
     var identifier: String { get }
 
     // Muting is based on this value
-    var category: String { get }
+    var category: NotificationCategory { get }
 
     var title: String { get }
     var subtitle: String? { get }
@@ -28,7 +28,7 @@ protocol LocalNotificationType {
 }
 
 // MARK: - Default implementations
-extension LocalNotificationType {
+extension LocalNotification {
     var subtitle: String? { nil }
     var sound: UNNotificationSound { .default }
     var trigger: UNNotificationTrigger? { nil }

@@ -38,7 +38,24 @@ struct HomeGreetingSection: View {
 
             Spacer()
 
-            Button(action: onNotificationTap) {
+            Button {
+                Task {
+                    let service = DIContainer.shared.resolve(type: NotificationServiceProtocol.self)
+                    
+                    let granted = await service.requestAuthorizationIfNeeded()
+                    guard granted else {
+                        print("⚠️ الإذن مرفوض — روح Settings وفعّل الإشعارات لهذا التطبيق")
+                        return
+                    }
+                    
+                    do {
+                        try await service.schedule(AppNotification.streakReminder)
+                        print("✅ الإشعار اتجدول بنجاح")
+                    } catch {
+                        print("❌ فشل الجدولة: \(error)")
+                    }
+                }
+            } label: {
                 Image(systemName: "bell")
                     .font(.system(size: 22))
                     .foregroundColor(Color.HomeSemantic.greetingBell)

@@ -11,7 +11,7 @@ protocol NotificationServiceProtocol {
     func requestAuthorizationIfNeeded() async -> Bool
 
     /// Schedules a local notification.
-    func schedule<T: LocalNotificationType>(_ notification: T) async throws
+    func schedule<T: LocalNotification>(_ notification: T) async throws
 
     /// Cancels a pending notification by its unique `identifier`.
     func cancel(identifier: String)
@@ -20,8 +20,8 @@ protocol NotificationServiceProtocol {
     func cancelAll()
 
     /// Convenience pass-through: mutes or unmutes a notification category.
-    func setMuted(_ muted: Bool, category: String)
+    func setMuted(_ muted: Bool, category: NotificationCategory)
 
     /// Convenience pass-through: returns whether a category is muted.
-    func isMuted(category: String) -> Bool
+    func isMuted(category: NotificationCategory) -> Bool
 }
