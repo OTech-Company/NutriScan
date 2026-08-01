@@ -27,6 +27,10 @@ struct RootCoordinatorView: View {
             .preferredColorScheme(appAppearance.colorScheme)
             .environmentObject(flowCoordinator)
             .animation(.default, value: flowCoordinator.flow)
+             .task {
+                let service = DIContainer.shared.resolve(type: NotificationServiceProtocol.self)
+                _ = await service.requestAuthorizationIfNeeded()
+            }
     }
 
     @ViewBuilder
