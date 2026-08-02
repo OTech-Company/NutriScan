@@ -40,7 +40,8 @@ struct RootCoordinatorView: View {
                 Task {
                     await dailyActivitySyncCoordinator.synchronizePendingDates()
                 }
-             .task {
+            }
+            .task {
                 let service = DIContainer.shared.resolve(type: NotificationServiceProtocol.self)
                 _ = await service.requestAuthorizationIfNeeded()
             }
