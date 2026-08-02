@@ -24,7 +24,7 @@ struct CaloriesHistoryDayView: View {
             .frame(height: 105)
             .background(Color.CaloriesHistorySemantic.dayBackground)
             .clipShape(RoundedRectangle(cornerRadius: 24))
-            .offset(y: 16)
+            .offset(y: 14)
 
             Text(day.date)
                 .font(Font.AppFont.textSecondary)
