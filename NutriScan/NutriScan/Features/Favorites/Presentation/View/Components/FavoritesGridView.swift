@@ -42,6 +42,7 @@ struct FavoritesGridView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 12)
+            .padding(.bottom, 66)
             
             // MARK: - Pagination Footer
             if isLoadingNextPage {

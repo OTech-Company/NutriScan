@@ -21,8 +21,8 @@ class FavoritesViewModel {
 
     // MARK: - Add Meal State
 
-    /// True while the add-meal network call is in-flight for a given card.
-    var isAddingMeal: Bool = false
+    /// Set of scanIds currently being added to daily meals.
+    var addingMealIds: Set<String> = []
     /// Non-nil when an add-meal call succeeds, holding the scanId that was just added.
     var lastAddedMealScanId: String? = nil
     /// Non-nil when an add-meal call fails.
@@ -211,8 +211,8 @@ class FavoritesViewModel {
     /// Calls POST to add the product, or PUT to increment if it already exists.
     /// Observable state: `isAddingMeal`, `lastAddedMealScanId`, `addMealError`.
     func addMealToDaily(scanId: String, completion: @escaping (Bool) -> Void) {
-        guard !isAddingMeal else { return }
-        isAddingMeal = true
+        guard !addingMealIds.contains(scanId) else { return }
+        addingMealIds.insert(scanId)
         addMealError = nil
         lastAddedMealScanId = nil
 
@@ -221,13 +221,13 @@ class FavoritesViewModel {
                 try await addMealUseCase.execute(scanId: scanId)
                 await MainActor.run {
                     self.lastAddedMealScanId = scanId
-                    self.isAddingMeal = false
+                    self.addingMealIds.remove(scanId)
                     completion(true)
                 }
             } catch {
                 await MainActor.run {
                     self.addMealError = error.localizedDescription
-                    self.isAddingMeal = false
+                    self.addingMealIds.remove(scanId)
                     completion(false)
                 }
                 print("Error adding meal to daily tracking: \(error)")
