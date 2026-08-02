@@ -21,6 +21,8 @@ struct FavoritesView: View {
     @State private var itemToRetryAddMeal: String? = nil
     @State private var addMealErrorMessage = ""
     
+    @State private var showNoInternetAlert = false
+    
     var body: some View {
         VStack(spacing: 16) {
             CustomSearchBar(
@@ -71,9 +73,13 @@ struct FavoritesView: View {
                         viewModel.addMealToDaily(scanId: scanId) { success in
                             completion(success)
                             if !success {
-                                addMealErrorMessage = viewModel.addMealError ?? "Something went wrong while adding this product to your daily meals. Please try again."
-                                itemToRetryAddMeal = scanId
-                                showAddMealErrorAlert = true
+                                if viewModel.addMealError == "No internet connection" {
+                                    showNoInternetAlert = true
+                                } else {
+                                    addMealErrorMessage = viewModel.addMealError ?? "Something went wrong while adding this product to your daily meals. Please try again."
+                                    itemToRetryAddMeal = scanId
+                                    showAddMealErrorAlert = true
+                                }
                             }
                         }
                     }
@@ -129,6 +135,15 @@ struct FavoritesView: View {
             secondaryAction: {
                 addMealErrorMessage = ""
             }
+        )
+        // MARK: - No Internet Alert
+        .customAlert(
+            isPresented: $showNoInternetAlert,
+            type: .error,
+            title: "No Internet Connection",
+            description: "Please check your connection and try again.",
+            primaryButtonTitle: "OK",
+            primaryAction: { }
         )
     }
     
