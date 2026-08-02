@@ -135,18 +135,9 @@ class FavoritesViewModel {
             hasMorePages = currentPage < result.totalPages
             initialLoadError = nil
         } catch {
-            print("Server error, using dummy data for testing...")
-            favorites = [
-                FavoritesScanEntity(id: "mock1", imageUrl: "https://picsum.photos/200", condition: .Safe, productName: "Mock Product 1", calories: 200),
-                FavoritesScanEntity(id: "mock2", imageUrl: "https://picsum.photos/200", condition: .Caution, productName: "Mock Product 2", calories: 300),
-                FavoritesScanEntity(id: "mock3", imageUrl: "https://picsum.photos/200", condition: .Safe, productName: "Mock Product 3", calories: 150),
-                FavoritesScanEntity(id: "mock4", imageUrl: "https://picsum.photos/200", condition: .UnSafe, productName: "Mock Product 4", calories: 400),
-                FavoritesScanEntity(id: "mock5", imageUrl: "https://picsum.photos/200", condition: .Safe, productName: "Mock Product 5", calories: 250),
-                FavoritesScanEntity(id: "mock6", imageUrl: "https://picsum.photos/200", condition: .Caution, productName: "Mock Product 6", calories: 120)
-            ]
-            currentPage = 1
-            hasMorePages = false
-            initialLoadError = nil
+            if favorites.isEmpty {
+                initialLoadError = error.localizedDescription
+            }
         }
         
         isLoadingInitial = false
@@ -260,23 +251,14 @@ class FavoritesViewModel {
                     return false
                 }()
                 
-                if isOffline {
-                    // Actual offline error -> propagate it to show the alert
-                    await MainActor.run {
+                await MainActor.run {
+                    if isOffline {
                         self.addMealError = "No internet connection"
-                        self.addingMealIds.remove(scanId)
-                        completion(false)
+                    } else {
+                        self.addMealError = error.localizedDescription
                     }
-                } else {
-                    // MOCK SUCCESS FOR TESTING when internet is ON but server is down
-                    print("Error adding meal to daily tracking: \(error). MOCKING SUCCESS FOR TESTING.")
-                    await MainActor.run {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.lastAddedMealScanId = scanId
-                            self.addingMealIds.remove(scanId)
-                            completion(true)
-                        }
-                    }
+                    self.addingMealIds.remove(scanId)
+                    completion(false)
                 }
             }
         }
