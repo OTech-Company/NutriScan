@@ -22,7 +22,7 @@ enum ProfileRoute: Route {
         case .editProfile:
             EditProfileView()
         case .settings:
-            SettingsView()
+            SettingsFactory.makeSettingsView()
         case .scanHistory:
             ScanHistoryFactory.makeScanHistoryView()
         case .scanDetail(let scanId):
