@@ -316,6 +316,7 @@
 		8F7450233015317400E9B8A1 /* FavoritesGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7450223015317400E9B8A1 /* FavoritesGridView.swift */; };
 		8F75A3D93016425500C53524 /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F75A3D83016425500C53524 /* FavoritesViewModel.swift */; };
 		8F79B3A130154DF900D771E7 /* Color+Favorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F79B3A030154DF900D771E7 /* Color+Favorites.swift */; };
+		8F7C79B2301FAB7600B75E4F /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7C79B1301FAB7600B75E4F /* NetworkMonitor.swift */; };
 		8FA343A0300EB7C20044192A /* ProductEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA3439F300EB7C20044192A /* ProductEndpoint.swift */; };
 		8FB0F02130167B6A00D84471 /* FavoritesRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F02030167B6A00D84471 /* FavoritesRepositoryProtocol.swift */; };
 		8FB0F02330167BD300D84471 /* FavoritesScanEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB0F02230167BD300D84471 /* FavoritesScanEntity.swift */; };
@@ -859,6 +860,7 @@
 		8F7450223015317400E9B8A1 /* FavoritesGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesGridView.swift; sourceTree = "<group>"; };
 		8F75A3D83016425500C53524 /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		8F79B3A030154DF900D771E7 /* Color+Favorites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Favorites.swift"; sourceTree = "<group>"; };
+		8F7C79B1301FAB7600B75E4F /* NetworkMonitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		8FA3439F300EB7C20044192A /* ProductEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductEndpoint.swift; sourceTree = "<group>"; };
 		8FB0F02030167B6A00D84471 /* FavoritesRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesRepositoryProtocol.swift; sourceTree = "<group>"; };
 		8FB0F02230167BD300D84471 /* FavoritesScanEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScanEntity.swift; sourceTree = "<group>"; };
@@ -1721,6 +1723,7 @@
 		3661F24417E53BBF138D32A9 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				8F7C79B1301FAB7600B75E4F /* NetworkMonitor.swift */,
 				2C78F015300E6D180092E6B3 /* TokenRefresher.swift */,
 				2C78ED2A300E6CC50092E6B2 /* APIEndpoint.swift */,
 				2C78ED2B300E6CC50092E6B2 /* HTTPMethod.swift */,
@@ -4225,6 +4228,7 @@
 				D4BAA30330137BBB006EDB11 /* ProfileSemantics.swift in Sources */,
 				9C90AFAEDCF85BFBCA64A9B1 /* BackButton.swift in Sources */,
 				8FB0F03530168DBC00D84471 /* FavoritesScanItemDTO.swift in Sources */,
+				8F7C79B2301FAB7600B75E4F /* NetworkMonitor.swift in Sources */,
 				D5E12C9CE1FD9AC087C8C5E5 /* BackButtonSemantics.swift in Sources */,
 				0BD259136AB8037FE9FE20E3 /* BarcodeScannerView.swift in Sources */,
 				8F48266B30150E12009F3A11 /* SwipeToActionButton.swift in Sources */,
