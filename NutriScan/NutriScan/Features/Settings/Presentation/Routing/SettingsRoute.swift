@@ -11,6 +11,7 @@ enum SettingsRoute: Route {
     case profileSettings
     case termsAndConditions
     case help
+    case notificationSettings
     
     @MainActor @ViewBuilder
     var destination: some View {
@@ -21,6 +22,8 @@ enum SettingsRoute: Route {
             SettingsFactory.makeTermsScreen()
         case .help:
             SettingsFactory.makeHelpScreen()
+        case .notificationSettings:
+            NotificationSettingsFactory.makeNotificationSettingsView()
         }
     }
 }

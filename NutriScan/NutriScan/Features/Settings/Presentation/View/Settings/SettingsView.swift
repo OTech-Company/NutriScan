@@ -31,6 +31,14 @@ struct SettingsView: View {
                             router.push(SettingsRoute.profileSettings)
                         }
                     )
+                    
+                    MenuRowView(
+                        icon: "bell.badge.fill",
+                        title: "Notification Settings",
+                        action: {
+                            router.push(SettingsRoute.notificationSettings)
+                        }
+                    )
 
                     SettingsSegmentRow(
                         icon: "circle.lefthalf.filled",
