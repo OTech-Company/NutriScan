@@ -13,8 +13,9 @@ struct FavoritesGridView: View {
     var isLoadingNextPage: Bool = false
     var paginationError: String? = nil
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
-    var onRemoveFavorite: ((String) -> Void)? = nil
+    var onRemoveRequest: ((FavoritesScanEntity) -> Void)? = nil
     var onRetryPagination: (() -> Void)? = nil
+    var onAddToDaily: ((String, @escaping (Bool) -> Void) -> Void)? = nil
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -28,7 +29,10 @@ struct FavoritesGridView: View {
                     FavoriteCardView(
                         favUIState: FavUIState(entity: item),
                         onRemove: {
-                            onRemoveFavorite?(item.id)
+                            onRemoveRequest?(item)
+                        },
+                        onAddToDaily: { onResult in
+                            onAddToDaily?(item.id, onResult)
                         }
                     )
                     .onAppear {
@@ -38,6 +42,7 @@ struct FavoritesGridView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 12)
+            .padding(.bottom, 66)
             
             // MARK: - Pagination Footer
             if isLoadingNextPage {
