@@ -21,8 +21,8 @@ class FavoritesViewModel {
 
     // MARK: - Add Meal State
 
-    /// True while the add-meal network call is in-flight for a given card.
-    var isAddingMeal: Bool = false
+    /// Set of scanIds currently being added to daily meals.
+    var addingMealIds: Set<String> = []
     /// Non-nil when an add-meal call succeeds, holding the scanId that was just added.
     var lastAddedMealScanId: String? = nil
     /// Non-nil when an add-meal call fails.
@@ -189,8 +189,10 @@ class FavoritesViewModel {
     
     // MARK: - Remove Favorite
 
-    func removeFavorite(scanId: String) {
-        guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return }
+    func removeFavorite(scanId: String) -> Bool {
+        guard NetworkMonitor.shared.isConnected else { return false }
+        
+        guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return true }
         let removed = favorites.remove(at: index)
 
         Task {
@@ -204,15 +206,23 @@ class FavoritesViewModel {
                 print("Error removing favorite: \(error)")
             }
         }
+        return true
     }
 
     // MARK: - Add to Daily Meals
 
     /// Calls POST to add the product, or PUT to increment if it already exists.
-    /// Observable state: `isAddingMeal`, `lastAddedMealScanId`, `addMealError`.
     func addMealToDaily(scanId: String, completion: @escaping (Bool) -> Void) {
-        guard !isAddingMeal else { return }
-        isAddingMeal = true
+        guard !addingMealIds.contains(scanId) else { return }
+        
+        // Fast-fail if there is no active internet connection
+        guard NetworkMonitor.shared.isConnected else {
+            addMealError = "No internet connection"
+            completion(false)
+            return
+        }
+        
+        addingMealIds.insert(scanId)
         addMealError = nil
         lastAddedMealScanId = nil
 
@@ -221,16 +231,35 @@ class FavoritesViewModel {
                 try await addMealUseCase.execute(scanId: scanId)
                 await MainActor.run {
                     self.lastAddedMealScanId = scanId
-                    self.isAddingMeal = false
+                    self.addingMealIds.remove(scanId)
                     completion(true)
                 }
             } catch {
+                let isOffline: Bool = {
+                    if let networkError = error as? NetworkError {
+                        if case .noInternet = networkError { return true }
+                        if case .unknown(let underlying) = networkError,
+                           let urlError = underlying as? URLError,
+                           urlError.code == .notConnectedToInternet || urlError.code == .dataNotAllowed {
+                            return true
+                        }
+                    }
+                    if let urlError = error as? URLError,
+                       urlError.code == .notConnectedToInternet || urlError.code == .dataNotAllowed {
+                        return true
+                    }
+                    return false
+                }()
+                
                 await MainActor.run {
-                    self.addMealError = error.localizedDescription
-                    self.isAddingMeal = false
+                    if isOffline {
+                        self.addMealError = "No internet connection"
+                    } else {
+                        self.addMealError = error.localizedDescription
+                    }
+                    self.addingMealIds.remove(scanId)
                     completion(false)
                 }
-                print("Error adding meal to daily tracking: \(error)")
             }
         }
     }

@@ -16,8 +16,7 @@ struct FavoriteCardView: View {
     /// `onResult(_ success: Bool)` which the parent must invoke with the API result.
     var onAddToDaily: ((_ onResult: @escaping (Bool) -> Void) -> Void)? = nil
 
-    /// When true, the SwipeToActionButton snaps back — used after an API failure.
-    @State private var resetSwipe = false
+
 
     var body: some View {
         VStack(spacing: 12) {
@@ -82,20 +81,12 @@ struct FavoriteCardView: View {
 
             SwipeToActionButton(
                 actionTitle: "Swipe right to add",
-                action: {
+                action: { onSliderResult in
                     onAddToDaily? { success in
-                        if !success {
-                            // Force the slider back
-                            resetSwipe = true
-                            // Give onChange a moment to fire, then flip back so the
-                            // binding is ready for the next swipe
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                                resetSwipe = false
-                            }
-                        }
+                        // Pass the result to the slider
+                        onSliderResult(success)
                     }
-                },
-                shouldReset: resetSwipe
+                }
             )
         }
         .padding(.vertical, 8)

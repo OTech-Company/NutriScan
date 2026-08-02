@@ -21,6 +21,8 @@ struct FavoritesView: View {
     @State private var itemToRetryAddMeal: String? = nil
     @State private var addMealErrorMessage = ""
     
+    @State private var showNoInternetAlert = false
+    
     var body: some View {
         VStack(spacing: 16) {
             CustomSearchBar(
@@ -71,14 +73,17 @@ struct FavoritesView: View {
                         viewModel.addMealToDaily(scanId: scanId) { success in
                             completion(success)
                             if !success {
-                                addMealErrorMessage = viewModel.addMealError ?? "Something went wrong while adding this product to your daily meals. Please try again."
-                                itemToRetryAddMeal = scanId
-                                showAddMealErrorAlert = true
+                                if viewModel.addMealError == "No internet connection" {
+                                    showNoInternetAlert = true
+                                } else {
+                                    addMealErrorMessage = viewModel.addMealError ?? "Something went wrong while adding this product to your daily meals. Please try again."
+                                    itemToRetryAddMeal = scanId
+                                    showAddMealErrorAlert = true
+                                }
                             }
                         }
                     }
                 )
-                .padding(.bottom, 60)
                 .refreshable {
                     await viewModel.refreshFavorites()
                 }
@@ -103,7 +108,13 @@ struct FavoritesView: View {
             primaryButtonColor: Color.Red.red500,
             primaryAction: {
                 if let scanId = itemToRemove?.id {
-                    viewModel.removeFavorite(scanId: scanId)
+                    let success = viewModel.removeFavorite(scanId: scanId)
+                    if !success {
+                        // Show the no internet alert after the current alert dismisses
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            showNoInternetAlert = true
+                        }
+                    }
                 }
             },
             secondaryButtonTitle: "Cancel",
@@ -130,6 +141,15 @@ struct FavoritesView: View {
             secondaryAction: {
                 addMealErrorMessage = ""
             }
+        )
+        // MARK: - No Internet Alert
+        .customAlert(
+            isPresented: $showNoInternetAlert,
+            type: .error,
+            title: "No Internet Connection",
+            description: "Please check your connection and try again.",
+            primaryButtonTitle: "OK",
+            primaryAction: { }
         )
     }
     

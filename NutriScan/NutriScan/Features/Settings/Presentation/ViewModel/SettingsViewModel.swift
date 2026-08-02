@@ -28,10 +28,10 @@ final class SettingsViewModel {
     var showLogoutAlert: Bool = false
 
     init(
-        getAppearanceUseCase: GetAppearanceUseCaseProtocol = DIContainer.shared.resolve(type: GetAppearanceUseCaseProtocol.self),
-        updateAppearanceUseCase: UpdateAppearanceUseCaseProtocol = DIContainer.shared.resolve(type: UpdateAppearanceUseCaseProtocol.self),
-        getLanguageUseCase: GetLanguageUseCaseProtocol = DIContainer.shared.resolve(type: GetLanguageUseCaseProtocol.self),
-        updateLanguageUseCase: UpdateLanguageUseCaseProtocol = DIContainer.shared.resolve(type: UpdateLanguageUseCaseProtocol.self)
+        getAppearanceUseCase: GetAppearanceUseCaseProtocol,
+        updateAppearanceUseCase: UpdateAppearanceUseCaseProtocol,
+        getLanguageUseCase: GetLanguageUseCaseProtocol,
+        updateLanguageUseCase: UpdateLanguageUseCaseProtocol
     ) {
         self.getAppearanceUseCase = getAppearanceUseCase
         self.updateAppearanceUseCase = updateAppearanceUseCase
