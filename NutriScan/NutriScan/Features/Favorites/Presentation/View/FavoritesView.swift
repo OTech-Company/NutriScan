@@ -108,7 +108,13 @@ struct FavoritesView: View {
             primaryButtonColor: Color.Red.red500,
             primaryAction: {
                 if let scanId = itemToRemove?.id {
-                    viewModel.removeFavorite(scanId: scanId)
+                    let success = viewModel.removeFavorite(scanId: scanId)
+                    if !success {
+                        // Show the no internet alert after the current alert dismisses
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            showNoInternetAlert = true
+                        }
+                    }
                 }
             },
             secondaryButtonTitle: "Cancel",

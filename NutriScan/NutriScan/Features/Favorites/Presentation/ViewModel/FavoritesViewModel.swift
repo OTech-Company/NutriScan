@@ -198,8 +198,10 @@ class FavoritesViewModel {
     
     // MARK: - Remove Favorite
 
-    func removeFavorite(scanId: String) {
-        guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return }
+    func removeFavorite(scanId: String) -> Bool {
+        guard NetworkMonitor.shared.isConnected else { return false }
+        
+        guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return true }
         let removed = favorites.remove(at: index)
 
         Task {
@@ -213,6 +215,7 @@ class FavoritesViewModel {
                 print("Error removing favorite: \(error)")
             }
         }
+        return true
     }
 
     // MARK: - Add to Daily Meals
