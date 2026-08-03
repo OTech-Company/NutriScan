@@ -263,23 +263,84 @@ private struct DateFilterPresentation: Identifiable {
         .preferredColorScheme(.dark)
 }
 
+#Preview("No Calories History Light") {
+    CaloriesHistoryView(
+        viewModel: caloriesHistoryPreviewViewModel(state: .empty)
+    )
+    .environmentObject(AppRouter())
+    .environmentObject(caloriesHistoryPreviewCoordinator())
+    .preferredColorScheme(.light)
+}
+
+#Preview("No Calories History Dark") {
+    CaloriesHistoryView(
+        viewModel: caloriesHistoryPreviewViewModel(state: .empty)
+    )
+    .environmentObject(AppRouter())
+    .environmentObject(caloriesHistoryPreviewCoordinator())
+    .preferredColorScheme(.dark)
+}
+
+#Preview("Server Problem Light") {
+    CaloriesHistoryView(
+        viewModel: caloriesHistoryPreviewViewModel(state: .serverProblem)
+    )
+    .environmentObject(AppRouter())
+    .environmentObject(caloriesHistoryPreviewCoordinator())
+    .preferredColorScheme(.light)
+}
+
+#Preview("Server Problem Dark") {
+    CaloriesHistoryView(
+        viewModel: caloriesHistoryPreviewViewModel(state: .serverProblem)
+    )
+    .environmentObject(AppRouter())
+    .environmentObject(caloriesHistoryPreviewCoordinator())
+    .preferredColorScheme(.dark)
+}
+
+#Preview("No Connection Light") {
+    CaloriesHistoryEmptyStatePreview(emptyState: .noConnection)
+        .preferredColorScheme(.light)
+}
+
+#Preview("No Connection Dark") {
+    CaloriesHistoryEmptyStatePreview(emptyState: .noConnection)
+        .preferredColorScheme(.dark)
+}
+
 @MainActor
-private func caloriesHistoryPreviewViewModel() -> CaloriesHistoryViewModel {
+private func caloriesHistoryPreviewViewModel(
+    state: CaloriesHistoryPreviewState = .loaded
+) -> CaloriesHistoryViewModel {
     CaloriesHistoryViewModel(
-        getPageUseCase: CaloriesHistoryPreviewPageUseCase(),
+        getPageUseCase: CaloriesHistoryPreviewPageUseCase(state: state),
         getByDateUseCase: CaloriesHistoryPreviewDateUseCase()
     )
 }
 
+private enum CaloriesHistoryPreviewState: Equatable {
+    case loaded
+    case empty
+    case serverProblem
+}
+
 private struct CaloriesHistoryPreviewPageUseCase: GetCaloriesHistoryPageUseCaseProtocol {
+    let state: CaloriesHistoryPreviewState
+
     func execute(page: Int, size: Int) async throws -> CaloriesHistoryPage {
-        CaloriesHistoryPage(
-            days: CaloriesHistoryPreviewData.days,
-            totalElements: CaloriesHistoryPreviewData.days.count,
+        if state == .serverProblem {
+            throw URLError(.badServerResponse)
+        }
+
+        let days = state == .loaded ? CaloriesHistoryPreviewData.days : []
+        return CaloriesHistoryPage(
+            days: days,
+            totalElements: days.count,
             totalPages: 1,
             currentPage: page,
             pageSize: size,
-            numberOfElements: CaloriesHistoryPreviewData.days.count,
+            numberOfElements: days.count,
             isFirst: true,
             isLast: true
         )
@@ -380,4 +441,21 @@ private func caloriesHistoryPreviewCoordinator() -> AppFlowCoordinator {
     AppFlowCoordinator(
         fetchAndCacheProfileUseCase: CaloriesHistoryPreviewProfileUseCase()
     )
+}
+
+private struct CaloriesHistoryEmptyStatePreview: View {
+    let emptyState: EmptyState
+
+    var body: some View {
+        VStack(spacing: 0) {
+            CaloriesHistoryHeader(onBackTap: {}, onCalendarTap: {})
+                .padding(.horizontal, 22)
+                .padding(.bottom, 16)
+
+            EmptyStateView(emptyState: emptyState, action: {})
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.CaloriesHistorySemantic.background.ignoresSafeArea())
+    }
 }
