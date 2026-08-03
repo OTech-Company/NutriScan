@@ -4,33 +4,31 @@
 //
 //  Created by Mina_Wagdy on 24/07/2026.
 //
+
 import SwiftUI
 
 struct ProfileView: View {
     @EnvironmentObject private var router: AppRouter
     var viewModel: ProfileViewModel
     
-    @State private var sheetMember: FamilyMember?  // nil sentinel for "not shown"
+    @State private var sheetMember: FamilyMember?
     @State private var isAddingNewMember = false
     
     var body: some View {
         ZStack(alignment: .top) {
-            Color.ProfileSemantics.headerBackground
-                .ignoresSafeArea()
+            Color.ProfileSemantics.headerBackground.ignoresSafeArea()
             ProfileHeaderDecoration()
 
             ProfileHeaderView(
                 state: viewModel.state,
-                isLoading: false, // UI is instant now
+                isLoading: false,
                 onEdit: { router.push(ProfileRoute.editProfile) }
             ).padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
 
             VStack(spacing: ProfileSemantics.Spacing.zero) {
                 ScrollView(showsIndicators: false) {
-                    VStack(
-                        alignment: .leading,
-                        spacing: ProfileSemantics.Spacing.sectionSpacing
-                    ) {
+                    VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.sectionSpacing) {
+                        
                         FamilyMembersSectionView(
                             members: viewModel.familyMembers,
                             isLoading: false,
@@ -40,7 +38,7 @@ struct ProfileView: View {
 
                         SettingsSectionView(
                             onScanHistory: { router.push(ProfileRoute.scanHistory) },
-                            onNotifications: { /* TODO: no ProfileRoute case for notifications yet */ },
+                            onNotifications: { /* TODO */ },
                             onSettings: { router.push(ProfileRoute.settings) }
                         )
                     }
@@ -62,15 +60,15 @@ struct ProfileView: View {
         .ignoresSafeArea()
         .navigationBarHidden(true)
         .task {
-            // The profile data is already loaded!
-            // We just background sync the streak when the view appears.
             await viewModel.updateAndFetchStreak()
         }
         .sheet(isPresented: $isAddingNewMember) {
             FamilyMemberSheetView(
                 existingMember: nil,
                 allMembers: viewModel.familyMembers,
-                onSave: { input in Task { await viewModel.addFamilyMember(input) } }
+                onSave: { input, imageData in
+                    return await viewModel.addFamilyMember(input, imageData: imageData)
+                }
             )
             .presentationDetents([.large])
             .presentationCornerRadius(ProfileSemantics.Radius.sheetPresentation)
@@ -79,11 +77,11 @@ struct ProfileView: View {
             FamilyMemberSheetView(
                 existingMember: member,
                 allMembers: viewModel.familyMembers,
-                onSave: { input in
-                    Task { await viewModel.updateFamilyMember(id: member.id, with: input) }
+                onSave: { input, imageData in
+                    return await viewModel.updateFamilyMember(id: member.id, with: input, imageData: imageData)
                 },
                 onDelete: {
-                    Task { await viewModel.deleteFamilyMember(id: member.id) }
+                    return await viewModel.deleteFamilyMember(id: member.id)
                 }
             )
             .presentationDetents([.large])
