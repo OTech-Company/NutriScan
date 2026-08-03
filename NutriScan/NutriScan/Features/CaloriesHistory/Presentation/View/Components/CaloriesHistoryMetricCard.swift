@@ -26,7 +26,7 @@ struct CaloriesHistoryMetricCard: View {
             }
         }
         .padding(6)
-        .frame(alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: 72)
         .background(Color.CaloriesHistorySemantic.metricBackground)
         .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -88,7 +88,7 @@ struct CaloriesHistoryMetricCard: View {
 }
 
 #Preview("total meals") {
-    CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .totalMeals, primaryValue: "2300"))
+    CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .totalMeals, primaryValue: "23000"))
 }
 
 #Preview("water") {
