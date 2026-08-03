@@ -14,7 +14,7 @@ extension Color {
             dark: Color.Teal.teal1600
         )
         static let title = Color(
-            light: Color(red: 30 / 255, green: 30 / 255, blue: 34 / 255),
+            light: Color.Gray.gray1600,
             dark: Color.Teal.teal1000
         )
         static let calendarButtonBackground = Color(
