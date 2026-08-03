@@ -41,12 +41,41 @@ struct CaloriesHistoryDayView: View {
     }
 }
 
-#Preview {
-    CaloriesHistoryDayView(day: DayUIState(id: "34", date: "24-09-2029", cards: [
-        DayStatusCardUIState(type: .totalMeals, primaryValue: "2200"),
-        DayStatusCardUIState(type: .water, primaryValue: "7", secondaryValue: "8"),
-        DayStatusCardUIState(type: .steps, primaryValue: "2200", secondaryValue: "220"),
-        DayStatusCardUIState(type: .exercise, primaryValue: "2200", secondaryValue: "220"),
-    ])
-    )
+#Preview("Day Row Light") {
+    CaloriesHistoryDayView(day: caloriesHistoryDayViewPreviewState)
+        .padding(.horizontal, 22)
+        .padding(.vertical, 16)
+        .background(Color.CaloriesHistorySemantic.background)
+        .preferredColorScheme(.light)
 }
+
+#Preview("Day Row Dark") {
+    CaloriesHistoryDayView(day: caloriesHistoryDayViewPreviewState)
+        .padding(.horizontal, 22)
+        .padding(.vertical, 16)
+        .background(Color.CaloriesHistorySemantic.background)
+        .preferredColorScheme(.dark)
+}
+
+private let caloriesHistoryDayViewPreviewState = DayUIState(
+    id: "preview-day",
+    date: "03-08-2026",
+    cards: [
+        DayStatusCardUIState(type: .totalMeals, primaryValue: "2400"),
+        DayStatusCardUIState(
+            type: .water,
+            primaryValue: "7",
+            secondaryValue: "8"
+        ),
+        DayStatusCardUIState(
+            type: .steps,
+            primaryValue: "10000",
+            secondaryValue: "415"
+        ),
+        DayStatusCardUIState(
+            type: .exercise,
+            primaryValue: "46",
+            secondaryValue: "260"
+        )
+    ]
+)

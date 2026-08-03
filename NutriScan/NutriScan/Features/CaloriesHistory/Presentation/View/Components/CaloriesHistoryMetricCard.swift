@@ -95,18 +95,43 @@ struct CaloriesHistoryMetricCard: View {
     }
 }
 
-#Preview("total meals") {
-    CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .totalMeals, primaryValue: "23000"))
+#Preview("Metric Cards Light") {
+    HStack(spacing: 6) {
+        ForEach(caloriesHistoryMetricCardPreviewStates) { state in
+            CaloriesHistoryMetricCard(state: state)
+        }
+    }
+    .padding(8)
+    .background(Color.CaloriesHistorySemantic.dayBackground)
+    .preferredColorScheme(.light)
 }
 
-#Preview("water") {
-    CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .water, primaryValue: "2300", secondaryValue: "2000"))
+#Preview("Metric Cards Dark") {
+    HStack(spacing: 6) {
+        ForEach(caloriesHistoryMetricCardPreviewStates) { state in
+            CaloriesHistoryMetricCard(state: state)
+        }
+    }
+    .padding(8)
+    .background(Color.CaloriesHistorySemantic.dayBackground)
+    .preferredColorScheme(.dark)
 }
 
-#Preview("steps") {
-    CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .steps, primaryValue: "2300", secondaryValue: "2000"))
-}
-
-#Preview("exercise") {
-    CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .exercise, primaryValue: "2300", secondaryValue: "2000"))
-}
+private let caloriesHistoryMetricCardPreviewStates: [DayStatusCardUIState] = [
+    DayStatusCardUIState(type: .totalMeals, primaryValue: "2400"),
+    DayStatusCardUIState(
+        type: .water,
+        primaryValue: "7",
+        secondaryValue: "8"
+    ),
+    DayStatusCardUIState(
+        type: .steps,
+        primaryValue: "10000",
+        secondaryValue: "415"
+    ),
+    DayStatusCardUIState(
+        type: .exercise,
+        primaryValue: "46",
+        secondaryValue: "260"
+    )
+]
