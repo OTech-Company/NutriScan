@@ -50,5 +50,9 @@ extension Color {
             light: Color.Teal.teal200,
             dark: Color.Teal.teal1400
         )
+        static let shimmerPlaceholder = Color(
+            light: Color.Gray.gray300,
+            dark: Color.Teal.teal1400
+        )
     }
 }

@@ -487,6 +487,7 @@
 		C582C142301FFBAB000F7DE5 /* CaloriesHistoryDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582C141301FFBAB000F7DE5 /* CaloriesHistoryDayView.swift */; };
 		C582C144301FFBD5000F7DE5 /* CaloriesHistoryMetricCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582C143301FFBD5000F7DE5 /* CaloriesHistoryMetricCard.swift */; };
 		C582C146301FFBF1000F7DE5 /* CaloriesHistorySemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582C145301FFBF1000F7DE5 /* CaloriesHistorySemantic.swift */; };
+		C582C149301FFBF1000F7DE5 /* CaloriesHistoryDayShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C582C148301FFBF1000F7DE5 /* CaloriesHistoryDayShimmerView.swift */; };
 		C596173B301FDEFB001DB715 /* CaloriesHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C596173A301FDEFB001DB715 /* CaloriesHistoryView.swift */; };
 		C596173E301FDF41001DB715 /* DayUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C596173D301FDF41001DB715 /* DayUIState.swift */; };
 		C5961740301FDF85001DB715 /* DayStatusCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C596173F301FDF85001DB715 /* DayStatusCard.swift */; };
@@ -1116,6 +1117,7 @@
 		C582C141301FFBAB000F7DE5 /* CaloriesHistoryDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesHistoryDayView.swift; sourceTree = "<group>"; };
 		C582C143301FFBD5000F7DE5 /* CaloriesHistoryMetricCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesHistoryMetricCard.swift; sourceTree = "<group>"; };
 		C582C145301FFBF1000F7DE5 /* CaloriesHistorySemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesHistorySemantic.swift; sourceTree = "<group>"; };
+		C582C148301FFBF1000F7DE5 /* CaloriesHistoryDayShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesHistoryDayShimmerView.swift; sourceTree = "<group>"; };
 		C596173A301FDEFB001DB715 /* CaloriesHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesHistoryView.swift; sourceTree = "<group>"; };
 		C596173D301FDF41001DB715 /* DayUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayUIState.swift; sourceTree = "<group>"; };
 		C596173F301FDF85001DB715 /* DayStatusCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayStatusCard.swift; sourceTree = "<group>"; };
@@ -3943,6 +3945,7 @@
 		C582C140301FFB92000F7DE5 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C582C148301FFBF1000F7DE5 /* CaloriesHistoryDayShimmerView.swift */,
 				C582C143301FFBD5000F7DE5 /* CaloriesHistoryMetricCard.swift */,
 				C582C141301FFBAB000F7DE5 /* CaloriesHistoryDayView.swift */,
 				C582C13E301FFB72000F7DE5 /* CaloriesHistoryHeader.swift */,
@@ -4915,6 +4918,7 @@
 				C546296F301239330032F885 /* CustomAlertMetrics.swift in Sources */,
 				C5462970301239330032F885 /* CustomAlertPreviews.swift in Sources */,
 				C582C142301FFBAB000F7DE5 /* CaloriesHistoryDayView.swift in Sources */,
+				C582C149301FFBF1000F7DE5 /* CaloriesHistoryDayShimmerView.swift in Sources */,
 				C5462971301239330032F885 /* CustomAlertModifiers.swift in Sources */,
 				C5462972301239330032F885 /* CustomAlertSemanticColors.swift in Sources */,
 				D4948B2F30190623003F86D7 /* UploadProfileImageUseCase.swift in Sources */,

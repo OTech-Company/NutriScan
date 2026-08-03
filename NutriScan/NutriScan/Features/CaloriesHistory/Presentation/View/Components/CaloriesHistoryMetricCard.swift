@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CaloriesHistoryMetricCard: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let state: DayStatusCardUIState
     
     var body: some View {
@@ -68,6 +70,8 @@ struct CaloriesHistoryMetricCard: View {
                 .foregroundStyle(Color.CaloriesHistorySemantic.metricValue)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
+                .contentTransition(.numericText())
+                .animation(valueAnimation, value: value)
             
             Text(unit)
                 .font(Font.AppFont.textCaption)
@@ -75,6 +79,10 @@ struct CaloriesHistoryMetricCard: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
         }
+    }
+
+    private var valueAnimation: Animation? {
+        reduceMotion ? nil : .easeOut(duration: 0.25)
     }
     
     private var accessibilityValue: String {
@@ -102,4 +110,3 @@ struct CaloriesHistoryMetricCard: View {
 #Preview("exercise") {
     CaloriesHistoryMetricCard(state: DayStatusCardUIState(type: .exercise, primaryValue: "2300", secondaryValue: "2000"))
 }
-
