@@ -35,23 +35,17 @@ final class FamilyMemberSheetViewModel {
     private var revertAction: (() -> Void)?
 
     private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
-    private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
-    private let uploadFamilyMemberImageUseCase: UploadFamilyMemberImageUseCaseProtocol
 
     var isEditMode: Bool { existingMember != nil }
-
+    
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
-        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
-        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol = DIContainer.shared.resolve(type: UpdateFamilyMembersUseCaseProtocol.self),
-        uploadFamilyMemberImageUseCase: UploadFamilyMemberImageUseCaseProtocol = DIContainer.shared.resolve(type: UploadFamilyMemberImageUseCaseProtocol.self)
+        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self)
     ) {
         self.existingMember = existingMember
         self.allMembers = allMembers
         self.getReferenceDataUseCase = getReferenceDataUseCase
-        self.updateFamilyMembersUseCase = updateFamilyMembersUseCase
-        self.uploadFamilyMemberImageUseCase = uploadFamilyMemberImageUseCase
 
         if let member = existingMember {
             name.value = member.name

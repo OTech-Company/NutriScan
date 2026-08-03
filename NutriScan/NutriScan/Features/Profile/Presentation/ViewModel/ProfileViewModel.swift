@@ -7,6 +7,12 @@
 
 import Foundation
 
+/// Lightweight wrapper so a plain, already-localized error message can be used
+/// as a `Result` failure type without conforming `String` itself to `Error`.
+private struct MessageError: Error {
+    let message: String
+}
+
 @Observable
 final class ProfileViewModel {
     private let observeProfileUseCase: ObserveProfileUseCaseProtocol
@@ -62,80 +68,65 @@ final class ProfileViewModel {
 
     @MainActor
     func addFamilyMember(_ newMember: FamilyMemberInput, imageData: Data?) async -> String? {
-        let existing = familyMembers.map {
-            FamilyMemberInput(
-                name: $0.name, relation: $0.relation,
-                allergyIds: $0.allergies.map(\.id), diseaseIds: $0.diseases.map(\.id)
-            )
-        }
-        
-        if let error = await submitFamilyMembers(existing + [newMember]) {
-            return error
-        }
-        
-        if let imageData = imageData {
-            if let createdMember = familyMembers.first(where: { $0.name == newMember.name && $0.relation == newMember.relation }) {
-                do {
-                    try await uploadFamilyMemberImageUseCase.execute(id: createdMember.id, data: imageData)
-                } catch {
-                    return "Member added, but image upload failed: \(error.localizedDescription)"
-                }
+        let idsBefore = Set(familyMembers.map(\.id))
+        let payload = familyMembers.map { $0.toInput() } + [newMember]
+
+        switch await submitFamilyMembers(payload) {
+        case .failure(let error):
+            return error.message
+        case .success(let refreshed):
+            guard let imageData,
+                  let created = refreshed.first(where: { !idsBefore.contains($0.id) })
+            else { return nil }
+
+            do {
+                try await uploadFamilyMemberImageUseCase.execute(id: created.id, data: imageData)
+            } catch {
+                return "Member added, but image upload failed: \(error.localizedDescription)"
             }
+            return nil
         }
-        return nil
     }
 
     @MainActor
     func updateFamilyMember(id: String, with updated: FamilyMemberInput, imageData: Data?) async -> String? {
-        var updatedList: [FamilyMemberInput] = []
-        for member in familyMembers {
-            if member.id == id {
-                updatedList.append(updated)
-            } else {
-                updatedList.append(FamilyMemberInput(
-                    name: member.name, relation: member.relation,
-                    allergyIds: member.allergies.map(\.id), diseaseIds: member.diseases.map(\.id)
-                ))
-            }
-        }
-        
-        if let error = await submitFamilyMembers(updatedList) {
-            return error
-        }
-        
-        if let data = imageData {
+        let payload = familyMembers.map { $0.id == id ? updated : $0.toInput() }
+
+        switch await submitFamilyMembers(payload) {
+        case .failure(let error):
+            return error.message
+        case .success:
+            guard let imageData else { return nil }
             do {
-                try await uploadFamilyMemberImageUseCase.execute(id: id, data: data)
+                try await uploadFamilyMemberImageUseCase.execute(id: id, data: imageData)
             } catch {
                 return "Details saved, but image upload failed: \(error.localizedDescription)"
             }
+            return nil
         }
-        return nil
     }
 
     @MainActor
     func deleteFamilyMember(id: String) async -> String? {
         let remaining = familyMembers
             .filter { $0.id != id }
-            .map {
-                FamilyMemberInput(
-                    name: $0.name, relation: $0.relation,
-                    allergyIds: $0.allergies.map(\.id), diseaseIds: $0.diseases.map(\.id)
-                )
-            }
-        return await submitFamilyMembers(remaining)
+            .map { $0.toInput() }
+
+        switch await submitFamilyMembers(remaining) {
+        case .failure(let error): return error.message
+        case .success: return nil
+        }
     }
 
     @MainActor
-    private func submitFamilyMembers(_ members: [FamilyMemberInput]) async -> String? {
+    private func submitFamilyMembers(_ members: [FamilyMemberInput]) async -> Result<[FamilyMember], MessageError> {
         isMutating = true
-        var resultError: String? = nil
+        defer { isMutating = false }
         do {
             try await updateFamilyMembersUseCase.execute(members: members)
+            return .success(familyMembers)
         } catch {
-            resultError = error.localizedDescription
+            return .failure(MessageError(message: error.localizedDescription))
         }
-        isMutating = false
-        return resultError
     }
 }
