@@ -15,6 +15,7 @@ enum UserProfileEndpoint: APIEndpoint {
     case getDiseases
     case uploadImage(Data)
     case uploadFamilyMemberImage(id: String, data: Data)
+    case updateStreak
 
     var baseURL: String { AppNetworkConfig.core.baseURL }
 
@@ -30,6 +31,8 @@ enum UserProfileEndpoint: APIEndpoint {
             return "/api/v1/allergies"
         case .getDiseases:
             return "/api/v1/diseases"
+        case .updateStreak:
+            return "/api/v1/users/me/daily-streak"
         }
     }
 
@@ -40,14 +43,14 @@ enum UserProfileEndpoint: APIEndpoint {
         case .updateProfile, .updateFamilyMembers,
             .uploadFamilyMemberImage:
             return .patch
-        case .uploadImage:
+        case .uploadImage, .updateStreak:
             return .post
         }
     }
 
     var body: RequestBody {
         switch self {
-        case .getProfile, .getAllergies, .getDiseases:
+        case .getProfile, .getAllergies, .getDiseases, .updateStreak:
             return .none
         case .updateProfile(let requestDTO):
             return .json(requestDTO)
