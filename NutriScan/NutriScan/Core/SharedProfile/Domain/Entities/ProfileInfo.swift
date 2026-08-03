@@ -22,7 +22,7 @@ struct ProfileInfo: Identifiable, Equatable {
     let tdee: Double?
     let allergies: [ReferenceItem]
     let diseases: [ReferenceItem]
-    let familyMembers: [FamilyMember]
+    var familyMembers: [FamilyMember]
     let updatedAt: Date?
     
     var fullName: String {

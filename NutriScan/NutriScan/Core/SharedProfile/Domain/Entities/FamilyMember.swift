@@ -11,7 +11,7 @@ struct FamilyMember: Identifiable, Hashable, Equatable {
     let id: String
     let name: String
     let relation: String
-    let imageUrl: String?
+    var imageUrl: String?
     let allergies: [ReferenceItem]
     let diseases: [ReferenceItem]
 }
