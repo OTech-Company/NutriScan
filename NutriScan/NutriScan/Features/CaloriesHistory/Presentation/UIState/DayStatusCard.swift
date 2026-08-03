@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DayStatusCard: CaseIterable, Equatable {
+enum DayStatusCard: CaseIterable, Hashable {
     case totalMeals
     case water
     case steps

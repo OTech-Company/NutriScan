@@ -7,19 +7,18 @@
 
 import Foundation
 
-struct DayStatusCardUIState: Identifiable {
-    let id: UUID
+struct DayStatusCardUIState: Identifiable, Equatable {
+    var id: DayStatusCard { type }
+
     let type: DayStatusCard
     let primaryValue: String
     let secondaryValue: String?
 
     init(
-        id: UUID = UUID(),
         type: DayStatusCard,
         primaryValue: String,
         secondaryValue: String? = nil
     ) {
-        self.id = id
         self.type = type
         self.primaryValue = primaryValue
         self.secondaryValue = secondaryValue

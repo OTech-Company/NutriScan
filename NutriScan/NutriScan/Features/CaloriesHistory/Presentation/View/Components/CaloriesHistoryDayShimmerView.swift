@@ -2,6 +2,10 @@
 //  CaloriesHistoryDayShimmerView.swift
 //  NutriScan
 //
+//  Created by albaraa alsayed on 20/02/1448 AH.
+//
+
+
 
 import Shimmer
 import SwiftUI
@@ -67,16 +71,18 @@ struct CaloriesHistoryDayShimmerView: View {
     }
 }
 
-#Preview("Light") {
+#Preview("Day Shimmer Light") {
     CaloriesHistoryDayShimmerView()
         .padding(.horizontal, 22)
+        .padding(.vertical, 16)
         .background(Color.CaloriesHistorySemantic.background)
         .preferredColorScheme(.light)
 }
 
-#Preview("Dark") {
+#Preview("Day Shimmer Dark") {
     CaloriesHistoryDayShimmerView()
         .padding(.horizontal, 22)
+        .padding(.vertical, 16)
         .background(Color.CaloriesHistorySemantic.background)
         .preferredColorScheme(.dark)
 }

@@ -38,6 +38,18 @@ struct CaloriesHistoryHeader: View {
     }
 }
 
-#Preview {
+#Preview("Header Light") {
     CaloriesHistoryHeader(onBackTap: {}, onCalendarTap: {})
+        .padding(.horizontal, 22)
+        .padding(.bottom, 16)
+        .background(Color.CaloriesHistorySemantic.background)
+        .preferredColorScheme(.light)
+}
+
+#Preview("Header Dark") {
+    CaloriesHistoryHeader(onBackTap: {}, onCalendarTap: {})
+        .padding(.horizontal, 22)
+        .padding(.bottom, 16)
+        .background(Color.CaloriesHistorySemantic.background)
+        .preferredColorScheme(.dark)
 }
