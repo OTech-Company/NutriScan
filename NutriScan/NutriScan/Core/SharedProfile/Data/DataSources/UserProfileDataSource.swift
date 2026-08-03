@@ -19,10 +19,14 @@ protocol UserProfileDataSourceProtocol {
     // Streak Methods
     func getStreak() async throws -> Int
     func updateStreak() async throws
+
     func uploadProfileImage(data: Data) async throws
+    func uploadFamilyMemberImage(id: String, data: Data) async throws
+        -> FamilyMemberDTO
 }
 
 final class UserProfileDataSource: UserProfileDataSourceProtocol {
+
     private let networkService: NetworkServiceProtocol
 
     // MARK: - Streak Mock Properties
@@ -96,5 +100,13 @@ final class UserProfileDataSource: UserProfileDataSourceProtocol {
         // This leverages your NetworkService's built-in token injection,
         // multipart encoding, and retry logic.
         let _: EmptyResponse = try await networkService.request(endpoint)
+    }
+
+    func uploadFamilyMemberImage(id: String, data: Data) async throws
+        -> FamilyMemberDTO
+    {
+        let endpoint = UserProfileEndpoint.uploadFamilyMemberImage(
+            id: id, data: data)
+        return try await networkService.request(endpoint)
     }
 }

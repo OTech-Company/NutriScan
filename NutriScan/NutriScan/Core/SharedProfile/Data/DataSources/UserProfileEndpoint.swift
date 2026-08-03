@@ -14,33 +14,37 @@ enum UserProfileEndpoint: APIEndpoint {
     case getAllergies
     case getDiseases
     case uploadImage(Data)
-    
+    case uploadFamilyMemberImage(id: String, data: Data)
+
     var baseURL: String { AppNetworkConfig.core.baseURL }
-    
+
     var path: String {
         switch self {
         case .getProfile, .updateProfile, .updateFamilyMembers:
             return "/api/v1/users/profile"
         case .uploadImage:
             return "/api/v1/users/profile/image"
+        case .uploadFamilyMemberImage(let id, _):
+            return "/api/v1/users/family-member/\(id)/image"
         case .getAllergies:
             return "/api/v1/allergies"
         case .getDiseases:
             return "/api/v1/diseases"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
         case .getProfile, .getAllergies, .getDiseases:
             return .get
-        case .updateProfile, .updateFamilyMembers:
+        case .updateProfile, .updateFamilyMembers,
+            .uploadFamilyMemberImage:
             return .patch
         case .uploadImage:
             return .post
         }
     }
-    
+
     var body: RequestBody {
         switch self {
         case .getProfile, .getAllergies, .getDiseases:
@@ -51,17 +55,28 @@ enum UserProfileEndpoint: APIEndpoint {
             return .json(dto)
         case .uploadImage(let data):
             var form = MultipartFormData()
-            
-            form.files.append(MultipartFormData.FilePart(
-                name: "image",
-                filename: "profile_image.jpg",
-                mimeType: "image/jpeg",
-                data: data
-            ))
-            
+
+            form.files.append(
+                MultipartFormData.FilePart(
+                    name: "image",
+                    filename: "profile_image.jpg",
+                    mimeType: "image/jpeg",
+                    data: data
+                ))
+
+            return .multipart(form)
+        case .uploadFamilyMemberImage(_, let data):
+            var form = MultipartFormData()
+            form.files.append(
+                MultipartFormData.FilePart(
+                    name: "image",
+                    filename: "family_member_image.jpg",
+                    mimeType: "image/jpeg",
+                    data: data
+                ))
             return .multipart(form)
         }
     }
-    
+
     var requiresAuth: Bool { true }
 }
