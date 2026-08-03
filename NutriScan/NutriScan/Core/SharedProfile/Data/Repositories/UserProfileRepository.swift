@@ -13,28 +13,33 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
     private var imageCacheVersion: String = ""
 
     init(
-        dataSource: UserProfileDataSourceProtocol = DIContainer.shared.resolve(type: UserProfileDataSourceProtocol.self),
-        sharedStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self)
+        dataSource: UserProfileDataSourceProtocol = DIContainer.shared.resolve(
+            type: UserProfileDataSourceProtocol.self),
+        sharedStore: UserProfileStore = DIContainer.shared.resolve(
+            type: UserProfileStore.self)
     ) {
         self.dataSource = dataSource
         self.sharedStore = sharedStore
     }
-    
+
     // MARK: - URL Helpers
-    
+
     /// Safely appends or updates a cache-busting query parameter using URLComponents
-    private func applyCacheBuster(to urlString: String?, version: String) -> String? {
+    private func applyCacheBuster(to urlString: String?, version: String)
+        -> String?
+    {
         guard let urlString = urlString,
-              !urlString.isEmpty,
-              var components = URLComponents(string: urlString) else {
+            !urlString.isEmpty,
+            var components = URLComponents(string: urlString)
+        else {
             return urlString
         }
-        
+
         var queryItems = components.queryItems ?? []
         // Remove any existing "v" parameter to prevent duplicates if the URL already had one
         queryItems.removeAll(where: { $0.name == "v" })
         queryItems.append(URLQueryItem(name: "v", value: version))
-        
+
         components.queryItems = queryItems
         return components.string
     }
@@ -42,7 +47,11 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
     private func processProfile(_ dto: UserProfileResponseDTO) -> ProfileInfo {
         var domainProfile = dto.toDomain()
         if !imageCacheVersion.isEmpty {
-            domainProfile.imageUrl = applyCacheBuster(to: domainProfile.imageUrl, version: imageCacheVersion)
+            domainProfile.imageUrl = applyCacheBuster(
+                to: domainProfile.imageUrl, version: imageCacheVersion)
+        }
+        Task { @MainActor in
+            self.sharedStore.streakDays = domainProfile.dailyStreak
         }
         return domainProfile
     }
@@ -57,7 +66,8 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
 
     func updateProfile(update: ProfileUpdate) async throws {
         let requestDTO = update.toRequestDTO()
-        let dto: UserProfileResponseDTO = try await dataSource.updateProfile(requestDTO: requestDTO)
+        let dto: UserProfileResponseDTO = try await dataSource.updateProfile(
+            requestDTO: requestDTO)
         let profile = processProfile(dto)
         await MainActor.run { self.sharedStore.currentProfile = profile }
     }
@@ -66,7 +76,8 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
         let requestDTO = FamilyMembersUpdateRequestDTO(
             familyMembers: members.map { $0.toRequestDTO() }
         )
-        let dto: UserProfileResponseDTO = try await dataSource.updateFamilyMembers(requestDTO)
+        let dto: UserProfileResponseDTO =
+            try await dataSource.updateFamilyMembers(requestDTO)
         let profile = processProfile(dto)
         await MainActor.run { self.sharedStore.currentProfile = profile }
     }
@@ -82,39 +93,48 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
     }
 
     // MARK: - Streak Methods
+
     func getStreak() async throws -> Int {
-        let streak = try await dataSource.getStreak()
-        await MainActor.run { self.sharedStore.streakDays = streak }
-        return streak
+        let dto: UserProfileResponseDTO = try await dataSource.getProfile()
+        let profile = processProfile(dto)
+        return profile.dailyStreak
     }
 
     func updateStreak() async throws {
         try await dataSource.updateStreak()
+
+        let dto: UserProfileResponseDTO = try await dataSource.getProfile()
+        _ = processProfile(dto)
     }
 
     // MARK: - Image Uploads
-    
+
     func uploadProfileImage(data: Data) async throws {
         try await dataSource.uploadProfileImage(data: data)
         self.imageCacheVersion = UUID().uuidString
 
-        let updatedProfileDTO: UserProfileResponseDTO = try await dataSource.getProfile()
+        let updatedProfileDTO: UserProfileResponseDTO =
+            try await dataSource.getProfile()
         let profile = processProfile(updatedProfileDTO)
 
         await MainActor.run {
             self.sharedStore.currentProfile = profile
         }
     }
-    
+
     func uploadFamilyMemberImage(id: String, data: Data) async throws {
-        let updatedMemberDTO = try await dataSource.uploadFamilyMemberImage(id: id, data: data)
+        let updatedMemberDTO = try await dataSource.uploadFamilyMemberImage(
+            id: id, data: data)
         var updatedMember = updatedMemberDTO.toDomain()
-        
-        updatedMember.imageUrl = applyCacheBuster(to: updatedMember.imageUrl, version: UUID().uuidString)
-        
+
+        updatedMember.imageUrl = applyCacheBuster(
+            to: updatedMember.imageUrl, version: UUID().uuidString)
+
         await MainActor.run {
             if var currentProfile = self.sharedStore.currentProfile {
-                if let index = currentProfile.familyMembers.firstIndex(where: { $0.id == id }) {
+                if let index = currentProfile.familyMembers.firstIndex(where: {
+                    $0.id == id
+                }) {
                     currentProfile.familyMembers[index] = updatedMember
                     self.sharedStore.currentProfile = currentProfile
                 }
