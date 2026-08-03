@@ -67,38 +67,21 @@ final class UserProfileDataSource: UserProfileDataSourceProtocol {
         try await networkService.request(UserProfileEndpoint.getDiseases)
     }
 
-    // MARK: - Streak Logic (Mock)
+    // MARK: - Streak Methods (Real Backend Integration)
+
     func getStreak() async throws -> Int {
-        try await Task.sleep(nanoseconds: 300_000_000)
-        return defaults.integer(forKey: streakKey)
+        let profileDTO: UserProfileResponseDTO =
+            try await networkService.request(UserProfileEndpoint.getProfile)
+        return profileDTO.dailyStreak ?? 0
     }
 
     func updateStreak() async throws {
-        try await Task.sleep(nanoseconds: 300_000_000)
-
-        let calendar = Calendar.current
-        let now = Date()
-        let currentStreak = defaults.integer(forKey: streakKey)
-
-        if let lastVisit = defaults.object(forKey: lastVisitKey) as? Date {
-            if calendar.isDateInToday(lastVisit) {
-                return
-            } else if calendar.isDateInYesterday(lastVisit) {
-                defaults.set(currentStreak + 1, forKey: streakKey)
-            } else {
-                defaults.set(1, forKey: streakKey)
-            }
-        } else {
-            defaults.set(1, forKey: streakKey)
-        }
-
-        defaults.set(now, forKey: lastVisitKey)
+        let endpoint = UserProfileEndpoint.updateStreak
+        let _: EmptyResponse = try await networkService.request(endpoint)
     }
+
     func uploadProfileImage(data: Data) async throws {
         let endpoint = UserProfileEndpoint.uploadImage(data)
-
-        // This leverages your NetworkService's built-in token injection,
-        // multipart encoding, and retry logic.
         let _: EmptyResponse = try await networkService.request(endpoint)
     }
 
