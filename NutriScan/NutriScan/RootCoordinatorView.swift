@@ -46,6 +46,9 @@ struct RootCoordinatorView: View {
             ProfileSetupFlowView()
         case .main:
             MainTabView()
+        case .pendingDeletion:
+            AccountRestorationFactory.makeAccountRestorationView()
         }
+
     }
 }
