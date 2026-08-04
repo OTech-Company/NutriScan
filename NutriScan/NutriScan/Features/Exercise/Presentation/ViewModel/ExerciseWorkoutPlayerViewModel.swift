@@ -154,7 +154,7 @@ final class ExerciseWorkoutPlayerViewModel {
         caloriesActivityStore.recordWorkout(
             profileID: profileID,
             date: CaloriesTracking.todayString,
-            calories: roundedCalories,
+            calories: Double(roundedCalories),
             elapsedSeconds: elapsedSeconds
         )
         hasRecordedWorkout = true

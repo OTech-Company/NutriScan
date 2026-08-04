@@ -17,17 +17,17 @@ final class CaloriesViewModel {
     private(set) var caloriesTracking: CaloriesTracking?
     private(set) var isUpdatingWater = false
 
-    var dailyKcal: Int   { caloriesTracking?.totalCalories ?? 0 }
+    var dailyKcal: Int   { caloriesTracking?.mealCalories ?? 0 }
     var meals: [CalorieMeal]    { caloriesTracking?.meals ?? [] }
     var waterCurrent: Int { caloriesTracking?.waterCnt ?? 0 }
     var waterGoal: Int   { caloriesTracking?.targetWaterCnt ?? 8 }
 
     var calorieGoal: Double? { profileStore.currentProfile?.tdee }
-    var exerciseKcal: Int { todayDraft?.exerciseKcal ?? caloriesTracking?.exerciseKcal ?? 0 }
+    var exerciseKcal: Double { todayDraft?.exerciseKcal ?? caloriesTracking?.exerciseKcal ?? 0 }
     var exerciseMinutes: Double { todayDraft?.exerciseMin ?? caloriesTracking?.exerciseMin ?? 0 }
-    var stepsKcal: Int { todayDraft?.stepsKcal ?? caloriesTracking?.stepsKcal ?? 0 }
-    var totalBurnedKcal: Int { stepsKcal + exerciseKcal }
-    var netCalories: Int { max(dailyKcal - totalBurnedKcal, 0) }
+    var stepsKcal: Double { todayDraft?.stepsKcal ?? caloriesTracking?.stepsKcal ?? 0 }
+    var totalBurnedKcal: Double { stepsKcal + exerciseKcal }
+    var netCalories: Double { max(Double(dailyKcal) - totalBurnedKcal, 0) }
 
     private var profileID: String? { profileStore.currentProfile?.id }
     private var todayDraft: CaloriesActivityDraft? {
@@ -83,7 +83,7 @@ final class CaloriesViewModel {
                 caloriesActivityStore.updateMealCalories(
                     profileID: profileID,
                     date: tracking.date,
-                    calories: tracking.totalCalories
+                    calories: tracking.mealCalories
                 )
             }
         } catch {
@@ -126,7 +126,7 @@ final class CaloriesViewModel {
             profileID: profileID,
             date: CaloriesTracking.todayString,
             steps: steps,
-            calories: calories
+            calories: Double(calories)
         )
     }
 
@@ -182,8 +182,7 @@ final class CaloriesViewModel {
                 stepsCnt: nil,
                 stepsKcal: nil,
                 exerciseKcal: nil,
-                exerciseMin: nil,
-                totalMealKcal: nil
+                exerciseMin: nil
             )
         } catch {
             guard !isCancellation(error) else {
@@ -262,29 +261,23 @@ final class CaloriesActivitySyncCoordinator {
         for draft in pending {
             do {
                 let tracking = try await getCaloriesTrackingByDateUseCase.execute(date: draft.date)
-                let steps = await refreshedSteps(for: draft) ?? draft.stepsCnt
-                let stepCalories = StepAnalyticsCalculator(
+                let normalizedDraft = caloriesActivityStore.seedIfNeeded(profileID: profile.id, tracking: tracking)
+                let steps = await refreshedSteps(for: normalizedDraft) ?? normalizedDraft.stepsCnt
+                let stepCalories = Double(StepAnalyticsCalculator(
                     weightKg: profile.weightKg ?? 70,
                     heightCm: profile.heightCm ?? 170
-                ).caloriesBurned(steps: steps)
-                let exerciseKcal = draft.isSeededFromServer
-                    ? max(draft.exerciseKcal, tracking.exerciseKcal)
-                    : draft.exerciseKcal + tracking.exerciseKcal
-                let exerciseMin = draft.isSeededFromServer
-                    ? max(draft.exerciseMin, tracking.exerciseMin)
-                    : draft.exerciseMin + tracking.exerciseMin
+                ).caloriesBurned(steps: steps))
 
                 _ = try await updateWaterUseCase.execute(
-                    date: draft.date,
+                    date: normalizedDraft.date,
                     targetWaterCnt: tracking.targetWaterCnt,
                     waterCnt: tracking.waterCnt,
                     stepsCnt: steps,
                     stepsKcal: stepCalories,
-                    exerciseKcal: exerciseKcal,
-                    exerciseMin: exerciseMin,
-                    totalMealKcal: tracking.totalCalories
+                    exerciseKcal: normalizedDraft.exerciseKcal,
+                    exerciseMin: normalizedDraft.exerciseMin
                 )
-                caloriesActivityStore.remove(profileID: profile.id, date: draft.date)
+                caloriesActivityStore.remove(profileID: profile.id, date: normalizedDraft.date)
             } catch {
                 lastError = error.localizedDescription
             }

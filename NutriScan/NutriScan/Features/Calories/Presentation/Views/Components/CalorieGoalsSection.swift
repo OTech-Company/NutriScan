@@ -26,18 +26,18 @@ private enum CalorieGoalMood: Hashable {
 struct CalorieGoalsSection: View {
     let mealCalories: Int
     let targetCalories: Double?
-    let caloriesBurned: Int
+    let caloriesBurned: Double
     var onCompleteProfileTap: () -> Void = {}
 
     @State private var animatedProgress: CGFloat = 0
     @State private var isTapped = false
 
-    private var rawNetCalories: Int { mealCalories - caloriesBurned }
-    private var netCalories: Int { max(rawNetCalories, 0) }
+    private var rawNetCalories: Double { Double(mealCalories) - caloriesBurned }
+    private var netCalories: Double { max(rawNetCalories, 0) }
 
     private var targetProgress: CGFloat {
         guard let targetCalories, targetCalories > 0 else { return 0 }
-        return min(max(CGFloat(Double(netCalories) / targetCalories), 0), 1.0)
+        return min(max(CGFloat(netCalories / targetCalories), 0), 1.0)
     }
 
     private var isOverTDEE: Bool {
@@ -46,7 +46,7 @@ struct CalorieGoalsSection: View {
 
     private var mood: CalorieGoalMood {
         guard let targetCalories, targetCalories > 0 else { return .normal }
-        let progress = Double(netCalories) / targetCalories
+        let progress = netCalories / targetCalories
         switch progress {
         case ..<0.5: return .sad
         case ..<0.8: return .normal
@@ -82,7 +82,7 @@ struct CalorieGoalsSection: View {
                                 .accessibilityHint("Opens Personal Information to set your calorie goal")
                             }
                             calorieRow(title: "Calories Gained", calories: mealCalories)
-                            calorieRow(title: "Calories Burned", calories: caloriesBurned)
+                            calorieRow(title: "Calories Burned", calories: Int(caloriesBurned.rounded()))
                         }
                     }
                     Spacer(minLength: 16)

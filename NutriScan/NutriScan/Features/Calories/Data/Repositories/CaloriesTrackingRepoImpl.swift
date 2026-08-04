@@ -23,12 +23,6 @@ final class CaloriesTrackingRepoImpl: CaloriesTrackingRepo {
         CaloriesTracking(from: try await service.fetchByDate(date: date))
     }
 
-    func getAllCaloriesTracking(page: Int, size: Int) async throws -> (items: [CaloriesTrackingSummary], totalPages: Int) {
-        let page = try await service.fetchAll(page: page, size: size)
-        let items = (page.content ?? []).map { CaloriesTrackingSummary(from: $0) }
-        return (items, page.totalPages ?? 0)
-    }
-
     func addMeal(date: String, scanId: String, mealCnt: Int) async throws -> CalorieMeal {
         let request = AddMealRequestDTO(scanId: scanId, mealCnt: mealCnt)
         let result = try await service.addMeal(date: date, request: request)
@@ -50,26 +44,19 @@ final class CaloriesTrackingRepoImpl: CaloriesTrackingRepo {
         targetWaterCnt: Int?,
         waterCnt: Int?,
         stepsCnt: Int?,
-        stepsKcal: Int?,
-        exerciseKcal: Int?,
-        exerciseMin: Double?,
-        totalMealKcal: Int?
+        stepsKcal: Double?,
+        exerciseKcal: Double?,
+        exerciseMin: Double?
     ) async throws -> CaloriesTracking {
         let body = PatchCaloriesTrackingDTO(
-            date: date,
             targetWaterCnt: targetWaterCnt,
             waterCnt: waterCnt,
             stepsCnt: stepsCnt,
             stepsKcal: stepsKcal,
             exerciseKcal: exerciseKcal,
-            exerciseMin: exerciseMin,
-            totalMealKcal: totalMealKcal
+            exerciseMin: exerciseMin
         )
         try await service.patchTracking(date: date, body: body)
         return CaloriesTracking(from: try await service.fetchByDate(date: date))
-    }
-
-    func deleteTracking(date: String) async throws {
-        try await service.deleteTracking(date: date)
     }
 }

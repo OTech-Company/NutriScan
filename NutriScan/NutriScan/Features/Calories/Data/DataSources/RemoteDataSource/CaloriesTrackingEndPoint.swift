@@ -11,12 +11,10 @@ enum CaloriesTrackingEndPoint: APIEndpoint {
 
     case getToday
     case getByDate(date: String)
-    case getAll(page: Int, size: Int)
     case addMeal(date: String, request: AddMealRequestDTO)
     case updateMeal(date: String, scanId: String, request: UpdateMealCountRequestDTO)
     case deleteMeal(date: String, scanId: String)
     case patchTracking(date: String, body: PatchCaloriesTrackingDTO)
-    case deleteTracking(date: String)
 
     var baseURL: String { AppNetworkConfig.core.baseURL }
 
@@ -26,8 +24,6 @@ enum CaloriesTrackingEndPoint: APIEndpoint {
             return "/api/v1/daily-tracking/today"
         case .getByDate(let date):
             return "/api/v1/daily-tracking/\(date)"
-        case .getAll:
-            return "/api/v1/daily-tracking"
         case .addMeal(let date, _):
             return "/api/v1/daily-tracking/\(date)/meals"
         case .updateMeal(let date, let scanId, _):
@@ -36,17 +32,15 @@ enum CaloriesTrackingEndPoint: APIEndpoint {
             return "/api/v1/daily-tracking/\(date)/meals/\(scanId)"
         case .patchTracking(let date, _):
             return "/api/v1/daily-tracking/\(date)"
-        case .deleteTracking(let date):
-            return "/api/v1/daily-tracking/\(date)"
         }
     }
 
     var method: HTTPMethod {
         switch self {
-        case .getToday, .getByDate, .getAll:    return .get
+        case .getToday, .getByDate:             return .get
         case .addMeal:                           return .post
         case .updateMeal:                        return .put
-        case .deleteMeal, .deleteTracking:       return .delete
+        case .deleteMeal:                        return .delete
         case .patchTracking:                     return .patch
         }
     }
@@ -65,11 +59,6 @@ enum CaloriesTrackingEndPoint: APIEndpoint {
     }
 
     var queryParameters: [String: String]? {
-        switch self {
-        case .getAll(let page, let size):
-            return ["page": "\(page)", "size": "\(size)"]
-        default:
-            return nil
-        }
+        nil
     }
 }

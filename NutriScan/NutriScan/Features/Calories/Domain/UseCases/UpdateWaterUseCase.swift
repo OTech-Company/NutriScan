@@ -13,10 +13,9 @@ protocol UpdateWaterUseCaseProtocol {
         targetWaterCnt: Int?,
         waterCnt: Int?,
         stepsCnt: Int?,
-        stepsKcal: Int?,
-        exerciseKcal: Int?,
-        exerciseMin: Double?,
-        totalMealKcal: Int?
+        stepsKcal: Double?,
+        exerciseKcal: Double?,
+        exerciseMin: Double?
     ) async throws -> CaloriesTracking
 }
 
@@ -32,10 +31,9 @@ final class UpdateWaterUseCase: UpdateWaterUseCaseProtocol {
         targetWaterCnt: Int? = nil,
         waterCnt: Int? = nil,
         stepsCnt: Int? = nil,
-        stepsKcal: Int? = nil,
-        exerciseKcal: Int? = nil,
-        exerciseMin: Double? = nil,
-        totalMealKcal: Int? = nil
+        stepsKcal: Double? = nil,
+        exerciseKcal: Double? = nil,
+        exerciseMin: Double? = nil
     ) async throws -> CaloriesTracking {
         try await repository.updateCaloriesTracking(
             date: date,
@@ -44,8 +42,7 @@ final class UpdateWaterUseCase: UpdateWaterUseCaseProtocol {
             stepsCnt: stepsCnt,
             stepsKcal: stepsKcal,
             exerciseKcal: exerciseKcal,
-            exerciseMin: exerciseMin,
-            totalMealKcal: totalMealKcal
+            exerciseMin: exerciseMin
         )
     }
 }

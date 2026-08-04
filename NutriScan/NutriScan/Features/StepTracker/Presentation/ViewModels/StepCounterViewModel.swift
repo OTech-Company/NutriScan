@@ -78,7 +78,9 @@ final class StepCounterViewModel {
                 hasFetchedFullHistory = true
                 history = result
             } catch {
-                errorMessage = error.localizedDescription
+                if !isCancellation(error) {
+                    errorMessage = error.localizedDescription
+                }
             }
             isLoadingHistory = false
         }
@@ -114,6 +116,7 @@ final class StepCounterViewModel {
             }
             startObserving()
         } catch {
+            guard !isCancellation(error) else { return }
             print("🔴 StepTracker auth error:", error)
             errorMessage = error.localizedDescription
         }
@@ -127,5 +130,14 @@ final class StepCounterViewModel {
                 self.todaySteps = steps
             }
         }
+    }
+
+    private func isCancellation(_ error: Error) -> Bool {
+        if error is CancellationError { return true }
+        if let urlError = error as? URLError, urlError.code == .cancelled { return true }
+        if case NetworkError.unknown(let wrappedError) = error {
+            return isCancellation(wrappedError)
+        }
+        return false
     }
 }

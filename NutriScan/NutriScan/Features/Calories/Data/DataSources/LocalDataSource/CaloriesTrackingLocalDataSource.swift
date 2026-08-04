@@ -12,8 +12,8 @@ struct CaloriesActivityDraft: Codable, Equatable, Identifiable {
     let profileID: String
     let date: String
     var stepsCnt: Int
-    var stepsKcal: Int
-    var exerciseKcal: Int
+    var stepsKcal: Double
+    var exerciseKcal: Double
     var exerciseSeconds: Double
     var totalMealKcal: Int
     var isSeededFromServer: Bool
@@ -56,7 +56,7 @@ final class CaloriesActivityStore {
             existing.stepsKcal = max(existing.stepsKcal, tracking.stepsKcal)
             existing.exerciseKcal += tracking.exerciseKcal
             existing.exerciseSeconds += tracking.exerciseMin * 60
-            existing.totalMealKcal = tracking.totalCalories
+            existing.totalMealKcal = tracking.mealCalories
             existing.isSeededFromServer = true
             drafts[draftKey] = existing
             persist()
@@ -70,7 +70,7 @@ final class CaloriesActivityStore {
             stepsKcal: tracking.stepsKcal,
             exerciseKcal: tracking.exerciseKcal,
             exerciseSeconds: tracking.exerciseMin * 60,
-            totalMealKcal: tracking.totalCalories,
+            totalMealKcal: tracking.mealCalories,
             isSeededFromServer: true
         )
         drafts[draftKey] = draft
@@ -78,7 +78,7 @@ final class CaloriesActivityStore {
         return draft
     }
 
-    func updateSteps(profileID: String, date: String, steps: Int, calories: Int) {
+    func updateSteps(profileID: String, date: String, steps: Int, calories: Double) {
         let draftKey = key(profileID: profileID, date: date)
         var draft = drafts[draftKey] ?? CaloriesActivityDraft(
             profileID: profileID,
@@ -90,8 +90,8 @@ final class CaloriesActivityStore {
             totalMealKcal: 0,
             isSeededFromServer: false
         )
-        draft.stepsCnt = max(steps, 0)
-        draft.stepsKcal = max(calories, 0)
+        draft.stepsCnt = max(draft.stepsCnt, steps, 0)
+        draft.stepsKcal = max(draft.stepsKcal, calories, 0)
         drafts[draftKey] = draft
         persist()
     }
@@ -104,7 +104,7 @@ final class CaloriesActivityStore {
         persist()
     }
 
-    func recordWorkout(profileID: String, date: String, calories: Int, elapsedSeconds: Int) {
+    func recordWorkout(profileID: String, date: String, calories: Double, elapsedSeconds: Int) {
         let draftKey = key(profileID: profileID, date: date)
         var draft = drafts[draftKey] ?? CaloriesActivityDraft(
             profileID: profileID,

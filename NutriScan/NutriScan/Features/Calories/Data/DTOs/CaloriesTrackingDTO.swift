@@ -13,8 +13,8 @@ struct CaloriesTrackingDTO: Decodable {
     let targetWaterCnt: Int?
     let waterCnt: Int?
     let stepsCnt: Int?
-    let stepsKcal: Int?
-    let exerciseKcal: Int?
+    let stepsKcal: Double?
+    let exerciseKcal: Double?
     let exerciseMin: Double?
     let totalMealKcal: Int?
     let meals: [CalorieMealsDTO]?
@@ -31,8 +31,8 @@ struct CaloriesTrackingDTO: Decodable {
         targetWaterCnt = try container.decodeIfPresent(Int.self, forKey: .targetWaterCnt)
         waterCnt = try container.decodeIfPresent(Int.self, forKey: .waterCnt)
         stepsCnt = try container.decodeIfPresent(Int.self, forKey: .stepsCnt)
-        stepsKcal = try container.decodeIfPresent(Int.self, forKey: .stepsKcal)
-        exerciseKcal = try container.decodeIfPresent(Int.self, forKey: .exerciseKcal)
+        stepsKcal = try container.decodeIfPresent(Double.self, forKey: .stepsKcal)
+        exerciseKcal = try container.decodeIfPresent(Double.self, forKey: .exerciseKcal)
         exerciseMin = try container.decodeIfPresent(Double.self, forKey: .exerciseMin)
         totalMealKcal = try container.decodeIfPresent(Int.self, forKey: .totalMealKcal)
         meals = try container.decodeIfPresent([CalorieMealsDTO].self, forKey: .meals)

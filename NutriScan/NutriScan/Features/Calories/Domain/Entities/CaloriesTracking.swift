@@ -13,8 +13,8 @@ struct CaloriesTracking {
     let targetWaterCnt: Int
     let waterCnt: Int
     let stepsCnt: Int
-    let stepsKcal: Int
-    let exerciseKcal: Int
+    let stepsKcal: Double
+    let exerciseKcal: Double
     let exerciseMin: Double
     let totalMealKcal: Int
     let meals: [CalorieMeal]
@@ -25,8 +25,8 @@ struct CaloriesTracking {
         targetWaterCnt: Int,
         waterCnt: Int,
         stepsCnt: Int,
-        stepsKcal: Int = 0,
-        exerciseKcal: Int = 0,
+        stepsKcal: Double = 0,
+        exerciseKcal: Double = 0,
         exerciseMin: Double = 0,
         totalMealKcal: Int = 0,
         meals: [CalorieMeal]
@@ -45,8 +45,16 @@ struct CaloriesTracking {
 }
 
 extension CaloriesTracking {
-    var totalCalories: Int {
+    var calculatedMealCalories: Int {
         meals.reduce(0) { $0 + $1.nutritionFacts.calories * $1.mealCnt }
+    }
+
+    var mealCalories: Int {
+        totalMealKcal > 0 ? totalMealKcal : calculatedMealCalories
+    }
+
+    var totalCalories: Int {
+        calculatedMealCalories
     }
 
     var totalProteinGrams: Double {

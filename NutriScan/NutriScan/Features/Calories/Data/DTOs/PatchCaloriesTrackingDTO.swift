@@ -8,12 +8,10 @@
 import Foundation
 
 struct PatchCaloriesTrackingDTO: Encodable {
-    let date: String
     let targetWaterCnt: Int?
     let waterCnt: Int?
     let stepsCnt: Int?
-    let stepsKcal: Int?
-    let exerciseKcal: Int?
+    let stepsKcal: Double?
+    let exerciseKcal: Double?
     let exerciseMin: Double?
-    let totalMealKcal: Int?
 }

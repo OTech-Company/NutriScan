@@ -81,7 +81,7 @@ struct CaloriesScreen: View {
                         )
 
                         ExerciseCardView(
-                            exerciseKcal: caloriesViewModel.exerciseKcal,
+                            exerciseKcal: Int(caloriesViewModel.exerciseKcal.rounded()),
                             exerciseMinutes: caloriesViewModel.exerciseMinutes,
                             onAddTap: {
                                 router.push(CaloriesRoute.exercises)
@@ -270,6 +270,7 @@ struct CaloriesScreen: View {
     }
 
     private func persistCurrentSteps() {
+        guard stepViewModel.isAuthorized else { return }
         let analytics = stepViewModel.todayAnalytics()
         caloriesViewModel.updateSteps(
             stepViewModel.todaySteps,
