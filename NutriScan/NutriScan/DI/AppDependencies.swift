@@ -29,6 +29,7 @@ struct AppDependencies {
         SettingsAssembly(),
         ProductDetailsAssembly(),
         CaloriesAssembly(),
+        CaloriesHistoryAssembly(),
         HomeAssembly()
     ]
 

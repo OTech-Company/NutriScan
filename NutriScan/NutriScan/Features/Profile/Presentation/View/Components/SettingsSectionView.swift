@@ -8,12 +8,14 @@ import SwiftUI
 
 struct SettingsSectionView: View {
     var onScanHistory: () -> Void
+    var onCaloriesHistory: () -> Void
     var onNotifications: () -> Void
     var onSettings: () -> Void
 
     var body: some View {
         VStack(spacing: ProfileSemantics.Spacing.menuRowSpacing) {
             MenuRowView(icon: "clock.arrow.circlepath", title: "Scan History", action: onScanHistory)
+            MenuRowView(icon: "flame", title: "Calories History", action: onCaloriesHistory)
             MenuRowView(icon: "bell", title: "Notifications", action: onNotifications)
             MenuRowView(icon: "gearshape", title: "Settings", action: onSettings)
         }

@@ -12,6 +12,7 @@ enum ProfileRoute: Route {
     case settings
     case personalInformation
     case scanHistory
+    case caloriesHistory
     case scanDetail(scanId: String)
     
     @MainActor @ViewBuilder
@@ -25,6 +26,8 @@ enum ProfileRoute: Route {
             SettingsFactory.makeSettingsView()
         case .scanHistory:
             ScanHistoryFactory.makeScanHistoryView()
+        case .caloriesHistory:
+            CaloriesHistoryFactory.makeView()
         case .scanDetail(let scanId):
             ProductDetailsScreen(scanId: scanId)
         }
