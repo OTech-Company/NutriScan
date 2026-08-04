@@ -248,28 +248,28 @@ private struct AddFoodCarouselCard: View {
         .buttonStyle(.plain)
     }
 }
-
-#Preview("Light — Empty") {
-    DailyProductsSection(dailyKcal: 0, meals: [])
-        .padding()
-        .background(Color.CaloriesSemantic.background)
-        .preferredColorScheme(.light)
-}
-
-#Preview("Light — With Meals") {
-    let mockMeal = CalorieMeal(
-        scanId: "abc-123",
-        productName: "Greek Yogurt",
-        imageUrl: "",
-        mealCnt: 1,
-        nutritionFacts: MealNutritionFacts(
-            calories: 120, proteinGrams: 10,
-            carbsGrams: 15, fatG: 2,
-            fiberGrams: 0, sugarG: 8, sodiumMg: 50
-        )
-    )
-    DailyProductsSection(dailyKcal: 120, meals: [mockMeal, mockMeal])
-        .padding()
-        .background(Color.CaloriesSemantic.background)
-        .preferredColorScheme(.light)
-}
+//
+//#Preview("Light — Empty") {
+//    DailyProductsSection(dailyKcal: 0, meals: [])
+//        .padding()
+//        .background(Color.CaloriesSemantic.background)
+//        .preferredColorScheme(.light)
+//}
+//
+//#Preview("Light — With Meals") {
+//    let mockMeal = CalorieMeal(
+//        scanId: "abc-123",
+//        productName: "Greek Yogurt",
+//        imageUrl: "",
+//        mealCnt: 1,
+//        nutritionFacts: MealNutritionFacts(
+//            calories: 120, proteinGrams: 10,
+//            carbsGrams: 15, fatG: 2,
+//            fiberGrams: 0, sugarG: 8, sodiumMg: 50
+//        )
+//    )
+//    DailyProductsSection(dailyKcal: 120, meals: [mockMeal, mockMeal])
+//        .padding()
+//        .background(Color.CaloriesSemantic.background)
+//        .preferredColorScheme(.light)
+//}

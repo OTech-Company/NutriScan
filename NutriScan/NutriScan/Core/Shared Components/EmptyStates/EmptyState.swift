@@ -90,7 +90,7 @@ enum EmptyState {
         case .noNotifications:
             return "Go back"
         case .noSaved:
-            return "Scan Now"
+            return "Go to Scans"
         case .noSearchResults:
             return "Go to Scan"
         case .noCaloriesHistory:

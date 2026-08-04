@@ -14,8 +14,8 @@ class FavoritesViewModel {
     var isLoadingNextPage: Bool = false
     var isRefreshing: Bool = false
 
-    /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
-    var initialLoadError: String? = nil
+    /// Non-nil only when the very first fetch (page 0) fails or returns empty.
+    var initialEmptyState: EmptyState? = nil
     /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
     var paginationError: String? = nil
 
@@ -58,7 +58,7 @@ class FavoritesViewModel {
     func loadFavorites(search: String? = nil) async {
         currentPage = 0
         hasMorePages = true
-        initialLoadError = nil
+        initialEmptyState = nil
         paginationError = nil
         
         if let search = search, !search.isEmpty {
@@ -93,7 +93,7 @@ class FavoritesViewModel {
             favorites = result.favorites
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialLoadError = nil
+            initialEmptyState = favorites.isEmpty ? .noScans : nil
             notifier.didRefresh()
         } catch {
             favorites = previousFavorites
@@ -133,10 +133,10 @@ class FavoritesViewModel {
             favorites = result.favorites
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialLoadError = nil
+            initialEmptyState = favorites.isEmpty ? .noScans : nil
         } catch {
             if favorites.isEmpty {
-                initialLoadError = error.localizedDescription
+                initialEmptyState = determineEmptyState(for: error)
             }
         }
         
@@ -178,13 +178,27 @@ class FavoritesViewModel {
             
             favorites = allFetched.filter { $0.productName.localizedCaseInsensitiveContains(search) }
             hasMorePages = false
+            initialEmptyState = favorites.isEmpty ? .noSearchResults : nil
         } catch {
             if favorites.isEmpty {
-                initialLoadError = error.localizedDescription
+                initialEmptyState = determineEmptyState(for: error)
             }
         }
         
         isLoadingInitial = false
+    }
+    
+    private func determineEmptyState(for error: Error) -> EmptyState {
+        if !NetworkMonitor.shared.isConnected {
+            return .noConnection
+        }
+        if let urlError = error as? URLError, urlError.code == .notConnectedToInternet || urlError.code == .dataNotAllowed {
+            return .noConnection
+        }
+        if let networkError = error as? NetworkError, case .noInternet = networkError {
+            return .noConnection
+        }
+        return .serverProblem
     }
     
     // MARK: - Remove Favorite

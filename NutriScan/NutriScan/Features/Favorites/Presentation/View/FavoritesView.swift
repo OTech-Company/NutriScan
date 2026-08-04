@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    
+    @EnvironmentObject private var router: AppRouter
     let viewModel: FavoritesViewModel
     @State private var searchText = ""
     @State private var appliedSearchText = ""
@@ -44,13 +44,26 @@ struct FavoritesView: View {
                 // Shimmer placeholder during initial load
                 shimmerGrid
                 
-            } else if let error = viewModel.initialLoadError, viewModel.favorites.isEmpty {
-                // Full-screen error when initial load fails with no data
-                ListErrorView(message: error) {
-                    Task {
-                        await viewModel.loadFavorites()
+            } else if let emptyState = viewModel.initialEmptyState {
+                // Handle noConnection, serverProblem, noScans, noSearchResults
+                Spacer()
+                EmptyStateView(emptyState: emptyState) {
+                    if emptyState == .noConnection || emptyState == .serverProblem {
+                        Task {
+                            await viewModel.loadFavorites()
+                        }
+                    } else if emptyState == .noScans {
+                        router.push(ProfileRoute.scanHistory)
+                    } else if emptyState == .noSearchResults {
+                        searchText = ""
+                        appliedSearchText = ""
+                        Task {
+                            await viewModel.loadFavorites()
+                        }
                     }
                 }
+                Spacer()
+                Spacer()
                 
             } else if !viewModel.favorites.isEmpty {
                 // Populated grid with pagination support
@@ -87,9 +100,6 @@ struct FavoritesView: View {
                 .refreshable {
                     await viewModel.refreshFavorites()
                 }
-                
-            } else {
-                FavoritesEmptyStateView()
             }
         }
         .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
@@ -173,4 +183,5 @@ struct FavoritesView: View {
 
 #Preview {
     FavoritesFactory.makeFavoritesView()
+        .environmentObject(AppRouter())
 }
