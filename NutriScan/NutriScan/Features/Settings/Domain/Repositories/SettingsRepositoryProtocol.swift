@@ -2,6 +2,8 @@
 //  SettingsRepositoryProtocol.swift
 //  NutriScan
 //
+//  Created by Ahmed Nageh on 04/08/2026.
+//
 
 import Foundation
 
@@ -11,4 +13,6 @@ protocol SettingsRepositoryProtocol {
     func setAppearance(_ appearance: AppAppearance)
     func getLanguage() -> AppLanguage
     func setLanguage(_ language: AppLanguage)
+    func deleteAccount() async throws -> DeleteAccountResult
 }
+

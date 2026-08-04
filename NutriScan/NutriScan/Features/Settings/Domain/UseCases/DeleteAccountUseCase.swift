@@ -1,5 +1,5 @@
 //
-//  GetLanguageUseCase.swift
+//  DeleteAccountUseCase.swift
 //  NutriScan
 //
 //  Created by Ahmed Nageh on 04/08/2026.
@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol GetLanguageUseCaseProtocol {
-    func execute() -> AppLanguage
+protocol DeleteAccountUseCaseProtocol {
+    func execute() async throws -> DeleteAccountResult
 }
 
-final class GetLanguageUseCase: GetLanguageUseCaseProtocol {
+final class DeleteAccountUseCase: DeleteAccountUseCaseProtocol {
     private let repository: SettingsRepositoryProtocol
 
     init(repository: SettingsRepositoryProtocol = DIContainer.shared.resolve(type: SettingsRepositoryProtocol.self)) {
         self.repository = repository
     }
 
-    func execute() -> AppLanguage {
-        repository.getLanguage()
+    func execute() async throws -> DeleteAccountResult {
+        try await repository.deleteAccount()
     }
 }

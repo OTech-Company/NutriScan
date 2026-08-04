@@ -17,4 +17,6 @@ enum AppFlow: Equatable {
     case auth
     case profileSetup
     case main
+    case pendingDeletion
 }
+

@@ -38,6 +38,24 @@
 		2C7708F5301573EF00A8FCCE /* ProfileHeaderFailureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F4301573EF00A8FCCE /* ProfileHeaderFailureView.swift */; };
 		2C7708F73015782A00A8FCCE /* MenuIconBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F63015782A00A8FCCE /* MenuIconBadge.swift */; };
 		2C7708F93015783B00A8FCCE /* MenuRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7708F83015783B00A8FCCE /* MenuRowView.swift */; };
+		2C7750103022382E0031F4CE /* DeleteAccountResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77500F3022382E0031F4CE /* DeleteAccountResult.swift */; };
+		2C775013302238590031F4CE /* DeleteAccountResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775011302238590031F4CE /* DeleteAccountResponseDTO.swift */; };
+		2C7750153022387B0031F4CE /* SettingsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7750143022387B0031F4CE /* SettingsEndpoint.swift */; };
+		2C775017302238BE0031F4CE /* DeleteAccountUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775016302238BE0031F4CE /* DeleteAccountUseCase.swift */; };
+		2C77502F302239ED0031F4CE /* AccountRestorationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775027302239ED0031F4CE /* AccountRestorationFactory.swift */; };
+		2C775030302239ED0031F4CE /* AccountRestorationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775026302239ED0031F4CE /* AccountRestorationAssembly.swift */; };
+		2C775031302239ED0031F4CE /* AccountRestorationRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77501A302239ED0031F4CE /* AccountRestorationRepositoryImpl.swift */; };
+		2C775032302239ED0031F4CE /* RestoreAccountResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775018302239ED0031F4CE /* RestoreAccountResponseDTO.swift */; };
+		2C775033302239ED0031F4CE /* AccountRestorationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775029302239ED0031F4CE /* AccountRestorationView.swift */; };
+		2C775034302239ED0031F4CE /* AccountRestorationEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77501C302239ED0031F4CE /* AccountRestorationEndpoint.swift */; };
+		2C775035302239ED0031F4CE /* AccountRestorationRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775021302239ED0031F4CE /* AccountRestorationRepositoryProtocol.swift */; };
+		2C775036302239ED0031F4CE /* AccountRestorationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77502B302239ED0031F4CE /* AccountRestorationViewModel.swift */; };
+		2C775037302239ED0031F4CE /* RestoreAccountResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77501F302239ED0031F4CE /* RestoreAccountResult.swift */; };
+		2C775038302239ED0031F4CE /* RestoreAccountUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C775023302239ED0031F4CE /* RestoreAccountUseCase.swift */; };
+		2C7750A1302239ED0031F4CE /* Color+AccountRestorationSemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7750B1302239ED0031F4CE /* Color+AccountRestorationSemantic.swift */; };
+		2C7750A2302239ED0031F4CE /* AccountRestorationHeaderSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7750B2302239ED0031F4CE /* AccountRestorationHeaderSection.swift */; };
+		2C7750A3302239ED0031F4CE /* AccountRestorationContentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7750B3302239ED0031F4CE /* AccountRestorationContentSection.swift */; };
+		2C7750A4302239ED0031F4CE /* AccountRestorationActionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7750B4302239ED0031F4CE /* AccountRestorationActionsSection.swift */; };
 		2C77D28B30159E18005AF888 /* FamilyMemberInput+DTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C77D28A30159E18005AF888 /* FamilyMemberInput+DTO.swift */; };
 		2C78ECDE300E6C700092E6B2 /* AuthEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECDA300E6C700092E6B2 /* AuthEndpoint.swift */; };
 		2C78ECDF300E6C700092E6B2 /* RegisterResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */; };
@@ -332,6 +350,7 @@
 		A291CBA272BE3AFF361A54AA /* PlusJakartaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C29B6E4A1E5F31C5C67384BF /* PlusJakartaSans-Medium.ttf */; };
 		A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6FE732F6276EEAAB784BF8 /* MealDetailView.swift */; };
 		A35257A4A76A3755EEE65E16 /* SettingsLogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4A4277A981858B216A6242 /* SettingsLogoutButton.swift */; };
+		2C7750D1302239ED0031F4CE /* SettingsDeleteAccountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7750D2302239ED0031F4CE /* SettingsDeleteAccountButton.swift */; };
 		A39BC4577AD209FF500E6E8F /* RecentHistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F3B21F93A5E048D139768D /* RecentHistoryListView.swift */; };
 		A5D7E326B2F6B7CEBDC67198 /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FCB95B1BB5CFB86039766 /* empty.swift */; };
 		AA78F155D98A2E3105D26DEA /* StatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E4ABB684FA06D6470E8FB5 /* StatusType.swift */; };
@@ -674,6 +693,24 @@
 		2C7708F4301573EF00A8FCCE /* ProfileHeaderFailureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderFailureView.swift; sourceTree = "<group>"; };
 		2C7708F63015782A00A8FCCE /* MenuIconBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuIconBadge.swift; sourceTree = "<group>"; };
 		2C7708F83015783B00A8FCCE /* MenuRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuRowView.swift; sourceTree = "<group>"; };
+		2C77500F3022382E0031F4CE /* DeleteAccountResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountResult.swift; sourceTree = "<group>"; };
+		2C775011302238590031F4CE /* DeleteAccountResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountResponseDTO.swift; sourceTree = "<group>"; };
+		2C7750143022387B0031F4CE /* SettingsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEndpoint.swift; sourceTree = "<group>"; };
+		2C775016302238BE0031F4CE /* DeleteAccountUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteAccountUseCase.swift; sourceTree = "<group>"; };
+		2C775018302239ED0031F4CE /* RestoreAccountResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreAccountResponseDTO.swift; sourceTree = "<group>"; };
+		2C77501A302239ED0031F4CE /* AccountRestorationRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationRepositoryImpl.swift; sourceTree = "<group>"; };
+		2C77501C302239ED0031F4CE /* AccountRestorationEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationEndpoint.swift; sourceTree = "<group>"; };
+		2C77501F302239ED0031F4CE /* RestoreAccountResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreAccountResult.swift; sourceTree = "<group>"; };
+		2C775021302239ED0031F4CE /* AccountRestorationRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationRepositoryProtocol.swift; sourceTree = "<group>"; };
+		2C775023302239ED0031F4CE /* RestoreAccountUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreAccountUseCase.swift; sourceTree = "<group>"; };
+		2C775026302239ED0031F4CE /* AccountRestorationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationAssembly.swift; sourceTree = "<group>"; };
+		2C775027302239ED0031F4CE /* AccountRestorationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationFactory.swift; sourceTree = "<group>"; };
+		2C775029302239ED0031F4CE /* AccountRestorationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationView.swift; sourceTree = "<group>"; };
+		2C77502B302239ED0031F4CE /* AccountRestorationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationViewModel.swift; sourceTree = "<group>"; };
+		2C7750B1302239ED0031F4CE /* Color+AccountRestorationSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+AccountRestorationSemantic.swift"; sourceTree = "<group>"; };
+		2C7750B2302239ED0031F4CE /* AccountRestorationHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationHeaderSection.swift; sourceTree = "<group>"; };
+		2C7750B3302239ED0031F4CE /* AccountRestorationContentSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationContentSection.swift; sourceTree = "<group>"; };
+		2C7750B4302239ED0031F4CE /* AccountRestorationActionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRestorationActionsSection.swift; sourceTree = "<group>"; };
 		2C77D28A30159E18005AF888 /* FamilyMemberInput+DTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FamilyMemberInput+DTO.swift"; sourceTree = "<group>"; };
 		2C78ECD2300E6C700092E6B2 /* RegisterRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRequestDTO.swift; sourceTree = "<group>"; };
 		2C78ECD3300E6C700092E6B2 /* RegisterResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterResponseDTO.swift; sourceTree = "<group>"; };
@@ -781,6 +818,7 @@
 		5D27FE2FFDC2F4528D93916E /* HistoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRowView.swift; sourceTree = "<group>"; };
 		5D3A86A27775A323C19D441F /* WeightSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightSelectionView.swift; sourceTree = "<group>"; };
 		5D4A4277A981858B216A6242 /* SettingsLogoutButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLogoutButton.swift; sourceTree = "<group>"; };
+		2C7750D2302239ED0031F4CE /* SettingsDeleteAccountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDeleteAccountButton.swift; sourceTree = "<group>"; };
 		5DCC3D24B114E0EF78A9700D /* BirthdateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdateSelectionView.swift; sourceTree = "<group>"; };
 		60B69FDD807126F49EF22F8D /* SettingsHeaderSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeaderSection.swift; sourceTree = "<group>"; };
 		627DA9F7A0302DB0ABA0E337 /* EditProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileHeaderView.swift; sourceTree = "<group>"; };
@@ -1454,6 +1492,147 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2C775012302238590031F4CE /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				2C775011302238590031F4CE /* DeleteAccountResponseDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		2C775019302239ED0031F4CE /* DTOs */ = {
+			isa = PBXGroup;
+			children = (
+				2C775018302239ED0031F4CE /* RestoreAccountResponseDTO.swift */,
+			);
+			path = DTOs;
+			sourceTree = "<group>";
+		};
+		2C77501B302239ED0031F4CE /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				2C77501A302239ED0031F4CE /* AccountRestorationRepositoryImpl.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		2C77501D302239ED0031F4CE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2C77501C302239ED0031F4CE /* AccountRestorationEndpoint.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2C77501E302239ED0031F4CE /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2C775019302239ED0031F4CE /* DTOs */,
+				2C77501B302239ED0031F4CE /* Repositories */,
+				2C77501D302239ED0031F4CE /* Services */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2C775020302239ED0031F4CE /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				2C77501F302239ED0031F4CE /* RestoreAccountResult.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		2C775022302239ED0031F4CE /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				2C775021302239ED0031F4CE /* AccountRestorationRepositoryProtocol.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		2C775024302239ED0031F4CE /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				2C775023302239ED0031F4CE /* RestoreAccountUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		2C775025302239ED0031F4CE /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				2C775020302239ED0031F4CE /* Entities */,
+				2C775022302239ED0031F4CE /* Repositories */,
+				2C775024302239ED0031F4CE /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		2C775028302239ED0031F4CE /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				2C775026302239ED0031F4CE /* AccountRestorationAssembly.swift */,
+				2C775027302239ED0031F4CE /* AccountRestorationFactory.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		2C77502A302239ED0031F4CE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C7750C0302239ED0031F4CE /* Components */,
+				2C775029302239ED0031F4CE /* AccountRestorationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2C77502C302239ED0031F4CE /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C77502B302239ED0031F4CE /* AccountRestorationViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2C77502D302239ED0031F4CE /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				2C775028302239ED0031F4CE /* DI */,
+				2C7750C1302239ED0031F4CE /* Extensions */,
+				2C77502A302239ED0031F4CE /* View */,
+				2C77502C302239ED0031F4CE /* ViewModel */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		2C77502E302239ED0031F4CE /* AccountRestoration */ = {
+			isa = PBXGroup;
+			children = (
+				2C77501E302239ED0031F4CE /* Data */,
+				2C775025302239ED0031F4CE /* Domain */,
+				2C77502D302239ED0031F4CE /* Presentation */,
+			);
+			path = AccountRestoration;
+			sourceTree = "<group>";
+		};
+		2C7750C0302239ED0031F4CE /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2C7750B2302239ED0031F4CE /* AccountRestorationHeaderSection.swift */,
+				2C7750B3302239ED0031F4CE /* AccountRestorationContentSection.swift */,
+				2C7750B4302239ED0031F4CE /* AccountRestorationActionsSection.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		2C7750C1302239ED0031F4CE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2C7750B1302239ED0031F4CE /* Color+AccountRestorationSemantic.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		2C78ECD4300E6C700092E6B2 /* DTOs */ = {
@@ -2525,6 +2704,7 @@
 			children = (
 				60B69FDD807126F49EF22F8D /* SettingsHeaderSection.swift */,
 				5D4A4277A981858B216A6242 /* SettingsLogoutButton.swift */,
+				2C7750D2302239ED0031F4CE /* SettingsDeleteAccountButton.swift */,
 				558FE7C245EB60BD358F1111 /* SettingsSegmentRow.swift */,
 			);
 			path = Components;
@@ -4253,6 +4433,7 @@
 			children = (
 				E1A000013018000100000001 /* TermsItem.swift */,
 				D4B2B29A301BBB67008F1EA4 /* FaqItem.swift */,
+				2C77500F3022382E0031F4CE /* DeleteAccountResult.swift */,
 				D47700013016000100000001 /* AppAppearance.swift */,
 				D47700073016000100000001 /* AppLanguage.swift */,
 			);
@@ -4278,6 +4459,7 @@
 				D47700043016000100000001 /* UpdateAppearanceUseCase.swift */,
 				D47700093016000100000001 /* GetLanguageUseCase.swift */,
 				D47700113016000100000001 /* UpdateLanguageUseCase.swift */,
+				2C775016302238BE0031F4CE /* DeleteAccountUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -4287,6 +4469,7 @@
 			children = (
 				D47700153016000100000001 /* DataSource */,
 				D477000F3016000100000001 /* Repositories */,
+				2C775012302238590031F4CE /* DTOs */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -4319,6 +4502,7 @@
 				D4B2B2AF301BC1F6008F1EA4 /* HelpLocalDataSourceProtocol.swift */,
 				D47700133016000100000001 /* SettingsLocalDataSourceProtocol.swift */,
 				D47700143016000100000001 /* SettingsLocalDataSourceImpl.swift */,
+				2C7750143022387B0031F4CE /* SettingsEndpoint.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -4604,6 +4788,7 @@
 				5BE042F97BFB4034184FEC5F /* Scan */,
 				37F49B449D13AB9A39703B59 /* Splash */,
 				2C7A714B301E065200A02CBF /* NotificationSettings */,
+				2C77502E302239ED0031F4CE /* AccountRestoration */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -4849,6 +5034,20 @@
 				6F1A8EC93012BE2100E1ACC5 /* RAGChatInputView.swift in Sources */,
 				6F1A8ECA3012BE2100E1ACC5 /* RAGMessageBubbleView.swift in Sources */,
 				6F1A8ECB3012BE2100E1ACC5 /* RAGChatView.swift in Sources */,
+				2C77502F302239ED0031F4CE /* AccountRestorationFactory.swift in Sources */,
+				2C775030302239ED0031F4CE /* AccountRestorationAssembly.swift in Sources */,
+				2C775031302239ED0031F4CE /* AccountRestorationRepositoryImpl.swift in Sources */,
+				2C775032302239ED0031F4CE /* RestoreAccountResponseDTO.swift in Sources */,
+				2C775033302239ED0031F4CE /* AccountRestorationView.swift in Sources */,
+				2C7750A1302239ED0031F4CE /* Color+AccountRestorationSemantic.swift in Sources */,
+				2C7750A2302239ED0031F4CE /* AccountRestorationHeaderSection.swift in Sources */,
+				2C7750A3302239ED0031F4CE /* AccountRestorationContentSection.swift in Sources */,
+				2C7750A4302239ED0031F4CE /* AccountRestorationActionsSection.swift in Sources */,
+				2C775034302239ED0031F4CE /* AccountRestorationEndpoint.swift in Sources */,
+				2C775035302239ED0031F4CE /* AccountRestorationRepositoryProtocol.swift in Sources */,
+				2C775036302239ED0031F4CE /* AccountRestorationViewModel.swift in Sources */,
+				2C775037302239ED0031F4CE /* RestoreAccountResult.swift in Sources */,
+				2C775038302239ED0031F4CE /* RestoreAccountUseCase.swift in Sources */,
 				6F1A8ECC3012BE2100E1ACC5 /* RAGEndpoint.swift in Sources */,
 				6F1A8ECD3012BE2100E1ACC5 /* RAGRoute.swift in Sources */,
 				6F1A8ECE3012BE2100E1ACC5 /* RAGError.swift in Sources */,
@@ -4970,6 +5169,7 @@
 				D4B2B297301BBB1C008F1EA4 /* HelperSemantics.swift in Sources */,
 				6F1A8E953012AAE100E1ACC5 /* NewsFeedTypography.swift in Sources */,
 				5BDFB387E5C37B41261F67A8 /* FloatingTabButton.swift in Sources */,
+				2C7750153022387B0031F4CE /* SettingsEndpoint.swift in Sources */,
 				2C7708F3301573DC00A8FCCE /* ProfileHeaderLoadingView.swift in Sources */,
 				D4BAA31430137E6C006EDB11 /* FamilyMembersSectionView.swift in Sources */,
 				2C78ED33300E6D080092E6B2 /* APIErrorResponse.swift in Sources */,
@@ -4991,6 +5191,7 @@
 				2C7A7156301E065200A02CBF /* NotificationToggleRow.swift in Sources */,
 				8FB0F0403016A31600D84471 /* FavoritesFactory.swift in Sources */,
 				D4BAA30830137C5A006EDB11 /* AddMemberCardView.swift in Sources */,
+				2C775017302238BE0031F4CE /* DeleteAccountUseCase.swift in Sources */,
 				D4BAA31230137DCA006EDB11 /* ProfileHeaderView.swift in Sources */,
 				42F9D647511ABEAC2701E34B /* GenderSelectionRow.swift in Sources */,
 				4D803C8562BBF94E95931A60 /* Haptics.swift in Sources */,
@@ -5005,6 +5206,7 @@
 				26993C95C78FCE1152995328 /* HomeGreetingSection.swift in Sources */,
 				1956CD6875A2E91F0FDF904E /* HomeReadyToScanSection.swift in Sources */,
 				D489D1B73018E23700E7A1DF /* SharedFamilyMemberDTO+Domain.swift in Sources */,
+				2C775013302238590031F4CE /* DeleteAccountResponseDTO.swift in Sources */,
 				B162DF26175CC92043103900 /* HomeRoute.swift in Sources */,
 				C582C146301FFBF1000F7DE5 /* CaloriesHistorySemantic.swift in Sources */,
 				EEC0C0F7B84E3B39F14FAEE7 /* HomeSummaryView.swift in Sources */,
@@ -5055,6 +5257,7 @@
 				2C78ED10300E6C7E0092E6B2 /* ForgotPasswordViewModel.swift in Sources */,
 				8FB0F03830168EBC00D84471 /* FavoritesMapper.swift in Sources */,
 				2C78ED11300E6C7E0092E6B2 /* RegisterRequest.swift in Sources */,
+				2C7750103022382E0031F4CE /* DeleteAccountResult.swift in Sources */,
 				8FD8BB6F301787F400FB37DD /* ScanHistoryItemDTO.swift in Sources */,
 				2C78ED12300E6C7E0092E6B2 /* ForgotPasswordConfirmationPopup.swift in Sources */,
 				2C78ED13300E6C7E0092E6B2 /* AuthRepositoryProtocol.swift in Sources */,
@@ -5185,6 +5388,7 @@
 				D489D1B53018E20900E7A1DF /* SharedProfileResponseDTO+Domain.swift in Sources */,
 				D489D1C43018E47300E7A1DF /* ObserveProfileUseCase.swift in Sources */,
 				A35257A4A76A3755EEE65E16 /* SettingsLogoutButton.swift in Sources */,
+				2C7750D1302239ED0031F4CE /* SettingsDeleteAccountButton.swift in Sources */,
 				DF8C799C34206520431D05F1 /* SettingsSegmentRow.swift in Sources */,
 				8FEFD4A530162CFE00981444 /* FavUIState.swift in Sources */,
 				1D6E84E32F4668FB17E8512E /* SettingsView.swift in Sources */,
