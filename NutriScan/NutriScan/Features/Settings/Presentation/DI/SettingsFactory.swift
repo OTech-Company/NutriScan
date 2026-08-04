@@ -2,6 +2,8 @@
 //  SettingsFactory.swift
 //  NutriScan
 //
+//  Created by Ahmed Nageh on 04/08/2026.
+//
 
 import SwiftUI
 
@@ -12,7 +14,8 @@ final class SettingsFactory {
             getAppearanceUseCase: DIContainer.shared.resolve(type: GetAppearanceUseCaseProtocol.self),
             updateAppearanceUseCase: DIContainer.shared.resolve(type: UpdateAppearanceUseCaseProtocol.self),
             getLanguageUseCase: DIContainer.shared.resolve(type: GetLanguageUseCaseProtocol.self),
-            updateLanguageUseCase: DIContainer.shared.resolve(type: UpdateLanguageUseCaseProtocol.self)
+            updateLanguageUseCase: DIContainer.shared.resolve(type: UpdateLanguageUseCaseProtocol.self),
+            deleteAccountUseCase: DIContainer.shared.resolve(type: DeleteAccountUseCaseProtocol.self)
         )
         return SettingsView(viewModel: viewModel)
     }

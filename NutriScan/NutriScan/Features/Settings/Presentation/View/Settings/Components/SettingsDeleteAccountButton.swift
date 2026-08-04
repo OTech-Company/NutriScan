@@ -1,5 +1,5 @@
 //
-//  SettingsLogoutButton.swift
+//  SettingsDeleteAccountButton.swift
 //  NutriScan
 //
 //  Created by Ahmed Nageh on 04/08/2026.
@@ -7,22 +7,22 @@
 
 import SwiftUI
 
-// MARK: - Logout Button
-struct SettingsLogoutButton: View {
+// MARK: - Delete Account Button
+struct SettingsDeleteAccountButton: View {
     var action: () -> Void
 
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
                 // Icon Badge
-                Image("logout")
+                Image(systemName: "trash.fill")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.SettingsSemantic.logoutIcon)
                     .frame(width: 45, height: 45)
                     .background(Color.SettingsSemantic.logoutIconBackground)
                     .clipShape(Circle())
 
-                Text("Logout")
+                Text("Delete Account")
                     .font(Font.AppFont.textPrimary)
                     .fontWeight(.semibold)
                     .foregroundColor(Color.SettingsSemantic.logoutTitle)
@@ -43,7 +43,7 @@ struct SettingsLogoutButton: View {
 }
 
 #Preview {
-    SettingsLogoutButton(action: {})
+    SettingsDeleteAccountButton(action: {})
         .padding()
         .background(Color.SettingsSemantic.screenBackground)
 }
