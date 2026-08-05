@@ -7,10 +7,25 @@
 
 import Foundation
 
+private actor GetProfileCoordinator {
+    private var inFlight: Task<UserProfileResponseDTO, Error>?
+
+    func fetch(_ operation: @Sendable @escaping () async throws -> UserProfileResponseDTO) async throws -> UserProfileResponseDTO {
+        if let inFlight {
+            return try await inFlight.value
+        }
+        let task = Task { try await operation() }
+        inFlight = task
+        defer { inFlight = nil }
+        return try await task.value
+    }
+}
+
 final class UserProfileRepository: UserProfileRepositoryProtocol {
     private let dataSource: UserProfileDataSourceProtocol
     private let sharedStore: UserProfileStore
     private var imageCacheVersion: String = ""
+    private let getProfileCoordinator = GetProfileCoordinator()
 
     init(
         dataSource: UserProfileDataSourceProtocol = DIContainer.shared.resolve(
@@ -24,7 +39,6 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
 
     // MARK: - URL Helpers
 
-    /// Safely appends or updates a cache-busting query parameter using URLComponents
     private func applyCacheBuster(to urlString: String?, version: String)
         -> String?
     {
@@ -59,7 +73,9 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
     // MARK: - Protocol Methods
 
     func getProfile() async throws {
-        let dto: UserProfileResponseDTO = try await dataSource.getProfile()
+        let dto: UserProfileResponseDTO = try await getProfileCoordinator.fetch {
+            try await self.dataSource.getProfile()
+        }
         let profile = processProfile(dto)
         await MainActor.run { self.sharedStore.currentProfile = profile }
     }
@@ -95,14 +111,15 @@ final class UserProfileRepository: UserProfileRepositoryProtocol {
     // MARK: - Streak Methods
 
     func getStreak() async throws -> Int {
-        let dto: UserProfileResponseDTO = try await dataSource.getProfile()
+        let dto: UserProfileResponseDTO = try await getProfileCoordinator.fetch {
+            try await self.dataSource.getProfile()
+        }
         let profile = processProfile(dto)
         return profile.dailyStreak
     }
 
     func updateStreak() async throws {
         try await dataSource.updateStreak()
-
         let dto: UserProfileResponseDTO = try await dataSource.getProfile()
         _ = processProfile(dto)
     }
