@@ -37,6 +37,10 @@ final class NetworkService: NetworkServiceProtocol {
         var request = URLRequest(url: url)
         request.httpMethod = endpoint.method.rawValue
         request.allHTTPHeaderFields = endpoint.headers
+        // Default URLSession timeout is 60s — way too long for a mobile UI.
+        // If the server hangs on an endpoint, fail fast instead of leaving
+        // the user staring at a splash/loading screen for a full minute.
+        request.timeoutInterval = 15
 
         // Attach Authorization header from Keychain if required
         if endpoint.requiresAuth,
@@ -69,8 +73,12 @@ final class NetworkService: NetworkServiceProtocol {
             request.setValue(form.contentTypeHeader, forHTTPHeaderField: "Content-Type")
         }
 
-        // Log outgoing request
-        NetworkLogger.log(request: request)
+        // Log outgoing request — fire-and-forget so logging (JSON pretty-print,
+        // console/file I/O, etc.) never blocks the actual network call.
+        let outgoingRequest = request
+        Task.detached(priority: .background) {
+            NetworkLogger.log(request: outgoingRequest)
+        }
         let startTime = Date()
 
         do {
@@ -80,8 +88,10 @@ final class NetworkService: NetworkServiceProtocol {
                 throw NetworkError.unknown(URLError(.badServerResponse))
             }
 
-            // Log incoming response
-            NetworkLogger.log(response: httpResponse, data: data, startTime: startTime)
+            // Log incoming response — same fire-and-forget treatment as above.
+            Task.detached(priority: .background) {
+                NetworkLogger.log(response: httpResponse, data: data, startTime: startTime)
+            }
 
             // 401 handling: refresh once, then re-run this ENTIRE function via
             // recursion (isRetry: true) instead of duplicating the request/decode
@@ -121,10 +131,14 @@ final class NetworkService: NetworkServiceProtocol {
             }
 
         } catch let error as NetworkError {
-            NetworkLogger.log(error: error, for: request)
+            Task.detached(priority: .background) {
+                NetworkLogger.log(error: error, for: request, startTime: startTime)
+            }
             throw error
         } catch {
-            NetworkLogger.log(error: error, for: request)
+            Task.detached(priority: .background) {
+                NetworkLogger.log(error: error, for: request, startTime: startTime)
+            }
             throw NetworkError.unknown(error)
         }
     }
