@@ -124,6 +124,8 @@
 		2C78F014300E6D180092E6B3 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F013300E6D180092E6B3 /* Notification+Extensions.swift */; };
 		2C78F016300E6D180092E6B3 /* TokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F015300E6D180092E6B3 /* TokenRefresher.swift */; };
 		2C7A714C301E065200A02CBF /* GetNotificationPreferencesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7138301E065200A02CBF /* GetNotificationPreferencesUseCase.swift */; };
+		NF001B0130200001000000001 /* GetQuietHoursUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001B0130200001000000001R /* GetQuietHoursUseCase.swift */; };
+		NF001B0230200001000000001 /* SetQuietHoursEnabledUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001B0230200001000000001R /* SetQuietHoursEnabledUseCase.swift */; };
 		2C7A714D301E065200A02CBF /* NotificationSettingsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A713F301E065200A02CBF /* NotificationSettingsFactory.swift */; };
 		2C7A714E301E065200A02CBF /* NotificationSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7148301E065200A02CBF /* NotificationSettingsViewModel.swift */; };
 		2C7A714F301E065200A02CBF /* NotificationPreferencesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7135301E065200A02CBF /* NotificationPreferencesRepository.swift */; };
@@ -133,6 +135,7 @@
 		2C7A7154301E065200A02CBF /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7146301E065200A02CBF /* NotificationSettingsView.swift */; };
 		2C7A7155301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A713A301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift */; };
 		2C7A7156301E065200A02CBF /* NotificationToggleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7143301E065200A02CBF /* NotificationToggleRow.swift */; };
+		NF001C0130200001000000001 /* QuietHoursToggleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001C0130200001000000001R /* QuietHoursToggleRow.swift */; };
 		2C7A715C301E1A7900A02CBF /* NotificationPreferencesRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A715B301E1A7900A02CBF /* NotificationPreferencesRepositoryProtocol.swift */; };
 		2C7A7902301E065200A02CBF /* NotificationHistorySDModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7901301E065200A02CBF /* NotificationHistorySDModel.swift */; };
 		2C7A7904301E065200A02CBF /* MarkNotificationAsReadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7903301E065200A02CBF /* MarkNotificationAsReadUseCase.swift */; };
@@ -798,11 +801,14 @@
 		2C78F015300E6D180092E6B3 /* TokenRefresher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefresher.swift; sourceTree = "<group>"; };
 		2C7A7135301E065200A02CBF /* NotificationPreferencesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferencesRepository.swift; sourceTree = "<group>"; };
 		2C7A7138301E065200A02CBF /* GetNotificationPreferencesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNotificationPreferencesUseCase.swift; sourceTree = "<group>"; };
+		NF001B0130200001000000001R /* GetQuietHoursUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuietHoursUseCase.swift; sourceTree = "<group>"; };
+		NF001B0230200001000000001R /* SetQuietHoursEnabledUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetQuietHoursEnabledUseCase.swift; sourceTree = "<group>"; };
 		2C7A713A301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationCategoryEnabledUseCase.swift; sourceTree = "<group>"; };
 		2C7A713E301E065200A02CBF /* NotificationSettingsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsAssembly.swift; sourceTree = "<group>"; };
 		2C7A713F301E065200A02CBF /* NotificationSettingsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsFactory.swift; sourceTree = "<group>"; };
 		2C7A7141301E065200A02CBF /* Color+NotificationSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+NotificationSemantic.swift"; sourceTree = "<group>"; };
 		2C7A7143301E065200A02CBF /* NotificationToggleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToggleRow.swift; sourceTree = "<group>"; };
+		NF001C0130200001000000001R /* QuietHoursToggleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuietHoursToggleRow.swift; sourceTree = "<group>"; };
 		2C7A7144301E065200A02CBF /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		2C7A7146301E065200A02CBF /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		2C7A7148301E065200A02CBF /* NotificationSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -1925,6 +1931,8 @@
 			children = (
 				2C7A7138301E065200A02CBF /* GetNotificationPreferencesUseCase.swift */,
 				2C7A713A301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift */,
+				NF001B0130200001000000001R /* GetQuietHoursUseCase.swift */,
+				NF001B0230200001000000001R /* SetQuietHoursEnabledUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -1960,6 +1968,7 @@
 			children = (
 				2C7A7143301E065200A02CBF /* NotificationToggleRow.swift */,
 				2C7A7144301E065200A02CBF /* SectionHeader.swift */,
+				NF001C0130200001000000001R /* QuietHoursToggleRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -5369,6 +5378,8 @@
 				8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */,
 				291DBDE1D916C9441EFA202F /* GenderSelectionCardConstants.swift in Sources */,
 				2C7A714C301E065200A02CBF /* GetNotificationPreferencesUseCase.swift in Sources */,
+				NF001B0130200001000000001 /* GetQuietHoursUseCase.swift in Sources */,
+				NF001B0230200001000000001 /* SetQuietHoursEnabledUseCase.swift in Sources */,
 				2C7A714D301E065200A02CBF /* NotificationSettingsFactory.swift in Sources */,
 				2C7A714E301E065200A02CBF /* NotificationSettingsViewModel.swift in Sources */,
 				2C7A714F301E065200A02CBF /* NotificationPreferencesRepository.swift in Sources */,
@@ -5378,6 +5389,7 @@
 				2C7A7154301E065200A02CBF /* NotificationSettingsView.swift in Sources */,
 				2C7A7155301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift in Sources */,
 				2C7A7156301E065200A02CBF /* NotificationToggleRow.swift in Sources */,
+				NF001C0130200001000000001 /* QuietHoursToggleRow.swift in Sources */,
 				8FB0F0403016A31600D84471 /* FavoritesFactory.swift in Sources */,
 				D4BAA30830137C5A006EDB11 /* AddMemberCardView.swift in Sources */,
 				2C775017302238BE0031F4CE /* DeleteAccountUseCase.swift in Sources */,

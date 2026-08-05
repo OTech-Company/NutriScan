@@ -34,6 +34,10 @@ extension Color {
             light: Color.Gray.gray600,
             dark: .white
         )
+        static let subtitleText = Color(
+            light: Color.Gray.gray600,
+            dark: Color.Teal.teal400
+        )
         
         // MARK: - Icons & Controls
         static let iconTint = Color(
