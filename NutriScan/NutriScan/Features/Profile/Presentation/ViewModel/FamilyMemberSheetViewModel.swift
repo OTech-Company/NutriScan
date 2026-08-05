@@ -37,7 +37,7 @@ final class FamilyMemberSheetViewModel {
     private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
 
     var isEditMode: Bool { existingMember != nil }
-    
+
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
@@ -136,7 +136,13 @@ final class FamilyMemberSheetViewModel {
     }
 
     private func buildInput() -> FamilyMemberInput {
-        FamilyMemberInput(name: name.value, relation: relation.value, allergyIds: allergies.selectedIds, diseaseIds: conditions.selectedIds)
+        FamilyMemberInput(
+            id: existingMember?.id,
+            name: name.value,
+            relation: relation.value,
+            allergyIds: allergies.selectedIds,
+            diseaseIds: conditions.selectedIds
+        )
     }
 
     func submit() -> FamilyMemberInput? {

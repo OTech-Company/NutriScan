@@ -7,8 +7,6 @@
 
 import Foundation
 
-/// Lightweight wrapper so a plain, already-localized error message can be used
-/// as a `Result` failure type without conforming `String` itself to `Error`.
 private struct MessageError: Error {
     let message: String
 }
@@ -68,19 +66,19 @@ final class ProfileViewModel {
 
     @MainActor
     func addFamilyMember(_ newMember: FamilyMemberInput, imageData: Data?) async -> String? {
-        let idsBefore = Set(familyMembers.map(\.id))
+        
+        let newIndex = familyMembers.count
         let payload = familyMembers.map { $0.toInput() } + [newMember]
 
         switch await submitFamilyMembers(payload) {
         case .failure(let error):
             return error.message
         case .success(let refreshed):
-            guard let imageData,
-                  let created = refreshed.first(where: { !idsBefore.contains($0.id) })
-            else { return nil }
+            guard let imageData, refreshed.indices.contains(newIndex) else { return nil }
+            let resolvedId = refreshed[newIndex].id
 
             do {
-                try await uploadFamilyMemberImageUseCase.execute(id: created.id, data: imageData)
+                try await uploadFamilyMemberImageUseCase.execute(id: resolvedId, data: imageData)
             } catch {
                 return "Member added, but image upload failed: \(error.localizedDescription)"
             }
@@ -90,6 +88,7 @@ final class ProfileViewModel {
 
     @MainActor
     func updateFamilyMember(id: String, with updated: FamilyMemberInput, imageData: Data?) async -> String? {
+        
         let payload = familyMembers.map { $0.id == id ? updated : $0.toInput() }
 
         switch await submitFamilyMembers(payload) {
@@ -117,7 +116,7 @@ final class ProfileViewModel {
         case .success: return nil
         }
     }
-
+    
     @MainActor
     private func submitFamilyMembers(_ members: [FamilyMemberInput]) async -> Result<[FamilyMember], MessageError> {
         isMutating = true
