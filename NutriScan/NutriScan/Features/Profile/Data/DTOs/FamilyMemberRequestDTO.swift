@@ -8,6 +8,7 @@
 import Foundation
 
 struct FamilyMemberRequestDTO: Codable {
+    let id: String?
     let name: String
     let relation: String
     let allergyIds: [Int]

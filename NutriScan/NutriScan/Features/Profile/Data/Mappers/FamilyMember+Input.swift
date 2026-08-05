@@ -10,6 +10,7 @@ import Foundation
 extension FamilyMember {
     func toInput() -> FamilyMemberInput {
         FamilyMemberInput(
+            id: id,
             name: name,
             relation: relation,
             allergyIds: allergies.map(\.id),
