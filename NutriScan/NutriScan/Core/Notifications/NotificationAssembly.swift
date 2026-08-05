@@ -5,7 +5,6 @@
 //  Created by Ahmed Nageh on 01/08/2026.
 //
 
-
 import Foundation
 
 struct NotificationAssembly: Assembly {
@@ -20,7 +19,8 @@ struct NotificationAssembly: Assembly {
         container.register(
             type: NotificationServiceProtocol.self,
             component: NotificationService(
-                muteStore: container.resolve(type: NotificationMuteStoreProtocol.self)
+                muteStore: container.resolve(type: NotificationMuteStoreProtocol.self),
+                historySaver: container.resolve(type: NotificationHistorySaving.self)
             )
         )
     }

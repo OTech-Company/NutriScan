@@ -13,13 +13,16 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
 
     private let center: UNUserNotificationCenter
     private let muteStore: NotificationMuteStoreProtocol
+    private let historySaver: NotificationHistorySaving?
 
     init(
         center: UNUserNotificationCenter = .current(),
-        muteStore: NotificationMuteStoreProtocol
+        muteStore: NotificationMuteStoreProtocol,
+        historySaver: NotificationHistorySaving? = nil
     ) {
         self.center = center
         self.muteStore = muteStore
+        self.historySaver = historySaver
         super.init()
         center.delegate = self
     }
@@ -77,6 +80,16 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
         )
 
         try await center.add(request)
+
+        // Save to Notification History
+        let historyItem = NotificationHistoryItem(
+            title: notification.title,
+            body: notification.body,
+            category: notification.category,
+            timestamp: Date(),
+            isRead: false
+        )
+        historySaver?.saveItem(historyItem)
     }
 
     // MARK: - Cancellation
