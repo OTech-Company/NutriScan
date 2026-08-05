@@ -8,13 +8,20 @@
 import Foundation
 
 enum NetworkLogger {
+    /// Bodies larger than this are just summarized (size only) instead of
+    /// JSON-pretty-printed and dumped to the console. Printing megabytes of
+    /// text (e.g. a base64 image inside a multipart body) to the Xcode
+    /// console is itself slow and can make requests *feel* slow even though
+    /// the network call already finished.
+    private static let maxLoggedBodySize = 20_000 // ~20 KB
+
     static func log(request: URLRequest) {
         #if DEBUG
         print("\n================ 🌐 OUTGOING REQUEST 🌐 ================")
         if let method = request.httpMethod, let url = request.url {
             print("➡️ [\(method)] \(url.absoluteString)")
         }
-        
+
         if let headers = request.allHTTPHeaderFields, !headers.isEmpty {
             print("📋 Headers:")
             for (key, value) in headers {
@@ -26,16 +33,10 @@ enum NetworkLogger {
                 }
             }
         }
-        
+
         if let body = request.httpBody {
             print("📦 Body:")
-            if let jsonString = prettyPrintJSON(data: body) {
-                print(jsonString)
-            } else if let bodyString = String(data: body, encoding: .utf8) {
-                print(bodyString)
-            } else {
-                print("   [\(body.count) bytes of binary data]")
-            }
+            printBody(body)
         }
         print("========================================================\n")
         #endif
@@ -46,35 +47,48 @@ enum NetworkLogger {
         let duration = String(format: "%.2f", Date().timeIntervalSince(startTime) * 1000)
         let statusCode = response.statusCode
         let icon = (200...299).contains(statusCode) ? "✅" : "❌"
-        
+
         print("\n================ 📥 INCOMING RESPONSE 📥 ================")
         if let url = response.url {
             print("\(icon) [\(statusCode)] \(url.absoluteString) (\(duration) ms)")
         }
-        
+
         if let data = data, !data.isEmpty {
             print("📦 Response Body:")
-            if let jsonString = prettyPrintJSON(data: data) {
-                print(jsonString)
-            } else if let bodyString = String(data: data, encoding: .utf8) {
-                print(bodyString)
-            } else {
-                print("   [\(data.count) bytes of data]")
-            }
+            printBody(data)
         }
         print("========================================================\n")
         #endif
     }
 
-    static func log(error: Error, for request: URLRequest) {
+    static func log(error: Error, for request: URLRequest, startTime: Date) {
         #if DEBUG
+        let duration = String(format: "%.2f", Date().timeIntervalSince(startTime) * 1000)
         print("\n================ 💥 REQUEST ERROR 💥 ================")
         if let method = request.httpMethod, let url = request.url {
-            print("❌ [\(method)] \(url.absoluteString)")
+            print("❌ [\(method)] \(url.absoluteString) (waited \(duration) ms)")
         }
         print("🔴 Error: \(error.localizedDescription)")
         print("====================================================\n")
         #endif
+    }
+
+    #if DEBUG
+    /// Prints a body, but skips expensive pretty-printing/decoding and
+    /// console spam for large payloads (images, big multipart bodies, etc.).
+    private static func printBody(_ body: Data) {
+        guard body.count <= maxLoggedBodySize else {
+            print("   [\(body.count) bytes — skipped logging, too large]")
+            return
+        }
+
+        if let jsonString = prettyPrintJSON(data: body) {
+            print(jsonString)
+        } else if let bodyString = String(data: body, encoding: .utf8) {
+            print(bodyString)
+        } else {
+            print("   [\(body.count) bytes of binary data]")
+        }
     }
 
     private static func prettyPrintJSON(data: Data) -> String? {
@@ -85,4 +99,5 @@ enum NetworkLogger {
         }
         return prettyString
     }
+    #endif
 }
