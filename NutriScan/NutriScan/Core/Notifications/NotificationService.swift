@@ -5,7 +5,6 @@
 //  Created by Ahmed Nageh on 01/08/2026.
 //
 
-
 import UserNotifications
 import Foundation
 
@@ -49,7 +48,7 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
         }
     }
     
-    // MARK: - Authorization
+    // MARK: - Authorization Helper
 
     private func hasAuthorization() async -> Bool {
          let settings = await center.notificationSettings()
@@ -60,8 +59,9 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
     // MARK: - Scheduling
 
     func schedule<T: LocalNotification>(_ notification: T) async throws {
-        // Silently skip muted categories — not an error
+        // Silently skip muted categories or quiet hours
         guard !muteStore.isMuted(category: notification.category) else { return }
+        guard !muteStore.isWithinQuietHours() else { return }
         guard await hasAuthorization() else { return }
 
         let content = UNMutableNotificationContent()
@@ -113,6 +113,22 @@ final class NotificationService: NSObject, NotificationServiceProtocol {
     func isMuted(category: NotificationCategory) -> Bool {
         muteStore.isMuted(category: category)
     }
+
+    // MARK: - Quiet Hours pass-throughs
+
+    var isQuietHoursEnabled: Bool {
+        muteStore.isQuietHoursEnabled
+    }
+
+    func setQuietHoursEnabled(_ enabled: Bool) {
+        muteStore.setQuietHoursEnabled(enabled)
+    }
+
+    var quietHoursTimeString: String {
+        let start = String(format: "%02d:00", muteStore.quietHoursStart)
+        let end = String(format: "%02d:00", muteStore.quietHoursEnd)
+        return "\(start) - \(end)"
+    }
 }
 
 // MARK: - UNUserNotificationCenterDelegate
@@ -125,5 +141,16 @@ extension NotificationService: UNUserNotificationCenterDelegate {
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
         completionHandler([.banner, .sound, .badge])
+    }
+
+    /// Handles user interaction when tapping a notification from background or terminated state.
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        let categoryIdentifier = response.notification.request.content.categoryIdentifier
+        print("User tapped notification with category: \(categoryIdentifier)")
+        completionHandler()
     }
 }

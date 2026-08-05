@@ -2,6 +2,8 @@
 //  NotificationServiceProtocol.swift
 //  NutriScan
 //
+//  Created by Ahmed Nageh on 01/08/2026.
+//
 
 import Foundation
 
@@ -24,4 +26,9 @@ protocol NotificationServiceProtocol {
 
     /// Convenience pass-through: returns whether a category is muted.
     func isMuted(category: NotificationCategory) -> Bool
+
+    /// Quiet Hours pass-throughs
+    var isQuietHoursEnabled: Bool { get }
+    func setQuietHoursEnabled(_ enabled: Bool)
+    var quietHoursTimeString: String { get }
 }
