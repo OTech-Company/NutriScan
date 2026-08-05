@@ -14,24 +14,30 @@ struct FamilyMemberCardView: View {
     var body: some View {
         VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
             HStack(spacing: ProfileSemantics.Spacing.tinySpacing) {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .foregroundColor(Color.Gray.gray400)
-                    .frame(
-                        width: ProfileSemantics.Sizes.familyMemberImageSize,
-                        height: ProfileSemantics.Sizes.familyMemberImageSize
-                    )
-                    .clipShape(Circle())
-                    .overlay(
-                        Circle()
-                            .stroke(Color.Teal.teal1600, lineWidth: ProfileSemantics.Border.avatarBorderWidth)
-                    )
+
+                CachedImage(
+                    urlString: member.imageUrl ?? "",
+                    failureImageName: "person.circle.fill",
+                    contentMode: .fill
+                )
+                .frame(
+                    width: ProfileSemantics.Sizes.familyMemberImageSize,
+                    height: ProfileSemantics.Sizes.familyMemberImageSize
+                )
+                .foregroundColor(Color.Gray.gray400)
+                .clipShape(Circle())
+                .overlay(
+                    Circle().stroke(
+                        Color.Teal.teal1600,
+                        lineWidth: ProfileSemantics.Border.avatarBorderWidth)
+                )
 
                 Text(member.name)
                     .font(Font.AppFont.textCaption)
                     .foregroundColor(Color.ProfileSemantics.memberName)
                     .lineLimit(ProfileSemantics.Sizes.singleLine)
-                    .minimumScaleFactor(ProfileSemantics.Sizes.minimumScaleFactor)
+                    .minimumScaleFactor(
+                        ProfileSemantics.Sizes.minimumScaleFactor)
             }
 
             ShowDetailsButton(action: onShowDetails)

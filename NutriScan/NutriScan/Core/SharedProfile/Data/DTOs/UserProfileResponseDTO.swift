@@ -13,6 +13,7 @@ struct UserProfileResponseDTO: Codable {
     let username: String
     let firstName: String
     let lastName: String
+    let dailyStreak: Int?
     let imageUrl: String?
     let dateOfBirth: String?
     let gender: String?

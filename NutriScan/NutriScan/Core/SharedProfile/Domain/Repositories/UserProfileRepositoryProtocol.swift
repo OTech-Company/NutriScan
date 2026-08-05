@@ -16,4 +16,5 @@ protocol UserProfileRepositoryProtocol {
     func getStreak() async throws -> Int
     func updateStreak() async throws
     func uploadProfileImage(data: Data) async throws
+    func uploadFamilyMemberImage(id: String, data: Data) async throws
 }

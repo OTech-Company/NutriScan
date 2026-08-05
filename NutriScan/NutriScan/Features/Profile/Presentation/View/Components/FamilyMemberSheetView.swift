@@ -5,32 +5,48 @@
 //  Created by Mina_Wagdy on 25/07/2026.
 //
 
+import PhotosUI
 import SwiftUI
 
 struct FamilyMemberSheetView: View {
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
 
-    // MARK: - Local Edit & Alert States
     @State private var isEditingMode: Bool
     @State private var activeAlert: ActiveAlert = .none
+    @State private var selectedPhotoItem: PhotosPickerItem?
 
-    let onSave: (FamilyMemberInput) -> Void
-    let onDelete: (() -> Void)?
+    let onSave: (FamilyMemberInput, Data?) async -> String?
+    let onDelete: (() async -> String?)?
 
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
-        onSave: @escaping (FamilyMemberInput) -> Void,
-        onDelete: (() -> Void)? = nil
+        onSave: @escaping (FamilyMemberInput, Data?) async -> String?,
+        onDelete: (() async -> String?)? = nil
     ) {
         let vm = FamilyMemberSheetViewModel(
             existingMember: existingMember, allMembers: allMembers)
         _viewModel = State(initialValue: vm)
-        // If it's a new member, start directly in editing mode. If editing, start locked.
         _isEditingMode = State(initialValue: existingMember == nil)
         self.onSave = onSave
         self.onDelete = onDelete
+    }
+
+    private func performSave(input: FamilyMemberInput) {
+        Task {
+            viewModel.isSaving = true
+            if let errorMessage = await onSave(
+                input, viewModel.pendingImageData)
+            {
+                viewModel.errorMessage = errorMessage
+                viewModel.alertContext = .networkError
+                activeAlert = .error
+            } else {
+                dismiss()
+            }
+            viewModel.isSaving = false
+        }
     }
 
     var body: some View {
@@ -47,38 +63,93 @@ struct FamilyMemberSheetView: View {
                 )
                 .padding(.top, ProfileSemantics.Spacing.smallSpacing)
 
-                ZStack {
-                    Circle()
-                        .stroke(
-                            Color.Teal.teal700,
-                            lineWidth: ProfileSemantics.Border
-                                .avatarThickBorderWidth
-                        )
-                        .frame(
-                            width: ProfileSemantics.Sizes.sheetAvatarSize,
-                            height: ProfileSemantics.Sizes.sheetAvatarSize
-                        )
+                PhotosPicker(
+                    selection: $selectedPhotoItem, matching: .images,
+                    photoLibrary: .shared()
+                ) {
+                    ZStack {
+                        Circle()
+                            .stroke(
+                                Color.Teal.teal700,
+                                lineWidth: ProfileSemantics.Border
+                                    .avatarThickBorderWidth
+                            )
+                            .frame(
+                                width: ProfileSemantics.Sizes.sheetAvatarSize,
+                                height: ProfileSemantics.Sizes.sheetAvatarSize)
 
-                    Image(
-                        systemName: viewModel.isEditMode
-                            ? "person.fill" : "plus"
-                    )
-                    .font(
-                        .system(
-                            size: ProfileSemantics.Sizes.sheetAvatarIconSize,
-                            weight: .medium)
-                    )
-                    .foregroundColor(Color.Teal.teal700)
+                        if let pendingData = viewModel.pendingImageData,
+                            let uiImage = UIImage(data: pendingData)
+                        {
+                            Image(uiImage: uiImage)
+                                .resizable().scaledToFill()
+                                .frame(
+                                    width: ProfileSemantics.Sizes
+                                        .sheetAvatarSize,
+                                    height: ProfileSemantics.Sizes
+                                        .sheetAvatarSize
+                                )
+                                .clipShape(Circle())
+                        } else if let imageUrlString = viewModel.existingMember?
+                            .imageUrl, !imageUrlString.isEmpty
+                        {
+                            CachedImage(
+                                urlString: imageUrlString,
+                                failureImageName: "person.fill",
+                                contentMode: .fill
+                            )
+                            .frame(
+                                width: ProfileSemantics.Sizes.sheetAvatarSize,
+                                height: ProfileSemantics.Sizes.sheetAvatarSize
+                            )
+                            .clipShape(Circle())
+                        } else {
+                            Image(
+                                systemName: viewModel.isEditMode
+                                    ? "person.fill" : "plus"
+                            )
+                            .font(
+                                .system(
+                                    size: ProfileSemantics.Sizes
+                                        .sheetAvatarIconSize, weight: .medium)
+                            )
+                            .foregroundColor(Color.Teal.teal700)
+                        }
+
+                        if isEditingMode {
+                            Image(systemName: "camera.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(Color.Teal.teal700)
+                                .background(Circle().fill(.white))
+                                .offset(
+                                    x: ProfileSemantics.Sizes.sheetAvatarSize
+                                        / 2.8,
+                                    y: ProfileSemantics.Sizes.sheetAvatarSize
+                                        / 2.8)
+                        }
+                    }
+                    .padding(.top, ProfileSemantics.Spacing.smallSpacing)
                 }
-                .padding(.top, ProfileSemantics.Spacing.smallSpacing)
+                .buttonStyle(.plain)
+                .disabled(
+                    !isEditingMode || viewModel.isSaving || viewModel.isDeleting
+                )
+                .onChange(of: selectedPhotoItem) { _, newItem in
+                    Task {
+                        if let data = try? await newItem?.loadTransferable(
+                            type: Data.self)
+                        {
+                            await viewModel.handleImageSelection(data: data)
+                        }
+                    }
+                }
 
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
                     VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
                             placeholder: "Member name",
                             text: $viewModel.name.value,
-                            isEditing: isEditingMode
-                        )
+                            isEditing: isEditingMode)
                         if viewModel.name.state == .error {
                             CustomTextFieldError(
                                 errorMessage: viewModel.name.error)
@@ -89,8 +160,7 @@ struct FamilyMemberSheetView: View {
                         EditableFieldView(
                             placeholder: "Relation (e.g. Son, Mother)",
                             text: $viewModel.relation.value,
-                            isEditing: isEditingMode
-                        )
+                            isEditing: isEditingMode)
                         if viewModel.relation.state == .error {
                             CustomTextFieldError(
                                 errorMessage: viewModel.relation.error)
@@ -104,19 +174,15 @@ struct FamilyMemberSheetView: View {
                     onAddOther: { viewModel.conditions.showSearchSheet = true },
                     onToggle: { viewModel.conditions.toggle($0) },
                     onRemove: { viewModel.conditions.remove($0) }
-                )
-                .disabled(!isEditingMode)
+                ).disabled(!isEditingMode)
 
                 SelectableChipsSectionView(
-                    title: "Allergies",
-                    items: viewModel.allergies.chips,
+                    title: "Allergies", items: viewModel.allergies.chips,
                     onAddOther: { viewModel.allergies.showSearchSheet = true },
                     onToggle: { viewModel.allergies.toggle($0) },
                     onRemove: { viewModel.allergies.remove($0) }
-                )
-                .disabled(!isEditingMode)
+                ).disabled(!isEditingMode)
 
-                // Dynamic Button Text: "Edit" -> "Save" / "Add Member"
                 let buttonTitle: String = {
                     if !viewModel.isEditMode { return "Add Member" }
                     return isEditingMode ? "Save" : "Edit"
@@ -131,11 +197,9 @@ struct FamilyMemberSheetView: View {
                                 viewModel.alertContext = .duplicate
                                 activeAlert = .warning
                             } else if let input = viewModel.submit() {
-                                onSave(input)
-                                dismiss()
+                                performSave(input: input)
                             }
                         } else {
-                            // Editing existing member flow
                             if isEditingMode {
                                 if viewModel.validateFieldsOrInputs() {
                                     if viewModel.isDuplicate() {
@@ -149,14 +213,14 @@ struct FamilyMemberSheetView: View {
                                     }
                                 }
                             } else {
-                                // Switch from "Edit" to "Save" mode
                                 withAnimation { isEditingMode = true }
                             }
                         }
                     },
-                    isLoading: viewModel.isLoading
+                    isLoading: viewModel.isLoading || viewModel.isSaving
                 )
                 .animation(.easeInOut, value: isEditingMode)
+                .disabled(viewModel.isSaving || viewModel.isDeleting)
 
                 if viewModel.isEditMode, onDelete != nil {
                     Button(action: {
@@ -171,6 +235,7 @@ struct FamilyMemberSheetView: View {
                     }
                     .buttonStyle(DeleteTextButtonStyle())
                     .padding(.top, ProfileSemantics.Spacing.tinySpacing)
+                    .disabled(viewModel.isSaving || viewModel.isDeleting)
                 }
             }
             .padding(.horizontal, EditProfileSemantics.Spacing.screenHorizontal)
@@ -179,26 +244,29 @@ struct FamilyMemberSheetView: View {
         .background(
             Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea()
         )
-        .task {
-            await viewModel.loadReferenceData()
+        .overlay {
+            if viewModel.isDeleting {
+                ZStack {
+                    Color.black.opacity(0.4).ignoresSafeArea()
+                    ProgressView().tint(.white)
+                }
+            }
         }
+        .task { await viewModel.loadReferenceData() }
         .sheet(isPresented: $viewModel.conditions.showSearchSheet) {
             SearchSelectionSheet(
                 title: "Search Conditions",
                 searchQuery: $viewModel.conditions.searchQuery,
                 results: viewModel.conditions.filteredItems,
-                onSelect: { viewModel.conditions.select($0) }
-            )
+                onSelect: { viewModel.conditions.select($0) })
         }
         .sheet(isPresented: $viewModel.allergies.showSearchSheet) {
             SearchSelectionSheet(
                 title: "Search Allergies",
                 searchQuery: $viewModel.allergies.searchQuery,
                 results: viewModel.allergies.filteredItems,
-                onSelect: { viewModel.allergies.select($0) }
-            )
+                onSelect: { viewModel.allergies.select($0) })
         }
-        // MARK: - Custom Alert Modifier
         .customAlert(
             activeAlert: $activeAlert,
             config: { alert in
@@ -207,33 +275,37 @@ struct FamilyMemberSheetView: View {
                     switch viewModel.alertContext {
                     case .duplicate:
                         return CustomAlertConfig(
-                            type: .warning,
-                            title: "Duplicate Member",
+                            type: .warning, title: "Duplicate Member",
                             description: "This family member already exists.",
                             primaryButtonTitle: "Ok",
-                            primaryButtonColor: Color.Teal.teal1000
-                        )
+                            primaryButtonColor: Color.Teal.teal1000)
                     case .unsavedChanges:
                         return CustomAlertConfig(
-                            type: .warning,
-                            title: "Save Changes",
+                            type: .warning, title: "Save Changes",
                             description:
                                 "You have modified this family member's details. Are you sure you want to save?",
                             primaryButtonTitle: "Save",
                             primaryButtonColor: Color.Teal.teal1000,
-                            secondaryButtonTitle: "Discard"
-                        )
+                            secondaryButtonTitle: "Discard")
                     case .delete:
                         return CustomAlertConfig(
-                            type: .warning,
-                            title: "Delete Member",
+                            type: .warning, title: "Delete Member",
                             description:
-                                "Are you sure you want to delete this family member? This action cannot be undone.",
+                                "Are you sure you want to delete this family member?",
                             primaryButtonTitle: "Delete",
                             primaryButtonColor: Color.Red.red500,
-                            secondaryButtonTitle: "Cancel"
-                        )
+                            secondaryButtonTitle: "Cancel")
+                    case .networkError:
+                        return CustomAlertConfig(
+                            type: .error, title: "", description: "")
                     }
+                case .error:
+                    return CustomAlertConfig(
+                        type: .error, title: "Action Failed",
+                        description: viewModel.errorMessage
+                            ?? "An unexpected network error occurred.",
+                        primaryButtonTitle: "Ok",
+                        primaryButtonColor: Color.Teal.teal1000)
                 default:
                     return CustomAlertConfig(
                         type: .warning, title: "", description: "")
@@ -243,19 +315,33 @@ struct FamilyMemberSheetView: View {
                 if alert == .warning {
                     switch viewModel.alertContext {
                     case .delete:
-                        onDelete?()
-                        dismiss()
+                        if let onDelete = onDelete {
+                            Task {
+                                viewModel.isDeleting = true
+                                if let error = await onDelete() {
+                                    viewModel.errorMessage = error
+                                    viewModel.alertContext = .networkError
+                                    activeAlert = .error
+                                } else {
+                                    dismiss()
+                                }
+                                viewModel.isDeleting = false
+                            }
+                        } else {
+                            dismiss()
+                        }
                     case .unsavedChanges:
                         if viewModel.isDuplicate() {
                             viewModel.alertContext = .duplicate
                             activeAlert = .warning
                         } else if let input = viewModel.submit() {
-                            onSave(input)
-                            dismiss()
+                            performSave(input: input)
                         }
-                    case .duplicate:
+                    case .duplicate, .networkError:
                         viewModel.errorMessage = nil
                     }
+                } else if alert == .error {
+                    viewModel.errorMessage = nil
                 }
             },
             secondaryAction: { _ in

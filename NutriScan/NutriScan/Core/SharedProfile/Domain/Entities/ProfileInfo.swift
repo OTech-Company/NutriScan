@@ -13,6 +13,7 @@ struct ProfileInfo: Identifiable, Equatable {
     let username: String
     let firstName: String
     let lastName: String
+    let dailyStreak: Int
     var imageUrl: String?
     let dateOfBirth: Date?
     let gender: String?
@@ -22,7 +23,7 @@ struct ProfileInfo: Identifiable, Equatable {
     let tdee: Double?
     let allergies: [ReferenceItem]
     let diseases: [ReferenceItem]
-    let familyMembers: [FamilyMember]
+    var familyMembers: [FamilyMember]
     let updatedAt: Date?
     
     var fullName: String {
