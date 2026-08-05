@@ -12,6 +12,7 @@ enum SettingsRoute: Route {
     case termsAndConditions
     case help
     case notificationSettings
+    case notificationHistory
     
     @MainActor @ViewBuilder
     var destination: some View {
@@ -24,6 +25,8 @@ enum SettingsRoute: Route {
             SettingsFactory.makeHelpScreen()
         case .notificationSettings:
             NotificationSettingsFactory.makeNotificationSettingsView()
+        case .notificationHistory:
+            NotificationHistoryFactory.makeNotificationHistoryView()
         }
     }
 }

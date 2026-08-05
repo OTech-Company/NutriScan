@@ -17,12 +17,13 @@ enum NotificationSection: String, CaseIterable {
 
 // MARK: - Category
 
-enum NotificationCategory: String, CaseIterable, Identifiable {
+enum NotificationCategory: String, CaseIterable, Identifiable, Codable {
     case steps
     case water
     case workout
     case foodLog
     case streak
+    case breakTime
     case scanReminders
     case healthNews
     case healthQuotes
@@ -36,6 +37,7 @@ enum NotificationCategory: String, CaseIterable, Identifiable {
         case .workout:       return "Workout"
         case .foodLog:       return "Food Log"
         case .streak:        return "Streak"
+        case .breakTime:     return "Break Time"
         case .scanReminders: return "Scan Reminders"
         case .healthNews:    return "Health News"
         case .healthQuotes:  return "Health Quotes"
@@ -49,6 +51,7 @@ enum NotificationCategory: String, CaseIterable, Identifiable {
         case .workout:       return "dumbbell.fill"
         case .foodLog:       return "fork.knife"
         case .streak:        return "flame.fill"
+        case .breakTime:     return "cup.and.saucer.fill"
         case .scanReminders: return "qrcode.viewfinder"
         case .healthNews:    return "newspaper.fill"
         case .healthQuotes:  return "quote.bubble.fill"
@@ -57,7 +60,7 @@ enum NotificationCategory: String, CaseIterable, Identifiable {
 
     var section: NotificationSection {
         switch self {
-        case .steps, .water, .workout, .foodLog, .streak:
+        case .steps, .water, .workout, .foodLog, .streak, .breakTime:
             return .fitnessAndTracking
         case .scanReminders:
             return .reminders
