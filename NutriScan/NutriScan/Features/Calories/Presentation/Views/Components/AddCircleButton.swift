@@ -7,9 +7,6 @@
 
 import SwiftUI
 
-/// Reusable circular "+" button used across the Calories feature.
-/// - DailyProductsSection uses `size: 60`
-/// - ExerciseCardView and WaterTrackingSection use the default `size: 36`
 struct AddCircleButton: View {
     var size: CGFloat = 36
     var action: () -> Void = {}

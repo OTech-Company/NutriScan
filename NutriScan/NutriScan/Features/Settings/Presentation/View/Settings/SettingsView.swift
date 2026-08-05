@@ -2,6 +2,8 @@
 //  SettingsView.swift
 //  NutriScan
 //
+//  Created by Ahmed Nageh on 04/08/2026.
+//
 
 import SwiftUI
 
@@ -74,6 +76,11 @@ struct SettingsView: View {
                         viewModel.requestLogout()
                     }
                     .padding(.top, 20)
+
+                    SettingsDeleteAccountButton {
+                        viewModel.requestDeleteAccount()
+                    }
+
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 28)
@@ -98,8 +105,26 @@ struct SettingsView: View {
                 viewModel.cancelLogout()
             }
         )
+        .customAlert(
+            isPresented: $viewModel.showDeleteAccountAlert,
+            type: .warning,
+            title: "Delete Account",
+            description: "Are you sure you want to delete your account? You will have a 15-day grace period to restore it before permanent deletion.",
+            primaryButtonTitle: "Delete Account",
+            primaryButtonColor: Color.Red.red500,
+            primaryAction: {
+                Task {
+                    await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+                }
+            },
+            secondaryButtonTitle: "Cancel",
+            secondaryAction: {
+                viewModel.cancelDeleteAccount()
+            }
+        )
     }
 }
+
 
 #Preview {
     NavigationStack {

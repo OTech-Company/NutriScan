@@ -8,7 +8,7 @@
 import Foundation
 
 enum EmptyState {
-    case noConnection, error404, noScans, noNotificationPermission, noNotifications, noSaved, noSearchResults
+    case noConnection, error404, noScans, noNotificationPermission, noNotifications, noSaved, noSearchResults, noCaloriesHistory, serverProblem
     
     var title: String {
         switch self {
@@ -26,6 +26,10 @@ enum EmptyState {
             return "No Saved scans"
         case .noSearchResults:
             return "No results found"
+        case .noCaloriesHistory:
+            return "No Calories History"
+        case .serverProblem:
+            return "Server problem"
         }
     }
     
@@ -45,6 +49,10 @@ enum EmptyState {
             return "You have nothing on your list yet.\nIt's never too late to change it :)"
         case .noSearchResults:
             return "No results found. Please try again."
+        case .noCaloriesHistory:
+            return "Start tracking your calories to see your daily progress."
+        case .serverProblem:
+            return "We're having trouble loading your data. Please try again in a moment."
         }
     }
     
@@ -64,13 +72,17 @@ enum EmptyState {
             return "savedPlaceholder"
         case .noSearchResults:
             return "searchPlaceHolder"
+        case .noCaloriesHistory:
+            return "noCaloriesHistory"
+        case .serverProblem:
+            return "serverProblem"
         }
     }
     
     var actionLabel: String {
         switch self {
-        case .error404, .noConnection:
-            return "Try again"
+        case .error404:
+            return "go to home"
         case .noScans:
             return "Start Scanning"
         case .noNotificationPermission:
@@ -78,9 +90,13 @@ enum EmptyState {
         case .noNotifications:
             return "Go back"
         case .noSaved:
-            return "Scan Now"
+            return "Go to Scans"
         case .noSearchResults:
             return "Go to Scan"
+        case .noCaloriesHistory:
+            return "Add meals"
+        case .serverProblem, .noConnection:
+            return "Try again"
         }
     }
 }

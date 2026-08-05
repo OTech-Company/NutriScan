@@ -7,6 +7,7 @@ import Foundation
 import Observation
 
 @Observable
+@MainActor
 final class ExerciseWorkoutPlayerViewModel {
     let exercise: Exercise
 
@@ -20,17 +21,23 @@ final class ExerciseWorkoutPlayerViewModel {
     var showCancelAlert: Bool = false
     var showRestartAlert: Bool = false
     var showSuccessDialog: Bool = false
+    var showRecordingError: Bool = false
+    private(set) var hasRecordedWorkout: Bool = false
 
     private var timerTask: Task<Void, Never>?
+    private let caloriesActivityStore: CaloriesActivityStore
+    private let profileStore: UserProfileStore
 
-    init(exercise: Exercise) {
+    init(
+        exercise: Exercise,
+        caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
+        profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self)
+    ) {
         self.exercise = exercise
+        self.caloriesActivityStore = caloriesActivityStore
+        self.profileStore = profileStore
         self.hasStarted = false
         self.isPaused = true
-    }
-
-    deinit {
-        stopTimer()
     }
 
     // MARK: - Timer Logic
@@ -44,10 +51,11 @@ final class ExerciseWorkoutPlayerViewModel {
     func startTimer() {
         isPaused = false
         stopTimer()
-        timerTask = Task { @MainActor [weak self] in
+        timerTask = Task { [weak self] in
             while !(Task.isCancelled) {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
-                guard let self = self, !self.isPaused else { continue }
+                guard let self else { return }
+                guard !self.isPaused else { continue }
                 self.elapsedSeconds += 1
             }
         }
@@ -91,13 +99,25 @@ final class ExerciseWorkoutPlayerViewModel {
 
     // MARK: - Calories Calculation
 
-    /// Total burned calories: (sets * reps) * repKcal, or elapsed minutes * minKcal
+    var isCardio: Bool {
+        exercise.category.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "cardio"
+    }
+
+    var isCalorieEstimateAvailable: Bool {
+        isCardio ? exercise.minKcal != nil : (exercise.repKcal != nil || exercise.minKcal != nil)
+    }
+
+    /// Cardio is time based. Other exercises prefer reps and fall back to time.
     var totalCaloriesBurned: Double {
+        let minutes = Double(elapsedSeconds) / 60.0
+        if isCardio {
+            return minutes * (exercise.minKcal ?? 0)
+        }
+
         let totalReps = Double(setsCount * repsCount)
         if let repKcal = exercise.repKcal {
             return totalReps * repKcal
         } else if let minKcal = exercise.minKcal {
-            let minutes = Double(elapsedSeconds) / 60.0
             return minutes * minKcal
         }
         return 0.0
@@ -105,6 +125,40 @@ final class ExerciseWorkoutPlayerViewModel {
 
     var formattedCalories: String {
         String(format: "%.1f", totalCaloriesBurned)
+    }
+
+    var roundedCalories: Int {
+        max(Int(totalCaloriesBurned.rounded()), 0)
+    }
+
+    var completionDescription: String {
+        let workoutDetails = isCardio
+            ? "in \(formattedTime)"
+            : "(\(setsCount) sets x \(repsCount) reps) in \(formattedTime)"
+        let calorieDetails = isCalorieEstimateAvailable
+            ? "and burned \(roundedCalories) kcal."
+            : "Calorie estimation is unavailable for this exercise."
+        return "Great job! You completed \(exercise.name) \(workoutDetails) \(calorieDetails)"
+    }
+
+    func finishWorkout() {
+        guard !hasRecordedWorkout else {
+            showSuccessDialog = true
+            return
+        }
+        guard let profileID = profileStore.currentProfile?.id else {
+            showRecordingError = true
+            return
+        }
+        stopTimer()
+        caloriesActivityStore.recordWorkout(
+            profileID: profileID,
+            date: CaloriesTracking.todayString,
+            calories: Double(roundedCalories),
+            elapsedSeconds: elapsedSeconds
+        )
+        hasRecordedWorkout = true
+        showSuccessDialog = true
     }
 
     // MARK: - Stepper Counters

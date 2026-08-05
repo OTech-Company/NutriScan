@@ -2,6 +2,8 @@
 //  SettingsAssembly.swift
 //  NutriScan
 //
+//  Created by Ahmed Nageh on 04/08/2026.
+//
 
 import Foundation
 
@@ -35,6 +37,10 @@ struct SettingsAssembly: Assembly {
         container.register(
             type: UpdateLanguageUseCaseProtocol.self,
             component: UpdateLanguageUseCase(repository: repository)
+        )
+        container.register(
+            type: DeleteAccountUseCaseProtocol.self,
+            component: DeleteAccountUseCase(repository: repository)
         )
 
         // MARK: - Help Feature Data Sources

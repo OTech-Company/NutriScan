@@ -27,7 +27,10 @@ struct AppDependencies {
         StepTrackerAssembly(),
         RAGAssembly(),
         SettingsAssembly(),
+        AccountRestorationAssembly(),
         ProductDetailsAssembly(),
+        CaloriesAssembly(),
+        CaloriesHistoryAssembly(),
         HomeAssembly()
     ]
 

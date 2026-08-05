@@ -102,13 +102,24 @@ struct ExerciseWorkoutPlayerView: View {
             isPresented: $viewModel.showSuccessDialog,
             type: .success,
             title: "Workout Completed!",
-            description: "Great job! You completed \(viewModel.exercise.name) (\(viewModel.setsCount) sets x \(viewModel.repsCount) reps) in \(viewModel.formattedTime) and burned \(viewModel.formattedCalories) kcal.",
+            description: viewModel.completionDescription,
             primaryButtonTitle: "Done",
             primaryButtonColor: Color.Teal.teal1000,
             primaryAction: {
                 viewModel.stopTimer()
                 viewModel.showSuccessDialog = false
                 router.pop()
+            }
+        )
+        .customAlert(
+            isPresented: $viewModel.showRecordingError,
+            type: .error,
+            title: "Unable to Save Workout",
+            description: "Your profile data is unavailable. Reload your profile, then try finishing again.",
+            primaryButtonTitle: "OK",
+            primaryButtonColor: Color.Teal.teal1000,
+            primaryAction: {
+                viewModel.showRecordingError = false
             }
         )
         // MARK: - Cancel Confirmation Alert

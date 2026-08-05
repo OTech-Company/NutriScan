@@ -14,6 +14,7 @@ import SwiftUI
 final class AppFlowCoordinator: ObservableObject {
     @Published private(set) var flow: AppFlow = .splash
     @Published var selectedTab: AppTab = .home
+    @Published var pendingDeletionDate: Date? = nil
     
     // Inject the use case (you'll bind this in your DI setup)
     private let fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol
@@ -51,6 +52,15 @@ final class AppFlowCoordinator: ObservableObject {
         UserDefaults.standard.bool(forKey: "hasCompletedProfileSetup")
     }
 
+    private func parseDeletionDate(from message: String) -> Date? {
+        guard let dateStr = message.components(separatedBy: "on ").last?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            return nil
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: dateStr)
+    }
+
     @MainActor
     func finishSplash() {
         Task {
@@ -61,9 +71,20 @@ final class AppFlowCoordinator: ObservableObject {
             } else if !hasCompletedProfileSetup {
                 flow = .profileSetup
             } else {
-                // EAGER LOAD: Fetch the profile data silently.
-                _ = try? await fetchAndCacheProfileUseCase.execute()
-                flow = .main
+                do {
+                    _ = try await fetchAndCacheProfileUseCase.execute()
+                    flow = .main
+                } catch let error as NetworkError {
+                    if case .apiError(let apiError) = error,
+                       apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
+                        pendingDeletionDate = parseDeletionDate(from: apiError.message ?? "")
+                        flow = .pendingDeletion
+                    } else {
+                        flow = .main
+                    }
+                } catch {
+                    flow = .main
+                }
             }
         }
     }
@@ -85,16 +106,37 @@ final class AppFlowCoordinator: ObservableObject {
             UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
             
             Task {
-                // EAGER LOAD for fresh logins:
-                // Fetch the profile data for the new session BEFORE transitioning
-                // to the main flow to prevent "Failed to load" errors.
-                _ = try? await fetchAndCacheProfileUseCase.execute()
-                
-                await MainActor.run {
-                    self.flow = .main
+                do {
+                    _ = try await fetchAndCacheProfileUseCase.execute()
+                    await MainActor.run {
+                        self.flow = .main
+                    }
+                } catch let error as NetworkError {
+                    if case .apiError(let apiError) = error,
+                       apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
+                        let parsedDate = parseDeletionDate(from: apiError.message ?? "")
+                        await MainActor.run {
+                            self.pendingDeletionDate = parsedDate
+                            self.flow = .pendingDeletion
+                        }
+                    } else {
+                        await MainActor.run {
+                            self.flow = .main
+                        }
+                    }
+                } catch {
+                    await MainActor.run {
+                        self.flow = .main
+                    }
                 }
             }
         }
+    }
+
+    @MainActor
+    func didRestoreAccount() {
+        pendingDeletionDate = nil
+        flow = .main
     }
 
     func finishProfileSetup() {
@@ -116,6 +158,8 @@ final class AppFlowCoordinator: ObservableObject {
         let store = DIContainer.shared.resolve(type: UserProfileStore.self)
         store.clear()
         
+        pendingDeletionDate = nil
+
         // Navigation Reset: Ensure the next user starts on the Home tab
         selectedTab = .home
 

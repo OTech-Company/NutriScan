@@ -38,7 +38,8 @@ struct ProfileView: View {
 
                         SettingsSectionView(
                             onScanHistory: { router.push(ProfileRoute.scanHistory) },
-                            onNotifications: { /* TODO */ },
+                            onCaloriesHistory: { router.push(ProfileRoute.caloriesHistory) },
+                            onNotifications: { /* TODO: no ProfileRoute case for notifications yet */ },
                             onSettings: { router.push(ProfileRoute.settings) }
                         )
                     }
