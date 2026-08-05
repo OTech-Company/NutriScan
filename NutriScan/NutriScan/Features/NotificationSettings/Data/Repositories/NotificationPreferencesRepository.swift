@@ -7,8 +7,7 @@
 
 import Foundation
 
-
-final class NotificationPreferencesRepository : NotificationPreferencesRepositoryProtocol {
+final class NotificationPreferencesRepository: NotificationPreferencesRepositoryProtocol {
     private let notificationService: NotificationServiceProtocol
 
     init(notificationService: NotificationServiceProtocol) {
@@ -23,5 +22,17 @@ final class NotificationPreferencesRepository : NotificationPreferencesRepositor
     func setEnabled(_ isEnabled: Bool, for category: NotificationCategory) {
         // Invert the logic: setting enabled to true means muting is false.
         notificationService.setMuted(!isEnabled, category: category)
+    }
+
+    var isQuietHoursEnabled: Bool {
+        notificationService.isQuietHoursEnabled
+    }
+
+    func setQuietHoursEnabled(_ enabled: Bool) {
+        notificationService.setQuietHoursEnabled(enabled)
+    }
+
+    var quietHoursTimeString: String {
+        notificationService.quietHoursTimeString
     }
 }

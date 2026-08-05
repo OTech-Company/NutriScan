@@ -23,7 +23,8 @@ struct NotificationSettingsView: View {
             ScrollView(showsIndicators: false) {
 
                 LazyVStack(spacing: 12) {
-                    
+
+                    // Category Sections
                     ForEach(NotificationSection.allCases, id: \.rawValue) { section in
                         let categories = NotificationCategory.allCases.filter { $0.section == section }
 
@@ -41,6 +42,17 @@ struct NotificationSettingsView: View {
                             )
                         }
                     }
+                    
+                    // Quiet Hours Section
+                    SectionHeader(title: "Quiet Hours")
+
+                    QuietHoursToggleRow(
+                        timeRangeText: viewModel.quietHoursTimeString,
+                        isOn: Binding(
+                            get: { viewModel.isQuietHoursEnabled },
+                            set: { newValue in viewModel.toggleQuietHours(isOn: newValue) }
+                        )
+                    )
 
                     Spacer(minLength: 40)
                 }
