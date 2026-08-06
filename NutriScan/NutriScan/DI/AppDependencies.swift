@@ -70,7 +70,13 @@ struct RAGAssembly: Assembly {
 
 struct StepTrackerAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
-        let repository = StepRepositoryImpl()
+        let healthKitSource = HealthKitStepDataSource()
+        let repository = StepRepositoryImpl(healthKitSource: healthKitSource)
+
+        container.register(
+            type: HealthKitStepDataSource.self,
+            component: healthKitSource
+        )
 
         // Register step tracker use cases
         container.register(
