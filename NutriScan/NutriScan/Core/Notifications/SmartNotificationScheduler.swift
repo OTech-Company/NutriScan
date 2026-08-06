@@ -24,9 +24,14 @@ protocol SmartNotificationSchedulerProtocol {
 
 final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
     private let service: NotificationServiceProtocol
+    private let muteStore: NotificationMuteStoreProtocol
 
-    init(service: NotificationServiceProtocol) {
+    init(
+        service: NotificationServiceProtocol,
+        muteStore: NotificationMuteStoreProtocol
+    ) {
         self.service = service
+        self.muteStore = muteStore
     }
 
     private static let allIdentifiers: [String] = [
@@ -157,6 +162,16 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
         hour: Int,
         minute: Int
     ) async {
+        // Skip scheduling and cancel pending request if category is muted or hour falls in quiet hours
+        guard !muteStore.isMuted(category: notification.category) else {
+            service.cancel(identifier: notification.identifier)
+            return
+        }
+        if muteStore.isQuietHoursEnabled && (hour >= 22 || hour < 7) {
+            service.cancel(identifier: notification.identifier)
+            return
+        }
+
         var dateComponents = DateComponents()
         if let weekday = weekday {
             dateComponents.weekday = weekday

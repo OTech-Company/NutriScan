@@ -16,12 +16,14 @@ enum NotificationSettingsFactory {
         let setCategoryEnabledUseCase = DIContainer.shared.resolve(type: SetNotificationCategoryEnabledUseCaseProtocol.self)
         let getQuietHoursUseCase = DIContainer.shared.resolve(type: GetQuietHoursUseCaseProtocol.self)
         let setQuietHoursEnabledUseCase = DIContainer.shared.resolve(type: SetQuietHoursEnabledUseCaseProtocol.self)
+        let scheduler = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self)
 
         return NotificationSettingsViewModel(
             getPreferencesUseCase: getPreferencesUseCase,
             setCategoryEnabledUseCase: setCategoryEnabledUseCase,
             getQuietHoursUseCase: getQuietHoursUseCase,
-            setQuietHoursEnabledUseCase: setQuietHoursEnabledUseCase
+            setQuietHoursEnabledUseCase: setQuietHoursEnabledUseCase,
+            scheduler: scheduler
         )
     }
 
