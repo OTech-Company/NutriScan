@@ -10,6 +10,16 @@ import UserNotifications
 
 protocol SmartNotificationSchedulerProtocol {
     func scheduleAllSmartNotifications() async
+    func cancelTodayOnlyAndProtectFuture(notification: AppNotification, hour: Int, minute: Int) async
+    func cancelBreakfastNudge() async
+    func cancelMorningWaterPace() async
+    func cancelLunchNudge() async
+    func cancelMiddayWaterPace() async
+    func cancelAfternoonStepsMove() async
+    func cancelEveningWaterPace() async
+    func cancelDinnerNudge() async
+    func cancelWorkoutNudge() async
+    func cancelStreakProtection() async
 }
 
 final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
@@ -72,6 +82,73 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
 
         // 11. Random 1x/week SCAN
         await scheduleTimeSlot(notification: .scanReengagement, weekday: 1, hour: 12, minute: 0) // Sunday
+    }
+
+    // MARK: - Today-Only Cancellation Helpers
+
+    func cancelTodayOnlyAndProtectFuture(notification: AppNotification, hour: Int, minute: Int) async {
+        // 1. Cancel today's pending notification request
+        service.cancel(identifier: notification.identifier)
+
+        // 2. Schedule a one-time trigger for tomorrow at target hour:minute in iOS system memory
+        let calendar = Calendar.current
+        let now = Date()
+        if let tomorrow = calendar.date(byAdding: .day, value: 1, to: now) {
+            var tomorrowComponents = calendar.dateComponents([.year, .month, .day], from: tomorrow)
+            tomorrowComponents.hour = hour
+            tomorrowComponents.minute = minute
+
+            let tomorrowTrigger = UNCalendarNotificationTrigger(dateMatching: tomorrowComponents, repeats: false)
+            try? await service.schedule(notification, trigger: tomorrowTrigger)
+        }
+
+        // 3. Re-register daily repeating schedule after today's time passes
+        if let targetToday = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now), now > targetToday {
+            await scheduleTimeSlot(notification: notification, hour: hour, minute: minute)
+        } else if let triggerAfter = calendar.date(bySettingHour: hour, minute: 1, second: 0, of: now) {
+            let delay = max(1.0, triggerAfter.timeIntervalSince(now))
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+                Task {
+                    await self?.scheduleTimeSlot(notification: notification, hour: hour, minute: minute)
+                }
+            }
+        }
+    }
+
+    func cancelBreakfastNudge() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .breakfastNudge, hour: 9, minute: 0)
+    }
+
+    func cancelMorningWaterPace() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .morningWaterPace, hour: 11, minute: 0)
+    }
+
+    func cancelLunchNudge() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .lunchNudge, hour: 13, minute: 30)
+    }
+
+    func cancelMiddayWaterPace() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .middayWaterPace, hour: 14, minute: 0)
+    }
+
+    func cancelAfternoonStepsMove() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .afternoonStepsMove, hour: 16, minute: 0)
+    }
+
+    func cancelEveningWaterPace() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .eveningWaterPace, hour: 17, minute: 0)
+    }
+
+    func cancelDinnerNudge() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .dinnerNudge, hour: 19, minute: 30)
+    }
+
+    func cancelWorkoutNudge() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .workoutNudge, hour: 20, minute: 30)
+    }
+
+    func cancelStreakProtection() async {
+        await cancelTodayOnlyAndProtectFuture(notification: .streakProtection, hour: 21, minute: 30)
     }
 
     private func scheduleTimeSlot(
