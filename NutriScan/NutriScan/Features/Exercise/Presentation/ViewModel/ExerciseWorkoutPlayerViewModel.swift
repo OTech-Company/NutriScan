@@ -27,15 +27,18 @@ final class ExerciseWorkoutPlayerViewModel {
     private var timerTask: Task<Void, Never>?
     private let caloriesActivityStore: CaloriesActivityStore
     private let profileStore: UserProfileStore
+    private let notificationScheduler: SmartNotificationSchedulerProtocol
 
     init(
         exercise: Exercise,
         caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
-        profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self)
+        profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self),
+        notificationScheduler: SmartNotificationSchedulerProtocol = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self)
     ) {
         self.exercise = exercise
         self.caloriesActivityStore = caloriesActivityStore
         self.profileStore = profileStore
+        self.notificationScheduler = notificationScheduler
         self.hasStarted = false
         self.isPaused = true
     }
@@ -159,6 +162,16 @@ final class ExerciseWorkoutPlayerViewModel {
         )
         hasRecordedWorkout = true
         showSuccessDialog = true
+
+        Task {
+            let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: Date())
+            let hour = nowComponents.hour ?? 0
+            let minute = nowComponents.minute ?? 0
+            let isBeforeWorkout = (hour < 20) || (hour == 20 && minute < 30)
+            if isBeforeWorkout {
+                await notificationScheduler.cancelWorkoutNudge()
+            }
+        }
     }
 
     // MARK: - Stepper Counters

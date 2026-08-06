@@ -19,6 +19,7 @@ enum CaloriesFactory {
         let caloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self)
         let profileStore = DIContainer.shared.resolve(type: UserProfileStore.self)
         let caloriesActivitySyncCoordinator = DIContainer.shared.resolve(type: CaloriesActivitySyncCoordinator.self)
+        let notificationScheduler = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self)
 
         return CaloriesViewModel(
             getTodayCaloriesTrackingUseCase: getTodayCaloriesTrackingUseCase,
@@ -28,7 +29,8 @@ enum CaloriesFactory {
             updateWaterUseCase: updateWaterUseCase,
             caloriesActivityStore: caloriesActivityStore,
             profileStore: profileStore,
-            caloriesActivitySyncCoordinator: caloriesActivitySyncCoordinator
+            caloriesActivitySyncCoordinator: caloriesActivitySyncCoordinator,
+            notificationScheduler: notificationScheduler
         )
     }
 }

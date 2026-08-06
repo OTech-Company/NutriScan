@@ -43,6 +43,7 @@ final class CaloriesViewModel {
     private let caloriesActivityStore: CaloriesActivityStore
     private let profileStore: UserProfileStore
     private let caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator
+    private let notificationScheduler: SmartNotificationSchedulerProtocol
 
     init(
         getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol,
@@ -52,7 +53,8 @@ final class CaloriesViewModel {
         updateWaterUseCase: UpdateWaterUseCaseProtocol,
         caloriesActivityStore: CaloriesActivityStore,
         profileStore: UserProfileStore,
-        caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator
+        caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator,
+        notificationScheduler: SmartNotificationSchedulerProtocol
     ) {
         self.getTodayCaloriesTrackingUseCase = getTodayCaloriesTrackingUseCase
         self.addMealUseCase = addMealUseCase
@@ -62,6 +64,7 @@ final class CaloriesViewModel {
         self.caloriesActivityStore = caloriesActivityStore
         self.profileStore = profileStore
         self.caloriesActivitySyncCoordinator = caloriesActivitySyncCoordinator
+        self.notificationScheduler = notificationScheduler
     }
 
     func onAppear() {
@@ -78,6 +81,7 @@ final class CaloriesViewModel {
         do {
             let tracking = try await getTodayCaloriesTrackingUseCase.execute()
             caloriesTracking = tracking
+            await evaluateSmartNotificationCancellations(for: tracking)
             if let profileID {
                 caloriesActivityStore.seedIfNeeded(profileID: profileID, tracking: tracking)
                 caloriesActivityStore.updateMealCalories(
@@ -128,6 +132,12 @@ final class CaloriesViewModel {
             steps: steps,
             calories: Double(calories)
         )
+        Task {
+            let nowHour = Calendar.current.component(.hour, from: Date())
+            if nowHour < 16 && steps >= 4000 {
+                await notificationScheduler.cancelAfternoonStepsMove()
+            }
+        }
     }
 
     func removeOneMeal(scanId: String) {
@@ -175,7 +185,7 @@ final class CaloriesViewModel {
             waterCnt: water
         )
         do {
-            caloriesTracking = try await updateWaterUseCase.execute(
+            let updated = try await updateWaterUseCase.execute(
                 date: current.date,
                 targetWaterCnt: target,
                 waterCnt: water,
@@ -184,6 +194,8 @@ final class CaloriesViewModel {
                 exerciseKcal: nil,
                 exerciseMin: nil
             )
+            caloriesTracking = updated
+            await evaluateSmartNotificationCancellations(for: updated)
         } catch {
             guard !isCancellation(error) else {
                 caloriesTracking = current
@@ -194,6 +206,57 @@ final class CaloriesViewModel {
             errorMessage = error.localizedDescription
         }
         isUpdatingWater = false
+    }
+
+    private func evaluateSmartNotificationCancellations(for tracking: CaloriesTracking) async {
+        let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: Date())
+        let hour = nowComponents.hour ?? 0
+        let minute = nowComponents.minute ?? 0
+
+        // 1. 🍳 Breakfast: Logged any meal before 09:00 AM
+        if hour < 9 && !tracking.meals.isEmpty {
+            await notificationScheduler.cancelBreakfastNudge()
+        }
+
+        // 2. 🥗 Lunch: Logged >= 2 meals before 13:30 PM
+        let isBeforeLunch = (hour < 13) || (hour == 13 && minute < 30)
+        if isBeforeLunch && tracking.meals.count >= 2 {
+            await notificationScheduler.cancelLunchNudge()
+        }
+
+        // 3. 🍲 Dinner: Logged >= 3 meals or calories >= 1200 before 19:30 PM
+        let isBeforeDinner = (hour < 19) || (hour == 19 && minute < 30)
+        if isBeforeDinner && (tracking.meals.count >= 3 || tracking.mealCalories >= 1200) {
+            await notificationScheduler.cancelDinnerNudge()
+        }
+
+        // 4. 🔥 Streak Protection: Logged meals & calories > 0 before 21:30 PM
+        let isBeforeStreak = (hour < 21) || (hour == 21 && minute < 30)
+        if isBeforeStreak && !tracking.meals.isEmpty && tracking.mealCalories > 0 {
+            await notificationScheduler.cancelStreakProtection()
+        }
+
+        // 5. 💧 Water Pace Reminders
+        if hour < 11 && tracking.waterCnt >= 2 {
+            await notificationScheduler.cancelMorningWaterPace()
+        }
+        if hour < 14 && tracking.waterCnt >= 4 {
+            await notificationScheduler.cancelMiddayWaterPace()
+        }
+        if hour < 17 && tracking.waterCnt >= 6 {
+            await notificationScheduler.cancelEveningWaterPace()
+        }
+
+        // 6. 🏃‍♂️ Afternoon Steps Move
+        if hour < 16 && tracking.stepsCnt >= 4000 {
+            await notificationScheduler.cancelAfternoonStepsMove()
+        }
+
+        // 7. 🏋️‍♂️ Workout Nudge
+        let isBeforeWorkout = (hour < 20) || (hour == 20 && minute < 30)
+        if isBeforeWorkout && (tracking.exerciseMin > 0 || tracking.exerciseKcal > 0) {
+            await notificationScheduler.cancelWorkoutNudge()
+        }
     }
 
     private func isCancellation(_ error: Error) -> Bool {
