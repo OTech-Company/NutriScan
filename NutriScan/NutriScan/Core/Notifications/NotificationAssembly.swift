@@ -43,8 +43,13 @@ struct NotificationAssembly: Assembly {
             component: scheduler
         )
 
-        // 4. Register NotificationBootstrapper
-        let bootstrapper = NotificationBootstrapper(service: service, scheduler: scheduler)
+        // 4. Register NotificationBootstrapper with injected HealthKitStepDataSource
+        let healthKitSource = container.resolve(type: HealthKitStepDataSource.self)
+        let bootstrapper = NotificationBootstrapper(
+            service: service,
+            scheduler: scheduler,
+            healthKitStepDataSource: healthKitSource
+        )
         container.register(
             type: NotificationBootstrapperProtocol.self,
             component: bootstrapper
