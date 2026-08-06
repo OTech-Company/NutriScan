@@ -11,7 +11,7 @@ struct CaloriesScreen: View {
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
-    @State private var caloriesViewModel = CaloriesViewModel()
+    @State private var caloriesViewModel = CaloriesFactory.makeCaloriesViewModel()
     @State private var stepViewModel: StepCounterViewModel
 
     @State private var showDailyProducts = false

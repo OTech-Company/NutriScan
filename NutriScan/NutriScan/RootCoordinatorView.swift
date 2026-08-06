@@ -42,8 +42,8 @@ struct RootCoordinatorView: View {
                 }
             }
              .task {
-                let service = DIContainer.shared.resolve(type: NotificationServiceProtocol.self)
-                _ = await service.requestAuthorizationIfNeeded()
+                let bootstrapper = DIContainer.shared.resolve(type: NotificationBootstrapperProtocol.self)
+                await bootstrapper.start()
             }
     }
 

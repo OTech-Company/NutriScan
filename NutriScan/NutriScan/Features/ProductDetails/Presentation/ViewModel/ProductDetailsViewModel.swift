@@ -14,9 +14,11 @@ final class ProductDetailsViewModel {
     private let preloadedData: ProductDetails?
 
     /// Init with scanId — fetches data from API.
-    init(scanId: String,
-         useCase: GetProductDetailsUseCase = DIContainer.shared.resolve(type: GetProductDetailsUseCase.self),
-         repo: ProductDetailsRepo = DIContainer.shared.resolve(type: ProductDetailsRepo.self)) {
+    init(
+        scanId: String,
+        useCase: GetProductDetailsUseCase,
+        repo: ProductDetailsRepo
+    ) {
         self.scanId = scanId
         self.useCase = useCase
         self.repo = repo
@@ -24,9 +26,11 @@ final class ProductDetailsViewModel {
     }
 
     /// Init with pre-loaded ScanDetail — no API call needed.
-    init(scanDetail: ScanDetail,
-         useCase: GetProductDetailsUseCase = DIContainer.shared.resolve(type: GetProductDetailsUseCase.self),
-         repo: ProductDetailsRepo = DIContainer.shared.resolve(type: ProductDetailsRepo.self)) {
+    init(
+        scanDetail: ScanDetail,
+        useCase: GetProductDetailsUseCase,
+        repo: ProductDetailsRepo
+    ) {
         self.scanId = scanDetail.scanId
         self.useCase = useCase
         self.repo = repo

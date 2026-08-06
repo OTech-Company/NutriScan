@@ -10,6 +10,10 @@ enum FavoritesFactory {
         let remoteDataSource = FavoritesRemoteDataSource(networkService: networkService)
         let repository = FavoritesRepository(remoteDataSource: remoteDataSource)
         let useCase = FavoritesUseCase(favoritesRepository: repository)
-        return FavoritesViewModel(favoritesUseCase: useCase)
+        let addMealUseCase: AddMealUseCaseProtocol = AddMealUseCase()
+        return FavoritesViewModel(
+            favoritesUseCase: useCase,
+            addMealUseCase: addMealUseCase
+        )
     }
 }

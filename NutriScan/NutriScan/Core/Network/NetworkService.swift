@@ -40,7 +40,7 @@ final class NetworkService: NetworkServiceProtocol {
         // Default URLSession timeout is 60s — way too long for a mobile UI.
         // If the server hangs on an endpoint, fail fast instead of leaving
         // the user staring at a splash/loading screen for a full minute.
-        request.timeoutInterval = 15
+       /// request.timeoutInterval = 15
 
         // Attach Authorization header from Keychain if required
         if endpoint.requiresAuth,

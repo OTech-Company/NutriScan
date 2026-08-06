@@ -45,14 +45,14 @@ final class CaloriesViewModel {
     private let caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator
 
     init(
-        getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol = DIContainer.shared.resolve(type: GetTodayCaloriesTrackingUseCaseProtocol.self),
-        addMealUseCase: AddCaloriesMealUseCaseProtocol = DIContainer.shared.resolve(type: AddCaloriesMealUseCaseProtocol.self),
-        deleteMealUseCase: DeleteMealUseCaseProtocol = DIContainer.shared.resolve(type: DeleteMealUseCaseProtocol.self),
-        updateMealUseCase: UpdateMealUseCaseProtocol = DIContainer.shared.resolve(type: UpdateMealUseCaseProtocol.self),
-        updateWaterUseCase: UpdateWaterUseCaseProtocol = DIContainer.shared.resolve(type: UpdateWaterUseCaseProtocol.self),
-        caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
-        profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self),
-        caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator = DIContainer.shared.resolve(type: CaloriesActivitySyncCoordinator.self)
+        getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol,
+        addMealUseCase: AddCaloriesMealUseCaseProtocol,
+        deleteMealUseCase: DeleteMealUseCaseProtocol,
+        updateMealUseCase: UpdateMealUseCaseProtocol,
+        updateWaterUseCase: UpdateWaterUseCaseProtocol,
+        caloriesActivityStore: CaloriesActivityStore,
+        profileStore: UserProfileStore,
+        caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator
     ) {
         self.getTodayCaloriesTrackingUseCase = getTodayCaloriesTrackingUseCase
         self.addMealUseCase = addMealUseCase

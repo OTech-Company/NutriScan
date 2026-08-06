@@ -16,21 +16,21 @@ struct AppDependencies {
     /// that depends on it (e.g. NetworkServiceProtocol before ProfileAssembly).
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
+        SharedProfileAssembly(),
+        StepTrackerAssembly(),
         NotificationHistoryAssembly(),
+        CaloriesAssembly(),
         NotificationAssembly(),
         NotificationSettingsAssembly(),
-        SharedProfileAssembly(),
         AuthAssembly(),
         ExerciseAssembly(),
         ProfileAssembly(),
         EditProfileAssembly(),
         ScanAssembly(),
-        StepTrackerAssembly(),
         RAGAssembly(),
         SettingsAssembly(),
         AccountRestorationAssembly(),
         ProductDetailsAssembly(),
-        CaloriesAssembly(),
         CaloriesHistoryAssembly(),
         HomeAssembly()
     ]
