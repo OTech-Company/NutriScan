@@ -36,8 +36,8 @@ struct NotificationAssembly: Assembly {
             component: service
         )
 
-        // 3. Register SmartNotificationScheduler with injected NotificationService
-        let scheduler = SmartNotificationScheduler(service: service)
+        // 3. Register SmartNotificationScheduler with injected NotificationService & muteStore
+        let scheduler = SmartNotificationScheduler(service: service, muteStore: muteStore)
         container.register(
             type: SmartNotificationSchedulerProtocol.self,
             component: scheduler
