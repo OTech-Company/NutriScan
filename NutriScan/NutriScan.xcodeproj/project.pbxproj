@@ -431,6 +431,7 @@
 		C5038886301B55B00045358F /* CaloriesRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387F7301B55B00045358F /* CaloriesRoute.swift */; };
 		C5038887301B55B00045358F /* FetchExercisesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038816301B55B00045358F /* FetchExercisesRequest.swift */; };
 		C5038888301B55B00045358F /* CaloriesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387E4301B55B00045358F /* CaloriesAssembly.swift */; };
+		NF001E0130200001000000001 /* CaloriesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001E0130200001000000001R /* CaloriesFactory.swift */; };
 		C5038889301B55B00045358F /* HealthKitStepDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503883C301B55B00045358F /* HealthKitStepDataSource.swift */; };
 		C503888A301B55B00045358F /* DailyInsightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038855301B55B00045358F /* DailyInsightCardView.swift */; };
 		C503888B301B55B00045358F /* DailyProductsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387FD301B55B00045358F /* DailyProductsSection.swift */; };
@@ -491,6 +492,7 @@
 		C51E9D4330155E56009DF262 /* ProductDetailsRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */; };
 		C51E9D4430155E56009DF262 /* ProductNutritionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2830155E56009DF262 /* ProductNutritionSection.swift */; };
 		C51E9D4530155E56009DF262 /* ProductDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */; };
+		NF001D0130200001000000001 /* ProductDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001D0130200001000000001R /* ProductDetailsFactory.swift */; };
 		C51E9D4630155E56009DF262 /* ProductDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2E30155E56009DF262 /* ProductDetailsScreen.swift */; };
 		C51E9D4730155E56009DF262 /* ProductHeaderUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1F30155E56009DF262 /* ProductHeaderUIState.swift */; };
 		C51E9D4830155E56009DF262 /* ProductSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2A30155E56009DF262 /* ProductSheetView.swift */; };
@@ -657,6 +659,9 @@
 		FA2F4A06D344FFC5A371B1F7 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFD7D62E6ADA340CEC01C2F /* Product.swift */; };
 		NF001A0130200001000000001 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0130200001000000001R /* LocalNotification.swift */; };
 		NF001A0230200001000000001 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0230200001000000001R /* AppNotification.swift */; };
+		NF001F0130200001000000001 /* SmartNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001F0130200001000000001R /* SmartNotificationScheduler.swift */; };
+		NF001F0230200001000000001 /* SmartNotificationEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001F0230200001000000001R /* SmartNotificationEvaluator.swift */; };
+		NF001F0330200001000000001 /* NotificationBootstrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001F0330200001000000001R /* NotificationBootstrapper.swift */; };
 		NF001A0330200001000000001 /* NotificationMuteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0330200001000000001R /* NotificationMuteStore.swift */; };
 		NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0430200001000000001R /* NotificationServiceProtocol.swift */; };
 		NF001A0530200001000000001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0530200001000000001R /* NotificationService.swift */; };
@@ -1076,6 +1081,7 @@
 		C50387DF301B55B00045358F /* PatchCaloriesTrackingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchCaloriesTrackingDTO.swift; sourceTree = "<group>"; };
 		C50387E1301B55B00045358F /* CaloriesTrackingRepoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTrackingRepoImpl.swift; sourceTree = "<group>"; };
 		C50387E4301B55B00045358F /* CaloriesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesAssembly.swift; sourceTree = "<group>"; };
+		NF001E0130200001000000001R /* CaloriesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFactory.swift; sourceTree = "<group>"; };
 		C50387E6301B55B00045358F /* CaloriesTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTracking.swift; sourceTree = "<group>"; };
 		C50387E8301B55B00045358F /* CalorieMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieMeal.swift; sourceTree = "<group>"; };
 		C50387E9301B55B00045358F /* MealNutritionFacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealNutritionFacts.swift; sourceTree = "<group>"; };
@@ -1156,6 +1162,7 @@
 		C51E9D0C30155E56009DF262 /* ProductDetailsScanDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsScanDTO.swift; sourceTree = "<group>"; };
 		C51E9D0E30155E56009DF262 /* ProductDetailsRepoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRepoImpl.swift; sourceTree = "<group>"; };
 		C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsAssembly.swift; sourceTree = "<group>"; };
+		NF001D0130200001000000001R /* ProductDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsFactory.swift; sourceTree = "<group>"; };
 		C51E9D1330155E56009DF262 /* ProductDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetails.swift; sourceTree = "<group>"; };
 		C51E9D1430155E56009DF262 /* SafetyLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyLevel.swift; sourceTree = "<group>"; };
 		C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRepo.swift; sourceTree = "<group>"; };
@@ -1344,6 +1351,9 @@
 		FDB75FF17A398DC32AA8D5EA /* ProfileSetupRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupRoute.swift; sourceTree = "<group>"; };
 		NF001A0130200001000000001R /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		NF001A0230200001000000001R /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
+		NF001F0130200001000000001R /* SmartNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartNotificationScheduler.swift; sourceTree = "<group>"; };
+		NF001F0230200001000000001R /* SmartNotificationEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartNotificationEvaluator.swift; sourceTree = "<group>"; };
+		NF001F0330200001000000001R /* NotificationBootstrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBootstrapper.swift; sourceTree = "<group>"; };
 		NF001A0330200001000000001R /* NotificationMuteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMuteStore.swift; sourceTree = "<group>"; };
 		NF001A0430200001000000001R /* NotificationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceProtocol.swift; sourceTree = "<group>"; };
 		NF001A0530200001000000001R /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -3642,6 +3652,7 @@
 			isa = PBXGroup;
 			children = (
 				C50387E4301B55B00045358F /* CaloriesAssembly.swift */,
+				NF001E0130200001000000001R /* CaloriesFactory.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -4166,6 +4177,7 @@
 			isa = PBXGroup;
 			children = (
 				C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */,
+				NF001D0130200001000000001R /* ProductDetailsFactory.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -5003,6 +5015,9 @@
 			children = (
 				NF001A0130200001000000001R /* LocalNotification.swift */,
 				NF001A0230200001000000001R /* AppNotification.swift */,
+				NF001F0130200001000000001R /* SmartNotificationScheduler.swift */,
+				NF001F0230200001000000001R /* SmartNotificationEvaluator.swift */,
+				NF001F0330200001000000001R /* NotificationBootstrapper.swift */,
 				NF001A0330200001000000001R /* NotificationMuteStore.swift */,
 				NF001A0430200001000000001R /* NotificationServiceProtocol.swift */,
 				NF001A0530200001000000001R /* NotificationService.swift */,
@@ -5548,6 +5563,9 @@
 				D48A2443301158FF0004D95E /* CoreAssembly.swift in Sources */,
 				NF001A0130200001000000001 /* LocalNotification.swift in Sources */,
 				NF001A0230200001000000001 /* AppNotification.swift in Sources */,
+				NF001F0130200001000000001 /* SmartNotificationScheduler.swift in Sources */,
+				NF001F0230200001000000001 /* SmartNotificationEvaluator.swift in Sources */,
+				NF001F0330200001000000001 /* NotificationBootstrapper.swift in Sources */,
 				NF001A0330200001000000001 /* NotificationMuteStore.swift in Sources */,
 				NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */,
 				NF001A0530200001000000001 /* NotificationService.swift in Sources */,
@@ -5687,6 +5705,7 @@
 				C5038886301B55B00045358F /* CaloriesRoute.swift in Sources */,
 				C5038887301B55B00045358F /* FetchExercisesRequest.swift in Sources */,
 				C5038888301B55B00045358F /* CaloriesAssembly.swift in Sources */,
+				NF001E0130200001000000001 /* CaloriesFactory.swift in Sources */,
 				C5038889301B55B00045358F /* HealthKitStepDataSource.swift in Sources */,
 				C503888A301B55B00045358F /* DailyInsightCardView.swift in Sources */,
 				C503888B301B55B00045358F /* DailyProductsSection.swift in Sources */,
@@ -5746,6 +5765,7 @@
 				C51E9D4330155E56009DF262 /* ProductDetailsRepo.swift in Sources */,
 				C51E9D4430155E56009DF262 /* ProductNutritionSection.swift in Sources */,
 				C51E9D4530155E56009DF262 /* ProductDetailsAssembly.swift in Sources */,
+				NF001D0130200001000000001 /* ProductDetailsFactory.swift in Sources */,
 				C51E9D4630155E56009DF262 /* ProductDetailsScreen.swift in Sources */,
 				C51E9D4730155E56009DF262 /* ProductHeaderUIState.swift in Sources */,
 				C51E9D4830155E56009DF262 /* ProductSheetView.swift in Sources */,

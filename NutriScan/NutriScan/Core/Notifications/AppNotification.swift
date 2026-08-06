@@ -8,40 +8,65 @@
 import Foundation
 import UserNotifications
 
+enum SmartNotificationIdentifier: String, CaseIterable {
+    case breakfastNudge = "smart-breakfastNudge-0900"
+    case morningWaterPace = "smart-morningWaterPace-1100"
+    case lunchNudge = "smart-lunchNudge-1330"
+    case middayWaterPace = "smart-middayWaterPace-1400"
+    case afternoonStepsMove = "smart-afternoonStepsMove-1600"
+    case eveningWaterPace = "smart-eveningWaterPace-1700"
+    case dinnerNudge = "smart-dinnerNudge-1930"
+    case workoutNudge = "smart-workoutNudge-2030"
+    case streakProtection = "smart-streakProtection-2130"
+    case dailyQuoteSummary = "smart-dailyQuoteSummary-2200"
+    case healthNewsNudge = "smart-healthNews"
+    case scanReengagement = "smart-scanReengagement-weekly"
+}
+
 enum AppNotification: LocalNotification {
 
-    case stepsReminder(currentSteps: Int, goalSteps: Int)
-    case waterReminder(currentGlasses: Int, goalGlasses: Int)
-    case workoutReminder
-    case foodLogReminder
-    case streakReminder
-    case healthNewsUpdate(headline: String)
-    case healthQuote(quote: String)
-    case favoriteAdded(itemTitle: String, itemSubtitle: String)
-    case scanComplete(itemName: String)
+    // 10 Smart Time-Slot & Behavioral Notifications
+    case breakfastNudge                 // 09:00 - FOOD
+    case morningWaterPace              // 11:00 - WATER
+    case lunchNudge                     // 13:30 - FOOD
+    case middayWaterPace               // 14:00 - WATER
+    case afternoonStepsMove            // 16:00 - STEPS
+    case eveningWaterPace             // 17:00 - WATER
+    case dinnerNudge                    // 19:30 - FOOD
+    case workoutNudge                   // 20:30 - WORKOUT
+    case streakProtection               // 21:30 - STREAK
+    case dailyQuoteSummary(quote: String)  // 22:00 - QUOTE
+    case healthNewsNudge(headline: String) // Random 2-3 days - NEWS
+    case scanReengagement               // Random weekly - SCAN
 
     // MARK: - identifier
 
     var identifier: String {
         switch self {
-        case .stepsReminder:
-            return "stepsReminder-\(UUID().uuidString)"
-        case .waterReminder:
-            return "waterReminder-\(UUID().uuidString)"
-        case .workoutReminder:
-            return "workoutReminder-\(UUID().uuidString)"
-        case .foodLogReminder:
-            return "foodLogReminder-\(UUID().uuidString)"
-        case .streakReminder:
-            return "streakReminder"
-        case .healthNewsUpdate(let headline):
-            return "healthNews-\(headline.lowercased().replacingOccurrences(of: " ", with: "_"))"
-        case .healthQuote:
-            return "healthQuote-\(UUID().uuidString)"
-        case .favoriteAdded(let itemTitle, _):
-            return "favoriteAdded-\(itemTitle.lowercased().replacingOccurrences(of: " ", with: "_"))"
-        case .scanComplete(let itemName):
-            return "scanComplete-\(itemName.lowercased().replacingOccurrences(of: " ", with: "_"))"
+        case .breakfastNudge:
+            return SmartNotificationIdentifier.breakfastNudge.rawValue
+        case .morningWaterPace:
+            return SmartNotificationIdentifier.morningWaterPace.rawValue
+        case .lunchNudge:
+            return SmartNotificationIdentifier.lunchNudge.rawValue
+        case .middayWaterPace:
+            return SmartNotificationIdentifier.middayWaterPace.rawValue
+        case .afternoonStepsMove:
+            return SmartNotificationIdentifier.afternoonStepsMove.rawValue
+        case .eveningWaterPace:
+            return SmartNotificationIdentifier.eveningWaterPace.rawValue
+        case .dinnerNudge:
+            return SmartNotificationIdentifier.dinnerNudge.rawValue
+        case .workoutNudge:
+            return SmartNotificationIdentifier.workoutNudge.rawValue
+        case .streakProtection:
+            return SmartNotificationIdentifier.streakProtection.rawValue
+        case .dailyQuoteSummary:
+            return SmartNotificationIdentifier.dailyQuoteSummary.rawValue
+        case .healthNewsNudge(let headline):
+            return "\(SmartNotificationIdentifier.healthNewsNudge.rawValue)-\(headline.lowercased().replacingOccurrences(of: " ", with: "_"))"
+        case .scanReengagement:
+            return SmartNotificationIdentifier.scanReengagement.rawValue
         }
     }
 
@@ -49,15 +74,22 @@ enum AppNotification: LocalNotification {
 
     var category: NotificationCategory {
         switch self {
-        case .stepsReminder:        return .steps
-        case .waterReminder:        return .water
-        case .workoutReminder:      return .workout
-        case .foodLogReminder:      return .foodLog
-        case .streakReminder:       return .streak
-        case .healthNewsUpdate:     return .healthNews
-        case .healthQuote:          return .healthQuotes
-        case .favoriteAdded:        return .scanReminders
-        case .scanComplete:         return .scanReminders
+        case .breakfastNudge, .lunchNudge, .dinnerNudge:
+            return .foodLog
+        case .morningWaterPace, .middayWaterPace, .eveningWaterPace:
+            return .water
+        case .afternoonStepsMove:
+            return .steps
+        case .workoutNudge:
+            return .workout
+        case .streakProtection:
+            return .streak
+        case .dailyQuoteSummary:
+            return .healthQuotes
+        case .healthNewsNudge:
+            return .healthNews
+        case .scanReengagement:
+            return .scanReminders
         }
     }
 
@@ -65,58 +97,59 @@ enum AppNotification: LocalNotification {
 
     var title: String {
         switch self {
-        case .stepsReminder:
-            return "Time to Move! 🏃‍♂️"
-        case .waterReminder:
+        case .breakfastNudge:
+            return "Breakfast Time 🍳"
+        case .morningWaterPace, .middayWaterPace, .eveningWaterPace:
             return "Stay Hydrated 💧"
-        case .workoutReminder:
+        case .lunchNudge:
+            return "Lunch Reminder 🥗"
+        case .afternoonStepsMove:
+            return "Time to Move! 🏃‍♂️"
+        case .dinnerNudge:
+            return "Dinner Nudge 🍲"
+        case .workoutNudge:
             return "Daily Workout 🏋️‍♂️"
-        case .foodLogReminder:
-            return "Log Your Meal 🥗"
-        case .streakReminder:
-            return "Keep Your Streak Going! 🔥"
-        case .healthNewsUpdate:
-            return "Health News 📰"
-        case .healthQuote:
-            return "Daily Health Quote 💡"
-        case .favoriteAdded:
-            return "Added to Favorites 🌟"
-        case .scanComplete:
-            return "Scan Complete ✅"
+        case .streakProtection:
+            return "Protect Your Streak! 🔥"
+        case .dailyQuoteSummary:
+            return "Daily Reflection 💡"
+        case .healthNewsNudge:
+            return "Health Insights 📰"
+        case .scanReengagement:
+            return "Scan & Learn 🔍"
         }
     }
 
     var subtitle: String? {
-        switch self {
-        case .favoriteAdded(let itemTitle, _):
-            return itemTitle
-        case .scanComplete(let itemName):
-            return itemName
-        default:
-            return nil
-        }
+        nil
     }
 
     var body: String {
         switch self {
-        case .stepsReminder(let current, let goal):
-            return "You're at \(current)/\(goal) steps today. Keep moving to reach your goal!"
-        case .waterReminder(let current, let goal):
-            return "You're at \(current)/\(goal) glasses today. Drink a glass of water now!"
-        case .workoutReminder:
-            return "Don't forget to complete your workout today!"
-        case .foodLogReminder:
-            return "Remember to log your meals today to stay on top of your nutrition goals."
-        case .streakReminder:
-            return "You haven't logged today yet. Stay on track with your nutrition goals!"
-        case .healthNewsUpdate(let headline):
-            return headline
-        case .healthQuote(let quote):
+        case .breakfastNudge:
+            return "Don't forget to log your breakfast to start your day strong!"
+        case .morningWaterPace:
+            return "You're a bit behind your morning water goal. Have a glass of water!"
+        case .lunchNudge:
+            return "Remember to log your lunch to keep your nutrition tracking accurate."
+        case .middayWaterPace:
+            return "Halfway through the day! Drink a glass of water to stay energized."
+        case .afternoonStepsMove:
+            return "You're behind your daily step goal. Take a quick walk to catch up!"
+        case .eveningWaterPace:
+            return "Almost there! Sip another glass of water toward your daily target."
+        case .dinnerNudge:
+            return "Complete today's food log by recording your dinner."
+        case .workoutNudge:
+            return "No exercise logged today yet. A short workout keeps your momentum going!"
+        case .streakProtection:
+            return "Don't lose your active streak! Complete today's log before midnight."
+        case .dailyQuoteSummary(let quote):
             return quote
-        case .favoriteAdded(_, let itemSubtitle):
-            return itemSubtitle
-        case .scanComplete(let itemName):
-            return "Nutrition info for \"\(itemName)\" is ready to view."
+        case .healthNewsNudge(let headline):
+            return headline
+        case .scanReengagement:
+            return "Haven't scanned a food product in a while? Scan your next meal to discover nutrition facts!"
         }
     }
 }
