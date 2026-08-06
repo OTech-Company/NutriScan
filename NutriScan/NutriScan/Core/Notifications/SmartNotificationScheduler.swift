@@ -95,27 +95,17 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
         // 1. Cancel today's pending notification request
         service.cancel(identifier: notification.identifier)
 
-        // 2. Schedule a one-time trigger for tomorrow at target hour:minute in iOS system memory
+        // 2. Register a 3-Day Rolling Safety Net (Day+1, Day+2, Day+3) directly in iOS system memory
         let calendar = Calendar.current
         let now = Date()
-        if let tomorrow = calendar.date(byAdding: .day, value: 1, to: now) {
-            var tomorrowComponents = calendar.dateComponents([.year, .month, .day], from: tomorrow)
-            tomorrowComponents.hour = hour
-            tomorrowComponents.minute = minute
+        for dayOffset in 1...3 {
+            if let futureDate = calendar.date(byAdding: .day, value: dayOffset, to: now) {
+                var components = calendar.dateComponents([.year, .month, .day], from: futureDate)
+                components.hour = hour
+                components.minute = minute
 
-            let tomorrowTrigger = UNCalendarNotificationTrigger(dateMatching: tomorrowComponents, repeats: false)
-            try? await service.schedule(notification, trigger: tomorrowTrigger)
-        }
-
-        // 3. Re-register daily repeating schedule after today's time passes
-        if let targetToday = calendar.date(bySettingHour: hour, minute: minute, second: 0, of: now), now > targetToday {
-            await scheduleTimeSlot(notification: notification, hour: hour, minute: minute)
-        } else if let triggerAfter = calendar.date(bySettingHour: hour, minute: 1, second: 0, of: now) {
-            let delay = max(1.0, triggerAfter.timeIntervalSince(now))
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-                Task {
-                    await self?.scheduleTimeSlot(notification: notification, hour: hour, minute: minute)
-                }
+                let futureTrigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+                try? await service.schedule(notification, trigger: futureTrigger)
             }
         }
     }
