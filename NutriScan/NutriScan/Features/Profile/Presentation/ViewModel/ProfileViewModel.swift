@@ -66,16 +66,17 @@ final class ProfileViewModel {
 
     @MainActor
     func addFamilyMember(_ newMember: FamilyMemberInput, imageData: Data?) async -> String? {
-        
-        let newIndex = familyMembers.count
+        let idsBefore = Set(familyMembers.map(\.id))
         let payload = familyMembers.map { $0.toInput() } + [newMember]
 
         switch await submitFamilyMembers(payload) {
         case .failure(let error):
             return error.message
         case .success(let refreshed):
-            guard let imageData, refreshed.indices.contains(newIndex) else { return nil }
-            let resolvedId = refreshed[newIndex].id
+            guard let imageData,
+                  let created = refreshed.first(where: { !idsBefore.contains($0.id) })
+            else { return nil }
+            let resolvedId = created.id
 
             do {
                 try await uploadFamilyMemberImageUseCase.execute(id: resolvedId, data: imageData)
@@ -88,7 +89,6 @@ final class ProfileViewModel {
 
     @MainActor
     func updateFamilyMember(id: String, with updated: FamilyMemberInput, imageData: Data?) async -> String? {
-        
         let payload = familyMembers.map { $0.id == id ? updated : $0.toInput() }
 
         switch await submitFamilyMembers(payload) {

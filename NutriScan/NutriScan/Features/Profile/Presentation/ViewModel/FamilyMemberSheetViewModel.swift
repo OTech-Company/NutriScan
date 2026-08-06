@@ -35,17 +35,20 @@ final class FamilyMemberSheetViewModel {
     private var revertAction: (() -> Void)?
 
     private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
+    private let imageCompressor: ImageCompressing
 
     var isEditMode: Bool { existingMember != nil }
 
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
-        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self)
+        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
+        imageCompressor: ImageCompressing = ImageCompressor()
     ) {
         self.existingMember = existingMember
         self.allMembers = allMembers
         self.getReferenceDataUseCase = getReferenceDataUseCase
+        self.imageCompressor = imageCompressor
 
         if let member = existingMember {
             name.value = member.name
@@ -115,7 +118,7 @@ final class FamilyMemberSheetViewModel {
 
     @MainActor
     func handleImageSelection(data: Data) async {
-        self.pendingImageData = data
+        self.pendingImageData = imageCompressor.compress(data)
     }
 
     func validate() -> Bool {
