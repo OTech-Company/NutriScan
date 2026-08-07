@@ -11,6 +11,9 @@ import UserNotifications
 enum SmartNotificationIdentifier: String, CaseIterable {
     case breakfastNudge = "smart-breakfastNudge-0900"
     case morningWaterPace = "smart-morningWaterPace-1100"
+    case restBreak0800 = "smart-restBreak-0800"
+    case restBreak1400 = "smart-restBreak-1400"
+    case restBreak2000 = "smart-restBreak-2000"
     case lunchNudge = "smart-lunchNudge-1330"
     case middayWaterPace = "smart-middayWaterPace-1400"
     case afternoonStepsMove = "smart-afternoonStepsMove-1600"
@@ -25,9 +28,10 @@ enum SmartNotificationIdentifier: String, CaseIterable {
 
 enum AppNotification: LocalNotification {
 
-    // 10 Smart Time-Slot & Behavioral Notifications
+    // Smart Time-Slot & Behavioral Notifications
     case breakfastNudge                 // 09:00 - FOOD
     case morningWaterPace              // 11:00 - WATER
+    case pauseAndResetNudge(slot: Int)  // Every 6 hours (08:00, 14:00, 20:00) - BREAK
     case lunchNudge                     // 13:30 - FOOD
     case middayWaterPace               // 14:00 - WATER
     case afternoonStepsMove            // 16:00 - STEPS
@@ -35,8 +39,8 @@ enum AppNotification: LocalNotification {
     case dinnerNudge                    // 19:30 - FOOD
     case workoutNudge                   // 20:30 - WORKOUT
     case streakProtection               // 21:30 - STREAK
-    case dailyQuoteSummary(quote: String)  // 22:00 - QUOTE
-    case healthNewsNudge(headline: String) // Random 2-3 days - NEWS
+    case dailyQuoteSummary(quote: String)  // 08:00 - QUOTE
+    case healthNewsNudge(headline: String) // 12:30 - NEWS
     case scanReengagement               // Random weekly - SCAN
 
     // MARK: - identifier
@@ -47,6 +51,12 @@ enum AppNotification: LocalNotification {
             return SmartNotificationIdentifier.breakfastNudge.rawValue
         case .morningWaterPace:
             return SmartNotificationIdentifier.morningWaterPace.rawValue
+        case .pauseAndResetNudge(let slot):
+            switch slot {
+            case 1: return SmartNotificationIdentifier.restBreak0800.rawValue
+            case 2: return SmartNotificationIdentifier.restBreak1400.rawValue
+            default: return SmartNotificationIdentifier.restBreak2000.rawValue
+            }
         case .lunchNudge:
             return SmartNotificationIdentifier.lunchNudge.rawValue
         case .middayWaterPace:
@@ -78,6 +88,8 @@ enum AppNotification: LocalNotification {
             return .foodLog
         case .morningWaterPace, .middayWaterPace, .eveningWaterPace:
             return .water
+        case .pauseAndResetNudge:
+            return .breakTime
         case .afternoonStepsMove:
             return .steps
         case .workoutNudge:
@@ -101,6 +113,8 @@ enum AppNotification: LocalNotification {
             return "Breakfast Time 🍳"
         case .morningWaterPace, .middayWaterPace, .eveningWaterPace:
             return "Stay Hydrated 💧"
+        case .pauseAndResetNudge:
+            return "Pause & Reset 🌿"
         case .lunchNudge:
             return "Lunch Reminder 🥗"
         case .afternoonStepsMove:
@@ -130,6 +144,8 @@ enum AppNotification: LocalNotification {
             return "Don't forget to log your breakfast to start your day strong!"
         case .morningWaterPace:
             return "You're a bit behind your morning water goal. Have a glass of water!"
+        case .pauseAndResetNudge:
+            return "Your back, your eyes, your focus — all need a minute. Stand up, breathe, look away from the screen. You'll come back sharper."
         case .lunchNudge:
             return "Remember to log your lunch to keep your nutrition tracking accurate."
         case .middayWaterPace:

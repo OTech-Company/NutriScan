@@ -75,8 +75,8 @@ final class SmartNotificationEvaluator: SmartNotificationEvaluatorProtocol {
             guard let tracking = tracking else { return true }
             return tracking.meals.isEmpty || tracking.calculatedMealCalories == 0
 
-        case .dailyQuoteSummary, .healthNewsNudge, .scanReengagement:
-            // Guaranteed daily touch / News / Weekly scan re-engagement
+        case .dailyQuoteSummary, .healthNewsNudge, .scanReengagement, .restBreak0800, .restBreak1400, .restBreak2000:
+            // Guaranteed daily touch / News / Break / Weekly scan re-engagement
             return true
         }
     }
