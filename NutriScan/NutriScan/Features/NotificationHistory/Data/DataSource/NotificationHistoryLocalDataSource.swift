@@ -29,7 +29,6 @@ final class NotificationHistoryLocalDataSource: NotificationHistoryLocalDataSour
         } catch {
             fatalError("Failed to initialize SwiftData container: \(error)")
         }
-        seedInitialMockDataIfNeeded()
     }
 
     func fetchItems() -> [NotificationHistoryItem] {
@@ -81,61 +80,6 @@ final class NotificationHistoryLocalDataSource: NotificationHistoryLocalDataSour
         if let models = try? context.fetch(descriptor), let item = models.first {
             item.isRead = true
             try? context.save()
-        }
-    }
-
-    private func seedInitialMockDataIfNeeded() {
-        let descriptor = FetchDescriptor<NotificationHistorySDModel>()
-        let count = (try? context.fetchCount(descriptor)) ?? 0
-        if count == 0 {
-            let now = Date()
-            let mockItems: [NotificationHistoryItem] = [
-                NotificationHistoryItem(
-                    title: "Time for a break",
-                    body: "Stand up, stretch, drink some water, and rest your eyes for a ...",
-                    category: .breakTime,
-                    timestamp: now.addingTimeInterval(-3600),
-                    isRead: false
-                ),
-                NotificationHistoryItem(
-                    title: "Stay hydrated",
-                    body: "You're at 0/8 glasses today.",
-                    category: .water,
-                    timestamp: now.addingTimeInterval(-3600),
-                    isRead: false
-                ),
-                NotificationHistoryItem(
-                    title: "Keep going",
-                    body: "You're at 2/10000 steps today.",
-                    category: .steps,
-                    timestamp: now.addingTimeInterval(-3600),
-                    isRead: true
-                ),
-                NotificationHistoryItem(
-                    title: "Stay hydrated",
-                    body: "You're at 0/8 glasses today.",
-                    category: .water,
-                    timestamp: now.addingTimeInterval(-10800),
-                    isRead: true
-                ),
-                NotificationHistoryItem(
-                    title: "Time for a break",
-                    body: "Stand up, stretch, drink some water, and rest your eyes for a ...",
-                    category: .breakTime,
-                    timestamp: now.addingTimeInterval(-10800),
-                    isRead: true
-                ),
-                NotificationHistoryItem(
-                    title: "Stay hydrated",
-                    body: "You're at 0/8 glasses today.",
-                    category: .water,
-                    timestamp: now.addingTimeInterval(-25200),
-                    isRead: true
-                )
-            ]
-            for item in mockItems {
-                saveItem(item)
-            }
         }
     }
 }
