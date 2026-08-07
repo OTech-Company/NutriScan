@@ -78,12 +78,10 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
         await scheduleTimeSlot(notification: .morningWaterPace, hour: 11, minute: 0)
 
         // 5. 12:30 HEALTH NEWS (Midday Health Insight via News API)
-        var newsHeadline = "Discover daily insights for better nutrition and health."
         if let headlines = try? await fetchTopHeadlinesUseCase?.execute(category: "health"),
            let topHeadline = headlines.first?.title, !topHeadline.isEmpty {
-            newsHeadline = topHeadline
+            await scheduleTimeSlot(notification: .healthNewsNudge(headline: topHeadline), hour: 12, minute: 30)
         }
-        await scheduleTimeSlot(notification: .healthNewsNudge(headline: newsHeadline), hour: 12, minute: 30)
 
         // 6. 13:30 FOOD (Lunch)
         await scheduleTimeSlot(notification: .lunchNudge, hour: 13, minute: 30)
