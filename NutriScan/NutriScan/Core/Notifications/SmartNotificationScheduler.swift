@@ -26,20 +26,24 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
     private let service: NotificationServiceProtocol
     private let muteStore: NotificationMuteStoreProtocol
     private let quoteStore: HealthQuoteStoreProtocol
+    private let fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol?
 
     init(
         service: NotificationServiceProtocol,
         muteStore: NotificationMuteStoreProtocol,
-        quoteStore: HealthQuoteStoreProtocol = HealthQuoteStore()
+        quoteStore: HealthQuoteStoreProtocol = HealthQuoteStore(),
+        fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol? = nil
     ) {
         self.service = service
         self.muteStore = muteStore
         self.quoteStore = quoteStore
+        self.fetchTopHeadlinesUseCase = fetchTopHeadlinesUseCase
     }
 
     private static let allIdentifiers: [String] = [
         AppNotification.breakfastNudge.identifier,
         AppNotification.morningWaterPace.identifier,
+        AppNotification.healthNewsNudge(headline: "").identifier,
         AppNotification.lunchNudge.identifier,
         AppNotification.middayWaterPace.identifier,
         AppNotification.afternoonStepsMove.identifier,
@@ -67,28 +71,36 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
         // 3. 11:00 WATER (Morning Pace)
         await scheduleTimeSlot(notification: .morningWaterPace, hour: 11, minute: 0)
 
-        // 4. 13:30 FOOD (Lunch)
+        // 4. 12:30 HEALTH NEWS (Midday Health Insight via News API)
+        var newsHeadline = "Discover daily insights for better nutrition and health."
+        if let headlines = try? await fetchTopHeadlinesUseCase?.execute(category: "health"),
+           let topHeadline = headlines.first?.title, !topHeadline.isEmpty {
+            newsHeadline = topHeadline
+        }
+        await scheduleTimeSlot(notification: .healthNewsNudge(headline: newsHeadline), hour: 12, minute: 30)
+
+        // 5. 13:30 FOOD (Lunch)
         await scheduleTimeSlot(notification: .lunchNudge, hour: 13, minute: 30)
 
-        // 5. 14:00 WATER (Midday Pace)
+        // 6. 14:00 WATER (Midday Pace)
         await scheduleTimeSlot(notification: .middayWaterPace, hour: 14, minute: 0)
 
-        // 6. 16:00 STEPS (Afternoon Move)
+        // 7. 16:00 STEPS (Afternoon Move)
         await scheduleTimeSlot(notification: .afternoonStepsMove, hour: 16, minute: 0)
 
-        // 7. 17:00 WATER (Evening Pace)
+        // 8. 17:00 WATER (Evening Pace)
         await scheduleTimeSlot(notification: .eveningWaterPace, hour: 17, minute: 0)
 
-        // 8. 19:30 FOOD (Dinner)
+        // 9. 19:30 FOOD (Dinner)
         await scheduleTimeSlot(notification: .dinnerNudge, hour: 19, minute: 30)
 
-        // 9. 20:30 WORKOUT
+        // 10. 20:30 WORKOUT
         await scheduleTimeSlot(notification: .workoutNudge, hour: 20, minute: 30)
 
-        // 10. 21:30 STREAK
+        // 11. 21:30 STREAK
         await scheduleTimeSlot(notification: .streakProtection, hour: 21, minute: 30)
 
-        // 11. Random 1x/week SCAN
+        // 12. Random 1x/week SCAN
         await scheduleTimeSlot(notification: .scanReengagement, weekday: 1, hour: 12, minute: 0) // Sunday
     }
 

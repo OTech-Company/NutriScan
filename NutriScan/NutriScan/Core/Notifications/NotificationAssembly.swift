@@ -42,10 +42,12 @@ struct NotificationAssembly: Assembly {
             type: HealthQuoteStoreProtocol.self,
             component: quoteStore
         )
+        let fetchNewsUseCase = container.resolve(type: FetchTopHeadlinesUseCaseProtocol.self)
         let scheduler = SmartNotificationScheduler(
             service: service,
             muteStore: muteStore,
-            quoteStore: quoteStore
+            quoteStore: quoteStore,
+            fetchTopHeadlinesUseCase: fetchNewsUseCase
         )
         container.register(
             type: SmartNotificationSchedulerProtocol.self,
