@@ -36,8 +36,17 @@ struct NotificationAssembly: Assembly {
             component: service
         )
 
-        // 3. Register SmartNotificationScheduler with injected NotificationService & muteStore
-        let scheduler = SmartNotificationScheduler(service: service, muteStore: muteStore)
+        // 3. Register HealthQuoteStore & SmartNotificationScheduler
+        let quoteStore = HealthQuoteStore()
+        container.register(
+            type: HealthQuoteStoreProtocol.self,
+            component: quoteStore
+        )
+        let scheduler = SmartNotificationScheduler(
+            service: service,
+            muteStore: muteStore,
+            quoteStore: quoteStore
+        )
         container.register(
             type: SmartNotificationSchedulerProtocol.self,
             component: scheduler

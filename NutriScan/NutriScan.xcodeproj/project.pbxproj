@@ -670,6 +670,8 @@
 		NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0430200001000000001R /* NotificationServiceProtocol.swift */; };
 		NF001A0530200001000000001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0530200001000000001R /* NotificationService.swift */; };
 		NF001A0630200001000000001 /* NotificationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0630200001000000001R /* NotificationAssembly.swift */; };
+		HQ001F0130200001000000001 /* HealthQuoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HQ001F0130200001000000001R /* HealthQuoteStore.swift */; };
+		HQ001F0130200002000000002 /* HealthQuotes.json in Resources */ = {isa = PBXBuildFile; fileRef = HQ001F0130200002000000002R /* HealthQuotes.json */; };
 		NF001A0830200001000000001 /* NotificationCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0830200001000000001R /* NotificationCategory.swift */; };
 		NF001A0930200001000000001 /* NotificationHistorySaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0930200001000000001R /* NotificationHistorySaving.swift */; };
 /* End PBXBuildFile section */
@@ -1368,6 +1370,8 @@
 		NF001A0630200001000000001R /* NotificationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAssembly.swift; sourceTree = "<group>"; };
 		NF001A0830200001000000001R /* NotificationCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCategory.swift; sourceTree = "<group>"; };
 		NF001A0930200001000000001R /* NotificationHistorySaving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistorySaving.swift; sourceTree = "<group>"; };
+		HQ001F0130200001000000001R /* HealthQuoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthQuoteStore.swift; sourceTree = "<group>"; };
+		HQ001F0130200002000000002R /* HealthQuotes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = HealthQuotes.json; path = HealthQuotes.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4529,6 +4533,7 @@
 				3661F24417E53BBF138D32A9 /* Network */,
 				81C67CC4F0083E0C53C34758 /* NetworkConfig */,
 				NF001A0720200001000000001 /* Notifications */,
+				HQ001F0130200003000000003 /* Resources */,
 				8F98B9175D6145087D751784 /* Security */,
 				680237359DE65C4471FA56CE /* Shared Components */,
 				E018423AD5BD85B8BFB4C4FF /* TabBar */,
@@ -5034,11 +5039,20 @@
 				NF001A0430200001000000001R /* NotificationServiceProtocol.swift */,
 				NF001A0530200001000000001R /* NotificationService.swift */,
 				NF001A0630200001000000001R /* NotificationAssembly.swift */,
+				HQ001F0130200001000000001R /* HealthQuoteStore.swift */,
 				NF001A0830200001000000001R /* NotificationCategory.swift */,
 				NF001A0930200001000000001R /* NotificationHistorySaving.swift */,
 				2C8536ED30236CD40043831A /* NotificationHistoryItem.swift */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		HQ001F0130200003000000003 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				HQ001F0130200002000000002R /* HealthQuotes.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5162,6 +5176,7 @@
 				EF5016B61AF95A5DCB779595 /* PlusJakartaSans-Bold.ttf in Resources */,
 				A291CBA272BE3AFF361A54AA /* PlusJakartaSans-Medium.ttf in Resources */,
 				40226321AB33DCB0DB192DDC /* PlusJakartaSans-SemiBold.ttf in Resources */,
+				HQ001F0130200002000000002 /* HealthQuotes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5585,6 +5600,7 @@
 				NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */,
 				NF001A0530200001000000001 /* NotificationService.swift in Sources */,
 				NF001A0630200001000000001 /* NotificationAssembly.swift in Sources */,
+				HQ001F0130200001000000001 /* HealthQuoteStore.swift in Sources */,
 				NF001A0830200001000000001 /* NotificationCategory.swift in Sources */,
 				NF001A0930200001000000001 /* NotificationHistorySaving.swift in Sources */,
 				9A9ADDF48A3BBC4320C3738F /* ProfileSetupFlowViewModel.swift in Sources */,

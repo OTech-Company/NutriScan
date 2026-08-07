@@ -25,13 +25,16 @@ protocol SmartNotificationSchedulerProtocol {
 final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
     private let service: NotificationServiceProtocol
     private let muteStore: NotificationMuteStoreProtocol
+    private let quoteStore: HealthQuoteStoreProtocol
 
     init(
         service: NotificationServiceProtocol,
-        muteStore: NotificationMuteStoreProtocol
+        muteStore: NotificationMuteStoreProtocol,
+        quoteStore: HealthQuoteStoreProtocol = HealthQuoteStore()
     ) {
         self.service = service
         self.muteStore = muteStore
+        self.quoteStore = quoteStore
     }
 
     private static let allIdentifiers: [String] = [
@@ -54,36 +57,36 @@ final class SmartNotificationScheduler: SmartNotificationSchedulerProtocol {
             service.cancel(identifier: identifier)
         }
 
-        // 1. 09:00 FOOD (Breakfast)
+        // 1. 08:00 QUOTE (Daily Morning Reflection & Inspiration)
+        let todayQuote = quoteStore.quoteForToday()
+        await scheduleTimeSlot(notification: .dailyQuoteSummary(quote: todayQuote), hour: 8, minute: 0)
+
+        // 2. 09:00 FOOD (Breakfast)
         await scheduleTimeSlot(notification: .breakfastNudge, hour: 9, minute: 0)
 
-        // 2. 11:00 WATER (Morning Pace)
+        // 3. 11:00 WATER (Morning Pace)
         await scheduleTimeSlot(notification: .morningWaterPace, hour: 11, minute: 0)
 
-        // 3. 13:30 FOOD (Lunch)
+        // 4. 13:30 FOOD (Lunch)
         await scheduleTimeSlot(notification: .lunchNudge, hour: 13, minute: 30)
 
-        // 4. 14:00 WATER (Midday Pace)
+        // 5. 14:00 WATER (Midday Pace)
         await scheduleTimeSlot(notification: .middayWaterPace, hour: 14, minute: 0)
 
-        // 5. 16:00 STEPS (Afternoon Move)
+        // 6. 16:00 STEPS (Afternoon Move)
         await scheduleTimeSlot(notification: .afternoonStepsMove, hour: 16, minute: 0)
 
-        // 6. 17:00 WATER (Evening Pace)
+        // 7. 17:00 WATER (Evening Pace)
         await scheduleTimeSlot(notification: .eveningWaterPace, hour: 17, minute: 0)
 
-        // 7. 19:30 FOOD (Dinner)
+        // 8. 19:30 FOOD (Dinner)
         await scheduleTimeSlot(notification: .dinnerNudge, hour: 19, minute: 30)
 
-        // 8. 20:30 WORKOUT
+        // 9. 20:30 WORKOUT
         await scheduleTimeSlot(notification: .workoutNudge, hour: 20, minute: 30)
 
-        // 9. 21:30 STREAK
+        // 10. 21:30 STREAK
         await scheduleTimeSlot(notification: .streakProtection, hour: 21, minute: 30)
-
-        // 10. 22:00 QUOTE (Guaranteed Daily Touch)
-        let defaultQuote = "Health is a state of complete harmony of the body, mind and spirit."
-        await scheduleTimeSlot(notification: .dailyQuoteSummary(quote: defaultQuote), hour: 22, minute: 0)
 
         // 11. Random 1x/week SCAN
         await scheduleTimeSlot(notification: .scanReengagement, weekday: 1, hour: 12, minute: 0) // Sunday
