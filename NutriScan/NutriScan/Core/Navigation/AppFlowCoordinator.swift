@@ -120,7 +120,8 @@ final class AppFlowCoordinator: ObservableObject {
         flow = .main
     }
 
-    func finishProfileSetup() {
+    @MainActor
+    func finishProfileSetup() async {
         if let email = UserDefaults.standard.string(forKey: "currentSetupEmail")
         {
             UserDefaults.standard.removeObject(
@@ -128,10 +129,8 @@ final class AppFlowCoordinator: ObservableObject {
             UserDefaults.standard.removeObject(forKey: "currentSetupEmail")
         }
         UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
-
-        Task {
-            await fetchProfileAndTransitionToMain()
-        }
+        
+        await fetchProfileAndTransitionToMain()
     }
 
     func logout() {
@@ -143,7 +142,7 @@ final class AppFlowCoordinator: ObservableObject {
         
         pendingDeletionDate = nil
 
-g        selectedTab = .home
+        selectedTab = .home
 
         flow = .auth
     }
