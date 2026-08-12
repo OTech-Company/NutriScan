@@ -39,11 +39,11 @@ typealias ProductDetailsScanDTO = ProductDetailsResponse
 
 struct ProductDetailsFoodSafetyResponseDTO: Decodable {
     let verdict: String?
-    let flaggedIngredients: [ProductDetailsFlagedIngredientDTO]?
+    let flaggedIngredients: [ProductDetailsFlaggedIngredientDTO]?
     let summary: String?
 }
 
-struct ProductDetailsFlagedIngredientDTO: Decodable {
+struct ProductDetailsFlaggedIngredientDTO: Decodable {
     let ingredient: String?
     let reason: String?
     let type: String?
