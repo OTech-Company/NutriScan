@@ -9,12 +9,13 @@ import Foundation
 
 struct ProductDetails {
     let scanId: String
+    let status: String
     let scannedAt: String
     let imageUrl: String
     let productName: String
-    let verdict : String
+    let verdict: String
     let summary: String
-    let flagedIngredients: [ProductDetailsFlagedIngredient]
+    let flaggedIngredients: [ProductDetailsFlaggedIngredient]
     let calories: Int
     let proteinGrams: Double
     let carbsGrams: Double
@@ -25,7 +26,7 @@ struct ProductDetails {
     let isFavorite: Bool
 }
 
-struct ProductDetailsFlagedIngredient {
+struct ProductDetailsFlaggedIngredient {
     let ingredient: String
     let reason: String
     let type: String
@@ -34,24 +35,15 @@ struct ProductDetailsFlagedIngredient {
 
 extension ProductDetails {
     init(from scan: ScanDetail, imageData: Data? = nil) {
-        let displayFormatter = DateFormatter()
-        displayFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
-
-        let scannedAtString: String
-        if let date = scan.scannedAt {
-            scannedAtString = displayFormatter.string(from: date)
-        } else {
-            scannedAtString = displayFormatter.string(from: Date())
-        }
-
         self.scanId = scan.scanId
-        self.scannedAt = scannedAtString
+        self.status = scan.status.rawValue
+        self.scannedAt = scan.scannedAt.map(Self.shortDateString) ?? Self.shortDateString(from: Date())
         self.imageUrl = scan.imageUrl ?? ""
         self.productName = scan.productName ?? "Unknown Product"
         self.verdict = scan.foodSafetyResponse?.verdict.rawValue.capitalized ?? "Unknown"
         self.summary = scan.foodSafetyResponse?.summary ?? "No summary"
-        self.flagedIngredients = scan.foodSafetyResponse?.flaggedIngredients.map {
-            ProductDetailsFlagedIngredient(
+        self.flaggedIngredients = scan.foodSafetyResponse?.flaggedIngredients.map {
+            ProductDetailsFlaggedIngredient(
                 ingredient: $0.ingredient,
                 reason: $0.reason,
                 type: $0.type.rawValue,
@@ -69,23 +61,16 @@ extension ProductDetails {
     }
 
     init(from dto: ProductDetailsScanDTO) {
-        let displayFormatter = DateFormatter()
-        displayFormatter.dateFormat = "MMM d, yyyy 'at' h:mm a"
-
         self.scanId = dto.scanId ?? ""
-        if let dateString = dto.scannedAt,
-           let date = ISO8601DateFormatter().date(from: dateString) {
-            self.scannedAt = displayFormatter.string(from: date)
-        } else {
-            self.scannedAt = dto.scannedAt ?? "No date"
-        }
+        self.status = dto.status ?? "Unknown"
+        self.scannedAt = Self.shortDateString(from: dto.scannedAt)
         self.imageUrl = dto.imageUrl ?? ""
         self.productName = dto.productName ?? "Unknown Product"
         self.verdict = dto.foodSafetyResponse?.verdict ?? "No verdict"
         self.summary = dto.foodSafetyResponse?.summary ?? "No summary"
         
-        self.flagedIngredients = dto.foodSafetyResponse?.flaggedIngredients?.map {
-            ProductDetailsFlagedIngredient(
+        self.flaggedIngredients = dto.foodSafetyResponse?.flaggedIngredients?.map {
+            ProductDetailsFlaggedIngredient(
                 ingredient: $0.ingredient ?? "Unknown ingredient",
                 reason: $0.reason ?? "No reason provided",
                 type: $0.type ?? "Unknown type",
@@ -101,5 +86,28 @@ extension ProductDetails {
         self.sugarG = dto.nutritionFacts?.sugarG ?? 0
         self.sodiumMg = dto.nutritionFacts?.sodiumMg ?? 0
         self.isFavorite = dto.favorite ?? false
+    }
+
+    private static func shortDateString(from rawDate: String?) -> String {
+        guard let rawDate else { return "No date" }
+        guard let date = isoDate(from: rawDate) else { return rawDate }
+        return shortDateString(from: date)
+    }
+
+    private static func shortDateString(from date: Date) -> String {
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateFormat = "yyyy-MM-dd"
+        return displayFormatter.string(from: date)
+    }
+
+    private static func isoDate(from rawDate: String) -> Date? {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let date = formatter.date(from: rawDate) {
+            return date
+        }
+
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.date(from: rawDate)
     }
 }
