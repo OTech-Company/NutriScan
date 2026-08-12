@@ -13,6 +13,7 @@ extension ScanHistoryEntity {
         self.imageUrl = dto.imageUrl ?? ""
         self.calories = dto.calories ?? 0.0
         self.scannedAt = dto.scannedAt ?? ""
+        self.scanStatus = ScanStatus(rawValue: dto.status ?? "") ?? .processing
         
         let verdictRaw = dto.verdict?.uppercased() ?? "CAUTION"
         switch verdictRaw {

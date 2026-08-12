@@ -10,6 +10,7 @@ struct HomeView: View {
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = HomeViewModel()
+    @State private var recentHistoryNotifier = HomeRecentHistoryNotifier.shared
     @State private var showRAGChat = false
 
     var body: some View {
@@ -55,7 +56,9 @@ struct HomeView: View {
                 } else {
                     RecentHistoryView(
                         historyItems: viewModel.recentHistory,
-                        onViewAll: {},
+                        onViewAll: {
+                            router.push(HomeRoute.scanHistory)
+                        },
                         onTap: { scanId in
                             router.push(HomeRoute.scanDetail(scanId: scanId))
                         }
@@ -68,8 +71,13 @@ struct HomeView: View {
         }
         .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
         .navigationBarHidden(true)
-        .onAppear {
-            viewModel.loadHistory()
+        .task {
+            await viewModel.loadHistoryIfNeeded()
+        }
+        .onChange(of: recentHistoryNotifier.refreshToken) {
+            Task {
+                await viewModel.refreshHistory()
+            }
         }
         .fullScreenCover(isPresented: $showRAGChat) {
             RAGChatView(

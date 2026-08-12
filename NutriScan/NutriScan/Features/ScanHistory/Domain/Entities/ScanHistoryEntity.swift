@@ -12,4 +12,5 @@ struct ScanHistoryEntity: Identifiable, Equatable {
     let calories: Double
     let scannedAt: String
     let status: StatusType
+    let scanStatus: ScanStatus
 }
