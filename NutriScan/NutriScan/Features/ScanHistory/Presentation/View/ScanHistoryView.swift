@@ -122,7 +122,8 @@ struct ScanHistoryView: View {
                     imageUrl: "",
                     calories: 150,
                     scannedAt: "2026-07-27T10:15:00Z",
-                    status: .safe
+                    status: .safe,
+                    scanStatus: .completed
                 ),
                 ScanHistoryEntity(
                     id: "2",
@@ -130,7 +131,8 @@ struct ScanHistoryView: View {
                     imageUrl: "",
                     calories: 240,
                     scannedAt: "2026-07-26T14:30:00Z",
-                    status: .caution
+                    status: .caution,
+                    scanStatus: .completed
                 )
             ]
             return (scans: mockData, totalPages: 1)

@@ -13,7 +13,9 @@ enum HomeRoute: Route {
     case discover
     case articleDetail(Article)
     case scanDetail(scanId: String)
-@MainActor
+    case scanHistory
+
+    @MainActor
     @ViewBuilder
     var destination: some View {
         switch self {
@@ -29,6 +31,8 @@ enum HomeRoute: Route {
             ArticleDetailView(article: article)
         case .scanDetail(let scanId):
             ProductDetailsScreen(scanId: scanId)
+        case .scanHistory:
+            ScanHistoryFactory.makeScanHistoryView()
         }
     }
 }

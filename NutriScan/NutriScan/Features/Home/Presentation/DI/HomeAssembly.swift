@@ -15,7 +15,7 @@ struct HomeAssembly: Assembly {
         container.register(
             type: HomeViewModel.self,
             component: HomeViewModel(
-                fetchScansUseCase: container.resolve(type: FetchScansUseCase.self),
+                scanHistoryUseCase: container.resolve(type: ScanHistoryUseCaseProtocol.self),
                 observeProfileUseCase: container.resolve(type: ObserveProfileUseCaseProtocol.self)
             )
         )

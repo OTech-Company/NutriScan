@@ -2,14 +2,31 @@ import Foundation
 import Observation
 
 @Observable
+final class HomeRecentHistoryNotifier {
+    static let shared = HomeRecentHistoryNotifier()
+
+    private(set) var refreshToken = UUID()
+
+    private init() {}
+
+    func setNeedsRefresh() {
+        refreshToken = UUID()
+    }
+}
+
+@Observable
 final class HomeViewModel {
 
-    private let fetchScansUseCase: FetchScansUseCase
+    private static let recentHistoryLimit = 5
+
+    private let scanHistoryUseCase: ScanHistoryUseCaseProtocol
     private let observeProfileUseCase: ObserveProfileUseCaseProtocol
 
     var dailyTip: String = "Stay hydrated! Drink at least 8 glasses of water today."
     var recentHistory: [UiStateHistoryItem] = []
     var isLoadingHistory = false
+
+    private var hasLoadedHistory = false
 
     // MARK: - Reactive Profile Data
     var userName: String {
@@ -22,50 +39,90 @@ final class HomeViewModel {
     }
 
     init(
-        fetchScansUseCase: FetchScansUseCase = DIContainer.shared.resolve(type: FetchScansUseCase.self),
+        scanHistoryUseCase: ScanHistoryUseCaseProtocol = DIContainer.shared.resolve(type: ScanHistoryUseCaseProtocol.self),
         observeProfileUseCase: ObserveProfileUseCaseProtocol = DIContainer.shared.resolve(type: ObserveProfileUseCaseProtocol.self)
     ) {
-        self.fetchScansUseCase = fetchScansUseCase
+        self.scanHistoryUseCase = scanHistoryUseCase
         self.observeProfileUseCase = observeProfileUseCase
     }
 
-    func loadHistory() {
+    func loadHistoryIfNeeded() async {
+        guard !hasLoadedHistory else { return }
+        await loadHistory()
+    }
+
+    func refreshHistory() async {
+        await loadHistory()
+    }
+
+    private func loadHistory() async {
         guard !isLoadingHistory else { return }
         isLoadingHistory = true
-        Task {
-            do {
-                let page = try await fetchScansUseCase.execute(page: 0, size: 10)
-                recentHistory = page.content.map { $0.toHistoryItem() }
-            } catch {
-                recentHistory = []
-            }
+        defer {
             isLoadingHistory = false
+            hasLoadedHistory = true
+        }
+
+        do {
+            var completedScans: [ScanHistoryEntity] = []
+            var currentPage = 0
+            var totalPages = 1
+
+            repeat {
+                let result = try await scanHistoryUseCase.getScanHistory(
+                    page: currentPage,
+                    size: Self.recentHistoryLimit
+                )
+
+                completedScans.append(
+                    contentsOf: result.scans.filter { $0.scanStatus == .completed }
+                )
+                totalPages = result.totalPages
+                currentPage += 1
+            } while completedScans.count < Self.recentHistoryLimit && currentPage < totalPages
+
+            recentHistory = completedScans
+                .prefix(Self.recentHistoryLimit)
+                .map { $0.toHistoryItem() }
+        } catch {
+            recentHistory = []
         }
     }
 }
 
 // MARK: - Mapping
 
-private extension ScanListItem {
+private extension ScanHistoryEntity {
 
     func toHistoryItem() -> UiStateHistoryItem {
         UiStateHistoryItem(
-            id: scanId,
-            title: "Scanned Product",
+            id: id,
+            title: productName,
             scannedAt: Self.relativeDateString(from: scannedAt),
             imageName: imageUrl,
-            status: verdict.toStatusType()
+            status: status
         )
     }
 
-    private static func relativeDateString(from date: Date) -> String {
+    private static func relativeDateString(from dateString: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+        var date = isoFormatter.date(from: dateString)
+        if date == nil {
+            isoFormatter.formatOptions = [.withInternetDateTime]
+            date = isoFormatter.date(from: dateString)
+        }
+
+        guard let parsedDate = date else { return dateString }
+
         let calendar = Calendar.current
         let now = Date()
-        let components = calendar.dateComponents([.day, .hour, .minute], from: date, to: now)
+        let components = calendar.dateComponents([.day, .hour, .minute], from: parsedDate, to: now)
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
 
-        let timeString = timeFormatter.string(from: date)
+        let timeString = timeFormatter.string(from: parsedDate)
 
         if let days = components.day, days == 0 {
             return "Today, \(timeString)"
@@ -76,18 +133,7 @@ private extension ScanListItem {
         } else {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM d, h:mm a"
-            return formatter.string(from: date)
-        }
-    }
-}
-
-private extension ScanResultVerdict {
-
-    func toStatusType() -> StatusType {
-        switch self {
-        case .safe: return .safe
-        case .unsafe: return .unsafe
-        case .caution, .unknown: return .caution
+            return formatter.string(from: parsedDate)
         }
     }
 }
