@@ -16,7 +16,6 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var selectedTab: AppTab = .home
     @Published var pendingDeletionDate: Date? = nil
     
-    // Inject the use case (you'll bind this in your DI setup)
     private let fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol
 
     init(
@@ -62,6 +61,24 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     @MainActor
+    private func fetchProfileAndTransitionToMain() async {
+        do {
+            _ = try await fetchAndCacheProfileUseCase.execute()
+            flow = .main
+        } catch let error as NetworkError {
+            if case .apiError(let apiError) = error,
+               apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
+                pendingDeletionDate = parseDeletionDate(from: apiError.message ?? "")
+                flow = .pendingDeletion
+            } else {
+                flow = .main
+            }
+        } catch {
+            flow = .main
+        }
+    }
+
+    @MainActor
     func finishSplash() {
         Task {
             if !hasCompletedOnboarding {
@@ -71,20 +88,7 @@ final class AppFlowCoordinator: ObservableObject {
             } else if !hasCompletedProfileSetup {
                 flow = .profileSetup
             } else {
-                do {
-                    _ = try await fetchAndCacheProfileUseCase.execute()
-                    flow = .main
-                } catch let error as NetworkError {
-                    if case .apiError(let apiError) = error,
-                       apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
-                        pendingDeletionDate = parseDeletionDate(from: apiError.message ?? "")
-                        flow = .pendingDeletion
-                    } else {
-                        flow = .main
-                    }
-                } catch {
-                    flow = .main
-                }
+                await fetchProfileAndTransitionToMain()
             }
         }
     }
@@ -104,31 +108,8 @@ final class AppFlowCoordinator: ObservableObject {
             flow = .profileSetup
         } else {
             UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
-            
             Task {
-                do {
-                    _ = try await fetchAndCacheProfileUseCase.execute()
-                    await MainActor.run {
-                        self.flow = .main
-                    }
-                } catch let error as NetworkError {
-                    if case .apiError(let apiError) = error,
-                       apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
-                        let parsedDate = parseDeletionDate(from: apiError.message ?? "")
-                        await MainActor.run {
-                            self.pendingDeletionDate = parsedDate
-                            self.flow = .pendingDeletion
-                        }
-                    } else {
-                        await MainActor.run {
-                            self.flow = .main
-                        }
-                    }
-                } catch {
-                    await MainActor.run {
-                        self.flow = .main
-                    }
-                }
+                await fetchProfileAndTransitionToMain()
             }
         }
     }
@@ -143,7 +124,8 @@ final class AppFlowCoordinator: ObservableObject {
         }
     }
 
-    func finishProfileSetup() {
+    @MainActor
+    func finishProfileSetup() async {
         if let email = UserDefaults.standard.string(forKey: "currentSetupEmail")
         {
             UserDefaults.standard.removeObject(
@@ -151,20 +133,19 @@ final class AppFlowCoordinator: ObservableObject {
             UserDefaults.standard.removeObject(forKey: "currentSetupEmail")
         }
         UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
-        flow = .main
+        
+        await fetchProfileAndTransitionToMain()
     }
 
     func logout() {
         try? KeychainManager.shared.delete(key: .accessToken)
         try? KeychainManager.shared.delete(key: .refreshToken)
 
-        // Clear the shared cache so the next user doesn't see old data
         let store = DIContainer.shared.resolve(type: UserProfileStore.self)
         store.clear()
         
         pendingDeletionDate = nil
 
-        // Navigation Reset: Ensure the next user starts on the Home tab
         selectedTab = .home
 
         flow = .auth

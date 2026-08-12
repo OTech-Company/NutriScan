@@ -23,6 +23,7 @@ struct HealthProfileSetupView: View {
     @State private var allergySearchQuery = ""
 
     @State private var activeAlert: ActiveAlert = .none
+    @State private var isFinishingSetup = false
 
     // MARK: - Filtered Results for Search Sheets
     var filteredConditions: [ProfileSetupDiseaseOption] {
@@ -123,19 +124,20 @@ struct HealthProfileSetupView: View {
             VStack {
                 Spacer()
                 CustomPuffedButton(
-                    title: viewModel.isSaving ? "Saving..." : "Save",
+                    title: (viewModel.isSaving || isFinishingSetup) ? "Saving..." : "Save",
                     action: {
                         Task {
                             let success = await viewModel.saveProfile()
                             if success {
-                                flowCoordinator.finishProfileSetup()
+                                isFinishingSetup = true
+                                await flowCoordinator.finishProfileSetup()
                             } else {
                                 activeAlert = .error
                             }
                         }
                     }
                 )
-                .disabled(viewModel.isSaving)
+                .disabled(viewModel.isSaving || isFinishingSetup)
                 .padding(.horizontal, 22)
                 .padding(.bottom, 24)
             }
