@@ -2,26 +2,33 @@
 //  NotificationServiceProtocol.swift
 //  NutriScan
 //
+//  Created by Ahmed Nageh on 01/08/2026.
+//
 
+
+import UserNotifications
 import Foundation
 
-protocol NotificationServiceProtocol {
-    /// Returns `true` if authorized, `false` otherwise.
+protocol NotificationServiceProtocol: AnyObject {
     @discardableResult
     func requestAuthorizationIfNeeded() async -> Bool
 
-    /// Schedules a local notification.
-    func schedule<T: LocalNotification>(_ notification: T) async throws
+    func schedule<T: LocalNotification>(_ notification: T, trigger: UNNotificationTrigger?) async throws
 
-    /// Cancels a pending notification by its unique `identifier`.
     func cancel(identifier: String)
-
-    /// Cancels all pending and delivered notifications.
     func cancelAll()
 
-    /// Convenience pass-through: mutes or unmutes a notification category.
     func setMuted(_ muted: Bool, category: NotificationCategory)
-
-    /// Convenience pass-through: returns whether a category is muted.
     func isMuted(category: NotificationCategory) -> Bool
+
+    var isQuietHoursEnabled: Bool { get }
+    func setQuietHoursEnabled(_ enabled: Bool)
+    var quietHoursTimeString: String { get }
+}
+
+
+extension NotificationServiceProtocol {
+    func schedule<T: LocalNotification>(_ notification: T) async throws {
+        try await schedule(notification, trigger: nil)
+    }
 }

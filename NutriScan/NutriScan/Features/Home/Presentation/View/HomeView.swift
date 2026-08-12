@@ -15,15 +15,16 @@ struct HomeView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             VStack(spacing: 20) {
-                Button(action: {
-                    flowCoordinator.selectedTab = .profile
-                }) {
-                    HomeGreetingSection(
-                        userName: viewModel.userName,
-                        userImageURL: viewModel.userImageURL
-                    )
-                }
-                .buttonStyle(.plain)
+                HomeGreetingSection(
+                    userName: viewModel.userName,
+                    userImageURL: viewModel.userImageURL,
+                    onProfileTap: {
+                        flowCoordinator.selectedTab = .profile
+                    },
+                    onNotificationTap: {
+                        router.push(SettingsRoute.notificationHistory)
+                    }
+                )
                 .padding(.top, 22)
 
                 HomeDailyTipSection(tipMessage: viewModel.dailyTip)

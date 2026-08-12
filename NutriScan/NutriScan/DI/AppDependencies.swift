@@ -16,20 +16,22 @@ struct AppDependencies {
     /// that depends on it (e.g. NetworkServiceProtocol before ProfileAssembly).
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
+        SharedProfileAssembly(),
+        StepTrackerAssembly(),
+        NotificationHistoryAssembly(),
+        CaloriesAssembly(),
+        NewsAssembly(),
         NotificationAssembly(),
         NotificationSettingsAssembly(),
-        SharedProfileAssembly(),
         AuthAssembly(),
         ExerciseAssembly(),
         ProfileAssembly(),
         EditProfileAssembly(),
         ScanAssembly(),
-        StepTrackerAssembly(),
         RAGAssembly(),
         SettingsAssembly(),
         AccountRestorationAssembly(),
         ProductDetailsAssembly(),
-        CaloriesAssembly(),
         CaloriesHistoryAssembly(),
         HomeAssembly()
     ]
@@ -37,6 +39,27 @@ struct AppDependencies {
     static func setup() {
         let container = DIContainer.shared
         assemblies.forEach { $0.assemble(container: container) }
+    }
+}
+
+struct NewsAssembly: Assembly {
+    func assemble(container: DIContainer) {
+        let networkService = container.resolve(type: NetworkServiceProtocol.self)
+        let remoteDataSource: NewsRemoteDataSourceProtocol = NewsRemoteDataSource(networkService: networkService)
+        let repository: NewsRepositoryProtocol = NewsRepository(remoteDataSource: remoteDataSource)
+
+        container.register(
+            type: NewsRepositoryProtocol.self,
+            component: repository
+        )
+        container.register(
+            type: FetchTopHeadlinesUseCaseProtocol.self,
+            component: FetchTopHeadlinesUseCase(repository: repository)
+        )
+        container.register(
+            type: SearchArticlesUseCaseProtocol.self,
+            component: SearchArticlesUseCase(repository: repository)
+        )
     }
 }
 
@@ -69,7 +92,13 @@ struct RAGAssembly: Assembly {
 
 struct StepTrackerAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
-        let repository = StepRepositoryImpl()
+        let healthKitSource = HealthKitStepDataSource()
+        let repository = StepRepositoryImpl(healthKitSource: healthKitSource)
+
+        container.register(
+            type: HealthKitStepDataSource.self,
+            component: healthKitSource
+        )
 
         // Register step tracker use cases
         container.register(

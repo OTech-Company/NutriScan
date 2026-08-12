@@ -124,6 +124,8 @@
 		2C78F014300E6D180092E6B3 /* Notification+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F013300E6D180092E6B3 /* Notification+Extensions.swift */; };
 		2C78F016300E6D180092E6B3 /* TokenRefresher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78F015300E6D180092E6B3 /* TokenRefresher.swift */; };
 		2C7A714C301E065200A02CBF /* GetNotificationPreferencesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7138301E065200A02CBF /* GetNotificationPreferencesUseCase.swift */; };
+		NF001B0130200001000000001 /* GetQuietHoursUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001B0130200001000000001R /* GetQuietHoursUseCase.swift */; };
+		NF001B0230200001000000001 /* SetQuietHoursEnabledUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001B0230200001000000001R /* SetQuietHoursEnabledUseCase.swift */; };
 		2C7A714D301E065200A02CBF /* NotificationSettingsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A713F301E065200A02CBF /* NotificationSettingsFactory.swift */; };
 		2C7A714E301E065200A02CBF /* NotificationSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7148301E065200A02CBF /* NotificationSettingsViewModel.swift */; };
 		2C7A714F301E065200A02CBF /* NotificationPreferencesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7135301E065200A02CBF /* NotificationPreferencesRepository.swift */; };
@@ -133,8 +135,28 @@
 		2C7A7154301E065200A02CBF /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7146301E065200A02CBF /* NotificationSettingsView.swift */; };
 		2C7A7155301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A713A301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift */; };
 		2C7A7156301E065200A02CBF /* NotificationToggleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7143301E065200A02CBF /* NotificationToggleRow.swift */; };
+		NF001C0130200001000000001 /* QuietHoursToggleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001C0130200001000000001R /* QuietHoursToggleRow.swift */; };
 		2C7A715C301E1A7900A02CBF /* NotificationPreferencesRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A715B301E1A7900A02CBF /* NotificationPreferencesRepositoryProtocol.swift */; };
+		2C7A7902301E065200A02CBF /* NotificationHistorySDModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7901301E065200A02CBF /* NotificationHistorySDModel.swift */; };
+		2C7A7904301E065200A02CBF /* MarkNotificationAsReadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7903301E065200A02CBF /* MarkNotificationAsReadUseCase.swift */; };
+		2C7A7906301E065200A02CBF /* NotificationHistoryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C7A7905301E065200A02CBF /* NotificationHistoryAssembly.swift */; };
 		2C832855301D423700EC3CFC /* TermsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C832854301D423700EC3CFC /* TermsScreen.swift */; };
+		2C85370730236CD40043831A /* NotificationHistoryRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536EF30236CD40043831A /* NotificationHistoryRepositoryProtocol.swift */; };
+		2C85370830236CD40043831A /* NotificationHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C85370330236CD40043831A /* NotificationHistoryViewModel.swift */; };
+		2C85370930236CD40043831A /* NotificationHistoryRepositoryImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536EA30236CD40043831A /* NotificationHistoryRepositoryImpl.swift */; };
+		2C85370A30236CD40043831A /* NotificationHistoryRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536FB30236CD40043831A /* NotificationHistoryRoute.swift */; };
+		2C85370B30236CD40043831A /* SaveNotificationHistoryItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F430236CD40043831A /* SaveNotificationHistoryItemUseCase.swift */; };
+		2C85370C30236CD40043831A /* DeleteNotificationHistoryItemUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F230236CD40043831A /* DeleteNotificationHistoryItemUseCase.swift */; };
+		2C85370D30236CD40043831A /* ClearNotificationHistoryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F130236CD40043831A /* ClearNotificationHistoryUseCase.swift */; };
+		2C85370E30236CD40043831A /* NotificationHistoryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536FF30236CD40043831A /* NotificationHistoryHeader.swift */; };
+		2C85370F30236CD40043831A /* NotificationHistoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536FD30236CD40043831A /* NotificationHistoryCardView.swift */; };
+		2C85371030236CD40043831A /* GetNotificationHistoryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F330236CD40043831A /* GetNotificationHistoryUseCase.swift */; };
+		2C85371130236CD40043831A /* NotificationHistoryFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F730236CD40043831A /* NotificationHistoryFactory.swift */; };
+		2C85371230236CD40043831A /* NotificationHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536ED30236CD40043831A /* NotificationHistoryItem.swift */; };
+		2C85371330236CD40043831A /* NotificationHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C85370130236CD40043831A /* NotificationHistoryView.swift */; };
+		2C85371430236CD40043831A /* Color+NotificationHistorySemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F930236CD40043831A /* Color+NotificationHistorySemantic.swift */; };
+		2C85371530236CD40043831A /* NotificationHistoryLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536E830236CD40043831A /* NotificationHistoryLocalDataSource.swift */; };
+		2C85371630236CD40043831A /* NotificationHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536FE30236CD40043831A /* NotificationHistoryEmptyView.swift */; };
 		2C9391763012DA2300287FF2 /* HideTabBarKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9391753012DA2300287FF2 /* HideTabBarKey.swift */; };
 		2CC033A23017BF9B009B42A1 /* AuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */; };
 		2CC033C53017BF9B009B42D3 /* AuthFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033C33017BF9B009B42D3 /* AuthFactory.swift */; };
@@ -409,6 +431,7 @@
 		C5038886301B55B00045358F /* CaloriesRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387F7301B55B00045358F /* CaloriesRoute.swift */; };
 		C5038887301B55B00045358F /* FetchExercisesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038816301B55B00045358F /* FetchExercisesRequest.swift */; };
 		C5038888301B55B00045358F /* CaloriesAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387E4301B55B00045358F /* CaloriesAssembly.swift */; };
+		NF001E0130200001000000001 /* CaloriesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001E0130200001000000001R /* CaloriesFactory.swift */; };
 		C5038889301B55B00045358F /* HealthKitStepDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503883C301B55B00045358F /* HealthKitStepDataSource.swift */; };
 		C503888A301B55B00045358F /* DailyInsightCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038855301B55B00045358F /* DailyInsightCardView.swift */; };
 		C503888B301B55B00045358F /* DailyProductsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50387FD301B55B00045358F /* DailyProductsSection.swift */; };
@@ -469,6 +492,7 @@
 		C51E9D4330155E56009DF262 /* ProductDetailsRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */; };
 		C51E9D4430155E56009DF262 /* ProductNutritionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2830155E56009DF262 /* ProductNutritionSection.swift */; };
 		C51E9D4530155E56009DF262 /* ProductDetailsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */; };
+		NF001D0130200001000000001 /* ProductDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001D0130200001000000001R /* ProductDetailsFactory.swift */; };
 		C51E9D4630155E56009DF262 /* ProductDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2E30155E56009DF262 /* ProductDetailsScreen.swift */; };
 		C51E9D4730155E56009DF262 /* ProductHeaderUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1F30155E56009DF262 /* ProductHeaderUIState.swift */; };
 		C51E9D4830155E56009DF262 /* ProductSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2A30155E56009DF262 /* ProductSheetView.swift */; };
@@ -639,11 +663,17 @@
 		FA2F4A06D344FFC5A371B1F7 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CFD7D62E6ADA340CEC01C2F /* Product.swift */; };
 		NF001A0130200001000000001 /* LocalNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0130200001000000001R /* LocalNotification.swift */; };
 		NF001A0230200001000000001 /* AppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0230200001000000001R /* AppNotification.swift */; };
+		NF001F0130200001000000001 /* SmartNotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001F0130200001000000001R /* SmartNotificationScheduler.swift */; };
+		NF001F0230200001000000001 /* SmartNotificationEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001F0230200001000000001R /* SmartNotificationEvaluator.swift */; };
+		NF001F0330200001000000001 /* NotificationBootstrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001F0330200001000000001R /* NotificationBootstrapper.swift */; };
 		NF001A0330200001000000001 /* NotificationMuteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0330200001000000001R /* NotificationMuteStore.swift */; };
 		NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0430200001000000001R /* NotificationServiceProtocol.swift */; };
 		NF001A0530200001000000001 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0530200001000000001R /* NotificationService.swift */; };
 		NF001A0630200001000000001 /* NotificationAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0630200001000000001R /* NotificationAssembly.swift */; };
+		HQ001F0130200001000000001 /* HealthQuoteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = HQ001F0130200001000000001R /* HealthQuoteStore.swift */; };
+		HQ001F0130200002000000002 /* HealthQuotes.json in Resources */ = {isa = PBXBuildFile; fileRef = HQ001F0130200002000000002R /* HealthQuotes.json */; };
 		NF001A0830200001000000001 /* NotificationCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0830200001000000001R /* NotificationCategory.swift */; };
+		NF001A0930200001000000001 /* NotificationHistorySaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = NF001A0930200001000000001R /* NotificationHistorySaving.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -782,17 +812,39 @@
 		2C78F015300E6D180092E6B3 /* TokenRefresher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenRefresher.swift; sourceTree = "<group>"; };
 		2C7A7135301E065200A02CBF /* NotificationPreferencesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferencesRepository.swift; sourceTree = "<group>"; };
 		2C7A7138301E065200A02CBF /* GetNotificationPreferencesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNotificationPreferencesUseCase.swift; sourceTree = "<group>"; };
+		NF001B0130200001000000001R /* GetQuietHoursUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetQuietHoursUseCase.swift; sourceTree = "<group>"; };
+		NF001B0230200001000000001R /* SetQuietHoursEnabledUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetQuietHoursEnabledUseCase.swift; sourceTree = "<group>"; };
 		2C7A713A301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetNotificationCategoryEnabledUseCase.swift; sourceTree = "<group>"; };
 		2C7A713E301E065200A02CBF /* NotificationSettingsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsAssembly.swift; sourceTree = "<group>"; };
 		2C7A713F301E065200A02CBF /* NotificationSettingsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsFactory.swift; sourceTree = "<group>"; };
 		2C7A7141301E065200A02CBF /* Color+NotificationSemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+NotificationSemantic.swift"; sourceTree = "<group>"; };
 		2C7A7143301E065200A02CBF /* NotificationToggleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToggleRow.swift; sourceTree = "<group>"; };
+		NF001C0130200001000000001R /* QuietHoursToggleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuietHoursToggleRow.swift; sourceTree = "<group>"; };
 		2C7A7144301E065200A02CBF /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		2C7A7146301E065200A02CBF /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		2C7A7148301E065200A02CBF /* NotificationSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewModel.swift; sourceTree = "<group>"; };
 		2C7A715B301E1A7900A02CBF /* NotificationPreferencesRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPreferencesRepositoryProtocol.swift; sourceTree = "<group>"; };
+		2C7A7901301E065200A02CBF /* NotificationHistorySDModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistorySDModel.swift; sourceTree = "<group>"; };
+		2C7A7903301E065200A02CBF /* MarkNotificationAsReadUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkNotificationAsReadUseCase.swift; sourceTree = "<group>"; };
+		2C7A7905301E065200A02CBF /* NotificationHistoryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryAssembly.swift; sourceTree = "<group>"; };
 		2C832854301D423700EC3CFC /* TermsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsScreen.swift; sourceTree = "<group>"; };
 		2C83A6DF63D1AC8151D4F8BA /* Color+ProfileSetupSemantic.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Color+ProfileSetupSemantic.swift"; sourceTree = "<group>"; };
+		2C8536E830236CD40043831A /* NotificationHistoryLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryLocalDataSource.swift; sourceTree = "<group>"; };
+		2C8536EA30236CD40043831A /* NotificationHistoryRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryRepositoryImpl.swift; sourceTree = "<group>"; };
+		2C8536ED30236CD40043831A /* NotificationHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryItem.swift; sourceTree = "<group>"; };
+		2C8536EF30236CD40043831A /* NotificationHistoryRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryRepositoryProtocol.swift; sourceTree = "<group>"; };
+		2C8536F130236CD40043831A /* ClearNotificationHistoryUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearNotificationHistoryUseCase.swift; sourceTree = "<group>"; };
+		2C8536F230236CD40043831A /* DeleteNotificationHistoryItemUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteNotificationHistoryItemUseCase.swift; sourceTree = "<group>"; };
+		2C8536F330236CD40043831A /* GetNotificationHistoryUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNotificationHistoryUseCase.swift; sourceTree = "<group>"; };
+		2C8536F430236CD40043831A /* SaveNotificationHistoryItemUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveNotificationHistoryItemUseCase.swift; sourceTree = "<group>"; };
+		2C8536F730236CD40043831A /* NotificationHistoryFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryFactory.swift; sourceTree = "<group>"; };
+		2C8536F930236CD40043831A /* Color+NotificationHistorySemantic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+NotificationHistorySemantic.swift"; sourceTree = "<group>"; };
+		2C8536FB30236CD40043831A /* NotificationHistoryRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryRoute.swift; sourceTree = "<group>"; };
+		2C8536FD30236CD40043831A /* NotificationHistoryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryCardView.swift; sourceTree = "<group>"; };
+		2C8536FE30236CD40043831A /* NotificationHistoryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryEmptyView.swift; sourceTree = "<group>"; };
+		2C8536FF30236CD40043831A /* NotificationHistoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryHeader.swift; sourceTree = "<group>"; };
+		2C85370130236CD40043831A /* NotificationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryView.swift; sourceTree = "<group>"; };
+		2C85370330236CD40043831A /* NotificationHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryViewModel.swift; sourceTree = "<group>"; };
 		2C9391753012DA2300287FF2 /* HideTabBarKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideTabBarKey.swift; sourceTree = "<group>"; };
 		2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAssembly.swift; sourceTree = "<group>"; };
 		2CC033C33017BF9B009B42D3 /* AuthFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFactory.swift; sourceTree = "<group>"; };
@@ -1035,6 +1087,7 @@
 		C50387DF301B55B00045358F /* PatchCaloriesTrackingDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PatchCaloriesTrackingDTO.swift; sourceTree = "<group>"; };
 		C50387E1301B55B00045358F /* CaloriesTrackingRepoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTrackingRepoImpl.swift; sourceTree = "<group>"; };
 		C50387E4301B55B00045358F /* CaloriesAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesAssembly.swift; sourceTree = "<group>"; };
+		NF001E0130200001000000001R /* CaloriesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesFactory.swift; sourceTree = "<group>"; };
 		C50387E6301B55B00045358F /* CaloriesTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTracking.swift; sourceTree = "<group>"; };
 		C50387E8301B55B00045358F /* CalorieMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalorieMeal.swift; sourceTree = "<group>"; };
 		C50387E9301B55B00045358F /* MealNutritionFacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealNutritionFacts.swift; sourceTree = "<group>"; };
@@ -1115,6 +1168,7 @@
 		C51E9D0C30155E56009DF262 /* ProductDetailsScanDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsScanDTO.swift; sourceTree = "<group>"; };
 		C51E9D0E30155E56009DF262 /* ProductDetailsRepoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRepoImpl.swift; sourceTree = "<group>"; };
 		C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsAssembly.swift; sourceTree = "<group>"; };
+		NF001D0130200001000000001R /* ProductDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsFactory.swift; sourceTree = "<group>"; };
 		C51E9D1330155E56009DF262 /* ProductDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetails.swift; sourceTree = "<group>"; };
 		C51E9D1430155E56009DF262 /* SafetyLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafetyLevel.swift; sourceTree = "<group>"; };
 		C51E9D1630155E56009DF262 /* ProductDetailsRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsRepo.swift; sourceTree = "<group>"; };
@@ -1307,11 +1361,17 @@
 		FDB75FF17A398DC32AA8D5EA /* ProfileSetupRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSetupRoute.swift; sourceTree = "<group>"; };
 		NF001A0130200001000000001R /* LocalNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotification.swift; sourceTree = "<group>"; };
 		NF001A0230200001000000001R /* AppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotification.swift; sourceTree = "<group>"; };
+		NF001F0130200001000000001R /* SmartNotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartNotificationScheduler.swift; sourceTree = "<group>"; };
+		NF001F0230200001000000001R /* SmartNotificationEvaluator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartNotificationEvaluator.swift; sourceTree = "<group>"; };
+		NF001F0330200001000000001R /* NotificationBootstrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBootstrapper.swift; sourceTree = "<group>"; };
 		NF001A0330200001000000001R /* NotificationMuteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMuteStore.swift; sourceTree = "<group>"; };
 		NF001A0430200001000000001R /* NotificationServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServiceProtocol.swift; sourceTree = "<group>"; };
 		NF001A0530200001000000001R /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		NF001A0630200001000000001R /* NotificationAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAssembly.swift; sourceTree = "<group>"; };
 		NF001A0830200001000000001R /* NotificationCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCategory.swift; sourceTree = "<group>"; };
+		NF001A0930200001000000001R /* NotificationHistorySaving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistorySaving.swift; sourceTree = "<group>"; };
+		HQ001F0130200001000000001R /* HealthQuoteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthQuoteStore.swift; sourceTree = "<group>"; };
+		HQ001F0130200002000000002R /* HealthQuotes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = HealthQuotes.json; path = HealthQuotes.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1893,6 +1953,8 @@
 			children = (
 				2C7A7138301E065200A02CBF /* GetNotificationPreferencesUseCase.swift */,
 				2C7A713A301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift */,
+				NF001B0130200001000000001R /* GetQuietHoursUseCase.swift */,
+				NF001B0230200001000000001R /* SetQuietHoursEnabledUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -1928,6 +1990,7 @@
 			children = (
 				2C7A7143301E065200A02CBF /* NotificationToggleRow.swift */,
 				2C7A7144301E065200A02CBF /* SectionHeader.swift */,
+				NF001C0130200001000000001R /* QuietHoursToggleRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1993,6 +2056,135 @@
 				E1A0000A3018000100000001 /* TermsSectionCard.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		2C8536E930236CD40043831A /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536E830236CD40043831A /* NotificationHistoryLocalDataSource.swift */,
+				2C7A7901301E065200A02CBF /* NotificationHistorySDModel.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2C8536EB30236CD40043831A /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536EA30236CD40043831A /* NotificationHistoryRepositoryImpl.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		2C8536EC30236CD40043831A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536E930236CD40043831A /* DataSource */,
+				2C8536EB30236CD40043831A /* Repository */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2C8536F030236CD40043831A /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536EF30236CD40043831A /* NotificationHistoryRepositoryProtocol.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		2C8536F530236CD40043831A /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536F130236CD40043831A /* ClearNotificationHistoryUseCase.swift */,
+				2C8536F230236CD40043831A /* DeleteNotificationHistoryItemUseCase.swift */,
+				2C8536F330236CD40043831A /* GetNotificationHistoryUseCase.swift */,
+				2C8536F430236CD40043831A /* SaveNotificationHistoryItemUseCase.swift */,
+				2C7A7903301E065200A02CBF /* MarkNotificationAsReadUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		2C8536F630236CD40043831A /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536F030236CD40043831A /* Repository */,
+				2C8536F530236CD40043831A /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		2C8536F830236CD40043831A /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536F730236CD40043831A /* NotificationHistoryFactory.swift */,
+				2C7A7905301E065200A02CBF /* NotificationHistoryAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		2C8536FA30236CD40043831A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536F930236CD40043831A /* Color+NotificationHistorySemantic.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		2C8536FC30236CD40043831A /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536FB30236CD40043831A /* NotificationHistoryRoute.swift */,
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		2C85370030236CD40043831A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536FD30236CD40043831A /* NotificationHistoryCardView.swift */,
+				2C8536FE30236CD40043831A /* NotificationHistoryEmptyView.swift */,
+				2C8536FF30236CD40043831A /* NotificationHistoryHeader.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		2C85370230236CD40043831A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2C85370030236CD40043831A /* Components */,
+				2C85370130236CD40043831A /* NotificationHistoryView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2C85370430236CD40043831A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2C85370330236CD40043831A /* NotificationHistoryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2C85370530236CD40043831A /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536F830236CD40043831A /* DI */,
+				2C8536FA30236CD40043831A /* Extensions */,
+				2C8536FC30236CD40043831A /* Routing */,
+				2C85370230236CD40043831A /* View */,
+				2C85370430236CD40043831A /* ViewModel */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		2C85370630236CD40043831A /* NotificationHistory */ = {
+			isa = PBXGroup;
+			children = (
+				2C8536EC30236CD40043831A /* Data */,
+				2C8536F630236CD40043831A /* Domain */,
+				2C85370530236CD40043831A /* Presentation */,
+			);
+			path = NotificationHistory;
 			sourceTree = "<group>";
 		};
 		2CC033C43017BF9B009B42D3 /* DI */ = {
@@ -3473,6 +3665,7 @@
 			isa = PBXGroup;
 			children = (
 				C50387E4301B55B00045358F /* CaloriesAssembly.swift */,
+				NF001E0130200001000000001R /* CaloriesFactory.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -3997,6 +4190,7 @@
 			isa = PBXGroup;
 			children = (
 				C51E9D1130155E56009DF262 /* ProductDetailsAssembly.swift */,
+				NF001D0130200001000000001R /* ProductDetailsFactory.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -4339,6 +4533,7 @@
 				3661F24417E53BBF138D32A9 /* Network */,
 				81C67CC4F0083E0C53C34758 /* NetworkConfig */,
 				NF001A0720200001000000001 /* Notifications */,
+				HQ001F0130200003000000003 /* Resources */,
 				8F98B9175D6145087D751784 /* Security */,
 				680237359DE65C4471FA56CE /* Shared Components */,
 				E018423AD5BD85B8BFB4C4FF /* TabBar */,
@@ -4799,6 +4994,7 @@
 				37F49B449D13AB9A39703B59 /* Splash */,
 				2C7A714B301E065200A02CBF /* NotificationSettings */,
 				2C77502E302239ED0031F4CE /* AccountRestoration */,
+				2C85370630236CD40043831A /* NotificationHistory */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -4836,13 +5032,27 @@
 			children = (
 				NF001A0130200001000000001R /* LocalNotification.swift */,
 				NF001A0230200001000000001R /* AppNotification.swift */,
+				NF001F0130200001000000001R /* SmartNotificationScheduler.swift */,
+				NF001F0230200001000000001R /* SmartNotificationEvaluator.swift */,
+				NF001F0330200001000000001R /* NotificationBootstrapper.swift */,
 				NF001A0330200001000000001R /* NotificationMuteStore.swift */,
 				NF001A0430200001000000001R /* NotificationServiceProtocol.swift */,
 				NF001A0530200001000000001R /* NotificationService.swift */,
 				NF001A0630200001000000001R /* NotificationAssembly.swift */,
+				HQ001F0130200001000000001R /* HealthQuoteStore.swift */,
 				NF001A0830200001000000001R /* NotificationCategory.swift */,
+				NF001A0930200001000000001R /* NotificationHistorySaving.swift */,
+				2C8536ED30236CD40043831A /* NotificationHistoryItem.swift */,
 			);
 			path = Notifications;
+			sourceTree = "<group>";
+		};
+		HQ001F0130200003000000003 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				HQ001F0130200002000000002R /* HealthQuotes.json */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4966,6 +5176,7 @@
 				EF5016B61AF95A5DCB779595 /* PlusJakartaSans-Bold.ttf in Resources */,
 				A291CBA272BE3AFF361A54AA /* PlusJakartaSans-Medium.ttf in Resources */,
 				40226321AB33DCB0DB192DDC /* PlusJakartaSans-SemiBold.ttf in Resources */,
+				HQ001F0130200002000000002 /* HealthQuotes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5097,6 +5308,25 @@
 				2C2525F5476C19DF89C6AB28 /* ChipSemantics.swift in Sources */,
 				0B67C8DB9699D804AF73B7B1 /* Color+Dynamic.swift in Sources */,
 				5190CD659C9CDE9928D88D48 /* Color+EditProfileSemantics.swift in Sources */,
+				2C85370730236CD40043831A /* NotificationHistoryRepositoryProtocol.swift in Sources */,
+				2C7A7902301E065200A02CBF /* NotificationHistorySDModel.swift in Sources */,
+				2C7A7904301E065200A02CBF /* MarkNotificationAsReadUseCase.swift in Sources */,
+				2C7A7906301E065200A02CBF /* NotificationHistoryAssembly.swift in Sources */,
+				2C85370830236CD40043831A /* NotificationHistoryViewModel.swift in Sources */,
+				2C85370930236CD40043831A /* NotificationHistoryRepositoryImpl.swift in Sources */,
+				2C85370A30236CD40043831A /* NotificationHistoryRoute.swift in Sources */,
+				2C85370B30236CD40043831A /* SaveNotificationHistoryItemUseCase.swift in Sources */,
+				2C85370C30236CD40043831A /* DeleteNotificationHistoryItemUseCase.swift in Sources */,
+				2C85370D30236CD40043831A /* ClearNotificationHistoryUseCase.swift in Sources */,
+				2C85370E30236CD40043831A /* NotificationHistoryHeader.swift in Sources */,
+				2C85370F30236CD40043831A /* NotificationHistoryCardView.swift in Sources */,
+				2C85371030236CD40043831A /* GetNotificationHistoryUseCase.swift in Sources */,
+				2C85371130236CD40043831A /* NotificationHistoryFactory.swift in Sources */,
+				2C85371230236CD40043831A /* NotificationHistoryItem.swift in Sources */,
+				2C85371330236CD40043831A /* NotificationHistoryView.swift in Sources */,
+				2C85371430236CD40043831A /* Color+NotificationHistorySemantic.swift in Sources */,
+				2C85371530236CD40043831A /* NotificationHistoryLocalDataSource.swift in Sources */,
+				2C85371630236CD40043831A /* NotificationHistoryEmptyView.swift in Sources */,
 				2C7708F93015783B00A8FCCE /* MenuRowView.swift in Sources */,
 				3E8463A20AFA905AFCCABD44 /* Color+HomeSemantic.swift in Sources */,
 				D489D1AE3018E03700E7A1DF /* UserProfileStore.swift in Sources */,
@@ -5190,6 +5420,8 @@
 				8F729C19301145C900094C23 /* ExploreSectionHeader.swift in Sources */,
 				291DBDE1D916C9441EFA202F /* GenderSelectionCardConstants.swift in Sources */,
 				2C7A714C301E065200A02CBF /* GetNotificationPreferencesUseCase.swift in Sources */,
+				NF001B0130200001000000001 /* GetQuietHoursUseCase.swift in Sources */,
+				NF001B0230200001000000001 /* SetQuietHoursEnabledUseCase.swift in Sources */,
 				2C7A714D301E065200A02CBF /* NotificationSettingsFactory.swift in Sources */,
 				2C7A714E301E065200A02CBF /* NotificationSettingsViewModel.swift in Sources */,
 				2C7A714F301E065200A02CBF /* NotificationPreferencesRepository.swift in Sources */,
@@ -5199,6 +5431,7 @@
 				2C7A7154301E065200A02CBF /* NotificationSettingsView.swift in Sources */,
 				2C7A7155301E065200A02CBF /* SetNotificationCategoryEnabledUseCase.swift in Sources */,
 				2C7A7156301E065200A02CBF /* NotificationToggleRow.swift in Sources */,
+				NF001C0130200001000000001 /* QuietHoursToggleRow.swift in Sources */,
 				8FB0F0403016A31600D84471 /* FavoritesFactory.swift in Sources */,
 				D4BAA30830137C5A006EDB11 /* AddMemberCardView.swift in Sources */,
 				2C775017302238BE0031F4CE /* DeleteAccountUseCase.swift in Sources */,
@@ -5360,11 +5593,16 @@
 				D48A2443301158FF0004D95E /* CoreAssembly.swift in Sources */,
 				NF001A0130200001000000001 /* LocalNotification.swift in Sources */,
 				NF001A0230200001000000001 /* AppNotification.swift in Sources */,
+				NF001F0130200001000000001 /* SmartNotificationScheduler.swift in Sources */,
+				NF001F0230200001000000001 /* SmartNotificationEvaluator.swift in Sources */,
+				NF001F0330200001000000001 /* NotificationBootstrapper.swift in Sources */,
 				NF001A0330200001000000001 /* NotificationMuteStore.swift in Sources */,
 				NF001A0430200001000000001 /* NotificationServiceProtocol.swift in Sources */,
 				NF001A0530200001000000001 /* NotificationService.swift in Sources */,
 				NF001A0630200001000000001 /* NotificationAssembly.swift in Sources */,
+				HQ001F0130200001000000001 /* HealthQuoteStore.swift in Sources */,
 				NF001A0830200001000000001 /* NotificationCategory.swift in Sources */,
+				NF001A0930200001000000001 /* NotificationHistorySaving.swift in Sources */,
 				9A9ADDF48A3BBC4320C3738F /* ProfileSetupFlowViewModel.swift in Sources */,
 				CEB84D551C8D8247FA542164 /* ProfileSetupRoute.swift in Sources */,
 				F47A8EBA6FF78D365DE46055 /* ProfileSetupStep.swift in Sources */,
@@ -5498,6 +5736,7 @@
 				C5038886301B55B00045358F /* CaloriesRoute.swift in Sources */,
 				C5038887301B55B00045358F /* FetchExercisesRequest.swift in Sources */,
 				C5038888301B55B00045358F /* CaloriesAssembly.swift in Sources */,
+				NF001E0130200001000000001 /* CaloriesFactory.swift in Sources */,
 				C5038889301B55B00045358F /* HealthKitStepDataSource.swift in Sources */,
 				C503888A301B55B00045358F /* DailyInsightCardView.swift in Sources */,
 				C503888B301B55B00045358F /* DailyProductsSection.swift in Sources */,
@@ -5558,6 +5797,7 @@
 				C51E9D4330155E56009DF262 /* ProductDetailsRepo.swift in Sources */,
 				C51E9D4430155E56009DF262 /* ProductNutritionSection.swift in Sources */,
 				C51E9D4530155E56009DF262 /* ProductDetailsAssembly.swift in Sources */,
+				NF001D0130200001000000001 /* ProductDetailsFactory.swift in Sources */,
 				C51E9D4630155E56009DF262 /* ProductDetailsScreen.swift in Sources */,
 				C51E9D4730155E56009DF262 /* ProductHeaderUIState.swift in Sources */,
 				C51E9D4830155E56009DF262 /* ProductSheetView.swift in Sources */,

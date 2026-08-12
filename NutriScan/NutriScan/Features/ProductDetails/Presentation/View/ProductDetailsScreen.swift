@@ -6,12 +6,13 @@ struct ProductDetailsScreen: View {
     @State private var activeAlert: ActiveAlert = .none
     @MainActor
     init(scanId: String) {
-        _viewModel = State(wrappedValue: ProductDetailsViewModel(scanId: scanId))
+        _viewModel = State(wrappedValue: ProductDetailsFactory.makeProductDetailsViewModel(scanId: scanId))
     }
 
     /// Init with pre-loaded ScanDetail — no API call needed.
+    @MainActor
     init(scanDetail: ScanDetail) {
-        _viewModel = State(wrappedValue: ProductDetailsViewModel(scanDetail: scanDetail))
+        _viewModel = State(wrappedValue: ProductDetailsFactory.makeProductDetailsViewModel(scanDetail: scanDetail))
     }
 
     var body: some View {

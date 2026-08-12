@@ -24,5 +24,13 @@ struct NotificationSettingsAssembly: Assembly {
             type: SetNotificationCategoryEnabledUseCaseProtocol.self,
             component: SetNotificationCategoryEnabledUseCase(repository: repository)
         )
+        container.register(
+            type: GetQuietHoursUseCaseProtocol.self,
+            component: GetQuietHoursUseCase(repository: repository)
+        )
+        container.register(
+            type: SetQuietHoursEnabledUseCaseProtocol.self,
+            component: SetQuietHoursEnabledUseCase(repository: repository)
+        )
     }
 }
