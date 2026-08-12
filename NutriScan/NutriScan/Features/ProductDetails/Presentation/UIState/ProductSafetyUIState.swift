@@ -10,4 +10,5 @@ import Foundation
 struct ProductSafetyUIState {
     let safetyLevel: SafetyLevel
     let safetyDescription: String
+    let isScanFailed: Bool
 }

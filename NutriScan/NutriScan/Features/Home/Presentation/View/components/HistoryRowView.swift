@@ -32,10 +32,12 @@ struct HistoryRowView: View {
                 Text(item.title)
                     .font(Font.AppFont.subtitle2)
                     .foregroundColor(Color.HomeSemantic.historyTitle)
+                    .lineLimit(2)
                 
                 Text(item.scannedAt)
                     .font(Font.AppFont.textCaption)
                     .foregroundColor(Color.HomeSemantic.historySubtitle)
+                    .lineLimit(2)
             }
             
             Spacer()
@@ -48,7 +50,7 @@ struct HistoryRowView: View {
                         .font(.system(size: 20))
                 } else {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundColor(item.status == .unsafe ? Color.Red.red500 : .yellow)
+                        .foregroundColor(item.status.textColor)
                         .font(.system(size: 18))
                 }
                 
@@ -97,7 +99,7 @@ struct HistoryRowView: View {
             return "leaf.fill"
         case .caution:
             return "hand.raised.fill"
-        case .unsafe:
+        case .unsafe, .failed:
             return "exclamationmark.octagon.fill"
         }
     }

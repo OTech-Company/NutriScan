@@ -21,8 +21,10 @@ struct ScanHistoryView: View {
             HStack(spacing: 16) {
                 BackButton { router.pop() }
                 Text("Scan History")
-                    .font(.AppFont.title3)
-                    .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
+                    .font(Font.AppFont.subtitle1)
+                    .foregroundStyle(Color.CaloriesHistorySemantic.title)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
                 Spacer()
             }
             .padding(.horizontal, 22)
@@ -52,7 +54,9 @@ struct ScanHistoryView: View {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.scans) { scan in
                             Button(action: {
-                                router.push(ProfileRoute.scanDetail(scanId: scan.id))
+                                if scan.scanStatus != .failed {
+                                    router.push(ProfileRoute.scanDetail(scanId: scan.id))
+                                }
                             }) {
                                 HistoryRowView(
                                     item: UiStateHistoryItem(
@@ -65,6 +69,7 @@ struct ScanHistoryView: View {
                                 )
                             }
                             .buttonStyle(.plain)
+                            .disabled(scan.scanStatus == .failed)
                             .onAppear {
                                 viewModel.loadNextPageIfNeeded(currentItem: scan)
                             }
