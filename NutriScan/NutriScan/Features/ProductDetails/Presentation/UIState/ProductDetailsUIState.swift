@@ -25,7 +25,8 @@ struct ProductDetailsUIState {
         ),
         safetyState: ProductSafetyUIState(
             safetyLevel: .unsafe,
-            safetyDescription: "This dessert is high in sugar and fat, making it inappropriate for your declared chronic conditions, particularly diabetes and heart-related issues."
+            safetyDescription: "This dessert is high in sugar and fat, making it inappropriate for your declared chronic conditions, particularly diabetes and heart-related issues.",
+            isScanFailed: false
         ),
         ingredientsState: ProductIngredientsUIState(
             safetyLevel: .unsafe,
@@ -79,7 +80,8 @@ extension ProductDetailsUIState {
         
         self.safetyState = ProductSafetyUIState(
             safetyLevel: parsedSafety,
-            safetyDescription: details.summary
+            safetyDescription: details.summary,
+            isScanFailed: details.status.uppercased() == ScanStatus.failed.rawValue
         )
         
         self.ingredientsState = ProductIngredientsUIState(
