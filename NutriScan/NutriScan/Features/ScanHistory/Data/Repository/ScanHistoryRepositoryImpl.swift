@@ -17,4 +17,8 @@ class ScanHistoryRepositoryImpl: ScanHistoryRepositoryProtocol {
         let entities = response.content?.map { ScanHistoryEntity(dto: $0) } ?? []
         return (scans: entities, totalPages: response.totalPages ?? 0)
     }
+
+    func deleteScan(scanId: String) async throws {
+        try await remoteDataSource.deleteScan(scanId: scanId)
+    }
 }

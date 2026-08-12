@@ -7,6 +7,7 @@ import Foundation
 
 protocol ScanHistoryUseCaseProtocol {
     func getScanHistory(page: Int, size: Int) async throws -> (scans: [ScanHistoryEntity], totalPages: Int)
+    func deleteScan(scanId: String) async throws
 }
 
 class ScanHistoryUseCase: ScanHistoryUseCaseProtocol {
@@ -19,5 +20,9 @@ class ScanHistoryUseCase: ScanHistoryUseCaseProtocol {
     
     func getScanHistory(page: Int, size: Int) async throws -> (scans: [ScanHistoryEntity], totalPages: Int) {
         return try await repository.getScanHistory(page: page, size: size)
+    }
+
+    func deleteScan(scanId: String) async throws {
+        try await repository.deleteScan(scanId: scanId)
     }
 }
