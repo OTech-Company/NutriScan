@@ -11,7 +11,7 @@ struct NewsArticleCard: View {
         HStack(spacing: 10) {
             Button(action: onOpen) {
                 articleImage
-                    .frame(width: 137, height: 140)
+                    .frame(width: 130, height: 130)
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
             .buttonStyle(.plain)
@@ -84,18 +84,18 @@ struct NewsArticleCard: View {
         .frame(maxWidth: .infinity, minHeight: 156, maxHeight: 156)
         .background(NewsFeedPalette.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .shadow(color: NewsFeedPalette.cardShadow, radius: 10, x: 0, y: 10)
+        .customLightShadow()
     }
 
     private var articleImage: some View {
         CachedImage(
             urlString: article.imageURLString,
             failureImageName: "photo_placeholder",
-            contentMode: .fit,
+            contentMode: .fill,
             failurePadding: 36
         )
         .foregroundStyle(NewsFeedPalette.imagePlaceholderForeground)
-        .frame(width: 137, height: 140)
+        .frame(width: 130, height: 130)
         .clipped()
         .accessibilityHidden(true)
     }

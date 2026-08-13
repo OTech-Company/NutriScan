@@ -13,8 +13,8 @@ enum NewsFeedTypography {
     static let chip = Font.AppFont.textSecondary
     static let articleTitle = Font.AppFont.textSecondary
     static let articleCaption = Font.AppFont.textCaption
-    static let metadataStrong = Font.AppFont.textSecondary
-    static let metadata = Font.AppFont.textSecondary
+    static let metadataStrong = Font.AppFont.textCaption
+    static let metadata = Font.AppFont.textCaption
 
     // Article detail aliases retained for the existing sheet.
     static let cardTitle = Font.AppFont.plusJakartaSansSemiBold16
