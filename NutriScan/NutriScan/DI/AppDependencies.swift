@@ -43,27 +43,6 @@ struct AppDependencies {
     }
 }
 
-struct NewsAssembly: Assembly {
-    func assemble(container: DIContainer) {
-        let networkService = container.resolve(type: NetworkServiceProtocol.self)
-        let remoteDataSource: NewsRemoteDataSourceProtocol = NewsRemoteDataSource(networkService: networkService)
-        let repository: NewsRepositoryProtocol = NewsRepository(remoteDataSource: remoteDataSource)
-
-        container.register(
-            type: NewsRepositoryProtocol.self,
-            component: repository
-        )
-        container.register(
-            type: FetchTopHeadlinesUseCaseProtocol.self,
-            component: FetchTopHeadlinesUseCase(repository: repository)
-        )
-        container.register(
-            type: SearchArticlesUseCaseProtocol.self,
-            component: SearchArticlesUseCase(repository: repository)
-        )
-    }
-}
-
 struct ScanAssembly: Assembly {
     func assemble(container: DIContainer) {
         let repository = ScanRepositoryImpl()

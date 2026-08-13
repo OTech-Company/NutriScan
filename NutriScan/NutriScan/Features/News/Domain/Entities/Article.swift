@@ -41,5 +41,38 @@ extension Article {
         publishedAt: Date(timeIntervalSinceNow: -3600 * 5),
         content: "Liver health content is trending online, and supplement sales are through the roof."
     )
+
+    static let previewTwo = Article(
+        source: NewsSource(id: "healthline", name: "Healthline"),
+        author: "Maya Feller",
+        title: "Simple ways to build a balanced plate every day",
+        description: "Small, practical changes can make everyday meals more nourishing.",
+        url: "https://example.com/balanced-plate",
+        imageURLString: "https://images.unsplash.com/photo-1498837167922-ddd27525d352",
+        publishedAt: Date(timeIntervalSinceNow: -3600 * 2),
+        content: nil
+    )
+
+    static let previewThree = Article(
+        source: NewsSource(id: "medical-news", name: "Medical News Today"),
+        author: "Jordan Lewis",
+        title: "What recent research says about sleep and metabolism",
+        description: nil,
+        url: "https://example.com/sleep-metabolism",
+        imageURLString: nil,
+        publishedAt: Date(timeIntervalSinceNow: -3600 * 8),
+        content: nil
+    )
+
+    static let previewFour = Article(
+        source: NewsSource(id: "who", name: "WHO"),
+        author: nil,
+        title: "New global guidance supports healthier daily movement",
+        description: nil,
+        url: "https://example.com/daily-movement",
+        imageURLString: nil,
+        publishedAt: Date(timeIntervalSinceNow: -86400),
+        content: nil
+    )
 }
 #endif
