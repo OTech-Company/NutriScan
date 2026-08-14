@@ -15,23 +15,31 @@
 import SwiftUI
 
 enum NewsFeedPalette {
-    // Backgrounds
-    static let background = Color(light: Color.Gray.gray100, dark: Color.Gray.gray1600)
-    static let surface = Color(light: .white, dark: Color.Gray.gray1500)
-    static let surfaceMuted = Color(light: Color.Teal.teal100, dark: Color.Teal.teal1400.opacity(0.35))
+    static let background = Color(light: .white, dark: Color.Teal.teal1600)
+    static let cardBackground = Color(light: .white, dark: Color.Teal.teal1400)
+    static let skeleton = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1400)
+    static let imagePlaceholderBackground = Color(light: Color.Gray.gray200, dark: Color.Teal.teal1500)
+    static let imagePlaceholderForeground = Color(light: Color.Gray.gray500, dark: Color.Teal.teal900)
 
-    // Brand accent
-    static let accent = Color.Teal.teal800
-    static let accentStrong = Color.Teal.teal1300
-    static let accentSoft = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1400.opacity(0.4))
+    static let accent = Color.Teal.teal1000
+    static let textPrimary = Color(light: Color.Gray.gray1600, dark: Color.Teal.teal300)
+    static let textSecondary = Color(light: Color.Gray.gray600, dark: Color.Teal.teal1200)
+    static let metadataAccent = Color.Teal.teal600
+    static let metadataSecondary = Color(light: Color.Gray.gray600, dark: Color.Teal.teal1200)
+    static let menuIcon = Color(light: Color.Gray.gray1400, dark: Color.Teal.teal400)
 
-    // Text
-    static let textPrimary = Color(light: Color.Gray.gray1600, dark: Color.Gray.gray100)
-    static let textSecondary = Color(light: Color.Gray.gray800, dark: Color.Gray.gray500)
-    static let textTertiary = Color(light: Color.Gray.gray600, dark: Color.Gray.gray700)
-    static let divider = Color(light: Color.Gray.gray300, dark: Color.Gray.gray1400)
+    static let chipBackground = Color.clear
+    static let chipSelectedText = Color.Teal.teal1000
+    static let chipText = Color(light: Color.Gray.gray700, dark: Color.Teal.teal1200)
+    static let chipSelectedBorder = Color.Teal.teal1000
+    static let chipBorder = Color(light: Color.Gray.gray400, dark: Color.Teal.teal1400)
 
-    // Status
-    static let error = Color.Red.red500
-    static let errorSoft = Color.Red.red100
+    static let cardShadow = Color.Teal.teal1000.opacity(0.2)
+
+    // Article detail aliases retained for the existing sheet.
+    static let surface = cardBackground
+    static let surfaceMuted = skeleton
+    static let accentSoft = Color(light: Color.Teal.teal200, dark: Color.Teal.teal1400)
+    static let textTertiary = metadataSecondary
+    static let divider = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1400)
 }

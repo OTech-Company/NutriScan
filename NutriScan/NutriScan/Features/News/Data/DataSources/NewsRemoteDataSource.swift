@@ -16,7 +16,7 @@ protocol NewsRemoteDataSourceProtocol {
 final class NewsRemoteDataSource: NewsRemoteDataSourceProtocol {
     private let networkService: NetworkServiceProtocol
 
-    init(networkService: NetworkServiceProtocol = NetworkService()) {
+    init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }
 

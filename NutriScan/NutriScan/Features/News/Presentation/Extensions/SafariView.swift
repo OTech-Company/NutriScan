@@ -15,7 +15,7 @@ struct SafariView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> SFSafariViewController {
         let configuration = SFSafariViewController.Configuration()
-        configuration.entersReaderIfAvailable = true
+        configuration.entersReaderIfAvailable = false
         let controller = SFSafariViewController(url: url, configuration: configuration)
         controller.preferredControlTintColor = UIColor(NewsFeedPalette.accent)
         return controller

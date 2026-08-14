@@ -4,7 +4,6 @@ struct ArticleDetailView: View {
     let article: Article
     @EnvironmentObject var router: AppRouter
     @Environment(\.dismiss) private var dismiss
-    @State private var isBookmarked = false
     @State private var showShareSheet = false
 
     var body: some View {
@@ -68,7 +67,8 @@ struct ArticleDetailView: View {
     private var heroSection: some View {
         ZStack(alignment: .bottomLeading) {
             heroImage
-                .frame(width: UIScreen.main.bounds.width, height: 320)
+                .frame(maxWidth: .infinity)
+                .frame(height: 320)
                 .clipped()
 
             LinearGradient(
@@ -76,12 +76,12 @@ struct ArticleDetailView: View {
                 startPoint: .bottom,
                 endPoint: .top
             )
-            .frame(width: UIScreen.main.bounds.width, height: 320)
+            .frame(height: 320)
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 8) {
                     Text(categoryName)
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(NewsFeedTypography.eyebrow)
                         .foregroundStyle(.white)
                         .padding(.horizontal, 12)
                         .padding(.vertical, 6)
@@ -92,14 +92,14 @@ struct ArticleDetailView: View {
                         Text("•")
                             .foregroundStyle(.white.opacity(0.6))
                         Text(author)
-                            .font(.system(size: 12, weight: .medium))
+                            .font(NewsFeedTypography.caption)
                             .foregroundStyle(.white.opacity(0.8))
                             .lineLimit(1)
                     }
                 }
 
                 Text(article.title)
-                    .font(.system(size: 22, weight: .bold))
+                    .font(NewsFeedTypography.screenTitle)
                     .foregroundStyle(.white)
                     .lineLimit(4)
                     .multilineTextAlignment(.leading)
@@ -107,7 +107,6 @@ struct ArticleDetailView: View {
                 HStack(spacing: 6) {
                     Text(article.source.name)
                         .foregroundStyle(.white.opacity(0.9))
-                        .fontWeight(.medium)
                     Image(systemName: "checkmark.seal.fill")
                         .font(.system(size: 11))
                         .foregroundStyle(NewsFeedPalette.accent)
@@ -116,7 +115,7 @@ struct ArticleDetailView: View {
                     Text(article.publishedAt.relativeShortString)
                         .foregroundStyle(.white.opacity(0.7))
                 }
-                .font(.system(size: 13))
+                .font(NewsFeedTypography.caption)
             }
             .padding(16)
         }
@@ -136,7 +135,7 @@ struct ArticleDetailView: View {
             // Description / Lead paragraph
             if let description = article.description, !description.isEmpty {
                 Text(description)
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(NewsFeedTypography.cardTitle)
                     .foregroundStyle(NewsFeedPalette.textPrimary)
                     .lineSpacing(6)
             }
@@ -144,7 +143,7 @@ struct ArticleDetailView: View {
             // Main Content Body
             if let content = article.content, !content.isEmpty {
                 Text(cleanedContent(content))
-                    .font(.system(size: 16))
+                    .font(NewsFeedTypography.cardBody)
                     .foregroundStyle(NewsFeedPalette.textSecondary)
                     .lineSpacing(7)
             }
@@ -155,8 +154,8 @@ struct ArticleDetailView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "safari")
-                        Text("Read Full Article on Web")
-                            .fontWeight(.semibold)
+                        Text("Read Full Article")
+                            .font(NewsFeedTypography.button)
                         Spacer()
                     }
                     .padding()
@@ -189,7 +188,7 @@ struct ArticleDetailView: View {
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 4) {
                     Text(article.source.name)
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(NewsFeedTypography.cardTitle)
                         .foregroundStyle(NewsFeedPalette.textPrimary)
                     Image(systemName: "checkmark.seal.fill")
                         .font(.system(size: 12))
@@ -198,7 +197,7 @@ struct ArticleDetailView: View {
                 
                 if let author = article.author, !author.isEmpty {
                     Text("By \(author)")
-                        .font(.system(size: 13))
+                        .font(NewsFeedTypography.caption)
                         .foregroundStyle(NewsFeedPalette.textTertiary)
                         .lineLimit(1)
                 }
@@ -208,7 +207,7 @@ struct ArticleDetailView: View {
 
             VStack(alignment: .trailing, spacing: 2) {
                 Text(article.publishedAt.relativeShortString)
-                    .font(.system(size: 13, weight: .medium))
+                    .font(NewsFeedTypography.caption)
                     .foregroundStyle(NewsFeedPalette.textTertiary)
             }
         }
@@ -225,34 +224,28 @@ struct ArticleDetailView: View {
                     image
                         .resizable()
                         .scaledToFill()
-                        .frame(width: UIScreen.main.bounds.width, height: 320)
                         .clipped()
                 default:
-                    placeholderGradient
+                    articleImagePlaceholder
                 }
             }
-            .frame(width: UIScreen.main.bounds.width, height: 320)
             .clipped()
         } else {
-            placeholderGradient
-                .overlay {
-                    Image(systemName: "newspaper")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.white.opacity(0.3))
-                }
+            articleImagePlaceholder
         }
     }
 
-    private var placeholderGradient: some View {
-        Rectangle()
-            .fill(
-                LinearGradient(
-                    colors: [Color.Teal.teal300, Color.Teal.teal600],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            .frame(width: UIScreen.main.bounds.width, height: 320)
+    private var articleImagePlaceholder: some View {
+        ZStack {
+            NewsFeedPalette.imagePlaceholderBackground
+
+            Image("photo_placeholder")
+                .resizable()
+                .renderingMode(.template)
+                .scaledToFit()
+                .foregroundStyle(NewsFeedPalette.imagePlaceholderForeground)
+                .frame(width: 72, height: 72)
+        }
     }
 
     private var categoryName: String {
@@ -278,7 +271,7 @@ struct ArticleDetailView: View {
     }
 }
 
-private struct ShareSheet: UIViewControllerRepresentable {
+struct ShareSheet: UIViewControllerRepresentable {
     let activityItems: [Any]
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
