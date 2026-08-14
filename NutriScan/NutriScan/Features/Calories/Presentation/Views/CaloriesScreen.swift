@@ -113,7 +113,7 @@ struct CaloriesScreen: View {
                     .offset(y: showWater ? 0 : 30)
                 }
                 .padding(22)
-                Spacer(minLength: 60)
+                Spacer(minLength: CustomAnimatedTabBar.contentClearance)
             }
             .refreshable {
                 await caloriesViewModel.fetchTodayTracking()

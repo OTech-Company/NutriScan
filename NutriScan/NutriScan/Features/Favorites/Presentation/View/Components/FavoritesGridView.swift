@@ -42,7 +42,7 @@ struct FavoritesGridView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 12)
-            .padding(.bottom, 66)
+            .padding(.bottom, CustomAnimatedTabBar.contentClearance)
             
             // MARK: - Pagination Footer
             if isLoadingNextPage {

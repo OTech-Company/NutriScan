@@ -52,5 +52,7 @@ struct BackButton: View {
                         .stroke(borderColor, lineWidth: 1)
                 )
         }
+        .accessibilityLabel("Back")
+        .accessibilityIdentifier("navigation.back")
     }
 }

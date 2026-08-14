@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+struct FavoritesFlowView: View {
+    @ObservedObject var router: AppRouter
+    let viewModel: FavoritesViewModel
+
+    var body: some View {
+        NavigationStack(path: $router.path) {
+            FavoritesView(viewModel: viewModel)
+                .navigationDestination(for: AnyRoute.self) { route in
+                    route.view()
+                }
+        }
+        .environmentObject(router)
+    }
+}
+
 struct FavoritesView: View {
     @EnvironmentObject private var router: AppRouter
     let viewModel: FavoritesViewModel
@@ -44,15 +59,14 @@ struct FavoritesView: View {
                 // Shimmer placeholder during initial load
                 shimmerGrid
                 
-            } else if let emptyState = viewModel.initialEmptyState {
-                // Handle noConnection, serverProblem, noScans, noSearchResults
-                Spacer()
+            } else if let emptyState = displayedEmptyState {
+                // Handle connectivity, saved-list, and search empty states.
                 EmptyStateView(emptyState: emptyState) {
                     if emptyState == .noConnection || emptyState == .serverProblem {
                         Task {
                             await viewModel.loadFavorites()
                         }
-                    } else if emptyState == .noScans {
+                    } else if emptyState == .noScans || emptyState == .noSaved {
                         router.push(ProfileRoute.scanHistory)
                     } else if emptyState == .noSearchResults {
                         searchText = ""
@@ -62,8 +76,8 @@ struct FavoritesView: View {
                         }
                     }
                 }
-                Spacer()
-                Spacer()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.bottom, CustomAnimatedTabBar.contentClearance)
                 
             } else if !viewModel.favorites.isEmpty {
                 // Populated grid with pagination support
@@ -102,6 +116,7 @@ struct FavoritesView: View {
                 }
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color(light: .white, dark: Color.Teal.teal1600).ignoresSafeArea())
         .onAppear {
             Task {
@@ -164,6 +179,23 @@ struct FavoritesView: View {
     }
     
     // MARK: - Shimmer Grid
+
+    private var displayedEmptyState: EmptyState? {
+        guard viewModel.favorites.isEmpty, !viewModel.isLoadingInitial else {
+            return viewModel.initialEmptyState
+        }
+
+        if let state = viewModel.initialEmptyState {
+            switch state {
+            case .noScans, .noSaved, .noSearchResults:
+                return appliedSearchText.isEmpty ? .noSaved : .noSearchResults
+            default:
+                return state
+            }
+        }
+
+        return appliedSearchText.isEmpty ? .noSaved : .noSearchResults
+    }
     
     private var shimmerGrid: some View {
         ScrollView {

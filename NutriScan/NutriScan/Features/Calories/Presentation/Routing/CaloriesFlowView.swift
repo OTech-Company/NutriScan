@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CaloriesFlowView: View {
-    @StateObject private var router = AppRouter()
+    @ObservedObject var router: AppRouter
     
     var body: some View {
         NavigationStack(path: $router.path) {

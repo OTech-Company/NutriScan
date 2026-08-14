@@ -13,6 +13,7 @@ class FavoritesViewModel {
     var isLoadingInitial: Bool = false
     var isLoadingNextPage: Bool = false
     var isRefreshing: Bool = false
+    private(set) var hasCompletedInitialLoad: Bool = false
 
     /// Non-nil only when the very first fetch (page 0) fails or returns empty.
     var initialEmptyState: EmptyState? = nil
@@ -50,7 +51,7 @@ class FavoritesViewModel {
     
     /// Called every time the screen appears. Only fetches if data is stale.
     func loadIfNeeded() async {
-        guard notifier.needsRefresh else { return }
+        guard !hasCompletedInitialLoad || notifier.needsRefresh else { return }
         await loadFavorites()
     }
     
@@ -74,6 +75,8 @@ class FavoritesViewModel {
         if search == nil || search!.isEmpty {
             notifier.didRefresh()
         }
+
+        hasCompletedInitialLoad = true
     }
     
     /// Pull-to-refresh — keeps existing data if the refresh fails.
@@ -93,7 +96,7 @@ class FavoritesViewModel {
             favorites = result.favorites
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialEmptyState = favorites.isEmpty ? .noScans : nil
+            initialEmptyState = favorites.isEmpty ? .noSaved : nil
             notifier.didRefresh()
         } catch {
             favorites = previousFavorites
@@ -133,7 +136,7 @@ class FavoritesViewModel {
             favorites = result.favorites
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialEmptyState = favorites.isEmpty ? .noScans : nil
+            initialEmptyState = favorites.isEmpty ? .noSaved : nil
         } catch {
             if favorites.isEmpty {
                 initialEmptyState = determineEmptyState(for: error)
@@ -207,7 +210,11 @@ class FavoritesViewModel {
         guard NetworkMonitor.shared.isConnected else { return false }
         
         guard let index = favorites.firstIndex(where: { $0.id == scanId }) else { return true }
+        let previousEmptyState = initialEmptyState
         let removed = favorites.remove(at: index)
+        if favorites.isEmpty {
+            initialEmptyState = .noSaved
+        }
 
         Task {
             do {
@@ -216,6 +223,7 @@ class FavoritesViewModel {
             } catch {
                 await MainActor.run {
                     self.favorites.insert(removed, at: min(index, self.favorites.count))
+                    self.initialEmptyState = previousEmptyState
                 }
                 print("Error removing favorite: \(error)")
             }

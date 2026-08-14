@@ -12,25 +12,34 @@ import SwiftUI
 /// change (e.g. `OnboardingView` finishing, `LoginView` succeeding,
 /// a logout button inside Profile).
 final class AppFlowCoordinator: ObservableObject {
-    @Published private(set) var flow: AppFlow = .splash
+    @Published private(set) var flow: AppFlow
     @Published var selectedTab: AppTab = .home
     @Published var pendingDeletionDate: Date? = nil
+
+    let mainTabNavigation: MainTabNavigationStore
     
     private let fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol
 
     init(
         fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol =
             DIContainer.shared.resolve(
-                type: FetchAndCacheProfileUseCaseProtocol.self)
+                type: FetchAndCacheProfileUseCaseProtocol.self),
+        mainTabNavigation: MainTabNavigationStore = MainTabNavigationStore(),
+        initialFlow: AppFlow = .splash,
+        observesSessionExpiration: Bool = true
     ) {
         self.fetchAndCacheProfileUseCase = fetchAndCacheProfileUseCase
+        self.mainTabNavigation = mainTabNavigation
+        self.flow = initialFlow
 
-        NotificationCenter.default.addObserver(
-            forName: .userDidSessionExpire,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.logout()
+        if observesSessionExpiration {
+            NotificationCenter.default.addObserver(
+                forName: .userDidSessionExpire,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.logout()
+            }
         }
     }
 
@@ -147,6 +156,7 @@ final class AppFlowCoordinator: ObservableObject {
         pendingDeletionDate = nil
 
         selectedTab = .home
+        mainTabNavigation.resetAll()
 
         flow = .auth
     }

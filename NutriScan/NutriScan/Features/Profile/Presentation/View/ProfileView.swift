@@ -45,7 +45,7 @@ struct ProfileView: View {
                     }
                     .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
                     .padding(.top, ProfileSemantics.Spacing.sectionSpacing)
-                    .padding(.bottom, ProfileSemantics.Spacing.bottomTabBarClearance)
+                    .padding(.bottom, CustomAnimatedTabBar.contentClearance)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }

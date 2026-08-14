@@ -23,4 +23,24 @@ enum AppTab: String, CaseIterable {
         case .profile: return "profile-fill"
         }
     }
+
+    var title: String {
+        switch self {
+        case .home: return "Home"
+        case .calories: return "Calories"
+        case .scan: return "Scan"
+        case .bookmark: return "Favorites"
+        case .profile: return "Profile"
+        }
+    }
+
+    var accessibilityIdentifier: String {
+        switch self {
+        case .home: return "home"
+        case .calories: return "calories"
+        case .scan: return "scan"
+        case .bookmark: return "favorites"
+        case .profile: return "profile"
+        }
+    }
 }
