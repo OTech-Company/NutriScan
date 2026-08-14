@@ -9,6 +9,12 @@ import SwiftUI
 struct HistoryRowView: View {
     // Passing the specific UI state item down to the row
     let item: UiStateHistoryItem
+    let isDisabled: Bool
+
+    init(item: UiStateHistoryItem, isDisabled: Bool = false) {
+        self.item = item
+        self.isDisabled = isDisabled
+    }
     
     var body: some View {
         HStack(spacing: 8) {
@@ -72,6 +78,8 @@ struct HistoryRowView: View {
         .background(Color.HomeSemantic.historyCardBackground)
         .cornerRadius(22)
         .customLightShadow()
+        .saturation(isDisabled ? 0.65 : 1)
+        .opacity(isDisabled ? 0.55 : 1)
     }
     
     // MARK: - Helpers

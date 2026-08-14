@@ -10,6 +10,8 @@ import SwiftUI
 struct ScanHistoryView: View {
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ScanHistoryViewModel
+    @State private var activeAlert: ActiveAlert = .none
+    @State private var scanPendingDeletion: ScanHistoryEntity?
     
     init(viewModel: ScanHistoryViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -53,23 +55,30 @@ struct ScanHistoryView: View {
                 ScrollView {
                     LazyVStack(spacing: 8) {
                         ForEach(viewModel.scans) { scan in
-                            Button(action: {
+                            HistoryRowView(
+                                item: UiStateHistoryItem(
+                                    id: scan.id,
+                                    title: scan.productName,
+                                    scannedAt: viewModel.formatDate(scan.scannedAt),
+                                    imageName: scan.imageUrl,
+                                    status: scan.status
+                                ),
+                                isDisabled: scan.scanStatus == .failed
+                            )
+                            .contentShape(RoundedRectangle(cornerRadius: 22))
+                            .onTapGesture {
                                 if scan.scanStatus != .failed {
                                     router.push(ProfileRoute.scanDetail(scanId: scan.id))
                                 }
-                            }) {
-                                HistoryRowView(
-                                    item: UiStateHistoryItem(
-                                        id: scan.id,
-                                        title: scan.productName,
-                                        scannedAt: viewModel.formatDate(scan.scannedAt),
-                                        imageName: scan.imageUrl,
-                                        status: scan.status
-                                    )
-                                )
                             }
-                            .buttonStyle(.plain)
-                            .disabled(scan.scanStatus == .failed)
+                            .onLongPressGesture {
+                                scanPendingDeletion = scan
+                                activeAlert = .delete
+                            }
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .bottom).combined(with: .opacity),
+                                removal: .scale(scale: 0.96).combined(with: .opacity)
+                            ))
                             .onAppear {
                                 viewModel.loadNextPageIfNeeded(currentItem: scan)
                             }
@@ -89,6 +98,7 @@ struct ScanHistoryView: View {
                     .padding(.horizontal, 22)
                     .padding(.top, 8)
                     .padding(.bottom, 24)
+                    .animation(.spring(response: 0.28, dampingFraction: 0.85), value: viewModel.scans.map(\.id))
                 }
                 .refreshable {
                     await viewModel.refreshScanHistory()
@@ -100,6 +110,56 @@ struct ScanHistoryView: View {
         .task {
             await viewModel.loadScanHistoryIfNeeded()
         }
+        .onChange(of: viewModel.deleteErrorMessage) { _, message in
+            if message != nil {
+                activeAlert = .error
+            }
+        }
+        .customAlert(
+            activeAlert: $activeAlert,
+            config: { alert in
+                switch alert {
+                case .delete:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: "Delete Scan?",
+                        description: "This scan will be removed from your history.",
+                        primaryButtonTitle: "Delete",
+                        primaryButtonColor: Color.Red.red500,
+                        secondaryButtonTitle: "Cancel"
+                    )
+                case .error:
+                    return CustomAlertConfig(
+                        type: .error,
+                        title: "Delete Failed",
+                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
+                        primaryButtonTitle: "OK",
+                        primaryButtonColor: Color.Red.red500
+                    )
+                default:
+                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
+                }
+            },
+            primaryAction: { alert in
+                switch alert {
+                case .delete:
+                    guard let scan = scanPendingDeletion else { return }
+                    Task {
+                        await viewModel.deleteScan(scan)
+                        scanPendingDeletion = nil
+                    }
+                case .error:
+                    viewModel.deleteErrorMessage = nil
+                default:
+                    break
+                }
+            },
+            secondaryAction: { alert in
+                if alert == .delete {
+                    scanPendingDeletion = nil
+                }
+            }
+        )
     }
     
     // MARK: - Shimmer List
@@ -142,6 +202,8 @@ struct ScanHistoryView: View {
             ]
             return (scans: mockData, totalPages: 1)
         }
+
+        func deleteScan(scanId: String) async throws {}
     }
 
     let viewModel = ScanHistoryViewModel(scanHistoryUseCase: MockScanHistoryUseCase())

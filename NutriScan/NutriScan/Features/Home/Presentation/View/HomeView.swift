@@ -12,6 +12,8 @@ struct HomeView: View {
     @State private var viewModel = HomeViewModel()
     @State private var recentHistoryNotifier = HomeRecentHistoryNotifier.shared
     @State private var showRAGChat = false
+    @State private var activeAlert: ActiveAlert = .none
+    @State private var recentScanPendingDeletion: UiStateHistoryItem?
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -61,6 +63,10 @@ struct HomeView: View {
                         },
                         onTap: { scanId in
                             router.push(HomeRoute.scanDetail(scanId: scanId))
+                        },
+                        onRequestDelete: { item in
+                            recentScanPendingDeletion = item
+                            activeAlert = .delete
                         }
                     )
                 }
@@ -79,6 +85,11 @@ struct HomeView: View {
                 await viewModel.refreshHistory()
             }
         }
+        .onChange(of: viewModel.deleteErrorMessage) { _, message in
+            if message != nil {
+                activeAlert = .error
+            }
+        }
         .fullScreenCover(isPresented: $showRAGChat) {
             RAGChatView(
                 viewModel: RAGChatViewModel(
@@ -87,6 +98,51 @@ struct HomeView: View {
                 )
             )
         }
+        .customAlert(
+            activeAlert: $activeAlert,
+            config: { alert in
+                switch alert {
+                case .delete:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: "Delete Scan?",
+                        description: "This scan will be removed from your history.",
+                        primaryButtonTitle: "Delete",
+                        primaryButtonColor: Color.Red.red500,
+                        secondaryButtonTitle: "Cancel"
+                    )
+                case .error:
+                    return CustomAlertConfig(
+                        type: .error,
+                        title: "Delete Failed",
+                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
+                        primaryButtonTitle: "OK",
+                        primaryButtonColor: Color.Red.red500
+                    )
+                default:
+                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
+                }
+            },
+            primaryAction: { alert in
+                switch alert {
+                case .delete:
+                    guard let item = recentScanPendingDeletion else { return }
+                    Task {
+                        await viewModel.deleteRecentScan(item)
+                        recentScanPendingDeletion = nil
+                    }
+                case .error:
+                    viewModel.deleteErrorMessage = nil
+                default:
+                    break
+                }
+            },
+            secondaryAction: { alert in
+                if alert == .delete {
+                    recentScanPendingDeletion = nil
+                }
+            }
+        )
     }
 }
 

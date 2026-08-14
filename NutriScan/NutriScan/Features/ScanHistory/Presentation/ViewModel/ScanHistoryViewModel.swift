@@ -7,6 +7,7 @@
 
 import Foundation
 import Observation
+import SwiftUI
 
 @Observable
 final class ScanHistoryViewModel {
@@ -19,6 +20,7 @@ final class ScanHistoryViewModel {
     var initialLoadError: String? = nil
     /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
     var paginationError: String? = nil
+    var deleteErrorMessage: String? = nil
     
     private var currentPage: Int = 0
     private var hasMorePages: Bool = true
@@ -94,6 +96,24 @@ final class ScanHistoryViewModel {
         paginationError = nil
         Task {
             await fetchNextPage()
+        }
+    }
+
+    func deleteScan(_ scan: ScanHistoryEntity) async {
+        let previousScans = scans
+        withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) {
+            scans.removeAll { $0.id == scan.id }
+        }
+        deleteErrorMessage = nil
+
+        do {
+            try await scanHistoryUseCase.deleteScan(scanId: scan.id)
+            HomeRecentHistoryNotifier.shared.setNeedsRefresh()
+        } catch {
+            withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) {
+                scans = previousScans
+            }
+            deleteErrorMessage = error.localizedDescription
         }
     }
     
