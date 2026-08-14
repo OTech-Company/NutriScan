@@ -22,23 +22,31 @@ final class ExerciseWorkoutPlayerViewModel {
     var showRestartAlert: Bool = false
     var showSuccessDialog: Bool = false
     var showRecordingError: Bool = false
+    private(set) var recordingErrorMessage: String = "Your profile data is unavailable. Reload your profile, then try finishing again."
     private(set) var hasRecordedWorkout: Bool = false
+    private(set) var isSavingWorkout: Bool = false
 
     private var timerTask: Task<Void, Never>?
     private let caloriesActivityStore: CaloriesActivityStore
     private let profileStore: UserProfileStore
     private let notificationScheduler: SmartNotificationSchedulerProtocol
+    private let activitySyncCoordinator: CaloriesActivitySyncCoordinator
+    private let dateProvider: () -> Date
 
     init(
         exercise: Exercise,
         caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
         profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self),
-        notificationScheduler: SmartNotificationSchedulerProtocol = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self)
+        notificationScheduler: SmartNotificationSchedulerProtocol = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self),
+        activitySyncCoordinator: CaloriesActivitySyncCoordinator = DIContainer.shared.resolve(type: CaloriesActivitySyncCoordinator.self),
+        dateProvider: @escaping () -> Date = Date.init
     ) {
         self.exercise = exercise
         self.caloriesActivityStore = caloriesActivityStore
         self.profileStore = profileStore
         self.notificationScheduler = notificationScheduler
+        self.activitySyncCoordinator = activitySyncCoordinator
+        self.dateProvider = dateProvider
         self.hasStarted = false
         self.isPaused = true
     }
@@ -144,33 +152,46 @@ final class ExerciseWorkoutPlayerViewModel {
         return "Great job! You completed \(exercise.name) \(workoutDetails) \(calorieDetails)"
     }
 
-    func finishWorkout() {
+    func finishWorkout() async {
+        guard !isSavingWorkout else { return }
         guard !hasRecordedWorkout else {
             showSuccessDialog = true
             return
         }
         guard let profileID = profileStore.currentProfile?.id else {
+            recordingErrorMessage = "Your profile data is unavailable. Reload your profile, then try finishing again."
             showRecordingError = true
             return
         }
         stopTimer()
+        isSavingWorkout = true
+        defer { isSavingWorkout = false }
+        let workoutDate = CaloriesTracking.dateString(from: dateProvider())
         caloriesActivityStore.recordWorkout(
             profileID: profileID,
-            date: CaloriesTracking.todayString,
+            date: workoutDate,
             calories: Double(roundedCalories),
             elapsedSeconds: elapsedSeconds
         )
         hasRecordedWorkout = true
-        showSuccessDialog = true
 
-        Task {
-            let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: Date())
-            let hour = nowComponents.hour ?? 0
-            let minute = nowComponents.minute ?? 0
-            let isBeforeWorkout = (hour < 20) || (hour == 20 && minute < 30)
-            if isBeforeWorkout {
-                await notificationScheduler.cancelWorkoutNudge()
-            }
+        let synchronized = await activitySyncCoordinator.synchronizeExercise(
+            date: workoutDate,
+            currentDate: CaloriesTracking.dateString(from: dateProvider())
+        )
+        if synchronized {
+            showSuccessDialog = true
+        } else {
+            recordingErrorMessage = "We couldn't sync this workout right now. It is saved on this device and will retry automatically."
+            showRecordingError = true
+        }
+
+        let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: dateProvider())
+        let hour = nowComponents.hour ?? 0
+        let minute = nowComponents.minute ?? 0
+        let isBeforeWorkout = (hour < 20) || (hour == 20 && minute < 30)
+        if isBeforeWorkout {
+            await notificationScheduler.cancelWorkoutNudge()
         }
     }
 

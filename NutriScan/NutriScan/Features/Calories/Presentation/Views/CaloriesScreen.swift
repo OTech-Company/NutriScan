@@ -46,7 +46,7 @@ struct CaloriesScreen: View {
             TopSafeAreaScrollView(
                 background: Color.CaloriesSemantic.background,
                 refreshAction: {
-                    await caloriesViewModel.fetchTodayTracking()
+                    await handleActivation()
                 },
                 topBar: { _ in
                     DailyProductsHeader(dailyKcal: caloriesViewModel.dailyKcal)
@@ -61,6 +61,7 @@ struct CaloriesScreen: View {
                         DailyProductsSection(
                             dailyKcal: caloriesViewModel.dailyKcal,
                             meals: caloriesViewModel.meals,
+                            mutatingMealIDs: caloriesViewModel.mutatingMealIDs,
                             showsHeader: false,
                             onAddFoodTap: {
                                 flowCoordinator.selectedTab = .bookmark
@@ -144,7 +145,6 @@ struct CaloriesScreen: View {
             }
         }
         .onAppear {
-            caloriesViewModel.onAppear()
             stepViewModel.onAppear()
             triggerEntranceAnimations()
             if stepViewModel.errorMessage != nil {
@@ -165,9 +165,16 @@ struct CaloriesScreen: View {
             }
         }
         .onChange(of: scenePhase) { _, phase in
-            guard phase != .active else { return }
-            stepPersistenceTask?.cancel()
-            persistCurrentSteps()
+            if phase == .active {
+                Task { await handleActivation() }
+            } else {
+                stepPersistenceTask?.cancel()
+                persistCurrentSteps()
+            }
+        }
+        .onChange(of: flowCoordinator.selectedTab) { _, selectedTab in
+            guard selectedTab == .calories else { return }
+            Task { await handleActivation() }
         }
         .onChange(of: stepViewModel.errorMessage) { _, error in
             if error != nil {
@@ -178,6 +185,12 @@ struct CaloriesScreen: View {
             if error != nil {
                 activeAlert = .error
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+            Task { await handleActivation() }
+        }
+        .task {
+            await handleActivation()
         }
         .customAlert(activeAlert: $activeAlert, config: { alert in
             switch alert {
@@ -219,11 +232,13 @@ struct CaloriesScreen: View {
             primaryButtonColor: Color.red,
             primaryAction: {
                 if let request = mealRemovalRequest {
-                    switch request.kind {
-                    case .one:
-                        caloriesViewModel.removeOneMeal(scanId: request.meal.scanId)
-                    case .all:
-                        caloriesViewModel.deleteMeal(scanId: request.meal.scanId)
+                    Task {
+                        switch request.kind {
+                        case .one:
+                            await caloriesViewModel.removeOneMeal(scanId: request.meal.scanId)
+                        case .all:
+                            await caloriesViewModel.deleteMeal(scanId: request.meal.scanId)
+                        }
                     }
                 }
                 mealRemovalRequest = nil
@@ -281,12 +296,33 @@ struct CaloriesScreen: View {
     }
 
     private func persistCurrentSteps() {
+        persistCurrentSteps(for: caloriesViewModel.loadedDate)
+    }
+
+    private func persistCurrentSteps(for date: String?) {
         guard stepViewModel.isAuthorized else { return }
         let analytics = stepViewModel.todayAnalytics()
-        caloriesViewModel.updateSteps(
-            stepViewModel.todaySteps,
-            calories: analytics.caloriesBurned
-        )
+        if let date {
+            caloriesViewModel.updateSteps(
+                stepViewModel.todaySteps,
+                calories: analytics.caloriesBurned,
+                for: date
+            )
+        } else {
+            caloriesViewModel.updateSteps(
+                stepViewModel.todaySteps,
+                calories: analytics.caloriesBurned
+            )
+        }
+    }
+
+    private func handleActivation() async {
+        if caloriesViewModel.needsDayRollover {
+            persistCurrentSteps(for: caloriesViewModel.loadedDate)
+            stepPersistenceTask?.cancel()
+            stepViewModel.rolloverToCurrentDay()
+        }
+        await caloriesViewModel.activate()
     }
 }
 

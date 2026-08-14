@@ -23,14 +23,22 @@ struct FavoriteCardView: View {
         VStack(spacing: 12) {
             ZStack(alignment: .topTrailing) {
                 Button(action: { onProductTap?() }) {
-                    CachedImage(
-                        urlString: favUIState.image,
-                        failureImageName: "testImage",
-                        contentMode: .fill
-                    )
+                    GeometryReader { geometry in
+                        CachedImage(
+                            urlString: favUIState.image,
+                            failureImageName: "testImage",
+                            contentMode: .fill
+                        )
+                        .frame(
+                            width: geometry.size.width,
+                            height: geometry.size.height
+                        )
+                        .clipped()
+                    }
                     .frame(maxWidth: .infinity)
                     .frame(height: 140)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .contentShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .buttonStyle(FavoriteProductButtonStyle())
                 .accessibilityLabel("View details for \(favUIState.title)")
