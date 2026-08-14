@@ -27,16 +27,18 @@ final class ProfileViewModel {
     var streakDays: Int { observeProfileUseCase.execute().streakDays }
     
     var state: ProfileState {
-        let rawURL = observeProfileUseCase.execute().currentProfile?.imageUrl
+        let currentProfile = observeProfileUseCase.execute().currentProfile
+        let rawURL = currentProfile?.imageUrl
         let cleanURL = (rawURL?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true) ? nil : rawURL
-        
+
         return ProfileState(
             fullName: self.fullName,
             familyMembers: self.familyMembers,
             streakDays: self.streakDays,
             avatarURL: cleanURL ?? AppConstants.defaultUserAvatarURL,
             isLoading: self.isMutating,
-            errorMessage: self.errorMessage
+            errorMessage: self.errorMessage,
+            hasCachedProfile: currentProfile != nil
         )
     }
 
@@ -116,7 +118,7 @@ final class ProfileViewModel {
         case .success: return nil
         }
     }
-    
+
     @MainActor
     private func submitFamilyMembers(_ members: [FamilyMemberInput]) async -> Result<[FamilyMember], MessageError> {
         isMutating = true
