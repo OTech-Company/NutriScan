@@ -93,6 +93,9 @@ struct FavoritesView: View {
                         itemToRemove = item
                         showRemoveAlert = true
                     },
+                    onProductTap: { item in
+                        router.push(ProfileRoute.scanDetail(scanId: item.id))
+                    },
                     onRetryPagination: {
                         viewModel.retryPagination()
                     },

@@ -42,12 +42,12 @@ struct FavoriteCardShimmerView: View {
             // Swipe button placeholder
             Capsule()
                 .fill(Color.gray.opacity(0.15))
-                .frame(height: 24)
+                .frame(height: 44)
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 8)
         .background(Color.Favorites.cardColor)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: 24))
         .customLightShadow()
         .shimmering()
     }
