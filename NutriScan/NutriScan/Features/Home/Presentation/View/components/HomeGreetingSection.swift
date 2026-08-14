@@ -5,10 +5,21 @@
 import SwiftUI
 
 struct HomeGreetingSection: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let userName: String
     let userImageURL: String?
+    var collapseProgress: CGFloat = 0
     var onProfileTap: () -> Void = {}
     var onNotificationTap: () -> Void = {}
+
+    private var visualProgress: CGFloat {
+        reduceMotion ? 0 : collapseProgress
+    }
+
+    private var avatarSize: CGFloat {
+        48 - (12 * visualProgress)
+    }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -25,7 +36,7 @@ struct HomeGreetingSection: View {
                             fallbackImageView
                         }
                     }
-                    .frame(width: 48, height: 48)
+                    .frame(width: avatarSize, height: avatarSize)
                     .clipShape(Circle())
 
                     VStack(alignment: .leading, spacing: 2) {
@@ -36,10 +47,13 @@ struct HomeGreetingSection: View {
                         Text("Your Health Comes First")
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.HomeSemantic.greetingSubtitle)
+                            .accessibilityIdentifier("home.greetingSubtitle")
                     }
+                    .offset(y: reduceMotion ? 0 : 3 * visualProgress)
                 }
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("home.profileButton")
 
             Spacer()
 
@@ -49,7 +63,10 @@ struct HomeGreetingSection: View {
                 Image(systemName: "bell")
                     .font(.system(size: 22))
                     .foregroundColor(Color.HomeSemantic.greetingBell)
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel("Notifications")
+            .accessibilityIdentifier("home.notificationButton")
         }
     }
 
