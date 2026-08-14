@@ -23,6 +23,7 @@ final class ProductDetailsViewModel {
         self.useCase = useCase
         self.repo = repo
         self.preloadedData = nil
+        self.isLoading = true
     }
 
     /// Init with pre-loaded ScanDetail — no API call needed.
@@ -34,7 +35,9 @@ final class ProductDetailsViewModel {
         self.scanId = scanDetail.scanId
         self.useCase = useCase
         self.repo = repo
-        self.preloadedData = ProductDetails(from: scanDetail)
+        let preloadedData = ProductDetails(from: scanDetail)
+        self.preloadedData = preloadedData
+        self.uiState = ProductDetailsUIState(from: preloadedData)
     }
 
     func loadProductDetails() async {
@@ -51,6 +54,8 @@ final class ProductDetailsViewModel {
         do {
             let details = try await useCase.execute(scanId: scanId)
             self.uiState = ProductDetailsUIState(from: details)
+        } catch is CancellationError {
+            return
         } catch let error as NetworkError {
             failureMessage = error.localizedDescription
         } catch {

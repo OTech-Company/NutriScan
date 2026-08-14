@@ -94,8 +94,6 @@ struct ExerciseWorkoutPlayerView: View {
             }
             .background(Color.ExerciseSemantic.screenBackground.ignoresSafeArea())
             .navigationBarHidden(true)
-            .toolbar(.hidden, for: .tabBar)
-            .hideCustomTabBar(true)
         }
         // MARK: - Success Completion Alert
         .customAlert(

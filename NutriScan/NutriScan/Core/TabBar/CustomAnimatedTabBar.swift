@@ -24,6 +24,9 @@ struct CustomAnimatedTabBar: View {
     /// Height of the visible tab-bar region.
     static let barHeight: CGFloat = 60
 
+    /// Clearance used by root-screen content rendered behind the custom bar.
+    static let contentClearance: CGFloat = 100
+
     /// How far the floating button's center sits below the bar's top edge.
     /// Keeps the button visually centered inside the notch.
     private static let floatingButtonOffsetY: CGFloat = 2
@@ -79,6 +82,9 @@ struct CustomAnimatedTabBar: View {
                     FloatingTabButton(selectedTab: selectedTab)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(AppTab.scan.title)
+                .accessibilityIdentifier("main.tab.\(AppTab.scan.accessibilityIdentifier)")
+                .accessibilityAddTraits(selectedTab == .scan ? .isSelected : [])
                 .position(x: currentNotchX, y: Self.floatingButtonOffsetY)
                 .animation(Self.tabSpring, value: selectedTab)
             }
@@ -95,6 +101,8 @@ struct CustomAnimatedTabBar: View {
             }
         }
         .frame(height: Self.barHeight)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("main.customTabBar")
     }
 }
 
@@ -120,4 +128,3 @@ private struct TabBarBackground: View {
             .ignoresSafeArea(edges: .bottom)
     }
 }
-

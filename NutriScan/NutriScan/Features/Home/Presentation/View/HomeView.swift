@@ -73,7 +73,7 @@ struct HomeView: View {
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 32)
-            Spacer(minLength: 60)
+            Spacer(minLength: CustomAnimatedTabBar.contentClearance)
         }
         .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
         .navigationBarHidden(true)
