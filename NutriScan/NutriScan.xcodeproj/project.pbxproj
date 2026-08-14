@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A6F120013026000100000002 /* TopSafeAreaScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F120003026000100000001 /* TopSafeAreaScrollView.swift */; };
 		03FB29FBFAC4BC298B1AC07B /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22164FCF23242F77F47B8A13 /* AppTab.swift */; };
 		061C18E236BF762D7F25AC1D /* LexendDeca-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE460834D961C79AD9C40263 /* LexendDeca-Light.ttf */; };
 		0B67C8DB9699D804AF73B7B1 /* Color+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF6D11618FF7B0E6E8422E /* Color+Dynamic.swift */; };
@@ -685,6 +686,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A6F120003026000100000001 /* TopSafeAreaScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopSafeAreaScrollView.swift; sourceTree = "<group>"; };
 		01EB74CA07FB9BBCE08073B1 /* CornerBracketsShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBracketsShape.swift; sourceTree = "<group>"; };
 		027B3159563301F48A196427 /* TabIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabIconButton.swift; sourceTree = "<group>"; };
 		02F36DFF397A26263538A993 /* NutriScanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutriScanApp.swift; sourceTree = "<group>"; };
@@ -2343,6 +2345,7 @@
 		680237359DE65C4471FA56CE /* Shared Components */ = {
 			isa = PBXGroup;
 			children = (
+				A6F120003026000100000001 /* TopSafeAreaScrollView.swift */,
 				C5660E4D301D21FD00E9B856 /* EmptyStates */,
 				8FE9B840301A53D2001E14B6 /* PaginationRetryFooter.swift */,
 				8FE9B83C301A53B8001E14B6 /* ListErrorView.swift */,
@@ -5172,6 +5175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6F120013026000100000002 /* TopSafeAreaScrollView.swift in Sources */,
 				CA2000013021000100000001 /* CaloriesHistoryModels.swift in Sources */,
 				CA2000023021000100000001 /* CaloriesHistoryRepositoryProtocol.swift in Sources */,
 				CA2000033021000100000001 /* CaloriesHistoryUseCases.swift in Sources */,

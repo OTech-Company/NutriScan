@@ -16,11 +16,13 @@ struct HomeView: View {
     @State private var recentScanPendingDeletion: UiStateHistoryItem?
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 20) {
+        TopSafeAreaScrollView(
+            background: Color.HomeSemantic.homeBackground,
+            topBar: { phase in
                 HomeGreetingSection(
                     userName: viewModel.userName,
                     userImageURL: viewModel.userImageURL,
+                    collapseProgress: phase.progress,
                     onProfileTap: {
                         flowCoordinator.selectedTab = .profile
                     },
@@ -28,8 +30,12 @@ struct HomeView: View {
                         router.push(SettingsRoute.notificationHistory)
                     }
                 )
-                .padding(.top, 22)
-
+                .padding(.horizontal, 20)
+                .frame(height: 68)
+                .accessibilityIdentifier("home.topBar")
+            }
+        ) {
+            VStack(spacing: 20) {
                 HomeDailyTipSection(tipMessage: viewModel.dailyTip)
                     .padding(.top, 16)
 
@@ -75,7 +81,6 @@ struct HomeView: View {
             .padding(.bottom, 32)
             Spacer(minLength: CustomAnimatedTabBar.contentClearance)
         }
-        .background(Color.HomeSemantic.homeBackground.ignoresSafeArea())
         .navigationBarHidden(true)
         .task {
             await viewModel.loadHistoryIfNeeded()

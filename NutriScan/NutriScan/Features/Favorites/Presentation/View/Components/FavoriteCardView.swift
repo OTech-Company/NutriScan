@@ -30,7 +30,7 @@ struct FavoriteCardView: View {
                     )
                     .frame(maxWidth: .infinity)
                     .frame(height: 140)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .buttonStyle(FavoriteProductButtonStyle())
                 .accessibilityLabel("View details for \(favUIState.title)")
