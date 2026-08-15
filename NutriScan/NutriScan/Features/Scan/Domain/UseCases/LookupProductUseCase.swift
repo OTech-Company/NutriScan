@@ -37,6 +37,26 @@ final class SubmitScanImageUseCaseImpl: SubmitScanImageUseCase {
     }
 }
 
+protocol SubmitBarcodeScanUseCase {
+    func execute(barcode: String) async throws -> ScanSubmission
+}
+
+final class SubmitBarcodeScanUseCaseImpl: SubmitBarcodeScanUseCase {
+
+    private let repository: ScanRepository
+
+    init(repository: ScanRepository) {
+        self.repository = repository
+    }
+
+    func execute(barcode: String) async throws -> ScanSubmission {
+        guard !barcode.isEmpty else {
+            throw ScanError.unknown
+        }
+        return try await repository.submitBarcode(barcode: barcode)
+    }
+}
+
 protocol FetchScanDetailUseCase {
     func execute(scanId: String) async throws -> ScanDetail
 }

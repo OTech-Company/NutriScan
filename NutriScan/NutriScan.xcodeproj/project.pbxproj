@@ -12,6 +12,7 @@
 		0B67C8DB9699D804AF73B7B1 /* Color+Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DDF6D11618FF7B0E6E8422E /* Color+Dynamic.swift */; };
 		0BC07D1A2158156E63F8F947 /* ValidatedField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA2BDB1D2261F5C835DDB9 /* ValidatedField.swift */; };
 		0BD259136AB8037FE9FE20E3 /* BarcodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B44214F78D2FF364F1065559 /* BarcodeScannerView.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* GalleryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5D /* GalleryButton.swift */; };
 		0C2D027E18F236ECAAECD826 /* ValueCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D6069AC409CA3C8371DBC5 /* ValueCard.swift */; };
 		0D9FA09D05984ED4E4C4117F /* ProfileSetupFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C681B4E695FF6B1D8BADF4B /* ProfileSetupFlowView.swift */; };
 		0F778138053D66CD3B6334D1 /* InputChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969F97EA94D104FF0E5D3CF4 /* InputChip.swift */; };
@@ -250,6 +251,11 @@
 		6F8C4EA0301455BD000067BC /* FoodSafetyResponseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */; };
 		6F8C4EA2301455C4000067BC /* ScanFlaggedIngredientDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */; };
 		6F8C4EA4301455CA000067BC /* ScanNutritionFactsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */; };
+		A1B2C3D4E5F60718293A4B5E /* ScanBarcodeRequestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B5F /* ScanBarcodeRequestDTO.swift */; };
+		A1B2C3D4E5F60718293A4B60 /* ScanAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B61 /* ScanAssembly.swift */; };
+		A1B2C3D4E5F60718293A4B62 /* ScanHistoryAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B63 /* ScanHistoryAssembly.swift */; };
+		A1B2C3D4E5F60718293A4B64 /* RAGAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B65 /* RAGAssembly.swift */; };
+		A1B2C3D4E5F60718293A4B66 /* StepTrackerAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B67 /* StepTrackerAssembly.swift */; };
 		6F8C4ECE3016C89E000067BC /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6F8C4ECF3016C89E000067BC /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6F8C4ED03016C89E000067BC /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -947,6 +953,11 @@
 		6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSafetyResponseDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlaggedIngredientDTO.swift; sourceTree = "<group>"; };
 		6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanNutritionFactsDTO.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5F /* ScanBarcodeRequestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanBarcodeRequestDTO.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B61 /* ScanAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanAssembly.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B63 /* ScanHistoryAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryAssembly.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B65 /* RAGAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGAssembly.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B67 /* StepTrackerAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepTrackerAssembly.swift; sourceTree = "<group>"; };
 		6F8C4F0230190701000067BC /* ScanScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanScreen.swift; sourceTree = "<group>"; };
 		6F8C4F0430190709000067BC /* BarcodeOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeOverlayView.swift; sourceTree = "<group>"; };
 		6F8C4F0530190709000067BC /* ScanningWaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanningWaveView.swift; sourceTree = "<group>"; };
@@ -1051,6 +1062,7 @@
 		9F336C240113B3898A67A273 /* CachedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImage.swift; sourceTree = "<group>"; };
 		A0CD53A766B1412C8F83A4B5 /* CaloriesTrackingRepoImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaloriesTrackingRepoImpl.swift; sourceTree = "<group>"; };
 		A15E5089062C6A8295BEB08D /* ScanMask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanMask.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B5D /* GalleryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryButton.swift; sourceTree = "<group>"; };
 		A1D8A3AF0F1C8BFCCBA18E4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A262D6EDF1CC63162582A73E /* PlusJakartaSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		A2A03FD27820D533F4E0316B /* HomeGreetingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeGreetingSection.swift; sourceTree = "<group>"; };
@@ -2321,12 +2333,21 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F60718293A4B68 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B61 /* ScanAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		5BE042F97BFB4034184FEC5F /* Scan */ = {
 			isa = PBXGroup;
 			children = (
 				5903463C67FB29E151911A08 /* Data */,
 				3069FBCA708A4F865343098F /* Domain */,
 				31D0E1ED566FE578485A1A2A /* Infrastructure */,
+				A1B2C3D4E5F60718293A4B68 /* DI */,
 				48F2D3E4092251AA6A7198F5 /* Presentation */,
 			);
 			path = Scan;
@@ -2597,11 +2618,20 @@
 			path = News;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F60718293A4B6A /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B65 /* RAGAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		6F1A8E963012AF6400E1ACC5 /* RAG */ = {
 			isa = PBXGroup;
 			children = (
 				6F1A8EA43012BE2100E1ACC5 /* Data */,
 				6F1A8EAD3012BE2100E1ACC5 /* Domain */,
+				A1B2C3D4E5F60718293A4B6A /* DI */,
 				6F1A8EBF3012BE2100E1ACC5 /* Presentation */,
 			);
 			path = RAG;
@@ -2759,6 +2789,7 @@
 			isa = PBXGroup;
 			children = (
 				D4BDF86D30169AE000C834D0 /* ScanStatus.swift */,
+				A1B2C3D4E5F60718293A4B5F /* ScanBarcodeRequestDTO.swift */,
 				6F8C4EA3301455CA000067BC /* ScanNutritionFactsDTO.swift */,
 				6F8C4EA1301455C4000067BC /* ScanFlaggedIngredientDTO.swift */,
 				6F8C4E9F301455BD000067BC /* FoodSafetyResponseDTO.swift */,
@@ -2779,6 +2810,7 @@
 				01EB74CA07FB9BBCE08073B1 /* CornerBracketsShape.swift */,
 				B2550A33566860771C07AAB9 /* ProductMatchCard.swift */,
 				A15E5089062C6A8295BEB08D /* ScanMask.swift */,
+				A1B2C3D4E5F60718293A4B5D /* GalleryButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -3541,11 +3573,20 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F60718293A4B69 /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B63 /* ScanHistoryAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		A2FCC62BF8D4E60E58F59720 /* ScanHistory */ = {
 			isa = PBXGroup;
 			children = (
 				8FD8BB79301787FC00FB37DD /* Domain */,
 				8FD8BB6C301787F400FB37DD /* Data */,
+				A1B2C3D4E5F60718293A4B69 /* DI */,
 				8F029F4F301275E9008B6CB1 /* Presentation */,
 			);
 			path = ScanHistory;
@@ -4109,11 +4150,20 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F60718293A4B6B /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4E5F60718293A4B67 /* StepTrackerAssembly.swift */,
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
 		C503885E301B55B00045358F /* StepTracker */ = {
 			isa = PBXGroup;
 			children = (
 				C5038841301B55B00045358F /* Data */,
 				C503884D301B55B00045358F /* Domain */,
+				A1B2C3D4E5F60718293A4B6B /* DI */,
 				C503885D301B55B00045358F /* Presentation */,
 			);
 			path = StepTracker;
@@ -5230,6 +5280,7 @@
 				6F8C4F0A30190709000067BC /* BarcodeOverlayView.swift in Sources */,
 				6F8C4F0B30190709000067BC /* ScanningWaveView.swift in Sources */,
 				6F8C4F0C30190709000067BC /* ScanViewfinderView.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5C /* GalleryButton.swift in Sources */,
 				D47700073016000100000002 /* AppLanguage.swift in Sources */,
 				D47700093016000100000002 /* GetLanguageUseCase.swift in Sources */,
 				8F119D49301B825D00496267 /* AddMealUseCase.swift in Sources */,
@@ -5523,6 +5574,11 @@
 				2C78F016300E6D180092E6B3 /* TokenRefresher.swift in Sources */,
 				2C78ED15300E6C7E0092E6B2 /* ForgotPasswordResetButtonSection.swift in Sources */,
 				6F8C4E9E301455B5000067BC /* ScanSubmissionDTO.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5E /* ScanBarcodeRequestDTO.swift in Sources */,
+				A1B2C3D4E5F60718293A4B60 /* ScanAssembly.swift in Sources */,
+				A1B2C3D4E5F60718293A4B62 /* ScanHistoryAssembly.swift in Sources */,
+				A1B2C3D4E5F60718293A4B64 /* RAGAssembly.swift in Sources */,
+				A1B2C3D4E5F60718293A4B66 /* StepTrackerAssembly.swift in Sources */,
 				2C78ED1B300E6C7E0092E6B2 /* ForgotPasswordOptionsSection.swift in Sources */,
 				2C78ED24300E6C7E0092E6B2 /* PasswordResetOption.swift in Sources */,
 				2C78ED16300E6C7E0092E6B2 /* AuthDivider.swift in Sources */,
