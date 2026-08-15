@@ -112,8 +112,8 @@ struct ExerciseWorkoutPlayerView: View {
         .customAlert(
             isPresented: $viewModel.showRecordingError,
             type: .error,
-            title: "Unable to Save Workout",
-            description: "Your profile data is unavailable. Reload your profile, then try finishing again.",
+            title: viewModel.hasRecordedWorkout ? "Workout Saved Locally" : "Unable to Save Workout",
+            description: viewModel.recordingErrorMessage,
             primaryButtonTitle: "OK",
             primaryButtonColor: Color.Teal.teal1000,
             primaryAction: {

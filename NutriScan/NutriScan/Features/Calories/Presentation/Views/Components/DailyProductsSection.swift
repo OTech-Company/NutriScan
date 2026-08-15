@@ -22,6 +22,7 @@ struct MealRemovalRequest: Identifiable {
 struct DailyProductsSection: View {
     let dailyKcal: Int
     let meals: [CalorieMeal]
+    var mutatingMealIDs: Set<String> = []
     var showsHeader = true
     var onAddFoodTap: () -> Void = {}
     var onRemoveMealRequest: ((MealRemovalRequest) -> Void)? = nil
@@ -49,6 +50,7 @@ struct DailyProductsSection: View {
                             ForEach(meals, id: \.scanId) { meal in
                                 CalorieMealCard(
                                     meal: meal,
+                                    isMutating: mutatingMealIDs.contains(meal.scanId),
                                     onRemoveOne: {
                                         onRemoveMealRequest?(
                                             MealRemovalRequest(meal: meal, kind: .one)
@@ -143,6 +145,7 @@ struct DailyProductsHeader: View {
 
 private struct CalorieMealCard: View {
     let meal: CalorieMeal
+    let isMutating: Bool
     let onRemoveOne: () -> Void
     let onRemoveAll: () -> Void
 
@@ -243,6 +246,8 @@ private struct CalorieMealCard: View {
                 )
         }
         .buttonStyle(.plain)
+        .disabled(isMutating)
+        .opacity(isMutating ? 0.45 : 1)
     }
 }
 
