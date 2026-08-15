@@ -272,14 +272,3 @@ private struct NewsEmptyStateView: View {
     NewsView(viewModel: .preview(.noProfileConditions))
         .environmentObject(AppRouter())
 }
-
-private extension NewsViewModel.FailureState {
-    var emptyState: EmptyState {
-        switch self {
-        case .noConnection:
-            return .noConnection
-        case .serverProblem:
-            return .serverProblem
-        }
-    }
-}
