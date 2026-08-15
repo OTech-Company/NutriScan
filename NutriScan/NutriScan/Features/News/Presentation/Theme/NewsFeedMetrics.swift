@@ -12,4 +12,8 @@ enum NewsFeedMetrics {
     static let searchBarBottomSpacing: CGFloat = 8
     static let cardSpacing: CGFloat = 8
     static let cardHeight: CGFloat = 156
+    static let cardContentInset: CGFloat = 8
+    static var articleImageSize: CGFloat {
+        cardHeight - (cardContentInset * 2)
+    }
 }

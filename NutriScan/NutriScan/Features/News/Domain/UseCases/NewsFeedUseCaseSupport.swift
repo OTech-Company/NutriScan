@@ -14,9 +14,9 @@ struct FetchTopHeadlinesUseCase: FetchTopHeadlinesUseCaseProtocol {
     }
 
     func execute(category: String) async throws -> [Article] {
-        let articles = try await repository.fetchTopHeadlines(category: category)
+        let result = try await repository.fetchTopHeadlines(category: category, page: 1, pageSize: 20)
         var seenTitles = Set<String>()
-        return articles.filter { article in
+        return result.articles.filter { article in
             seenTitles.insert(article.title.lowercased()).inserted
         }
     }

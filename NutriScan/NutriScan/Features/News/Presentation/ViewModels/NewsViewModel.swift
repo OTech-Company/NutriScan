@@ -2,6 +2,19 @@ import Foundation
 
 @MainActor
 final class NewsViewModel: ObservableObject {
+    private struct FeedCacheKey: Hashable {
+        let interest: NewsInterest
+        let searchText: String
+    }
+
+    private struct FeedSnapshot {
+        let articles: [Article]
+        let viewState: ViewState
+        let currentPage: Int
+        let hasMorePages: Bool
+        let paginationFailure: FailureState?
+    }
+
     enum FailureState: Equatable {
         case noConnection
         case serverProblem
@@ -21,13 +34,20 @@ final class NewsViewModel: ObservableObject {
     @Published private(set) var viewState: ViewState = .idle
     @Published private(set) var resultRevision = 0
     @Published private(set) var searchText = ""
+    @Published private(set) var isLoadingNextPage = false
+    @Published private(set) var paginationFailure: FailureState?
 
+    private static let pageSize = 20
     private let fetchNewsInterestsUseCase: FetchNewsInterestsUseCaseProtocol
     private let fetchNewsFeedUseCase: FetchNewsFeedUseCaseProtocol
     private var searchTask: Task<Void, Never>?
     private var feedTask: Task<Void, Never>?
+    private var paginationTask: Task<Void, Never>?
     private var currentRequestID = UUID()
     private var didLoadInitialFeed = false
+    private var currentPage = 0
+    private var hasMorePages = false
+    private var feedCache: [FeedCacheKey: FeedSnapshot] = [:]
 
     init(
         fetchNewsInterestsUseCase: FetchNewsInterestsUseCaseProtocol,
@@ -40,6 +60,7 @@ final class NewsViewModel: ObservableObject {
     deinit {
         searchTask?.cancel()
         feedTask?.cancel()
+        paginationTask?.cancel()
     }
 
     var filterLabel: String {
@@ -61,28 +82,39 @@ final class NewsViewModel: ObservableObject {
 
     func onPullToRefresh() async {
         searchTask?.cancel()
+        feedCache.removeAll()
         await loadInterestsAndFeed(guaranteeVisibleLoadingState: false)
     }
 
     func selectInterest(_ interest: NewsInterest) {
         guard interest != selectedInterest else { return }
+        searchTask?.cancel()
+        cacheCurrentFeed()
         selectedInterest = interest
-        startFeedLoad()
+        if !restoreCachedFeed(for: interest, searchText: searchText) {
+            startFeedLoad()
+        }
     }
 
     func updateSearchText(_ value: String) {
         searchText = value
         searchTask?.cancel()
+        invalidateActiveFeedRequest()
 
         if value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            startFeedLoad()
+            if !restoreCachedFeed(for: selectedInterest, searchText: value) {
+                startFeedLoad()
+            }
             return
         }
 
         searchTask = Task { [weak self] in
             try? await Task.sleep(for: .milliseconds(350))
             guard !Task.isCancelled else { return }
-            await self?.loadFeed()
+            guard let self else { return }
+            if !self.restoreCachedFeed(for: self.selectedInterest, searchText: self.searchText) {
+                await self.loadFeed()
+            }
         }
     }
 
@@ -95,7 +127,9 @@ final class NewsViewModel: ObservableObject {
         guard !searchText.isEmpty else { return }
         searchText = ""
         searchTask?.cancel()
-        startFeedLoad()
+        if !restoreCachedFeed(for: selectedInterest, searchText: searchText) {
+            startFeedLoad()
+        }
     }
 
     func retry() {
@@ -109,10 +143,52 @@ final class NewsViewModel: ObservableObject {
         }
     }
 
+    func loadNextPageIfNeeded(currentArticle: Article) {
+        guard viewState == .loaded,
+              hasMorePages,
+              !isLoadingNextPage,
+              shouldLoadNextPage(after: currentArticle) else { return }
+        startPaginationLoad()
+    }
+
+    func retryPagination() {
+        guard viewState == .loaded, hasMorePages, !isLoadingNextPage else { return }
+        startPaginationLoad()
+    }
+
     private func startFeedLoad() {
-        feedTask?.cancel()
+        invalidateActiveFeedRequest()
         feedTask = Task { [weak self] in
             await self?.loadFeed()
+        }
+    }
+
+    private func invalidateActiveFeedRequest() {
+        feedTask?.cancel()
+        paginationTask?.cancel()
+        currentRequestID = UUID()
+        isLoadingNextPage = false
+        paginationFailure = nil
+    }
+
+    private func startPaginationLoad() {
+        paginationTask?.cancel()
+        isLoadingNextPage = true
+        paginationFailure = nil
+        let requestID = currentRequestID
+        let nextPage = currentPage + 1
+        let capturedInterests = interests
+        let capturedSelection = selectedInterest
+        let capturedSearch = searchText
+
+        paginationTask = Task { [weak self] in
+            await self?.loadNextPage(
+                requestID: requestID,
+                page: nextPage,
+                interests: capturedInterests,
+                selection: capturedSelection,
+                searchText: capturedSearch
+            )
         }
     }
 
@@ -132,7 +208,9 @@ final class NewsViewModel: ObservableObject {
             let result = try await fetchNewsFeedUseCase.execute(
                 availableInterests: interests,
                 selectedInterest: selectedInterest,
-                searchText: searchText
+                searchText: searchText,
+                page: 1,
+                pageSize: Self.pageSize
             )
 
             if guaranteeVisibleLoadingState {
@@ -167,7 +245,9 @@ final class NewsViewModel: ObservableObject {
             let result = try await fetchNewsFeedUseCase.execute(
                 availableInterests: capturedInterests,
                 selectedInterest: capturedSelection,
-                searchText: capturedSearch
+                searchText: capturedSearch,
+                page: 1,
+                pageSize: Self.pageSize
             )
             guard isCurrent(requestID) else { return }
             apply(result)
@@ -179,6 +259,11 @@ final class NewsViewModel: ObservableObject {
     }
 
     private func beginRequest() -> UUID {
+        paginationTask?.cancel()
+        isLoadingNextPage = false
+        paginationFailure = nil
+        currentPage = 0
+        hasMorePages = false
         let requestID = UUID()
         currentRequestID = requestID
         viewState = .loading
@@ -189,10 +274,102 @@ final class NewsViewModel: ObservableObject {
         currentRequestID == requestID && !Task.isCancelled
     }
 
-    private func apply(_ result: [Article]) {
-        articles = result
+    private func apply(_ result: NewsPage) {
+        articles = result.articles
+        currentPage = 1
+        hasMorePages = result.hasMore
         resultRevision += 1
-        viewState = result.isEmpty ? .empty : .loaded
+        viewState = result.articles.isEmpty ? .empty : .loaded
+        cacheCurrentFeed()
+    }
+
+    private func loadNextPage(
+        requestID: UUID,
+        page: Int,
+        interests: [NewsInterest],
+        selection: NewsInterest,
+        searchText: String
+    ) async {
+        do {
+            let result = try await fetchNewsFeedUseCase.execute(
+                availableInterests: interests,
+                selectedInterest: selection,
+                searchText: searchText,
+                page: page,
+                pageSize: Self.pageSize
+            )
+            guard isCurrent(requestID) else { return }
+
+            articles = mergedArticles(existing: articles, incoming: result.articles)
+            currentPage = page
+            hasMorePages = result.hasMore
+            isLoadingNextPage = false
+            paginationFailure = nil
+            cacheCurrentFeed()
+        } catch {
+            guard isCurrent(requestID), !Task.isCancelled else { return }
+            isLoadingNextPage = false
+            paginationFailure = failureState(for: error)
+            cacheCurrentFeed()
+        }
+    }
+
+    private func cacheCurrentFeed() {
+        guard viewState == .loaded || viewState == .empty else { return }
+        feedCache[cacheKey(for: selectedInterest, searchText: searchText)] = FeedSnapshot(
+            articles: articles,
+            viewState: viewState,
+            currentPage: currentPage,
+            hasMorePages: hasMorePages,
+            paginationFailure: paginationFailure
+        )
+    }
+
+    private func restoreCachedFeed(for interest: NewsInterest, searchText: String) -> Bool {
+        let key = cacheKey(for: interest, searchText: searchText)
+        guard let snapshot = feedCache[key] else { return false }
+
+        feedTask?.cancel()
+        paginationTask?.cancel()
+        currentRequestID = UUID()
+        articles = snapshot.articles
+        viewState = snapshot.viewState
+        currentPage = snapshot.currentPage
+        hasMorePages = snapshot.hasMorePages
+        paginationFailure = snapshot.paginationFailure
+        isLoadingNextPage = false
+        resultRevision += 1
+        return true
+    }
+
+    private func cacheKey(for interest: NewsInterest, searchText: String) -> FeedCacheKey {
+        FeedCacheKey(
+            interest: interest,
+            searchText: searchText
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+        )
+    }
+
+    private func shouldLoadNextPage(after article: Article) -> Bool {
+        guard let index = articles.firstIndex(where: { $0.id == article.id }) else { return false }
+        let triggerIndex = max(articles.count - 3, 0)
+        return index >= triggerIndex
+    }
+
+    private func mergedArticles(existing: [Article], incoming: [Article]) -> [Article] {
+        var seenURLs = Set<String>()
+        var seenTitles = Set<String>()
+
+        return (existing + incoming)
+            .filter { article in
+                let normalizedTitle = article.title
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .lowercased()
+                guard seenURLs.insert(article.url).inserted else { return false }
+                return seenTitles.insert(normalizedTitle).inserted
+            }
+            .sorted { $0.publishedAt > $1.publishedAt }
     }
 
     private func failureState(for error: Error) -> FailureState {
@@ -286,7 +463,11 @@ private struct PreviewNewsFeedUseCase: FetchNewsFeedUseCaseProtocol {
     func execute(
         availableInterests: [NewsInterest],
         selectedInterest: NewsInterest,
-        searchText: String
-    ) async throws -> [Article] { [] }
+        searchText: String,
+        page: Int,
+        pageSize: Int
+    ) async throws -> NewsPage {
+        NewsPage(articles: [], hasMore: false)
+    }
 }
 #endif
