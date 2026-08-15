@@ -2,40 +2,14 @@ import Foundation
 
 @MainActor
 final class NewsViewModel: ObservableObject {
-    private struct FeedCacheKey: Hashable {
-        let interest: NewsInterest
-        let searchText: String
-    }
-
-    private struct FeedSnapshot {
-        let articles: [Article]
-        let viewState: ViewState
-        let currentPage: Int
-        let hasMorePages: Bool
-        let paginationFailure: FailureState?
-    }
-
-    enum FailureState: Equatable {
-        case noConnection
-        case serverProblem
-    }
-
-    enum ViewState: Equatable {
-        case idle
-        case loading
-        case loaded
-        case empty
-        case error(FailureState)
-    }
-
     @Published private(set) var interests: [NewsInterest] = []
     @Published private(set) var selectedInterest: NewsInterest = .all
     @Published private(set) var articles: [Article] = []
-    @Published private(set) var viewState: ViewState = .idle
+    @Published private(set) var viewState: NewsViewState = .idle
     @Published private(set) var resultRevision = 0
     @Published private(set) var searchText = ""
     @Published private(set) var isLoadingNextPage = false
-    @Published private(set) var paginationFailure: FailureState?
+    @Published private(set) var paginationFailure: NewsFailureState?
 
     private static let pageSize = 20
     private let fetchNewsInterestsUseCase: FetchNewsInterestsUseCaseProtocol
@@ -47,7 +21,7 @@ final class NewsViewModel: ObservableObject {
     private var didLoadInitialFeed = false
     private var currentPage = 0
     private var hasMorePages = false
-    private var feedCache: [FeedCacheKey: FeedSnapshot] = [:]
+    private var feedCache: [NewsFeedCacheKey: NewsFeedSnapshot] = [:]
 
     init(
         fetchNewsInterestsUseCase: FetchNewsInterestsUseCaseProtocol,
@@ -316,7 +290,7 @@ final class NewsViewModel: ObservableObject {
 
     private func cacheCurrentFeed() {
         guard viewState == .loaded || viewState == .empty else { return }
-        feedCache[cacheKey(for: selectedInterest, searchText: searchText)] = FeedSnapshot(
+        feedCache[cacheKey(for: selectedInterest, searchText: searchText)] = NewsFeedSnapshot(
             articles: articles,
             viewState: viewState,
             currentPage: currentPage,
@@ -342,8 +316,8 @@ final class NewsViewModel: ObservableObject {
         return true
     }
 
-    private func cacheKey(for interest: NewsInterest, searchText: String) -> FeedCacheKey {
-        FeedCacheKey(
+    private func cacheKey(for interest: NewsInterest, searchText: String) -> NewsFeedCacheKey {
+        NewsFeedCacheKey(
             interest: interest,
             searchText: searchText
                 .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -372,7 +346,7 @@ final class NewsViewModel: ObservableObject {
             .sorted { $0.publishedAt > $1.publishedAt }
     }
 
-    private func failureState(for error: Error) -> FailureState {
+    private func failureState(for error: Error) -> NewsFailureState {
         guard NetworkMonitor.shared.isConnected else { return .noConnection }
 
         if isOfflineError(error) {
