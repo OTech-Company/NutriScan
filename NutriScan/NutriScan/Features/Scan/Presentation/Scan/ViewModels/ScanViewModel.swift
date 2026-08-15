@@ -14,6 +14,7 @@ final class ScanViewModel: ObservableObject {
     @Published private(set) var barcodePosition: CGPoint?
     @Published private(set) var barcodeSize: CGSize = .zero
     @Published var errorMessage: String?
+    @Published var isGalleryPresented = false
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
     private let fetchScanDetailUseCase: FetchScanDetailUseCase
@@ -66,6 +67,10 @@ final class ScanViewModel: ObservableObject {
     }
 
     // MARK: - Photo Capture
+
+    func presentGallery() {
+        isGalleryPresented = true
+    }
 
     func onPhotoCaptured(_ imageData: Data) {
         guard !isSubmitting else { return }
