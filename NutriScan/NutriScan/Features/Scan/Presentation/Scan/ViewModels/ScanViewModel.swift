@@ -17,20 +17,24 @@ final class ScanViewModel: ObservableObject {
     @Published var isGalleryPresented = false
 
     private let submitScanImageUseCase: SubmitScanImageUseCase
+    private let submitBarcodeScanUseCase: SubmitBarcodeScanUseCase
     private let fetchScanDetailUseCase: FetchScanDetailUseCase
     private var pendingLostTask: Task<Void, Never>?
 
     nonisolated init(
         submitScanImageUseCase: SubmitScanImageUseCase,
+        submitBarcodeScanUseCase: SubmitBarcodeScanUseCase,
         fetchScanDetailUseCase: FetchScanDetailUseCase
     ) {
         self.submitScanImageUseCase = submitScanImageUseCase
+        self.submitBarcodeScanUseCase = submitBarcodeScanUseCase
         self.fetchScanDetailUseCase = fetchScanDetailUseCase
     }
 
     nonisolated static func makeDefault() -> ScanViewModel {
         ScanViewModel(
             submitScanImageUseCase: DIContainer.shared.resolve(type: SubmitScanImageUseCase.self),
+            submitBarcodeScanUseCase: DIContainer.shared.resolve(type: SubmitBarcodeScanUseCase.self),
             fetchScanDetailUseCase: DIContainer.shared.resolve(type: FetchScanDetailUseCase.self)
         )
     }
@@ -47,7 +51,28 @@ final class ScanViewModel: ObservableObject {
 
     func lookupByBarcode() {
         guard let barcode = detectedBarcode, !isSubmitting else { return }
-        print("Looking up barcode: \(barcode)")
+        capturedImageData = nil
+        isSubmitting = true
+        isSaved = false
+        barcodePosition = nil
+        barcodeSize = .zero
+
+        Task {
+            do {
+                let submission = try await submitBarcodeScanUseCase.execute(barcode: barcode)
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
+                    latestScan = submission
+                }
+                isSubmitting = false
+                await pollScanDetail(scanId: submission.scanId, notifyHistoryOnCompletion: true)
+            } catch let error as ScanError {
+                isSubmitting = false
+                errorMessage = error.userMessage
+            } catch {
+                isSubmitting = false
+                errorMessage = ScanError.unknown.userMessage
+            }
+        }
     }
 
     func scheduleDismissBarcode() {
