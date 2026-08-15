@@ -14,6 +14,7 @@ struct FavoritesGridView: View {
     var paginationError: String? = nil
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
     var onRemoveRequest: ((FavoritesScanEntity) -> Void)? = nil
+    var onProductTap: ((FavoritesScanEntity) -> Void)? = nil
     var onRetryPagination: (() -> Void)? = nil
     var onAddToDaily: ((String, @escaping (Bool) -> Void) -> Void)? = nil
     
@@ -31,6 +32,9 @@ struct FavoritesGridView: View {
                         onRemove: {
                             onRemoveRequest?(item)
                         },
+                        onProductTap: {
+                            onProductTap?(item)
+                        },
                         onAddToDaily: { onResult in
                             onAddToDaily?(item.id, onResult)
                         }
@@ -42,7 +46,7 @@ struct FavoritesGridView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 12)
-            .padding(.bottom, 66)
+            .padding(.bottom, CustomAnimatedTabBar.contentClearance)
             
             // MARK: - Pagination Footer
             if isLoadingNextPage {

@@ -7,6 +7,7 @@ import Foundation
 
 enum ScanHistoryEndpoint: APIEndpoint {
     case getScanHistory(page: Int, size: Int)
+    case deleteScan(scanId: String)
     
     var baseURL: String {
         return AppNetworkConfig.core.baseURL
@@ -16,11 +17,18 @@ enum ScanHistoryEndpoint: APIEndpoint {
         switch self {
         case .getScanHistory:
             return "/api/v1/scans"
+        case .deleteScan(let scanId):
+            return "/api/v1/scans/\(scanId)"
         }
     }
     
     var method: HTTPMethod {
-        return .get
+        switch self {
+        case .getScanHistory:
+            return .get
+        case .deleteScan:
+            return .delete
+        }
     }
     
     var queryParameters: [String : String]? {
@@ -30,6 +38,8 @@ enum ScanHistoryEndpoint: APIEndpoint {
                 "page": "\(page)",
                 "size": "\(size)"
             ]
+        case .deleteScan:
+            return nil
         }
     }
     

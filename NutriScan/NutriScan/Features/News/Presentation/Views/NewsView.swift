@@ -2,183 +2,284 @@ import SwiftUI
 
 struct NewsView: View {
     @StateObject private var viewModel: NewsViewModel
-    @EnvironmentObject var router: AppRouter
-    @State private var currentHeroIndex = 0
-    @State private var heroScrollPosition: String?
+    @EnvironmentObject private var router: AppRouter
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var articleToOpen: ArticleBrowserDestination?
+    @State private var articleToShare: Article?
 
-    init(viewModel: NewsViewModel? = nil) {
-        if let viewModel {
-            _viewModel = StateObject(wrappedValue: viewModel)
-        } else {
-            let networkService: NetworkServiceProtocol = NetworkService()
-            let remoteDataSource: NewsRemoteDataSourceProtocol = NewsRemoteDataSource(networkService: networkService)
-            let repository: NewsRepositoryProtocol = NewsRepository(remoteDataSource: remoteDataSource)
-
-            let defaultViewModel = NewsViewModel(
-                fetchTopHeadlinesUseCase: FetchTopHeadlinesUseCase(repository: repository),
-                searchArticlesUseCase: SearchArticlesUseCase(repository: repository)
-            )
-            _viewModel = StateObject(wrappedValue: defaultViewModel)
-        }
+    init(viewModel: NewsViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
-        ZStack {
-            NewsFeedPalette.background.ignoresSafeArea()
+        VStack(spacing: 0) {
+            header
 
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 24) {
-                    topBar
-                    breakingNewsSection
-                    recommendationSection
-                }
-                .padding(.top, 8)
-                .padding(.bottom, 100)
-            }
+            CustomSearchBar(
+                text: searchBinding,
+                prompt: "Search health news",
+                onSearch: viewModel.submitSearch
+            )
+            .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            .padding(.bottom, NewsFeedMetrics.searchBarBottomSpacing)
+
+            NewsInterestChipBar(
+                interests: viewModel.interests,
+                selectedInterest: viewModel.selectedInterest,
+                isLoading: viewModel.viewState == .loading,
+                onSelect: viewModel.selectInterest
+            )
+            .padding(.bottom, NewsFeedMetrics.sectionSpacing)
+
+            content
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(NewsFeedPalette.background.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
+        .toolbar(.hidden, for: .navigationBar)
         .task {
             await viewModel.onAppear()
         }
-        .sheet(item: $viewModel.selectedArticleForReading) { article in
-            ArticleDetailView(article: article)
-                .environmentObject(router)
+        .sheet(item: $articleToOpen) { destination in
+            SafariView(url: destination.url)
+                .ignoresSafeArea()
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(item: $articleToShare) { article in
+            if let url = article.articleURL {
+                ShareSheet(activityItems: [article.title, url])
+            }
         }
         .tint(NewsFeedPalette.accent)
     }
 
-    // MARK: - Top Bar
+    private var header: some View {
+        HStack(spacing: 16) {
+            BackButton { router.pop() }
 
-    private var topBar: some View {
-        HStack {
-            BackButton {
-                router.pop()
-            }
+            Text("News")
+                .font(NewsFeedTypography.screenTitle)
+                .foregroundStyle(NewsFeedPalette.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
 
             Spacer()
-
-            HStack(spacing: 16) {
-                Button {
-                    router.push(HomeRoute.discover)
-                } label: {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                }
-            }
         }
         .padding(.horizontal, NewsFeedMetrics.screenPadding)
+        .padding(.top, 16)
+        .padding(.bottom, 16)
     }
-
-    // MARK: - Breaking News
-
-    private var breakingNewsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                Text("Breaking News")
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .foregroundStyle(NewsFeedPalette.textPrimary)
-                Spacer()
-            }
-            .padding(.horizontal, NewsFeedMetrics.screenPadding)
-
-            if viewModel.viewState == .loading || viewModel.viewState == .idle {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 14) {
-                        BreakingNewsHeroSkeleton()
-                            .frame(width: UIScreen.main.bounds.width - 64)
-                        BreakingNewsHeroSkeleton()
-                            .frame(width: UIScreen.main.bounds.width - 64)
-                            .opacity(0.5)
-                    }
-                    .padding(.horizontal, NewsFeedMetrics.screenPadding)
-                }
-            } else {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 16) {
-                        ForEach(viewModel.articles.prefix(5)) { article in
-                            Button {
-                                viewModel.onArticleTapped(article)
-                            } label: {
-                                BreakingNewsHeroCard(article: article)
-                                    .frame(width: UIScreen.main.bounds.width - 60)
-                            }
-                            .buttonStyle(.plain)
-                            .id(article.id)
-                        }
-                    }
-                    .scrollTargetLayout()
-                }
-                .scrollTargetBehavior(.viewAligned)
-                .safeAreaPadding(.horizontal, NewsFeedMetrics.screenPadding)
-                .frame(height: 260)
-                .scrollPosition(id: $heroScrollPosition)
-
-                HStack(spacing: 6) {
-                    ForEach(Array(viewModel.articles.prefix(5).enumerated()), id: \.offset) { index, article in
-                        Capsule()
-                            .fill(index == currentHeroIndex ? NewsFeedPalette.accent : NewsFeedPalette.divider)
-                            .frame(width: index == currentHeroIndex ? 20 : 6, height: 6)
-                            .animation(.easeInOut(duration: 0.2), value: currentHeroIndex)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .onChange(of: heroScrollPosition) { _, newValue in
-                    if let id = newValue, let index = viewModel.articles.prefix(5).firstIndex(where: { $0.id == id }) {
-                        currentHeroIndex = index
-                    }
-                }
-            }
-        }
-    }
-
-    // MARK: - Recommendation (Personalized)
 
     @ViewBuilder
-    private var recommendationSection: some View {
-        if viewModel.isLoadingPersonalized {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    Text("Recommendation")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                    Spacer()
-                }
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
-
-                VStack(spacing: 12) {
-                    ForEach(0..<3, id: \.self) { _ in
-                        CompactArticleRowSkeleton()
-                    }
-                }
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
-            }
-        } else if !viewModel.personalizedArticles.isEmpty {
-            VStack(alignment: .leading, spacing: 14) {
-                HStack {
-                    Text("Recommendation")
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundStyle(NewsFeedPalette.textPrimary)
-                    Spacer()
-                }
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
-
-                VStack(spacing: 12) {
-                    ForEach(viewModel.personalizedArticles.prefix(5)) { article in
-                        Button {
-                            viewModel.onArticleTapped(article)
-                        } label: {
-                            CompactArticleRow(article: article)
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-                .padding(.horizontal, NewsFeedMetrics.screenPadding)
+    private var content: some View {
+        switch viewModel.viewState {
+        case .idle, .loading:
+            skeletonList
+        case .loaded:
+            articleList
+        case .empty:
+            emptyState
+        case .error(let failure):
+            EmptyStateView(emptyState: failure.emptyState) {
+                viewModel.retry()
             }
         }
+    }
+
+    private var articleList: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(spacing: NewsFeedMetrics.cardSpacing) {
+                ForEach(Array(viewModel.articles.enumerated()), id: \.element.id) { index, article in
+                    NewsArticleCard(
+                        article: article,
+                        filterLabel: viewModel.filterLabel,
+                        onOpen: { openArticle(article) },
+                        onShare: { articleToShare = article }
+                    )
+                    .transition(
+                        reduceMotion
+                            ? .opacity
+                            : .asymmetric(
+                                insertion: .opacity.combined(with: .offset(y: 12)),
+                                removal: .opacity
+                            )
+                    )
+                    .animation(
+                        reduceMotion
+                            ? nil
+                            : .easeOut(duration: 0.25).delay(min(Double(index) * 0.035, 0.25)),
+                        value: viewModel.resultRevision
+                    )
+                    .onAppear {
+                        viewModel.loadNextPageIfNeeded(currentArticle: article)
+                    }
+                }
+
+                paginationFooter
+            }
+            .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            .padding(.bottom, 24)
+        }
+        .refreshable {
+            await viewModel.onPullToRefresh()
+        }
+        .id(viewModel.resultRevision)
+    }
+
+    @ViewBuilder
+    private var paginationFooter: some View {
+        if viewModel.isLoadingNextPage {
+            ProgressView()
+                .tint(NewsFeedPalette.accent)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 18)
+                .accessibilityLabel("Loading more articles")
+        } else if let failure = viewModel.paginationFailure {
+            VStack(spacing: 10) {
+                Text(
+                    failure == .noConnection
+                        ? "No connection. Check your internet and try again."
+                        : "Couldn't load more articles. Please try again."
+                )
+                .font(NewsFeedTypography.articleCaption)
+                .foregroundStyle(NewsFeedPalette.textSecondary)
+                .multilineTextAlignment(.center)
+
+                Button("Try Again") {
+                    viewModel.retryPagination()
+                }
+                .font(NewsFeedTypography.metadataStrong)
+                .foregroundStyle(NewsFeedPalette.accent)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+        }
+    }
+
+    private var skeletonList: some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(spacing: NewsFeedMetrics.cardSpacing) {
+                ForEach(0..<4, id: \.self) { _ in
+                    NewsArticleCardSkeleton()
+                }
+            }
+            .padding(.horizontal, NewsFeedMetrics.screenPadding)
+            .padding(.bottom, 24)
+        }
+    }
+
+    private var emptyState: some View {
+        Group {
+            if viewModel.hasSearchQuery {
+                EmptyStateView(emptyState: .noSearchResults, action: {
+                    viewModel.clearSearch()
+                }, actionLabel: "Clear Search")
+            } else {
+                NewsEmptyStateView {
+                    viewModel.retry()
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var searchBinding: Binding<String> {
+        Binding(
+            get: { viewModel.searchText },
+            set: viewModel.updateSearchText
+        )
+    }
+
+    private func openArticle(_ article: Article) {
+        guard let url = article.articleURL else { return }
+        articleToOpen = ArticleBrowserDestination(url: url)
     }
 }
 
-#Preview {
-    NewsView()
+private struct ArticleBrowserDestination: Identifiable {
+    let url: URL
+
+    var id: String { url.absoluteString }
+}
+
+private struct NewsEmptyStateView: View {
+    let onRefresh: () -> Void
+
+    var body: some View {
+        VStack(spacing: 24) {
+            Image("searchPlaceHolder")
+
+            VStack(spacing: 8) {
+                Text("No news yet")
+                    .font(Font.AppFont.title3)
+                    .foregroundStyle(NewsFeedPalette.textPrimary)
+                Text("There are no health stories available right now. Check back in a moment.")
+                    .font(Font.AppFont.textPrimary)
+                    .foregroundStyle(NewsFeedPalette.textSecondary)
+                    .multilineTextAlignment(.center)
+            }
+
+            Button("REFRESH", action: onRefresh)
+                .font(Font.AppFont.textSecondary)
+                .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
+                .padding(.horizontal, 32)
+                .frame(height: 44)
+                .background(Color.Teal.teal1000, in: Capsule())
+        }
+        .padding(22)
+    }
+}
+
+#Preview("Light · Populated") {
+    NewsView(viewModel: .preview(.populated))
+        .environmentObject(AppRouter())
+        .preferredColorScheme(.light)
+}
+
+#Preview("Dark · Populated") {
+    NewsView(viewModel: .preview(.populated))
+        .environmentObject(AppRouter())
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Loading") {
+    NewsView(viewModel: .preview(.loading))
+        .environmentObject(AppRouter())
+}
+
+#Preview("Empty") {
+    NewsView(viewModel: .preview(.empty))
+        .environmentObject(AppRouter())
+}
+
+#Preview("No Connection") {
+    NewsView(viewModel: .preview(.noConnection))
+        .environmentObject(AppRouter())
+}
+
+#Preview("Server Problem") {
+    NewsView(viewModel: .preview(.serverProblem))
+        .environmentObject(AppRouter())
+}
+
+#Preview("Long Condition") {
+    NewsView(viewModel: .preview(.longCondition))
+        .environmentObject(AppRouter())
+}
+
+#Preview("No Profile Conditions") {
+    NewsView(viewModel: .preview(.noProfileConditions))
+        .environmentObject(AppRouter())
+}
+
+private extension NewsViewModel.FailureState {
+    var emptyState: EmptyState {
+        switch self {
+        case .noConnection:
+            return .noConnection
+        case .serverProblem:
+            return .serverProblem
+        }
+    }
 }

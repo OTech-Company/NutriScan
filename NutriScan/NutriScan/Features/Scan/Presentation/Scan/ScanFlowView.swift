@@ -1,8 +1,8 @@
 import SwiftUI
 
-/// Owns the Scan tab's own NavigationStack + AppRouter.
+/// Owns the Scan tab's NavigationStack and receives its persistent router.
 struct ScanFlowView: View {
-    @StateObject private var router = AppRouter()
+    @ObservedObject var router: AppRouter
 
     var body: some View {
         NavigationStack(path: $router.path) {

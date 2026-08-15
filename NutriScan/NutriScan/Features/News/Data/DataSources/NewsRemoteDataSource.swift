@@ -9,22 +9,26 @@
 import Foundation
 
 protocol NewsRemoteDataSourceProtocol {
-    func fetchTopHeadlines(category: String) async throws -> NewsResponseDTO
-    func fetchEverything(query: String) async throws -> NewsResponseDTO
+    func fetchTopHeadlines(category: String, page: Int, pageSize: Int) async throws -> NewsResponseDTO
+    func fetchEverything(query: String, page: Int, pageSize: Int) async throws -> NewsResponseDTO
 }
 
 final class NewsRemoteDataSource: NewsRemoteDataSourceProtocol {
     private let networkService: NetworkServiceProtocol
 
-    init(networkService: NetworkServiceProtocol = NetworkService()) {
+    init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }
 
-    func fetchTopHeadlines(category: String) async throws -> NewsResponseDTO {
-        try await networkService.request(NewsEndpoint.topHeadlines(category: category))
+    func fetchTopHeadlines(category: String, page: Int, pageSize: Int) async throws -> NewsResponseDTO {
+        try await networkService.request(
+            NewsEndpoint.topHeadlines(category: category, page: page, pageSize: pageSize)
+        )
     }
 
-    func fetchEverything(query: String) async throws -> NewsResponseDTO {
-        try await networkService.request(NewsEndpoint.everything(query: query))
+    func fetchEverything(query: String, page: Int, pageSize: Int) async throws -> NewsResponseDTO {
+        try await networkService.request(
+            NewsEndpoint.everything(query: query, page: page, pageSize: pageSize)
+        )
     }
 }

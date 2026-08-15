@@ -50,7 +50,7 @@ extension CaloriesTracking {
     }
 
     var mealCalories: Int {
-        totalMealKcal > 0 ? totalMealKcal : calculatedMealCalories
+        calculatedMealCalories
     }
 
     var totalCalories: Int {

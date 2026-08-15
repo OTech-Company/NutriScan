@@ -14,49 +14,84 @@ struct SwipeToActionButton: View {
     /// When the parent sets this to `true`, the slider snaps back to idle.
     var shouldReset: Bool = false
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var dragOffset: CGFloat = 0
-    @State private var isCompleted: Bool = false
+    @State private var phase: Phase = .idle
     @State private var trackWidth: CGFloat = 0
+    @State private var successPulse = false
+    @State private var completionTask: Task<Void, Never>?
 
     private let thumbWidth: CGFloat = 36
-    private let thumbHeight: CGFloat = 18
+    private let thumbHeight: CGFloat = 36
+    private let trackHeight: CGFloat = 44
     private let trackInset: CGFloat = 4 // The horizontal padding inside the track
+
+    private enum Phase: Equatable {
+        case idle
+        case submitting
+        case success
+    }
 
     var body: some View {
         let maxDrag = max(0, trackWidth - thumbWidth - (trackInset * 2))
+        let thumbDisplayWidth = phase == .success && !reduceMotion
+            ? max(thumbWidth, trackWidth - (trackInset * 2))
+            : thumbWidth
+        let thumbOffset: CGFloat = {
+            switch phase {
+            case .success where reduceMotion:
+                return maxDrag / 2
+            case .success:
+                return 0
+            default:
+                return max(0, min(dragOffset, maxDrag))
+            }
+        }()
 
         ZStack(alignment: .leading) {
             // Background Track
             Capsule()
-                .fill(Color.Favorites.swipeBackgroundColor)
-                .frame(height: 24)
+                .fill(
+                    phase == .success
+                        ? Color.Teal.teal1000.opacity(0.24)
+                        : Color.Favorites.swipeBackgroundColor
+                )
+                .frame(height: trackHeight)
 
             // Text Instruction (Centered dynamically)
-            HStack {
-                Spacer()
-                Text(isCompleted ? "Added!" : actionTitle)
-                    .font(Font.AppFont.lexendDecaLight12)
-                    .foregroundColor(Color.Favorites.swipeTextColor)
-                    .padding(.leading, isCompleted ? 0 : 28) // Offset a bit to balance the thumb visually
-                Spacer()
-            }
+            Text(sliderTitle)
+                .font(Font.AppFont.lexendDecaLight12)
+                .foregroundColor(Color.Favorites.swipeTextColor)
+                .frame(maxWidth: .infinity)
+                .padding(.leading, phase == .idle ? 28 : 0)
+                .opacity(phase == .success ? 0 : 1)
 
             // Sliding Thumb / Button
-            HStack {
-                ZStack {
-                    Capsule()
-                        .foregroundStyle(Color.Teal.teal1000)
+            ZStack {
+                Capsule()
+                    .foregroundStyle(Color.Teal.teal1000)
+
+                switch phase {
+                case .idle:
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(.white)
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundStyle(.white)
+                case .submitting:
+                    ProgressView()
+                        .controlSize(.small)
+                        .tint(.white)
+                case .success:
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(.white)
+                        .scaleEffect(successPulse ? 1.18 : 1)
                 }
-                .frame(width: thumbWidth, height: thumbHeight)
-                .offset(x: max(0, min(dragOffset, maxDrag)))
-                Spacer(minLength: 0)
             }
-            .padding(.horizontal, trackInset)
+            .frame(width: thumbDisplayWidth, height: thumbHeight)
+            .offset(x: trackInset + thumbOffset)
         }
-        .frame(height: 24)
+        .frame(height: trackHeight)
         .background(
             GeometryReader { geo in
                 Color.clear
@@ -72,6 +107,7 @@ struct SwipeToActionButton: View {
         .highPriorityGesture(
             DragGesture(minimumDistance: 5)
                 .onChanged { value in
+                    guard phase == .idle else { return }
                     guard maxDrag > 0 else { return }
                     // Prevent vertical scrolling from triggering horizontal swipe
                     guard abs(value.translation.width) > abs(value.translation.height) else { return }
@@ -81,25 +117,11 @@ struct SwipeToActionButton: View {
                     }
                 }
                 .onEnded { value in
+                    guard phase == .idle else { return }
                     guard maxDrag > 0 else { return }
                     
                     if dragOffset > maxDrag * 0.5 {
-                        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
-                            dragOffset = maxDrag
-                        }
-                        
-                        action { success in
-                            if success {
-                                withAnimation {
-                                    isCompleted = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                    resetSlider()
-                                }
-                            } else {
-                                resetSlider()
-                            }
-                        }
+                        submit(maxDrag: maxDrag)
                     } else {
                         resetSlider()
                     }
@@ -110,12 +132,99 @@ struct SwipeToActionButton: View {
                 resetSlider()
             }
         }
+        .sensoryFeedback(.success, trigger: phase) { _, newPhase in
+            newPhase == .success
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Add meal to daily tracking")
+        .accessibilityValue(accessibilityValue)
+        .accessibilityHint("Swipe right or activate to add this saved product")
+        .accessibilityAction {
+            submit(maxDrag: maxDrag)
+        }
+        .onDisappear {
+            completionTask?.cancel()
+        }
     }
 
     private func resetSlider() {
-        withAnimation(.spring()) {
+        completionTask?.cancel()
+        withAnimation(sliderAnimation) {
             dragOffset = 0
-            isCompleted = false
+            phase = .idle
+            successPulse = false
+        }
+    }
+
+    private func submit(maxDrag: CGFloat) {
+        guard phase == .idle, maxDrag > 0 else { return }
+
+        completionTask?.cancel()
+        withAnimation(sliderAnimation) {
+            dragOffset = maxDrag
+            phase = .submitting
+        }
+
+        action { success in
+            DispatchQueue.main.async {
+                if success {
+                    showSuccess()
+                } else {
+                    resetSlider()
+                }
+            }
+        }
+    }
+
+    private func showSuccess() {
+        withAnimation(sliderAnimation) {
+            dragOffset = 0
+            phase = .success
+        }
+
+        completionTask = Task { @MainActor in
+            if !reduceMotion {
+                try? await Task.sleep(for: .milliseconds(120))
+                guard !Task.isCancelled else { return }
+                withAnimation(.spring(response: 0.24, dampingFraction: 0.55)) {
+                    successPulse = true
+                }
+
+                try? await Task.sleep(for: .milliseconds(180))
+                guard !Task.isCancelled else { return }
+                withAnimation(.easeOut(duration: 0.16)) {
+                    successPulse = false
+                }
+            }
+
+            try? await Task.sleep(for: .milliseconds(reduceMotion ? 1_200 : 900))
+            guard !Task.isCancelled else { return }
+            withAnimation(sliderAnimation) {
+                dragOffset = 0
+                phase = .idle
+            }
+        }
+    }
+
+    private var sliderAnimation: Animation {
+        reduceMotion
+            ? .easeOut(duration: 0.15)
+            : .spring(response: 0.36, dampingFraction: 0.82)
+    }
+
+    private var sliderTitle: String {
+        switch phase {
+        case .idle: return actionTitle
+        case .submitting: return "Adding..."
+        case .success: return "Added!"
+        }
+    }
+
+    private var accessibilityValue: String {
+        switch phase {
+        case .idle: return "Ready"
+        case .submitting: return "Adding"
+        case .success: return "Added"
         }
     }
 }

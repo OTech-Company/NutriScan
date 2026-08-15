@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 @Observable
 final class HomeRecentHistoryNotifier {
@@ -25,6 +26,7 @@ final class HomeViewModel {
     var dailyTip: String = "Stay hydrated! Drink at least 8 glasses of water today."
     var recentHistory: [UiStateHistoryItem] = []
     var isLoadingHistory = false
+    var deleteErrorMessage: String? = nil
 
     private var hasLoadedHistory = false
 
@@ -53,6 +55,23 @@ final class HomeViewModel {
 
     func refreshHistory() async {
         await loadHistory()
+    }
+
+    func deleteRecentScan(_ item: UiStateHistoryItem) async {
+        let previousHistory = recentHistory
+        withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) {
+            recentHistory.removeAll { $0.id == item.id }
+        }
+        deleteErrorMessage = nil
+
+        do {
+            try await scanHistoryUseCase.deleteScan(scanId: item.id)
+        } catch {
+            withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) {
+                recentHistory = previousHistory
+            }
+            deleteErrorMessage = error.localizedDescription
+        }
     }
 
     private func loadHistory() async {

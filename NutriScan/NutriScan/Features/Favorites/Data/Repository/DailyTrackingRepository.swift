@@ -10,19 +10,24 @@ import Foundation
 final class DailyTrackingRepository: DailyTrackingRepositoryProtocol {
 
     private let remoteDataSource: DailyTrackingRemoteDataSourceProtocol
+    private let dateProvider: () -> Date
 
-    init(remoteDataSource: DailyTrackingRemoteDataSourceProtocol = DailyTrackingRemoteDataSource()) {
+    init(
+        remoteDataSource: DailyTrackingRemoteDataSourceProtocol = DailyTrackingRemoteDataSource(),
+        dateProvider: @escaping () -> Date = Date.init
+    ) {
         self.remoteDataSource = remoteDataSource
+        self.dateProvider = dateProvider
     }
 
     /// Fetches today's daily tracking data to check if the product already exists.
     /// If it exists, uses PUT to increment its `mealCnt` by 1.
     /// If it does not exist, uses POST to add it with `mealCnt` = 1.
     func addOrIncrementMeal(scanId: String) async throws {
-        let today = Self.todayDateString()
+        let today = Self.dateString(from: dateProvider())
 
-        // 1. Fetch today's tracking data
-        let todayData = try await remoteDataSource.getToday()
+        // 1. Fetch the exact device-local date's tracking data.
+        let todayData = try await remoteDataSource.getByDate(date: today)
 
         // 2. Check if the product already exists in today's meals
         if let existingMeal = todayData.meals?.first(where: { $0.scanId == scanId }) {
@@ -37,10 +42,12 @@ final class DailyTrackingRepository: DailyTrackingRepositoryProtocol {
 
     // MARK: - Helpers
 
-    private static func todayDateString() -> String {
+    private static func dateString(from date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter.string(from: Date())
+        formatter.calendar = .current
+        formatter.timeZone = .current
+        return formatter.string(from: date)
     }
 }

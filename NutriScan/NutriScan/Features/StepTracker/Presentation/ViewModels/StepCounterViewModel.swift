@@ -63,6 +63,13 @@ final class StepCounterViewModel {
         observationTask?.cancel()
     }
 
+    func rolloverToCurrentDay() {
+        todaySteps = 0
+        if isAuthorized {
+            startObserving()
+        }
+    }
+
     /// Fetches the full 6-month history once. Subsequent calls use the cache.
     func fetchFullHistoryIfNeeded() {
         guard !hasFetchedFullHistory else { return }

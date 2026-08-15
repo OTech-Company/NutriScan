@@ -10,6 +10,7 @@ import SwiftUI
 struct EmptyStateView: View {
     let emptyState: EmptyState
     let action: () -> Void
+    var actionLabel: String? = nil
     var body: some View {
         VStack(spacing: 24) {
             Image(emptyState.image)
@@ -27,7 +28,7 @@ struct EmptyStateView: View {
             }
             
             Button(action: action){
-                Text(emptyState.actionLabel.uppercased())
+                Text((actionLabel ?? emptyState.actionLabel).uppercased())
                     .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
                     .font(Font.AppFont.textSecondary)
                     .padding(.horizontal, 32)

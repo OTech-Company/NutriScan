@@ -11,7 +11,7 @@ import Foundation
 enum CaloriesFactory {
 
     static func makeCaloriesViewModel() -> CaloriesViewModel {
-        let getTodayCaloriesTrackingUseCase = DIContainer.shared.resolve(type: GetTodayCaloriesTrackingUseCaseProtocol.self)
+        let getCaloriesTrackingByDateUseCase = DIContainer.shared.resolve(type: GetCaloriesTrackingByDateUseCaseProtocol.self)
         let addMealUseCase = DIContainer.shared.resolve(type: AddCaloriesMealUseCaseProtocol.self)
         let deleteMealUseCase = DIContainer.shared.resolve(type: DeleteMealUseCaseProtocol.self)
         let updateMealUseCase = DIContainer.shared.resolve(type: UpdateMealUseCaseProtocol.self)
@@ -22,7 +22,7 @@ enum CaloriesFactory {
         let notificationScheduler = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self)
 
         return CaloriesViewModel(
-            getTodayCaloriesTrackingUseCase: getTodayCaloriesTrackingUseCase,
+            getCaloriesTrackingByDateUseCase: getCaloriesTrackingByDateUseCase,
             addMealUseCase: addMealUseCase,
             deleteMealUseCase: deleteMealUseCase,
             updateMealUseCase: updateMealUseCase,

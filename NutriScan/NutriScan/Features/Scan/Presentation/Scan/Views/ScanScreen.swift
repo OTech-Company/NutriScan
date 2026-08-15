@@ -68,7 +68,7 @@ struct ScanScreen: View {
                         }
                     )
                     .padding(.horizontal, 16)
-                    .padding(.bottom, 130)
+                    .padding(.bottom, CustomAnimatedTabBar.contentClearance + 30)
                 }
             }
         }

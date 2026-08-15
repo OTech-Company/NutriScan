@@ -43,80 +43,93 @@ struct CaloriesScreen: View {
 
     var body: some View {
         ZStack {
-            ScrollView {
-                VStack(spacing: 24) {
-
-                    DailyProductsSection(
-                        dailyKcal: caloriesViewModel.dailyKcal,
-                        meals: caloriesViewModel.meals,
-                        onAddFoodTap: {
-                            flowCoordinator.selectedTab = .bookmark
-                        },
-                        onRemoveMealRequest: { request in
-                            mealRemovalRequest = request
-                            showMealRemovalConfirmation = true
-                        }
-                    )
-                    .opacity(showDailyProducts ? 1 : 0)
-                    .offset(y: showDailyProducts ? 0 : 30)
-
-                    CalorieGoalsSection(
-                        mealCalories: caloriesViewModel.dailyKcal,
-                        targetCalories: caloriesViewModel.calorieGoal,
-                        caloriesBurned: caloriesViewModel.totalBurnedKcal,
-                        onCompleteProfileTap: {
-                            router.push(ProfileRoute.personalInformation)
-                        }
-                    )
-                    .opacity(showCalorieGoals ? 1 : 0)
-                    .offset(y: showCalorieGoals ? 0 : 30)
-
-                    HStack(spacing: 12) {
-                        StepGaugeCardView(
-                            currentSteps: stepViewModel.todaySteps,
-                            goalSteps: 10_000,
-                            onTap: {
-                                router.push(CaloriesRoute.stepHistory(viewModel: stepViewModel))
-                            }
-                        )
-
-                        ExerciseCardView(
-                            exerciseKcal: Int(caloriesViewModel.exerciseKcal.rounded()),
-                            exerciseMinutes: caloriesViewModel.exerciseMinutes,
-                            onAddTap: {
-                                router.push(CaloriesRoute.exercises)
-                            }
-                        )
-                    }
-                    .opacity(showStepsAndExercise ? 1 : 0)
-                    .offset(y: showStepsAndExercise ? 0 : 30)
-
-                    WaterTrackingSection(
-                        currentGlasses: caloriesViewModel.waterCurrent,
-                        goalGlasses: caloriesViewModel.waterGoal,
-                        isUpdating: caloriesViewModel.isUpdatingWater,
-                        onAddTargetCupTap: {
-                            caloriesViewModel.addTargetCup()
-                        },
-                        onFillCup: { index in
-                            caloriesViewModel.fillCup(index: index)
-                        },
-                        onUnfillCupRequest: { index in
-                            unfillCupIndex = index
-                            showWaterRemovalConfirmation = true
-                        },
-                        onDeleteTargetCupRequest: {
-                            deleteTargetCupRequested = true
-                        }
-                    )
-                    .opacity(showWater ? 1 : 0)
-                    .offset(y: showWater ? 0 : 30)
+            TopSafeAreaScrollView(
+                background: Color.CaloriesSemantic.background,
+                refreshAction: {
+                    await handleActivation()
+                },
+                topBar: { _ in
+                    DailyProductsHeader(dailyKcal: caloriesViewModel.dailyKcal)
+                        .padding(.horizontal, 22)
+                        .frame(height: 60)
+                        .accessibilityIdentifier("calories.topBar")
                 }
-                .padding(22)
-                Spacer(minLength: 60)
-            }
-            .refreshable {
-                await caloriesViewModel.fetchTodayTracking()
+            ) {
+                VStack(spacing: 0) {
+                    VStack(spacing: 24) {
+
+                        DailyProductsSection(
+                            dailyKcal: caloriesViewModel.dailyKcal,
+                            meals: caloriesViewModel.meals,
+                            mutatingMealIDs: caloriesViewModel.mutatingMealIDs,
+                            showsHeader: false,
+                            onAddFoodTap: {
+                                flowCoordinator.selectedTab = .bookmark
+                            },
+                            onRemoveMealRequest: { request in
+                                mealRemovalRequest = request
+                                showMealRemovalConfirmation = true
+                            }
+                        )
+                        .opacity(showDailyProducts ? 1 : 0)
+                        .offset(y: showDailyProducts ? 0 : 30)
+
+                        CalorieGoalsSection(
+                            mealCalories: caloriesViewModel.dailyKcal,
+                            targetCalories: caloriesViewModel.calorieGoal,
+                            caloriesBurned: caloriesViewModel.totalBurnedKcal,
+                            onCompleteProfileTap: {
+                                router.push(ProfileRoute.personalInformation)
+                            }
+                        )
+                        .opacity(showCalorieGoals ? 1 : 0)
+                        .offset(y: showCalorieGoals ? 0 : 30)
+
+                        HStack(spacing: 12) {
+                            StepGaugeCardView(
+                                currentSteps: stepViewModel.todaySteps,
+                                goalSteps: 10_000,
+                                onTap: {
+                                    router.push(CaloriesRoute.stepHistory(viewModel: stepViewModel))
+                                }
+                            )
+
+                            ExerciseCardView(
+                                exerciseKcal: Int(caloriesViewModel.exerciseKcal.rounded()),
+                                exerciseMinutes: caloriesViewModel.exerciseMinutes,
+                                onAddTap: {
+                                    router.push(CaloriesRoute.exercises)
+                                }
+                            )
+                        }
+                        .opacity(showStepsAndExercise ? 1 : 0)
+                        .offset(y: showStepsAndExercise ? 0 : 30)
+
+                        WaterTrackingSection(
+                            currentGlasses: caloriesViewModel.waterCurrent,
+                            goalGlasses: caloriesViewModel.waterGoal,
+                            isUpdating: caloriesViewModel.isUpdatingWater,
+                            onAddTargetCupTap: {
+                                caloriesViewModel.addTargetCup()
+                            },
+                            onFillCup: { index in
+                                caloriesViewModel.fillCup(index: index)
+                            },
+                            onUnfillCupRequest: { index in
+                                unfillCupIndex = index
+                                showWaterRemovalConfirmation = true
+                            },
+                            onDeleteTargetCupRequest: {
+                                deleteTargetCupRequested = true
+                            }
+                        )
+                        .opacity(showWater ? 1 : 0)
+                        .offset(y: showWater ? 0 : 30)
+                    }
+                    .padding(22)
+
+                    Spacer(minLength: CustomAnimatedTabBar.contentClearance)
+                }
             }
 
             if caloriesViewModel.isLoading {
@@ -131,9 +144,7 @@ struct CaloriesScreen: View {
                 .transition(.opacity)
             }
         }
-        .background(Color.CaloriesSemantic.background)
         .onAppear {
-            caloriesViewModel.onAppear()
             stepViewModel.onAppear()
             triggerEntranceAnimations()
             if stepViewModel.errorMessage != nil {
@@ -154,9 +165,16 @@ struct CaloriesScreen: View {
             }
         }
         .onChange(of: scenePhase) { _, phase in
-            guard phase != .active else { return }
-            stepPersistenceTask?.cancel()
-            persistCurrentSteps()
+            if phase == .active {
+                Task { await handleActivation() }
+            } else {
+                stepPersistenceTask?.cancel()
+                persistCurrentSteps()
+            }
+        }
+        .onChange(of: flowCoordinator.selectedTab) { _, selectedTab in
+            guard selectedTab == .calories else { return }
+            Task { await handleActivation() }
         }
         .onChange(of: stepViewModel.errorMessage) { _, error in
             if error != nil {
@@ -167,6 +185,12 @@ struct CaloriesScreen: View {
             if error != nil {
                 activeAlert = .error
             }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+            Task { await handleActivation() }
+        }
+        .task {
+            await handleActivation()
         }
         .customAlert(activeAlert: $activeAlert, config: { alert in
             switch alert {
@@ -208,11 +232,13 @@ struct CaloriesScreen: View {
             primaryButtonColor: Color.red,
             primaryAction: {
                 if let request = mealRemovalRequest {
-                    switch request.kind {
-                    case .one:
-                        caloriesViewModel.removeOneMeal(scanId: request.meal.scanId)
-                    case .all:
-                        caloriesViewModel.deleteMeal(scanId: request.meal.scanId)
+                    Task {
+                        switch request.kind {
+                        case .one:
+                            await caloriesViewModel.removeOneMeal(scanId: request.meal.scanId)
+                        case .all:
+                            await caloriesViewModel.deleteMeal(scanId: request.meal.scanId)
+                        }
                     }
                 }
                 mealRemovalRequest = nil
@@ -270,12 +296,33 @@ struct CaloriesScreen: View {
     }
 
     private func persistCurrentSteps() {
+        persistCurrentSteps(for: caloriesViewModel.loadedDate)
+    }
+
+    private func persistCurrentSteps(for date: String?) {
         guard stepViewModel.isAuthorized else { return }
         let analytics = stepViewModel.todayAnalytics()
-        caloriesViewModel.updateSteps(
-            stepViewModel.todaySteps,
-            calories: analytics.caloriesBurned
-        )
+        if let date {
+            caloriesViewModel.updateSteps(
+                stepViewModel.todaySteps,
+                calories: analytics.caloriesBurned,
+                for: date
+            )
+        } else {
+            caloriesViewModel.updateSteps(
+                stepViewModel.todaySteps,
+                calories: analytics.caloriesBurned
+            )
+        }
+    }
+
+    private func handleActivation() async {
+        if caloriesViewModel.needsDayRollover {
+            persistCurrentSteps(for: caloriesViewModel.loadedDate)
+            stepPersistenceTask?.cancel()
+            stepViewModel.rolloverToCurrentDay()
+        }
+        await caloriesViewModel.activate()
     }
 }
 

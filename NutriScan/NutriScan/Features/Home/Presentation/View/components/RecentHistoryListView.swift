@@ -11,6 +11,7 @@ struct RecentHistoryView: View {
     let historyItems: [UiStateHistoryItem]
     var onViewAll: () -> Void = {}
     var onTap: (String) -> Void = { _ in }
+    var onRequestDelete: (UiStateHistoryItem) -> Void = { _ in }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -30,14 +31,21 @@ struct RecentHistoryView: View {
 
             VStack(spacing: 16) {
                 ForEach(historyItems) { item in
-                    Button {
-                        onTap(item.id)
-                    } label: {
-                        HistoryRowView(item: item)
-                    }
-                    .buttonStyle(.plain)
+                    HistoryRowView(item: item)
+                        .contentShape(RoundedRectangle(cornerRadius: 22))
+                        .onTapGesture {
+                            onTap(item.id)
+                        }
+                        .onLongPressGesture {
+                            onRequestDelete(item)
+                        }
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .bottom).combined(with: .opacity),
+                            removal: .scale(scale: 0.96).combined(with: .opacity)
+                        ))
                 }
             }
+            .animation(.spring(response: 0.28, dampingFraction: 0.85), value: historyItems.map(\.id))
         }
     }
 }

@@ -20,11 +20,23 @@ import SwiftUI
 /// 
 struct RootCoordinatorView: View {
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var flowCoordinator = AppFlowCoordinator()
+    @StateObject private var flowCoordinator: AppFlowCoordinator
     @State private var dailyActivitySyncCoordinator = DIContainer.shared.resolve(
         type: CaloriesActivitySyncCoordinator.self
     )
     @AppStorage("appAppearance") private var appAppearance: AppAppearance = .system
+    private let isUITesting: Bool
+
+    init() {
+        let isUITesting = ProcessInfo.processInfo.arguments.contains("-ui-testing-main-flow")
+        self.isUITesting = isUITesting
+        _flowCoordinator = StateObject(
+            wrappedValue: AppFlowCoordinator(
+                initialFlow: isUITesting ? .main : .splash,
+                observesSessionExpiration: !isUITesting
+            )
+        )
+    }
 
     var body: some View {
         currentFlowView
@@ -32,16 +44,19 @@ struct RootCoordinatorView: View {
             .environmentObject(flowCoordinator)
             .animation(.default, value: flowCoordinator.flow)
             .task(id: flowCoordinator.flow) {
-                guard flowCoordinator.flow == .main else { return }
+                guard !isUITesting, flowCoordinator.flow == .main else { return }
                 await dailyActivitySyncCoordinator.synchronizePendingDates()
             }
             .onChange(of: scenePhase) { _, phase in
-                guard phase == .active, flowCoordinator.flow == .main else { return }
+                guard !isUITesting,
+                      phase == .active,
+                      flowCoordinator.flow == .main else { return }
                 Task {
                     await dailyActivitySyncCoordinator.synchronizePendingDates()
                 }
             }
              .task {
+                guard !isUITesting else { return }
                 let bootstrapper = DIContainer.shared.resolve(type: NotificationBootstrapperProtocol.self)
                 await bootstrapper.start()
             }

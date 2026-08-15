@@ -49,16 +49,22 @@ struct WorkoutPausedControlsView: View {
 
                 // Finish Button
                 Button {
-                    viewModel.finishWorkout()
+                    Task { await viewModel.finishWorkout() }
                 } label: {
-                    Text("Finish")
-                        .font(Font.AppFont.subtitle2)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(Color.Teal.teal1000)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                    Group {
+                        if viewModel.isSavingWorkout {
+                            ProgressView().tint(.white)
+                        } else {
+                            Text("Finish").font(Font.AppFont.subtitle2)
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 52)
+                    .background(Color.Teal.teal1000)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
+                .disabled(viewModel.isSavingWorkout)
             }
         }
         .padding(.horizontal, 20)

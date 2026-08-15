@@ -22,6 +22,8 @@ struct MealRemovalRequest: Identifiable {
 struct DailyProductsSection: View {
     let dailyKcal: Int
     let meals: [CalorieMeal]
+    var mutatingMealIDs: Set<String> = []
+    var showsHeader = true
     var onAddFoodTap: () -> Void = {}
     var onRemoveMealRequest: ((MealRemovalRequest) -> Void)? = nil
 
@@ -30,25 +32,8 @@ struct DailyProductsSection: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            HStack(spacing: 4) {
-                Text("Daily Products")
-                    .font(Font.AppFont.title4)
-                    .foregroundStyle(Color.CaloriesSemantic.dailyProductsTitle)
-                Spacer()
-                Text("\(dailyKcal)")
-                    .foregroundStyle(Color.CaloriesSemantic.dailyProductsBadgeText)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .font(Font.AppFont.textCaption)
-                    .contentTransition(.numericText())
-                    .animation(.spring(response: 0.4, dampingFraction: 0.7), value: dailyKcal)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.CaloriesSemantic.dailyProductsBadgeBackground)
-                    )
-                Text("Kcal")
-                    .foregroundStyle(Color.CaloriesSemantic.dailyProductsKcalLabel)
-                    .font(Font.AppFont.textCaption)
+            if showsHeader {
+                DailyProductsHeader(dailyKcal: dailyKcal)
             }
 
             ZStack {
@@ -65,6 +50,7 @@ struct DailyProductsSection: View {
                             ForEach(meals, id: \.scanId) { meal in
                                 CalorieMealCard(
                                     meal: meal,
+                                    isMutating: mutatingMealIDs.contains(meal.scanId),
                                     onRemoveOne: {
                                         onRemoveMealRequest?(
                                             MealRemovalRequest(meal: meal, kind: .one)
@@ -125,8 +111,41 @@ struct DailyProductsSection: View {
     }
 }
 
+struct DailyProductsHeader: View {
+    let dailyKcal: Int
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Text("Daily Products")
+                .font(Font.AppFont.title4)
+                .foregroundStyle(Color.CaloriesSemantic.dailyProductsTitle)
+
+            Spacer()
+
+            Text("\(dailyKcal)")
+                .foregroundStyle(Color.CaloriesSemantic.dailyProductsBadgeText)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2)
+                .font(Font.AppFont.textCaption)
+                .contentTransition(.numericText())
+                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: dailyKcal)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.CaloriesSemantic.dailyProductsBadgeBackground)
+                )
+                .accessibilityIdentifier("calories.dailyKcal")
+
+            Text("Kcal")
+                .foregroundStyle(Color.CaloriesSemantic.dailyProductsKcalLabel)
+                .font(Font.AppFont.textCaption)
+        }
+        .accessibilityElement(children: .contain)
+    }
+}
+
 private struct CalorieMealCard: View {
     let meal: CalorieMeal
+    let isMutating: Bool
     let onRemoveOne: () -> Void
     let onRemoveAll: () -> Void
 
@@ -227,6 +246,8 @@ private struct CalorieMealCard: View {
                 )
         }
         .buttonStyle(.plain)
+        .disabled(isMutating)
+        .opacity(isMutating ? 0.45 : 1)
     }
 }
 
