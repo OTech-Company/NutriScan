@@ -51,7 +51,7 @@ struct StepGaugeCardView: View {
 
                     // Center text
                     VStack(spacing: 2) {
-                        Text("Steps")
+                        Text(LocalizationKeys.StepTracker.steps.localized)
                             .font(Font.AppFont.textCaption)
                             .foregroundColor(Color.CaloriesSemantic.stepsLabel)
                             .frame(width: 32, height: 15)

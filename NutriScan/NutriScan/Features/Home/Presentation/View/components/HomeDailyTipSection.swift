@@ -21,7 +21,7 @@ struct HomeDailyTipSection: View {
                 )
 
             VStack(alignment: .leading, spacing: 4) {
-                Text("Daily Health Tip")
+                Text(LocalizationKeys.Home.dailyHealthTip.localized)
                     .font(Font.AppFont.textPrimary)
                     .foregroundColor(Color.HomeSemantic.tipLabel)
 

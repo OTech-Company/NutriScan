@@ -83,9 +83,9 @@ struct ScanScreen: View {
                 set: { if !$0 { viewModel.dismissError() } }
             ),
             type: .error,
-            title: "Scan Failed",
-            description: viewModel.errorMessage ?? "Unknown error",
-            primaryButtonTitle: "OK",
+            title: LocalizationKeys.Scan.scanFailed.localized,
+            description: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+            primaryButtonTitle: LocalizationKeys.Common.ok.localized,
             primaryButtonColor: Color.Red.red500,
             primaryAction: { viewModel.dismissError() }
         )

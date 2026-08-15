@@ -154,7 +154,7 @@ struct ArticleDetailView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "safari")
-                        Text("Read Full Article")
+                        Text(LocalizationKeys.News.readFullArticle.localized)
                             .font(NewsFeedTypography.button)
                         Spacer()
                     }

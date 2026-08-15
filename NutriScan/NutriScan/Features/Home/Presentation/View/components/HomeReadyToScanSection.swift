@@ -15,11 +15,11 @@ struct HomeReadyToScanSection: View {
                     .font(.system(size: 48, weight: .light))
                     .foregroundColor(Color.HomeSemantic.scanIcon)
 
-                Text("Ready to scan?")
-                    .font(Font.AppFont.title2)
+                Text(LocalizationKeys.Home.readyToScan.localized)
+                    .font(Font.AppFont.title3)
                     .foregroundColor(Color.HomeSemantic.scanTitle)
 
-                Text("Check nutritional facts instantly")
+                Text(LocalizationKeys.Home.checkNutritionalFacts.localized)
                     .font(Font.AppFont.questrialRegular14)
                     .foregroundColor(Color.HomeSemantic.scanSubtitle)
             }

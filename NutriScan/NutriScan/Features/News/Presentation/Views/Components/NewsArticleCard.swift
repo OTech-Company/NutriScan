@@ -19,7 +19,7 @@ struct NewsArticleCard: View {
             }
             .buttonStyle(.plain)
             .accessibilityLabel(article.title)
-            .accessibilityHint("Opens article details")
+            .accessibilityHint(LocalizationKeys.Accessibility.opensArticleDetails.localized)
 
             VStack(alignment: .leading, spacing: 0) {
                 Button(action: onOpen) {
@@ -42,7 +42,7 @@ struct NewsArticleCard: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
-                .accessibilityHint("Opens article details")
+                .accessibilityHint(LocalizationKeys.Accessibility.opensArticleDetails.localized)
 
                 Spacer(minLength: 6)
 
@@ -64,10 +64,10 @@ struct NewsArticleCard: View {
                     Spacer(minLength: 0)
 
                     Menu {
-                        Button("Open Article", systemImage: "doc.text") {
+                        Button(LocalizationKeys.News.openArticle.localized, systemImage: "doc.text") {
                             onOpen()
                         }
-                        Button("Share", systemImage: "square.and.arrow.up") {
+                        Button(LocalizationKeys.Common.share.localized, systemImage: "square.and.arrow.up") {
                             onShare()
                         }
                     } label: {
@@ -77,7 +77,7 @@ struct NewsArticleCard: View {
                             .frame(width: 44, height: 44)
                             .contentShape(Rectangle())
                     }
-                    .accessibilityLabel("Article actions")
+                    .accessibilityLabel(LocalizationKeys.Accessibility.articleActions.localized)
                 }
                 .frame(height: 32)
             }

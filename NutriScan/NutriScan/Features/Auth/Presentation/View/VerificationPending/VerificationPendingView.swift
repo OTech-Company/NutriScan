@@ -62,17 +62,17 @@ struct VerificationPendingView: View {
             case .success:
                 return CustomAlertConfig(
                     type: .success,
-                    title: "Verification Email Sent",
+                    title: LocalizationKeys.Auth.VerificationPending.sentTitle.localized,
                     description: viewModel.resendMessage,
-                    primaryButtonTitle: "Continue",
+                    primaryButtonTitle: LocalizationKeys.Common.continueAction.localized,
                     primaryButtonColor: Color.Teal.teal1000
                 )
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Action Failed",
-                    description: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButtonTitle: "Try Again",
+                    title: LocalizationKeys.Common.actionFailed.localized,
+                    description: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.tryAgain.localized,
                     primaryButtonColor: Color.Red.red500
                 )
             default:

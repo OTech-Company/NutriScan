@@ -49,11 +49,11 @@ struct EmptyExerciseStateView: View {
 
             // MARK: - Text block
             VStack(spacing: 10) {
-                Text("No exercises found")
-                    .font(Font.AppFont.subtitle1)
+                Text(LocalizationKeys.Exercise.noExercises.localized)
+                    .font(Font.AppFont.title3)
                     .foregroundColor(Color.ExerciseSemantic.rowTitle)
 
-                Text("Try adjusting your search\nor choose a different category")
+                Text(LocalizationKeys.Exercise.tryAdjustingSearch.localized)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.ExerciseSemantic.rowSubtitle)
                     .multilineTextAlignment(.center)

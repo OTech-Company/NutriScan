@@ -24,7 +24,7 @@ struct ProductIngredientsSection: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
-            Text("Why It's \(state.safetyLevel.rawValue)?")
+            Text("\(LocalizationKeys.ProductDetails.whyIts.localized) \(state.safetyLevel.localizedTitle)?")
                 .font(Font.AppFont.subtitle2)
                 .foregroundStyle(
                     Color(

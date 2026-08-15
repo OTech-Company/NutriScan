@@ -22,7 +22,7 @@ struct CaloriesHistoryDateFilterSheet: View {
         NavigationStack {
             VStack(spacing: 20) {
                 DatePicker(
-                    "History date",
+                    LocalizationKeys.Calories.historyDate.localized,
                     selection: $selectedDate,
                     in: ...Date(),
                     displayedComponents: .date
@@ -34,7 +34,7 @@ struct CaloriesHistoryDateFilterSheet: View {
                     onApply(selectedDate)
                     dismiss()
                 } label: {
-                    Text("Apply Date")
+                    Text(LocalizationKeys.Calories.applyDate.localized)
                         .font(Font.AppFont.textDefault)
                         .foregroundStyle(Color.white)
                         .frame(maxWidth: .infinity)
@@ -45,11 +45,11 @@ struct CaloriesHistoryDateFilterSheet: View {
                 .buttonStyle(.plain)
             }
             .padding(22)
-            .navigationTitle("Filter by Date")
+            .navigationTitle(LocalizationKeys.Calories.filterByDate.localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Cancel") { dismiss() }
+                    Button(LocalizationKeys.Common.cancel.localized) { dismiss() }
                 }
             }
         }
@@ -72,7 +72,7 @@ struct CaloriesHistoryFilterChip: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Remove date filter")
+            .accessibilityLabel(LocalizationKeys.Accessibility.removeDateFilter.localized)
         }
         .font(Font.AppFont.textSecondary)
         .foregroundStyle(Color.Teal.teal1000)

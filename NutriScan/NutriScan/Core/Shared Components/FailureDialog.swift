@@ -60,7 +60,7 @@ struct FailureDialog: View {
                 }
 
                 Button(action: onDismiss) {
-                    Text("Dismiss")
+                    Text(LocalizationKeys.Common.dismiss.localized)
                         .font(Font.AppFont.subtitle1)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

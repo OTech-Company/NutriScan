@@ -15,14 +15,14 @@ struct VerificationPendingHeaderSection: View {
             // Back Button
             BackButton(action: onBack, style: .onTeal)
                 .padding(.top, 64)
-            
+
             // Text Block
             VStack(alignment: .leading, spacing: 8) {
-                Text("Verify Your Email")
+                Text(LocalizationKeys.Auth.VerificationPending.headerTitle.localized)
                     .font(Font.AppFont.plusJakartaSansBold28)
                     .foregroundColor(Color.VerificationPendingSemantic.headerTitle)
-                
-                Text("Confirm it's you to start scanning.")
+
+                Text(LocalizationKeys.Auth.VerificationPending.headerSubtitle.localized)
                     .font(Font.AppFont.lexendDecaMedium16)
                     .foregroundColor(Color.VerificationPendingSemantic.headerSubtitle)
             }

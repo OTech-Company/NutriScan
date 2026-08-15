@@ -13,7 +13,7 @@ struct WorkoutActiveControlsView: View {
         VStack(spacing: 16) {
             if !viewModel.hasStarted {
                 // Start Button
-                CustomPuffedButton(title: "Start", action: {
+                CustomPuffedButton(title: LocalizationKeys.Common.start.localized, action: {
                     viewModel.startWorkout()
                 })
             } else {
@@ -22,7 +22,7 @@ struct WorkoutActiveControlsView: View {
                     Button {
                         viewModel.showRestartAlert = true
                     } label: {
-                        Text("Restart")
+                        Text(LocalizationKeys.Exercise.restart.localized)
                             .font(Font.AppFont.subtitle2)
                             .foregroundColor(Color.ExerciseSemantic.outlineButtonText)
                             .frame(maxWidth: .infinity)
@@ -39,7 +39,7 @@ struct WorkoutActiveControlsView: View {
                     Button {
                         viewModel.pauseTimer()
                     } label: {
-                        Text("Pause")
+                        Text(LocalizationKeys.Exercise.pause.localized)
                             .font(Font.AppFont.subtitle2)
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -54,7 +54,7 @@ struct WorkoutActiveControlsView: View {
             Button {
                 onCancelWorkout()
             } label: {
-                Text("Cancel workout")
+                Text(LocalizationKeys.Exercise.cancel.localized)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.ExerciseSemantic.cancelWorkoutText)
             }

@@ -130,9 +130,9 @@ struct FavoritesView: View {
         .customAlert(
             isPresented: $showRemoveAlert,
             type: .delete,
-            title: "Remove Product",
-            description: "Are you sure you want to remove \"\(itemToRemove?.productName ?? "")\" from your favorites?",
-            primaryButtonTitle: "Remove",
+            title: LocalizationKeys.Favorites.removeProductTitle.localized,
+            description: LocalizationKeys.Favorites.removeProductDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Common.delete.localized,
             primaryButtonColor: Color.Red.red500,
             primaryAction: {
                 if let scanId = itemToRemove?.id {
@@ -145,27 +145,27 @@ struct FavoritesView: View {
                     }
                 }
             },
-            secondaryButtonTitle: "Cancel",
+            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
             secondaryAction: { }
         )
         // MARK: - Add Meal Failure Alert
         .customAlert(
             isPresented: $showAddMealErrorAlert,
             type: .error,
-            title: "Couldn't Add Meal",
+            title: LocalizationKeys.Favorites.couldntAddMealTitle.localized,
             description: addMealErrorMessage,
-            primaryButtonTitle: "Try Again",
+            primaryButtonTitle: LocalizationKeys.Common.tryAgain.localized,
             primaryAction: {
                 if let scanId = itemToRetryAddMeal {
                     viewModel.addMealToDaily(scanId: scanId) { success in
                         if !success {
-                            addMealErrorMessage = viewModel.addMealError ?? "Something went wrong. Please try again."
+                            addMealErrorMessage = viewModel.addMealError ?? LocalizationKeys.Common.somethingWentWrong.localized
                             showAddMealErrorAlert = true
                         }
                     }
                 }
             },
-            secondaryButtonTitle: "Dismiss",
+            secondaryButtonTitle: LocalizationKeys.Common.dismiss.localized,
             secondaryAction: {
                 addMealErrorMessage = ""
             }
@@ -174,9 +174,9 @@ struct FavoritesView: View {
         .customAlert(
             isPresented: $showNoInternetAlert,
             type: .error,
-            title: "No Internet Connection",
-            description: "Please check your connection and try again.",
-            primaryButtonTitle: "OK",
+            title: LocalizationKeys.Common.noInternetConnection.localized,
+            description: LocalizationKeys.Favorites.noInternetDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Common.ok.localized,
             primaryAction: { }
         )
     }

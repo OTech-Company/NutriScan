@@ -18,11 +18,11 @@ struct ForgotPasswordHeaderSection: View {
             
             // Text Block
             VStack(alignment: .leading, spacing: 8) {
-                Text("Forgot Password?")
+                Text(LocalizationKeys.Auth.ForgotPassword.headerTitle.localized)
                     .font(Font.AppFont.plusJakartaSansBold28)
                     .foregroundColor(Color.ForgotPasswordSemantic.headerTitle)
-                
-                Text("Then let's submit password reset.")
+
+                Text(LocalizationKeys.Auth.ForgotPassword.headerSubtitle.localized)
                     .font(Font.AppFont.lexendDecaMedium16)
                     .foregroundColor(Color.ForgotPasswordSemantic.headerSubtitle)
             }

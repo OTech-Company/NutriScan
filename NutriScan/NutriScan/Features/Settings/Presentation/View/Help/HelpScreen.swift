@@ -23,7 +23,7 @@ struct HelpScreen: View {
             Color.HelperSemantic.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                SettingsHeaderSection(title: "Help", subtitle: nil) {
+                SettingsHeaderSection(title: LocalizationKeys.Settings.help.localized, subtitle: nil) {
                     router.pop()
                 }
 
@@ -38,7 +38,7 @@ struct HelpScreen: View {
                             alignment: .leading,
                             spacing: HelperSemantics.Spacing.itemSpacing
                         ) {
-                            Text("Frequently Asked Questions")
+                            Text(LocalizationKeys.Settings.faqTitle.localized)
                                 .font(Font.AppFont.subtitle1)
                                 .foregroundColor(
                                     Color.HelperSemantic.sectionTitle)
@@ -80,7 +80,7 @@ struct HelpScreen: View {
 
                         // MARK: - Credits Section
                         VStack(spacing: 4) {
-                            Text("Made with ❤️ by NutriScan Team")
+                            Text(LocalizationKeys.Settings.madeWith.localized)
                                 .font(Font.AppFont.textCaption)
 
                             let version =
@@ -114,10 +114,9 @@ struct HelpScreen: View {
                 case .warning:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Mail Not Configured",
-                        description:
-                            "We couldn't open a mail app. Our support email (\(viewModel.supportEmail)) has been copied to your clipboard instead.",
-                        primaryButtonTitle: "OK",
+                        title: LocalizationKeys.Settings.mailNotConfigured.localized,
+                        description: LocalizationKeys.Settings.mailNotConfiguredDesc.localized,
+                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
                         primaryButtonColor: Color.Teal.teal1000
                     )
                 default:

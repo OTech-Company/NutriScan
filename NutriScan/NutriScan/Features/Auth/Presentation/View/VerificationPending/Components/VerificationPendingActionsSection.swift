@@ -16,16 +16,16 @@ struct VerificationPendingActionsSection: View {
     var body: some View {
         VStack(spacing: 16) {
             CustomPuffedButton(
-                title: "Go to Sign In",
+                title: LocalizationKeys.Auth.VerificationPending.goToSignIn.localized,
                 action: onSignIn,
                 isLoading: false
             )
             .padding(.horizontal, 20)
-            
+
             // Resend Action
             if countdown > 0 {
                 HStack(spacing: 6) {
-                    Text("Resend email in")
+                    Text(LocalizationKeys.Auth.VerificationPending.resendEmailIn.localized)
                         .font(Font.AppFont.textSecondary)
                         .foregroundColor(Color.VerificationPendingSemantic.instructionText)
                     Text("\(countdown)s")
@@ -37,11 +37,11 @@ struct VerificationPendingActionsSection: View {
             } else {
                 Button(action: onResend) {
                     HStack(spacing: 4) {
-                        Text("Didn't receive it?")
+                        Text(LocalizationKeys.Auth.VerificationPending.didNotReceive.localized)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.VerificationPendingSemantic.instructionText)
-                        
-                        Text("Resend Verification Email.")
+
+                        Text(LocalizationKeys.Auth.VerificationPending.resendEmail.localized)
                             .font(Font.AppFont.textSecondary)
                             .fontWeight(.bold)
                             .foregroundColor(Color.VerificationPendingSemantic.linkText)

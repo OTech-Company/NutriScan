@@ -28,15 +28,15 @@ struct SettingsView: View {
                 VStack(spacing: 12) {
                     MenuRowView(
                         icon: "person.badge.shield.checkmark.fill",
-                        title: "Profile Settings",
+                        title: LocalizationKeys.Settings.profileSettings.localized,
                         action: {
                             router.push(SettingsRoute.profileSettings)
                         }
                     )
-                    
+
                     MenuRowView(
                         icon: "bell.badge.fill",
-                        title: "Notification Settings",
+                        title: LocalizationKeys.Settings.notificationSettings.localized,
                         action: {
                             router.push(SettingsRoute.notificationSettings)
                         }
@@ -44,21 +44,21 @@ struct SettingsView: View {
 
                     SettingsSegmentRow(
                         icon: "circle.lefthalf.filled",
-                        title: "Appearance",
+                        title: LocalizationKeys.Settings.appearance.localized,
                         options: AppAppearance.allCases,
                         selected: $viewModel.selectedAppearance
                     )
 
                     SettingsSegmentRow(
                         icon: "globe",
-                        title: "Language",
+                        title: LocalizationKeys.Settings.language.localized,
                         options: AppLanguage.allCases,
                         selected: $viewModel.selectedLanguage
                     )
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Terms and Conditions",
+                        title: LocalizationKeys.Settings.terms.localized,
                         action: {
                             router.push(SettingsRoute.termsAndConditions)
                         }
@@ -66,7 +66,7 @@ struct SettingsView: View {
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Help",
+                        title: LocalizationKeys.Settings.help.localized,
                         action: {
                             router.push(SettingsRoute.help)
                         }
@@ -93,14 +93,14 @@ struct SettingsView: View {
         .customAlert(
             isPresented: $viewModel.showLogoutAlert,
             type: .warning,
-            title: "Logout",
-            description: "Are you sure you want to log out of NutriScan?",
-            primaryButtonTitle: "Logout",
+            title: LocalizationKeys.Settings.logoutAlertTitle.localized,
+            description: LocalizationKeys.Settings.logoutAlertDescription.localized,
+            primaryButtonTitle: LocalizationKeys.Settings.logoutAlertConfirm.localized,
             primaryButtonColor: Color.Red.red500,
             primaryAction: {
                 viewModel.confirmLogout(flowCoordinator: flowCoordinator)
             },
-            secondaryButtonTitle: "Cancel",
+            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
             secondaryAction: {
                 viewModel.cancelLogout()
             }
@@ -108,16 +108,16 @@ struct SettingsView: View {
         .customAlert(
             isPresented: $viewModel.showDeleteAccountAlert,
             type: .warning,
-            title: "Delete Account",
-            description: "Are you sure you want to delete your account? You will have a 15-day grace period to restore it before permanent deletion.",
-            primaryButtonTitle: "Delete Account",
+            title: LocalizationKeys.Settings.deleteAlertTitle.localized,
+            description: LocalizationKeys.Settings.deleteAlertDescription.localized,
+            primaryButtonTitle: LocalizationKeys.Settings.deleteAlertConfirm.localized,
             primaryButtonColor: Color.Red.red500,
             primaryAction: {
                 Task {
                     await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
                 }
             },
-            secondaryButtonTitle: "Cancel",
+            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
             secondaryAction: {
                 viewModel.cancelDeleteAccount()
             }

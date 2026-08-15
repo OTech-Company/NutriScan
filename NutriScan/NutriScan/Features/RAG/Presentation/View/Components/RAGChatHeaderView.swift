@@ -32,7 +32,7 @@ struct RAGChatHeaderView: View {
                         .background(Color.RAGSemantic.aiBubble)
                         .clipShape(Circle())
                 }
-                .accessibilityLabel("Switch language")
+                .accessibilityLabel(LocalizationKeys.Accessibility.switchLanguage.localized)
 
                 Button(action: onVoice) {
                     Image(systemName: "waveform.circle.fill")
@@ -40,7 +40,7 @@ struct RAGChatHeaderView: View {
                         .foregroundStyle(Color.RAGSemantic.sendButton)
                         .frame(width: 40, height: 40)
                 }
-                .accessibilityLabel("Start voice chat")
+                .accessibilityLabel(LocalizationKeys.Accessibility.startVoiceChat.localized)
             }
         }
         .padding(.horizontal, 16)

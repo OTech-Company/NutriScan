@@ -27,7 +27,7 @@ struct ExerciseWorkoutPlayerView: View {
                         }
                     }
 
-                    Text("Exercise")
+                    Text(LocalizationKeys.Exercise.exerciseLabel.localized)
                         .font(Font.AppFont.subtitle1)
                         .foregroundColor(Color.ExerciseSemantic.rowTitle)
 
@@ -72,7 +72,7 @@ struct ExerciseWorkoutPlayerView: View {
                 // MARK: Timer Display
                 VStack(spacing: 4) {
                     if viewModel.isPaused {
-                        Text("Total Time")
+                        Text(LocalizationKeys.Exercise.totalTime.localized)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.ExerciseSemantic.playerTimerLabel)
                     }
@@ -99,9 +99,9 @@ struct ExerciseWorkoutPlayerView: View {
         .customAlert(
             isPresented: $viewModel.showSuccessDialog,
             type: .success,
-            title: "Workout Completed!",
+            title: LocalizationKeys.Exercise.workoutCompletedTitle.localized,
             description: viewModel.completionDescription,
-            primaryButtonTitle: "Done",
+            primaryButtonTitle: LocalizationKeys.Common.done.localized,
             primaryButtonColor: Color.Teal.teal1000,
             primaryAction: {
                 viewModel.stopTimer()
@@ -114,7 +114,7 @@ struct ExerciseWorkoutPlayerView: View {
             type: .error,
             title: viewModel.hasRecordedWorkout ? "Workout Saved Locally" : "Unable to Save Workout",
             description: viewModel.recordingErrorMessage,
-            primaryButtonTitle: "OK",
+            primaryButtonTitle: LocalizationKeys.Common.ok.localized,
             primaryButtonColor: Color.Teal.teal1000,
             primaryAction: {
                 viewModel.showRecordingError = false
@@ -124,15 +124,15 @@ struct ExerciseWorkoutPlayerView: View {
         .customAlert(
             isPresented: $viewModel.showCancelAlert,
             type: .warning,
-            title: "Cancel Workout?",
-            description: "Are you sure you want to quit? Your current workout progress will be lost.",
-            primaryButtonTitle: "End Workout",
+            title: LocalizationKeys.Exercise.cancelWorkoutTitle.localized,
+            description: LocalizationKeys.Exercise.cancelWorkoutDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Exercise.endWorkout.localized,
             primaryButtonColor: Color.Red.red500,
             primaryAction: {
                 viewModel.stopTimer()
                 router.pop()
             },
-            secondaryButtonTitle: "Keep Going",
+            secondaryButtonTitle: LocalizationKeys.Exercise.keepGoing.localized,
             secondaryAction: {
                 viewModel.showCancelAlert = false
             }
@@ -141,9 +141,9 @@ struct ExerciseWorkoutPlayerView: View {
         .customAlert(
             isPresented: $viewModel.showRestartAlert,
             type: .warning,
-            title: "Restart Timer?",
-            description: "This will reset your workout timer back to 00:00.",
-            primaryButtonTitle: "Restart",
+            title: LocalizationKeys.Exercise.restartTimerTitle.localized,
+            description: LocalizationKeys.Exercise.restartTimerDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Exercise.restart.localized,
             primaryButtonColor: Color.Teal.teal1000,
             primaryAction: {
                 viewModel.restartTimer()

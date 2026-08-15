@@ -37,7 +37,7 @@ struct CaloriesHistoryDayView: View {
         }
         .frame(height: 121)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("History for \(day.date)")
+        .accessibilityLabel("\(LocalizationKeys.Accessibility.historyFor.localized) \(day.date)")
     }
 }
 

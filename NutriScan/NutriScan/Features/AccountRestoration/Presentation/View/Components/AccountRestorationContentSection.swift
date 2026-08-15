@@ -13,48 +13,48 @@ struct AccountRestorationContentSection: View {
 
     var body: some View {
         VStack(spacing: 32) {
-            
+
             // Premium Glowing Icon Badge
             ZStack {
                 Circle()
                     .fill(Color.AccountRestorationSemantic.iconCircleOuter)
                     .frame(width: 130, height: 130)
-                
+
                 Circle()
                     .fill(Color.AccountRestorationSemantic.iconCircleMiddle)
                     .frame(width: 105, height: 105)
-                
+
                 Circle()
                     .fill(Color.AccountRestorationSemantic.iconCircleInner)
                     .frame(width: 80, height: 80)
                     .shadow(color: Color.AccountRestorationSemantic.iconCircleInner.opacity(0.4), radius: 10, x: 0, y: 5)
-                
+
                 Image(systemName: "arrow.triangle.2.circlepath.circle.fill")
                     .font(.system(size: 36, weight: .semibold))
                     .foregroundColor(Color.AccountRestorationSemantic.iconForeground)
             }
             .padding(.top, 40)
-            
+
             // Instructions & Info Card
             VStack(spacing: 16) {
-                Text("Account Deletion Pending")
+                Text(LocalizationKeys.Auth.AccountRestoration.contentTitle.localized)
                     .font(Font.AppFont.subtitle1)
                     .fontWeight(.bold)
                     .foregroundColor(Color.AccountRestorationSemantic.titleText)
                     .multilineTextAlignment(.center)
-                
-                Text("You can restore your account within the grace period to retain all your data and settings.")
+
+                Text(LocalizationKeys.Auth.AccountRestoration.contentDescription.localized)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.AccountRestorationSemantic.instructionText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
                     .lineSpacing(4)
-                
+
                 // Info Card
                 VStack(spacing: 12) {
                     if let days = daysRemaining {
                         HStack {
-                            Text("Days remaining to restore:")
+                            Text(LocalizationKeys.Auth.AccountRestoration.daysRemaining.localized)
                                 .font(Font.AppFont.textSecondary)
                                 .foregroundColor(Color.AccountRestorationSemantic.instructionText)
                             Spacer()
@@ -67,7 +67,7 @@ struct AccountRestorationContentSection: View {
 
                     if !formattedDateString.isEmpty {
                         HStack {
-                            Text("Scheduled Deletion Date:")
+                            Text(LocalizationKeys.Auth.AccountRestoration.scheduledDeletion.localized)
                                 .font(Font.AppFont.textSecondary)
                                 .foregroundColor(Color.AccountRestorationSemantic.instructionText)
                             Spacer()

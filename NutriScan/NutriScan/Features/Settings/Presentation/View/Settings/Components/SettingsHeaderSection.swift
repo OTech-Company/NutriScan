@@ -9,11 +9,14 @@ import SwiftUI
 
 // MARK: - Settings Header Section
 struct SettingsHeaderSection: View {
-    var title: String? = "App Settings"
-    var subtitle: String? = "Change application settings here"
+    var title: String? = nil
+    var subtitle: String? = nil
     var onBack: () -> Void
 
     var body: some View {
+        let displayTitle = title ?? LocalizationKeys.Settings.title.localized
+        let displaySubtitle = subtitle ?? LocalizationKeys.Settings.subtitle.localized
+
         VStack(alignment: .leading, spacing: 24) {
             // Back Button
             BackButton(action: onBack, style: .onTeal)
@@ -21,14 +24,12 @@ struct SettingsHeaderSection: View {
 
             // Text Block
             VStack(alignment: .leading, spacing: 8) {
-                if let title = title {
-                    Text(title)
-                        .font(Font.AppFont.plusJakartaSansBold28)
-                        .foregroundColor(Color.SettingsSemantic.headerTitle)
-                }
+                Text(displayTitle)
+                    .font(Font.AppFont.plusJakartaSansBold28)
+                    .foregroundColor(Color.SettingsSemantic.headerTitle)
 
-                if let subtitle = subtitle {
-                    Text(subtitle)
+                if title == nil || subtitle != nil {
+                    Text(displaySubtitle)
                         .font(Font.AppFont.lexendDecaMedium16)
                         .foregroundColor(Color.SettingsSemantic.headerSubtitle)
                 }

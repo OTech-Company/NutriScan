@@ -197,23 +197,23 @@ struct CaloriesScreen: View {
             case .warning:
                 return CustomAlertConfig(
                     type: .warning,
-                    title: "Motion & Fitness",
-                    description: stepViewModel.errorMessage ?? "Permission required",
-                    primaryButtonTitle: "OK",
+                    title: LocalizationKeys.Calories.motionAndFitnessTitle.localized,
+                    description: stepViewModel.errorMessage ?? LocalizationKeys.Calories.permissionRequired.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.ok.localized,
                     primaryButtonColor: Color.Teal.teal1000
                 )
             case .error:
                 return CustomAlertConfig(
                     type: .warning,
-                    title: "Something went wrong",
-                    description: caloriesViewModel.errorMessage ?? "Please try again.",
-                    primaryButtonTitle: "OK",
+                    title: LocalizationKeys.Common.somethingWentWrong.localized,
+                    description: caloriesViewModel.errorMessage ?? LocalizationKeys.Common.tryAgain.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.ok.localized,
                     primaryButtonColor: Color.Teal.teal1000
                 )
             default:
                 return CustomAlertConfig(
                     type: .warning,
-                    title: "Notice",
+                    title: LocalizationKeys.Calories.notice.localized,
                     description: stepViewModel.errorMessage ?? ""
                 )
             }
@@ -224,11 +224,11 @@ struct CaloriesScreen: View {
         .customAlert(
             isPresented: $showMealRemovalConfirmation,
             type: .delete,
-            title: mealRemovalRequest?.kind == .one ? "Remove One Serving?" : "Remove Meal?",
+            title: mealRemovalRequest?.kind == .one ? LocalizationKeys.Calories.removeOneServingTitle.localized : LocalizationKeys.Calories.removeMealTitle.localized,
             description: mealRemovalRequest?.kind == .one
-                ? "One serving will be removed from today's log."
-                : "All servings of this meal will be removed from today's log.",
-            primaryButtonTitle: "Remove",
+                ? LocalizationKeys.Calories.removeOneServingDesc.localized
+                : LocalizationKeys.Calories.removeMealDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Common.delete.localized,
             primaryButtonColor: Color.red,
             primaryAction: {
                 if let request = mealRemovalRequest {
@@ -244,7 +244,7 @@ struct CaloriesScreen: View {
                 mealRemovalRequest = nil
                 showMealRemovalConfirmation = false
             },
-            secondaryButtonTitle: "Cancel",
+            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
             secondaryAction: {
                 mealRemovalRequest = nil
                 showMealRemovalConfirmation = false
@@ -253,9 +253,9 @@ struct CaloriesScreen: View {
         .customAlert(
             isPresented: $showWaterRemovalConfirmation,
             type: .delete,
-            title: "Remove Water?",
-            description: "Do you want to mark this cup as undrunk?",
-            primaryButtonTitle: "Remove",
+            title: LocalizationKeys.Calories.removeWaterTitle.localized,
+            description: LocalizationKeys.Calories.removeWaterDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Common.delete.localized,
             primaryButtonColor: Color.red,
             primaryAction: {
                 if unfillCupIndex != nil {
@@ -264,7 +264,7 @@ struct CaloriesScreen: View {
                 unfillCupIndex = nil
                 showWaterRemovalConfirmation = false
             },
-            secondaryButtonTitle: "Cancel",
+            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
             secondaryAction: {
                 unfillCupIndex = nil
                 showWaterRemovalConfirmation = false
@@ -273,15 +273,15 @@ struct CaloriesScreen: View {
         .customAlert(
             isPresented: $deleteTargetCupRequested,
             type: .delete,
-            title: "Remove Target Cup?",
-            description: "This will reduce your daily water goal by 1 cup.",
-            primaryButtonTitle: "Remove",
+            title: LocalizationKeys.Calories.removeTargetCupTitle.localized,
+            description: LocalizationKeys.Calories.removeTargetCupDesc.localized,
+            primaryButtonTitle: LocalizationKeys.Common.delete.localized,
             primaryButtonColor: Color.red,
             primaryAction: { 
                 caloriesViewModel.removeTargetCup()
                 deleteTargetCupRequested = false
             },
-            secondaryButtonTitle: "Cancel",
+            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
             secondaryAction: { deleteTargetCupRequested = false }
         )
     }

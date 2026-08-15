@@ -14,10 +14,10 @@ struct SettingsSectionView: View {
 
     var body: some View {
         VStack(spacing: ProfileSemantics.Spacing.menuRowSpacing) {
-            MenuRowView(icon: "clock.arrow.circlepath", title: "Scan History", action: onScanHistory)
-            MenuRowView(icon: "flame", title: "Calories History", action: onCaloriesHistory)
-            MenuRowView(icon: "bell", title: "Notifications", action: onNotifications)
-            MenuRowView(icon: "gearshape", title: "Settings", action: onSettings)
+            MenuRowView(icon: "clock.arrow.circlepath", title: LocalizationKeys.Profile.scanHistory.localized, action: onScanHistory)
+            MenuRowView(icon: "flame", title: LocalizationKeys.Profile.caloriesHistory.localized, action: onCaloriesHistory)
+            MenuRowView(icon: "bell", title: LocalizationKeys.Profile.notifications.localized, action: onNotifications)
+            MenuRowView(icon: "gearshape", title: LocalizationKeys.Profile.settings.localized, action: onSettings)
         }
     }
 }

@@ -62,27 +62,27 @@ struct CalorieGoalsSection: View {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 4) {
                             Image("calories-fill")
-                            Text("Calorie Goals")
+                            Text(LocalizationKeys.Calories.calorieGoals.localized)
                                 .font(Font.AppFont.subtitle1)
                                 .foregroundStyle(Color.CaloriesSemantic.goalsTitle)
                         }
 
                         VStack(spacing: 8) {
                             if let targetCalories {
-                                calorieRow(title: "Your TDEE", calories: Int(targetCalories.rounded()))
+                                calorieRow(title: LocalizationKeys.Calories.yourTDEE.localized, calories: Int(targetCalories.rounded()))
                             } else {
                                 Button(action: onCompleteProfileTap) {
                                     HStack(spacing: 4) {
-                                        Text("Complete Personal Information")
+                                        Text(LocalizationKeys.Calories.completePersonalInfo.localized)
                                         Image(systemName: "chevron.right")
                                     }
                                     .font(Font.AppFont.textCaption)
                                     .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
                                 }
-                                .accessibilityHint("Opens Personal Information to set your calorie goal")
+                                .accessibilityHint(LocalizationKeys.Accessibility.opensPersonalInfo.localized)
                             }
-                            calorieRow(title: "Calories Gained", calories: mealCalories)
-                            calorieRow(title: "Calories Burned", calories: Int(caloriesBurned.rounded()))
+                            calorieRow(title: LocalizationKeys.Calories.caloriesGained.localized, calories: mealCalories)
+                            calorieRow(title: LocalizationKeys.Calories.caloriesBurned.localized, calories: Int(caloriesBurned.rounded()))
                         }
                     }
                     Spacer(minLength: 16)

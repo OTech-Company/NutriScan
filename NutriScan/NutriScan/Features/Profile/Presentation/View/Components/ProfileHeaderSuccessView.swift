@@ -34,7 +34,7 @@ struct ProfileHeaderSuccessView: View {
                     .font(Font.AppFont.title4)
                     .foregroundColor(Color.ProfileSemantics.userName)
 
-                Text("\(state.streakDays) Day streak")
+                Text("\(state.streakDays) \(LocalizationKeys.Profile.dayStreak.localized)")
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.ProfileSemantics.streakText)
                     .padding(

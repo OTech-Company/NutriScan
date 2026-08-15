@@ -46,12 +46,12 @@ struct HomeView: View {
                 ExploreSectionHeader()
 
                 VStack {
-                    MenuRowView(icon: "newspaper.fill", title: "Health News") {
+                    MenuRowView(icon: "newspaper.fill", title: LocalizationKeys.Home.healthNews.localized) {
                         router.push(HomeRoute.news)
                     }
                     MenuRowView(
                         icon: "bubble.left.and.bubble.right.fill",
-                        title: "Chat with AI"
+                        title: LocalizationKeys.Home.chatWithAI.localized
                     ) {
                         showRAGChat = true
                     }
@@ -110,18 +110,18 @@ struct HomeView: View {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Scan?",
-                        description: "This scan will be removed from your history.",
-                        primaryButtonTitle: "Delete",
+                        title: LocalizationKeys.Home.deleteScanTitle.localized,
+                        description: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButtonTitle: LocalizationKeys.Common.delete.localized,
                         primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
+                        secondaryButtonTitle: LocalizationKeys.Common.cancel.localized
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Delete Failed",
-                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
-                        primaryButtonTitle: "OK",
+                        title: LocalizationKeys.Home.deleteFailedTitle.localized,
+                        description: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
                         primaryButtonColor: Color.Red.red500
                     )
                 default:

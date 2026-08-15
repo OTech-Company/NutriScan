@@ -74,9 +74,9 @@ struct AccountRestorationView: View {
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Action Failed",
-                    description: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButtonTitle: "Try Again",
+                    title: LocalizationKeys.Auth.AccountRestoration.failedTitle.localized,
+                    description: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.tryAgain.localized,
                     primaryButtonColor: Color.Red.red500
                 )
             default:

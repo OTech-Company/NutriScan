@@ -58,7 +58,7 @@ struct NewsView: View {
         HStack(spacing: 16) {
             BackButton { router.pop() }
 
-            Text("News")
+            Text(LocalizationKeys.News.title.localized)
                 .font(NewsFeedTypography.screenTitle)
                 .foregroundStyle(NewsFeedPalette.textPrimary)
                 .lineLimit(1)
@@ -134,19 +134,19 @@ struct NewsView: View {
                 .tint(NewsFeedPalette.accent)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 18)
-                .accessibilityLabel("Loading more articles")
+                .accessibilityLabel(LocalizationKeys.Accessibility.loadingMoreArticles.localized)
         } else if let failure = viewModel.paginationFailure {
             VStack(spacing: 10) {
                 Text(
                     failure == .noConnection
-                        ? "No connection. Check your internet and try again."
-                        : "Couldn't load more articles. Please try again."
+                        ? LocalizationKeys.News.noConnectionPaginationDesc.localized
+                        : LocalizationKeys.News.couldntLoadArticlesDesc.localized
                 )
                 .font(NewsFeedTypography.articleCaption)
                 .foregroundStyle(NewsFeedPalette.textSecondary)
                 .multilineTextAlignment(.center)
 
-                Button("Try Again") {
+                Button(LocalizationKeys.Common.tryAgain.localized) {
                     viewModel.retryPagination()
                 }
                 .font(NewsFeedTypography.metadataStrong)
@@ -174,7 +174,7 @@ struct NewsView: View {
             if viewModel.hasSearchQuery {
                 EmptyStateView(emptyState: .noSearchResults, action: {
                     viewModel.clearSearch()
-                }, actionLabel: "Clear Search")
+                }, actionLabel: LocalizationKeys.News.clearSearch.localized)
             } else {
                 NewsEmptyStateView {
                     viewModel.retry()
@@ -211,16 +211,17 @@ private struct NewsEmptyStateView: View {
             Image("searchPlaceHolder")
 
             VStack(spacing: 8) {
-                Text("No news yet")
+                Text(LocalizationKeys.News.noNews.localized)
                     .font(Font.AppFont.title3)
                     .foregroundStyle(NewsFeedPalette.textPrimary)
-                Text("There are no health stories available right now. Check back in a moment.")
+
+                Text(LocalizationKeys.News.noNewsDesc.localized)
                     .font(Font.AppFont.textPrimary)
                     .foregroundStyle(NewsFeedPalette.textSecondary)
                     .multilineTextAlignment(.center)
             }
 
-            Button("REFRESH", action: onRefresh)
+            Button(LocalizationKeys.Common.retry.localized.uppercased(), action: onRefresh)
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
                 .padding(.horizontal, 32)

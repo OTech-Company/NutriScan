@@ -53,17 +53,17 @@ struct RegisterView: View {
             case .success:
                 return CustomAlertConfig(
                     type: .success,
-                    title: "Registration Success",
-                    description: "Your account has been created successfully.",
-                    primaryButtonTitle: "Continue",
+                    title: LocalizationKeys.Auth.Register.successTitle.localized,
+                    description: LocalizationKeys.Auth.Register.successDescription.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.continueAction.localized,
                     primaryButtonColor: Color.Teal.teal1000
                 )
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Registration Failed",
-                    description: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButtonTitle: "Try Again",
+                    title: LocalizationKeys.Auth.Register.failedTitle.localized,
+                    description: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.tryAgain.localized,
                     primaryButtonColor: Color.Red.red500
                 )
             default:

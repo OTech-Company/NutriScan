@@ -83,10 +83,10 @@ struct RAGVoiceChatView: View {
 
     private var actionButtonLabel: String {
         switch viewModel.state {
-        case .listening:  return "Stop listening"
-        case .speaking:   return "Skip answer"
-        case .thinking:   return "Loading"
-        case .idle, .error: return "Start speaking"
+        case .listening:  return LocalizationKeys.RAG.stopListening.localized
+        case .speaking:   return LocalizationKeys.RAG.skipAnswer.localized
+        case .thinking:   return LocalizationKeys.RAG.loading.localized
+        case .idle, .error: return LocalizationKeys.RAG.startSpeaking.localized
         }
     }
 
@@ -109,7 +109,7 @@ struct RAGVoiceChatView: View {
                     .background(Color.RAGSemantic.aiBubble)
                     .clipShape(Circle())
             }
-            .accessibilityLabel("Switch language")
+            .accessibilityLabel(LocalizationKeys.Accessibility.switchLanguage.localized)
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)

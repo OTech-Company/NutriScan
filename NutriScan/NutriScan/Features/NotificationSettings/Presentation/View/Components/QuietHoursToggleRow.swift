@@ -25,7 +25,7 @@ struct QuietHoursToggleRow: View {
             }
             
             // Title
-            Text("Do not disturb")
+            Text(LocalizationKeys.Notifications.doNotDisturb.localized)
                 .font(Font.AppFont.textPrimary)
                 .foregroundColor(Color.NotificationSemantic.titleText)
             

@@ -136,9 +136,9 @@ struct SwipeToActionButton: View {
             newPhase == .success
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Add meal to daily tracking")
+        .accessibilityLabel(LocalizationKeys.Accessibility.addMealTracking.localized)
         .accessibilityValue(accessibilityValue)
-        .accessibilityHint("Swipe right or activate to add this saved product")
+        .accessibilityHint(LocalizationKeys.Accessibility.swipeAddProduct.localized)
         .accessibilityAction {
             submit(maxDrag: maxDrag)
         }
@@ -215,8 +215,8 @@ struct SwipeToActionButton: View {
     private var sliderTitle: String {
         switch phase {
         case .idle: return actionTitle
-        case .submitting: return "Adding..."
-        case .success: return "Added!"
+        case .submitting: return LocalizationKeys.Favorites.adding.localized
+        case .success: return LocalizationKeys.Favorites.added.localized
         }
     }
 

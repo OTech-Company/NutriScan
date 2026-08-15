@@ -26,7 +26,7 @@ struct WaterTrackingSection: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack {
-                Text("Water")
+                Text(LocalizationKeys.Calories.water.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesSemantic.waterTitle)
                 Spacer()
@@ -63,9 +63,9 @@ struct WaterTrackingSection: View {
                                     }
                             )
                             .allowsHitTesting(!isUpdating)
-                            .accessibilityLabel("Water cup \(index + 1) of \(goalGlasses)")
-                            .accessibilityValue(isFilled ? "Drunk" : "Not drunk")
-                            .accessibilityHint("Tap to change consumed water. Long press to reduce the target.")
+                            .accessibilityLabel("\(LocalizationKeys.Accessibility.waterCup.localized) \(index + 1) \(LocalizationKeys.StepTracker.ofGoal.localized) \(goalGlasses)")
+                            .accessibilityValue(isFilled ? LocalizationKeys.Calories.cups.localized : "")
+                            .accessibilityHint(LocalizationKeys.Accessibility.waterCupHint.localized)
                         }
                     }
                     .padding(.vertical, 4)

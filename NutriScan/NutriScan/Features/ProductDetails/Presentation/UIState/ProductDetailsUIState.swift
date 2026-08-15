@@ -98,13 +98,13 @@ extension ProductDetailsUIState {
         
         self.nutritionState = ProductNutritionUIState(
             nutritionFacts: [
-                NutritionFactUIState(title: "Calories", value: "\(details.calories) kcal"),
-                NutritionFactUIState(title: "Protein", value: Self.formattedGrams(details.proteinGrams)),
-                NutritionFactUIState(title: "Carbs", value: Self.formattedGrams(details.carbsGrams)),
-                NutritionFactUIState(title: "Fat", value: Self.formattedGrams(details.fatG)),
-                NutritionFactUIState(title: "Sugar", value: Self.formattedGrams(details.sugarG)),
-                NutritionFactUIState(title: "Fiber", value: Self.formattedGrams(details.fiberGrams)),
-                NutritionFactUIState(title: "Sodium", value: "\(Self.formattedNumber(details.sodiumMg)) mg")
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.calories.localized, value: "\(details.calories) kcal"),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.protein.localized, value: Self.formattedGrams(details.proteinGrams)),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.carbs.localized, value: Self.formattedGrams(details.carbsGrams)),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.fat.localized, value: Self.formattedGrams(details.fatG)),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.sugar.localized, value: Self.formattedGrams(details.sugarG)),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.fiber.localized, value: Self.formattedGrams(details.fiberGrams)),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.sodium.localized, value: "\(Self.formattedNumber(details.sodiumMg)) mg")
             ]
         )
     }

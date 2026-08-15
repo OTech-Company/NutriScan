@@ -69,11 +69,11 @@ struct ProductMatchCard: View {
     private var displayTitle: String {
         switch status {
         case .processing:
-            return productName ?? "Analyzing..."
+            return productName ?? LocalizationKeys.Scan.analyzing.localized
         case .safe:
-            return productName ?? scanSummary ?? "Scan Complete"
+            return productName ?? scanSummary ?? LocalizationKeys.Scan.scanComplete.localized
         case .unsafe:
-            return productName ?? scanSummary ?? "Scan Complete"
+            return productName ?? scanSummary ?? LocalizationKeys.Scan.scanComplete.localized
         }
     }
 
@@ -149,9 +149,9 @@ struct ProductMatchCard: View {
 extension ProductMatchStatus {
     var rawValue: String {
         switch self {
-        case .processing: return "Processing"
-        case .safe:       return "Safe"
-        case .unsafe:     return "Unsafe"
+        case .processing: return LocalizationKeys.Scan.processing.localized
+        case .safe:       return LocalizationKeys.Scan.safe.localized
+        case .unsafe:     return LocalizationKeys.Scan.unsafe.localized
         }
     }
 }

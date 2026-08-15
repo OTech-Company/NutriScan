@@ -75,7 +75,7 @@ struct ProductHeaderSection: View {
                     .layoutPriority(1)
                 Spacer()
                 VStack(alignment: .center, spacing: 0) {
-                    Text("Scanned at")
+                    Text(LocalizationKeys.ProductDetails.scannedAt.localized)
                         .foregroundStyle(Color(light: Color.Gray.gray500, dark: Color.Teal.teal1300))
                         .font(Font.AppFont.textSecondary.weight(.bold))
                     Text(formattedDate)

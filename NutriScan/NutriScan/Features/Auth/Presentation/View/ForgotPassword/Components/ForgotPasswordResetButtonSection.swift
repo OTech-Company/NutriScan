@@ -14,7 +14,7 @@ struct ForgotPasswordResetButtonSection: View {
     var body: some View {
         VStack {
             CustomPuffedButton(
-                title: "Continue",
+                title: LocalizationKeys.Auth.ForgotPassword.continueButton.localized,
                 action: onReset,
                 isLoading: isLoading
             )

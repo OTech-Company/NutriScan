@@ -14,14 +14,14 @@ struct WorkoutPausedControlsView: View {
                 // Stepper Chips (Sets & Reps)
                 HStack(spacing: 12) {
                     WorkoutStepperChip(
-                        title: "Sets",
+                        title: LocalizationKeys.Exercise.sets.localized,
                         value: viewModel.setsCount,
                         onIncrement: { viewModel.incrementSets() },
                         onDecrement: { viewModel.decrementSets() }
                     )
 
                     WorkoutStepperChip(
-                        title: "Reps",
+                        title: LocalizationKeys.Exercise.reps.localized,
                         value: viewModel.repsCount,
                         onIncrement: { viewModel.incrementReps() },
                         onDecrement: { viewModel.decrementReps() }
@@ -34,7 +34,7 @@ struct WorkoutPausedControlsView: View {
                 Button {
                     viewModel.resumeTimer()
                 } label: {
-                    Text("Resume")
+                    Text(LocalizationKeys.Exercise.resume.localized)
                         .font(Font.AppFont.subtitle2)
                         .foregroundColor(Color.ExerciseSemantic.outlineButtonText)
                         .frame(maxWidth: .infinity)
@@ -55,7 +55,7 @@ struct WorkoutPausedControlsView: View {
                         if viewModel.isSavingWorkout {
                             ProgressView().tint(.white)
                         } else {
-                            Text("Finish").font(Font.AppFont.subtitle2)
+                            Text(LocalizationKeys.Exercise.finish.localized).font(Font.AppFont.subtitle2)
                         }
                     }
                     .foregroundColor(.white)

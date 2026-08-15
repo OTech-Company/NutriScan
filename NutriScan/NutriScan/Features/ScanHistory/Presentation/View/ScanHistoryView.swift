@@ -22,7 +22,7 @@ struct ScanHistoryView: View {
             // Custom header with BackButton
             HStack(spacing: 16) {
                 BackButton { router.pop() }
-                Text("Scan History")
+                Text(LocalizationKeys.ScanHistory.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesHistorySemantic.title)
                     .lineLimit(1)
@@ -122,22 +122,22 @@ struct ScanHistoryView: View {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Scan?",
-                        description: "This scan will be removed from your history.",
-                        primaryButtonTitle: "Delete",
+                        title: LocalizationKeys.Home.deleteScanTitle.localized,
+                        description: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButtonTitle: LocalizationKeys.Common.delete.localized,
                         primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
+                        secondaryButtonTitle: LocalizationKeys.Common.cancel.localized
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Delete Failed",
-                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
-                        primaryButtonTitle: "OK",
+                        title: LocalizationKeys.Home.deleteFailedTitle.localized,
+                        description: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
                         primaryButtonColor: Color.Red.red500
                     )
                 default:
-                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
+                    return CustomAlertConfig(type: .warning, title: LocalizationKeys.Common.error.localized, description: "")
                 }
             },
             primaryAction: { alert in

@@ -7,7 +7,7 @@ struct DailyInsightCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Daily Insight")
+            Text(LocalizationKeys.StepTracker.dailyInsight.localized)
                 .font(.custom("PlusJakartaSans-SemiBold", size: 18))
                 .foregroundColor(Color.StepTrackerSemantic.chartTitle)
 
@@ -33,11 +33,11 @@ struct DailyInsightCardView: View {
                         Text("\(steps.formatted())")
                             .font(.custom("PlusJakartaSans-Bold", size: 24))
                             .foregroundColor(Color.Teal.teal1000)
-                        Text("Steps")
+                        Text(LocalizationKeys.StepTracker.steps.localized)
                             .font(.custom("LexendDeca-Regular", size: 14))
                             .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
                     }
-                    Text("of \(goalSteps.formatted()) Goal")
+                    Text("\(LocalizationKeys.StepTracker.ofGoal.localized) \(goalSteps.formatted())")
                         .font(.custom("LexendDeca-Regular", size: 13))
                         .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
                 }
@@ -45,14 +45,14 @@ struct DailyInsightCardView: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 2) {
-                    Text("Period Average")
+                    Text(LocalizationKeys.StepTracker.periodAverage.localized)
                         .font(.custom("LexendDeca-Regular", size: 12))
                         .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
                     HStack(alignment: .firstTextBaseline, spacing: 4) {
                         Text("\(weeklyAverage.formatted())")
                             .font(.custom("PlusJakartaSans-Bold", size: 20))
                             .foregroundColor(Color.StepTrackerSemantic.chartTitle)
-                        Text("Steps")
+                        Text(LocalizationKeys.StepTracker.steps.localized)
                             .font(.custom("LexendDeca-Regular", size: 12))
                             .foregroundColor(Color.StepTrackerSemantic.insightSubtitle)
                     }

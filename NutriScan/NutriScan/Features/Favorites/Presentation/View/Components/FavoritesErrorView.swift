@@ -25,7 +25,7 @@ struct FavoritesErrorView: View {
                     .foregroundColor(Color(light: Color.Red.red500, dark: Color.Red.red500))
             }
             
-            Text("Something Went Wrong")
+            Text(LocalizationKeys.Common.somethingWentWrong.localized)
                 .font(.AppFont.title3)
                 .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
             
@@ -36,7 +36,7 @@ struct FavoritesErrorView: View {
                 .padding(.horizontal, 40)
             
             Button(action: onRetry) {
-                Text("Try Again")
+                Text(LocalizationKeys.Common.tryAgain.localized)
                     .font(.AppFont.textSecondary)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)

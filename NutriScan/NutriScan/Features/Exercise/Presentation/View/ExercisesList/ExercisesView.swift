@@ -22,7 +22,7 @@ struct ExercisesView: View {
                 BackButton {
                     router.pop()
                 }
-                Text("Exercises")
+                Text(LocalizationKeys.Exercise.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundColor(Color.ExerciseSemantic.rowTitle)
                 Spacer()

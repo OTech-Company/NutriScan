@@ -73,13 +73,13 @@ struct ProductDetailsScreen: View {
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Error",
-                    description: viewModel.failureMessage ?? "An unknown error occurred",
-                    primaryButtonTitle: "Retry",
-                    primaryButtonColor: Color.Red.red500
+                    title: LocalizationKeys.Common.error.localized,
+                    description: viewModel.failureMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButtonTitle: LocalizationKeys.Common.retry.localized,
+                    primaryButtonColor: Color.Teal.teal1000
                 )
             default:
-                return CustomAlertConfig(type: .error, title: "Error", description: "")
+                return CustomAlertConfig(type: .error, title: LocalizationKeys.Common.error.localized, description: "")
             }
         }, primaryAction: { _ in
             viewModel.failureMessage = nil
@@ -91,7 +91,7 @@ struct ProductDetailsScreen: View {
         HStack {
             HStack(spacing: 16) {
                 BackButton(action: { router.pop() }, style: .onTeal)
-                Text("Product Details")
+                Text(LocalizationKeys.ProductDetails.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.white)
             }
