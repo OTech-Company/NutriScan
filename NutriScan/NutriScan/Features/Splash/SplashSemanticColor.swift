@@ -51,16 +51,7 @@ enum SplashSemanticColor {
         dark: Color.Teal.teal1300.opacity(0.38)
     )
 
-    static let logoInitial = Color(
-        light: Color.Teal.teal100,
-        dark: Color.Teal.teal100
-    )
-    static let logoFinal = Color(
-        light: Color.Teal.teal1000,
-        dark: Color.Teal.teal1000
-    )
-    static let logoShadow = Color(
-        light: Color.Teal.teal1000.opacity(0.15),
-        dark: Color.Teal.teal1000.opacity(0.15)
-    )
+    static let logoInitial = Color.Teal.teal100
+    static let logoFinal = Color.Teal.teal1000
+    static let logoShadow = Color.Teal.teal1000.opacity(0.15)
 }
