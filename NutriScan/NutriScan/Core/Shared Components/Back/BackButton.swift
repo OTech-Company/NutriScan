@@ -41,7 +41,7 @@ struct BackButton: View {
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: "chevron.left")
+            Image(systemName: "chevron.backward")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(iconColor)
                 .frame(width: 48, height: 48)
@@ -52,7 +52,7 @@ struct BackButton: View {
                         .stroke(borderColor, lineWidth: 1)
                 )
         }
-        .accessibilityLabel("Back")
+        .accessibilityLabel(Text(LocalizationKeys.Common.back.localized))
         .accessibilityIdentifier("navigation.back")
     }
 }

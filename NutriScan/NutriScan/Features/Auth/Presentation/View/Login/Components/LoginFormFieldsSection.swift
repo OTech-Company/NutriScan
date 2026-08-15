@@ -11,20 +11,20 @@ struct LoginFormFieldsSection: View {
     var body: some View {
         VStack(spacing: 16) {
             CustomTextField(
-                title: "Email Address",
+                title: LocalizationKeys.Auth.Login.emailTitle.localized,
                 leadingIcon: "envelope",
                 errorMessage: viewModel.email.error,
-                placeHolder: "Enter your email",
+                placeHolder: LocalizationKeys.Auth.Login.emailPlaceholder.localized,
                 textFieldValue: $viewModel.email.value,
                 state: $viewModel.email.state
             )
 
             CustomTextField(
-                title: "Password",
+                title: LocalizationKeys.Auth.Login.passwordTitle.localized,
                 leadingIcon: "lock",
                 isPassword: true,
                 errorMessage: viewModel.password.error,
-                placeHolder: "Enter your password",
+                placeHolder: LocalizationKeys.Auth.Login.passwordPlaceholder.localized,
                 textFieldValue: $viewModel.password.value,
                 state: $viewModel.password.state
             )

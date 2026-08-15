@@ -74,10 +74,10 @@ struct AppValidator {
 
     static func passwordValidator(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Password is required"
+            return LocalizationKeys.Validation.Password.required.localized
         }
         if value.count < 8 {
-            return "Password must be at least 8 characters"
+            return LocalizationKeys.Validation.Password.minLength.localized
         }
         return nil
     }
@@ -87,19 +87,19 @@ struct AppValidator {
             return validationError
         }
         if value != password {
-            return "Passwords do not match"
+            return LocalizationKeys.Validation.Password.mismatch.localized
         }
         return nil
     }
 
     static func emailValidator(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Email is required"
+            return LocalizationKeys.Validation.Email.required.localized
         }
         let pattern = #"^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"#
         let regexPredicate = NSPredicate(format: "SELF MATCHES %@", pattern)
         if !regexPredicate.evaluate(with: value) {
-            return "Invalid email address"
+            return LocalizationKeys.Validation.Email.invalid.localized
         }
         return nil
     }

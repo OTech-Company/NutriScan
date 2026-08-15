@@ -16,7 +16,7 @@ struct AuthHeaderView: View {
                 .frame(height: 40)
                 .padding(.top, 128)
 
-            Text("Sign In")
+            Text(LocalizationKeys.Auth.Login.title.localized)
                 .font(Font.AppFont.title2)
                 .foregroundColor(Color.LoginSemantic.headerTitle)
         }
