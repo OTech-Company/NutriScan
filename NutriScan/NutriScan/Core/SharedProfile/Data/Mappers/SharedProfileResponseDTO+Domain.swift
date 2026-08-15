@@ -27,6 +27,7 @@ extension UserProfileResponseDTO {
             username: username,
             firstName: firstName,
             lastName: lastName,
+            dailyStreak: dailyStreak ?? 0,
             imageUrl: imageUrl,
             dateOfBirth: dob,
             gender: gender,

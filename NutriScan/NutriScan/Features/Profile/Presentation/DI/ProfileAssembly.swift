@@ -20,5 +20,10 @@ struct ProfileAssembly: Assembly {
             type: UpdateFamilyMembersUseCaseProtocol.self,
             component: UpdateFamilyMembersUseCase()
         )
+
+        container.register(
+            type: UploadFamilyMemberImageUseCaseProtocol.self,
+            component: UploadFamilyMemberImageUseCase()
+        )
     }
 }

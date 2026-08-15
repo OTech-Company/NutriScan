@@ -52,4 +52,30 @@ final class HealthKitStepDataSource {
             healthStore.execute(query)
         }
     }
+
+    func enableBackgroundStepMonitoring(scheduler: SmartNotificationSchedulerProtocol) {
+        guard isAvailable else { return }
+        healthStore.enableBackgroundDelivery(for: stepType, frequency: .immediate) { _, _ in }
+
+        let query = HKObserverQuery(sampleType: stepType, predicate: nil) { [weak self] _, completionHandler, error in
+            guard let self = self, error == nil else {
+                completionHandler()
+                return
+            }
+            Task {
+                let now = Date()
+                let calendar = Calendar.current
+                let startOfDay = calendar.startOfDay(for: now)
+                if let days = try? await self.fetchDailySteps(from: startOfDay, to: now),
+                   let todaySteps = days.first?.stepCount {
+                    let hour = calendar.component(.hour, from: now)
+                    if hour < 16 && todaySteps >= 4000 {
+                        await scheduler.cancelAfternoonStepsMove()
+                    }
+                }
+                completionHandler()
+            }
+        }
+        healthStore.execute(query)
+    }
 }

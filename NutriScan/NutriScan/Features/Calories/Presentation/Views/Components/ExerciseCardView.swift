@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExerciseCardView: View {
     let exerciseKcal: Int
-    let exerciseMinutes: Int
+    let exerciseMinutes: Double
     var onAddTap: () -> Void = {}
     
     @State private var showContent = false
@@ -45,7 +45,7 @@ struct ExerciseCardView: View {
                             .font(Font.AppFont.textSecondary)
                             .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
                     }
-                    Text("\(exerciseMinutes) min today")
+                    Text("\(exerciseMinutes.formatted(.number.precision(.fractionLength(1)))) min today")
                         .font(Font.AppFont.textSecondary)
                         .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
                 }

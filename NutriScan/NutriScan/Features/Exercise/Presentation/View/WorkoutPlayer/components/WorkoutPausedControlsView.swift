@@ -10,7 +10,7 @@ struct WorkoutPausedControlsView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            if viewModel.exercise.category.lowercased() != "cardio" {
+            if !viewModel.isCardio {
                 // Stepper Chips (Sets & Reps)
                 HStack(spacing: 12) {
                     WorkoutStepperChip(
@@ -49,16 +49,22 @@ struct WorkoutPausedControlsView: View {
 
                 // Finish Button
                 Button {
-                    viewModel.showSuccessDialog = true
+                    Task { await viewModel.finishWorkout() }
                 } label: {
-                    Text("Finish")
-                        .font(Font.AppFont.subtitle2)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(Color.Teal.teal1000)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                    Group {
+                        if viewModel.isSavingWorkout {
+                            ProgressView().tint(.white)
+                        } else {
+                            Text("Finish").font(Font.AppFont.subtitle2)
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 52)
+                    .background(Color.Teal.teal1000)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
+                .disabled(viewModel.isSavingWorkout)
             }
         }
         .padding(.horizontal, 20)

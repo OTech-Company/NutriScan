@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileFlowView: View {
-    @StateObject private var router = AppRouter()
+    @ObservedObject var router: AppRouter
     @State private var viewModel = ProfileViewModel()
 
     var body: some View {

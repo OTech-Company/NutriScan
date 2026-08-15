@@ -10,11 +10,19 @@ final class StepCounterViewModel {
     private(set) var history: [DailySteps] = []
     private(set) var isLoadingHistory: Bool = false
 
-    let analytics: StepAnalyticsCalculator
+    var analytics: StepAnalyticsCalculator {
+        StepAnalyticsCalculator(
+            weightKg: profileService.weightKg ?? fallbackWeightKg,
+            heightCm: profileService.heightCm ?? fallbackHeightCm
+        )
+    }
 
     private let observeStepsUseCase: ObserveDailyStepsUseCaseProtocol
     private let requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
+    private let profileService: UserProfileService
+    private let fallbackWeightKg: Double
+    private let fallbackHeightCm: Double
     private var observationTask: Task<Void, Never>?
 
     /// Full history fetched once (last 6 months), cached for slicing.
@@ -25,13 +33,16 @@ final class StepCounterViewModel {
         observeStepsUseCase: ObserveDailyStepsUseCaseProtocol,
         requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol,
         fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol,
+        profileService: UserProfileService = DIContainer.shared.resolve(type: UserProfileService.self),
         weightKg: Double = 70.0,
         heightCm: Double = 170.0
     ) {
         self.observeStepsUseCase = observeStepsUseCase
         self.requestAuthUseCase = requestAuthUseCase
         self.fetchHistoryUseCase = fetchHistoryUseCase
-        self.analytics = StepAnalyticsCalculator(weightKg: weightKg, heightCm: heightCm)
+        self.profileService = profileService
+        self.fallbackWeightKg = weightKg
+        self.fallbackHeightCm = heightCm
     }
 
     func todayAnalytics() -> StepAnalytics {
@@ -52,6 +63,13 @@ final class StepCounterViewModel {
         observationTask?.cancel()
     }
 
+    func rolloverToCurrentDay() {
+        todaySteps = 0
+        if isAuthorized {
+            startObserving()
+        }
+    }
+
     /// Fetches the full 6-month history once. Subsequent calls use the cache.
     func fetchFullHistoryIfNeeded() {
         guard !hasFetchedFullHistory else { return }
@@ -67,7 +85,9 @@ final class StepCounterViewModel {
                 hasFetchedFullHistory = true
                 history = result
             } catch {
-                errorMessage = error.localizedDescription
+                if !isCancellation(error) {
+                    errorMessage = error.localizedDescription
+                }
             }
             isLoadingHistory = false
         }
@@ -103,6 +123,7 @@ final class StepCounterViewModel {
             }
             startObserving()
         } catch {
+            guard !isCancellation(error) else { return }
             print("🔴 StepTracker auth error:", error)
             errorMessage = error.localizedDescription
         }
@@ -116,5 +137,14 @@ final class StepCounterViewModel {
                 self.todaySteps = steps
             }
         }
+    }
+
+    private func isCancellation(_ error: Error) -> Bool {
+        if error is CancellationError { return true }
+        if let urlError = error as? URLError, urlError.code == .cancelled { return true }
+        if case NetworkError.unknown(let wrappedError) = error {
+            return isCancellation(wrappedError)
+        }
+        return false
     }
 }

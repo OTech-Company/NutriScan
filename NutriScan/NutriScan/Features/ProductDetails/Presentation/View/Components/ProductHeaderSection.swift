@@ -64,11 +64,15 @@ struct ProductHeaderSection: View {
                     .strokeBorder(Color.Teal.teal1000, style: StrokeStyle(lineWidth: 3))
             }
 
-            HStack(alignment: .bottom) {
+            HStack(alignment: .bottom, spacing: 12) {
                 Text(displayTitle)
                     .font(titleFont)
                     .lineLimit(titleLineLimit)
+                    .minimumScaleFactor(0.85)
                     .foregroundStyle(Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .layoutPriority(1)
                 Spacer()
                 VStack(alignment: .center, spacing: 0) {
                     Text("Scanned at")
@@ -83,6 +87,7 @@ struct ProductHeaderSection: View {
                                 .foregroundStyle(Color.Teal.teal200)
                         }
                 }
+                .fixedSize()
             }
         }
     }

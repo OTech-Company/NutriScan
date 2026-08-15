@@ -12,19 +12,21 @@ struct UnsafeIngredientCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("- \(state.name)")
+            Text("- \(state.ingredient)")
                 .font(Font.AppFont.textPrimary)
                 .foregroundStyle(Color(light: Color.Teal.teal1000, dark: Color.Teal.teal500))
+                .fixedSize(horizontal: false, vertical: true)
             
-            Text(state.allergyMatch)
+            Text(state.matchText)
                 .font(Font.AppFont.textCaption)
                 .foregroundStyle(Color(light: .white, dark: Color.Teal.teal500))
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(Color(light: Color.Gray.gray400, dark: Color.Teal.teal1500))
-                .clipShape(Capsule())
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .lineLimit(2)
                 
-            Text(state.description)
+            Text(state.reason)
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color(light: Color.Gray.gray800, dark: Color.Teal.teal700))
                 .fixedSize(horizontal: false, vertical: true)

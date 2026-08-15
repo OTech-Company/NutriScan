@@ -17,6 +17,7 @@ final class EditProfileViewModel {
     private let updateProfileUseCase: UpdateProfileUseCaseProtocol
     private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
     private let uploadImageProfileUseCase: UploadProfileImageUseCaseProtocol
+    private let imageCompressor: ImageCompressing
 
     // MARK: - Validated Fields
     var firstName = ValidatedField(value: "")
@@ -60,12 +61,14 @@ final class EditProfileViewModel {
         uploadImageProfileUseCase: UploadProfileImageUseCaseProtocol =
             DIContainer.shared.resolve(
                 type: UploadProfileImageUseCaseProtocol.self
-            )
+            ),
+        imageCompressor: ImageCompressing = ImageCompressor()
     ) {
         self.observeProfileUseCase = observeProfileUseCase
         self.updateProfileUseCase = updateProfileUseCase
         self.getReferenceDataUseCase = getReferenceDataUseCase
         self.uploadImageProfileUseCase = uploadImageProfileUseCase
+        self.imageCompressor = imageCompressor
         // Populate fields immediately upon initialization
         populateFromStore()
     }
@@ -156,16 +159,11 @@ final class EditProfileViewModel {
     func loadSelectedImage() async {
         guard let item = selectedPhotoItem else { return }
         do {
-            // Load the raw data first
-            if let data = try await item.loadTransferable(type: Data.self),
-                let uiImage = UIImage(data: data)
-            {
+            if let data = try await item.loadTransferable(type: Data.self) {
+                let compressedData = imageCompressor.compress(data)
 
-                // Force it to be a JPEG so the backend can actually read it
-                let jpegData = uiImage.jpegData(compressionQuality: 0.8)
-
-                self.avatarData = jpegData
-                self.avatarUIImage = uiImage
+                self.avatarData = compressedData
+                self.avatarUIImage = UIImage(data: compressedData) ?? UIImage(data: data)
             }
         } catch {
             self.errorMessage = error.localizedDescription

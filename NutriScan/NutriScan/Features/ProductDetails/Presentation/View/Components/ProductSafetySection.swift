@@ -12,7 +12,7 @@ struct ProductSafetySection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SafetyLevelText(safetyLevel: state.safetyLevel)
+            SafetyLevelText(safetyLevel: state.safetyLevel, isScanFailed: state.isScanFailed)
             HStack(alignment: .top, spacing: 8) {
                 Circle()
                     .frame(width: 4, height: 4)

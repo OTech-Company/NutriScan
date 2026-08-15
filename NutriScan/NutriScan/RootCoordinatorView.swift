@@ -19,14 +19,47 @@ import SwiftUI
 /// internal navigation — this view just decides which one is visible.
 /// 
 struct RootCoordinatorView: View {
-    @StateObject private var flowCoordinator = AppFlowCoordinator()
+    @Environment(\.scenePhase) private var scenePhase
+    @StateObject private var flowCoordinator: AppFlowCoordinator
+    @State private var dailyActivitySyncCoordinator = DIContainer.shared.resolve(
+        type: CaloriesActivitySyncCoordinator.self
+    )
     @AppStorage("appAppearance") private var appAppearance: AppAppearance = .system
+    private let isUITesting: Bool
+
+    init() {
+        let isUITesting = ProcessInfo.processInfo.arguments.contains("-ui-testing-main-flow")
+        self.isUITesting = isUITesting
+        _flowCoordinator = StateObject(
+            wrappedValue: AppFlowCoordinator(
+                initialFlow: isUITesting ? .main : .splash,
+                observesSessionExpiration: !isUITesting
+            )
+        )
+    }
 
     var body: some View {
         currentFlowView
             .preferredColorScheme(appAppearance.colorScheme)
             .environmentObject(flowCoordinator)
             .animation(.default, value: flowCoordinator.flow)
+            .task(id: flowCoordinator.flow) {
+                guard !isUITesting, flowCoordinator.flow == .main else { return }
+                await dailyActivitySyncCoordinator.synchronizePendingDates()
+            }
+            .onChange(of: scenePhase) { _, phase in
+                guard !isUITesting,
+                      phase == .active,
+                      flowCoordinator.flow == .main else { return }
+                Task {
+                    await dailyActivitySyncCoordinator.synchronizePendingDates()
+                }
+            }
+             .task {
+                guard !isUITesting else { return }
+                let bootstrapper = DIContainer.shared.resolve(type: NotificationBootstrapperProtocol.self)
+                await bootstrapper.start()
+            }
     }
 
     @ViewBuilder
@@ -42,6 +75,9 @@ struct RootCoordinatorView: View {
             ProfileSetupFlowView()
         case .main:
             MainTabView()
+        case .pendingDeletion:
+            AccountRestorationFactory.makeAccountRestorationView()
         }
+
     }
 }

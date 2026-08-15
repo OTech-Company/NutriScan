@@ -14,4 +14,5 @@ struct ProfileState {
     var avatarURL: String? = AppConstants.defaultUserAvatarURL
     var isLoading: Bool = false
     var errorMessage: String?
+    var hasCachedProfile: Bool = false
 }

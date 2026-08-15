@@ -87,7 +87,7 @@ final class ScanViewModel: ObservableObject {
                     latestScan = submission
                 }
                 isSubmitting = false
-                await pollScanDetail(scanId: submission.scanId)
+                await pollScanDetail(scanId: submission.scanId, notifyHistoryOnCompletion: true)
             } catch let error as ScanError {
                 isSubmitting = false
                 errorMessage = error.userMessage
@@ -124,7 +124,10 @@ final class ScanViewModel: ObservableObject {
         barcodeSize = .zero
     }
 
-    private func pollScanDetail(scanId: String) async {
+    private func pollScanDetail(
+        scanId: String,
+        notifyHistoryOnCompletion: Bool = false
+    ) async {
         isLoadingDetail = true
         defer { isLoadingDetail = false }
 
@@ -137,6 +140,9 @@ final class ScanViewModel: ObservableObject {
                 if detail.status == .completed || detail.status == .failed {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.85)) {
                         scanDetail = detail
+                    }
+                    if notifyHistoryOnCompletion, detail.status == .completed {
+                        HomeRecentHistoryNotifier.shared.setNeedsRefresh()
                     }
                     return
                 }

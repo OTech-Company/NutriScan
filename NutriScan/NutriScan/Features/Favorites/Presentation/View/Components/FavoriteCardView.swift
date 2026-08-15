@@ -8,20 +8,45 @@
 import SwiftUI
 
 struct FavoriteCardView: View {
-    
+
     let favUIState: FavUIState
-    
+    var onRemove: (() -> Void)? = nil
+    var onProductTap: (() -> Void)? = nil
+
+    /// Called when the user completes a swipe. The closure receives a callback
+    /// `onResult(_ success: Bool)` which the parent must invoke with the API result.
+    var onAddToDaily: ((_ onResult: @escaping (Bool) -> Void) -> Void)? = nil
+
+
+
     var body: some View {
         VStack(spacing: 12) {
             ZStack(alignment: .topTrailing) {
-                Image(favUIState.image)
-                    .resizable()
-                    .scaledToFill()
+                Button(action: { onProductTap?() }) {
+                    GeometryReader { geometry in
+                        CachedImage(
+                            urlString: favUIState.image,
+                            failureImageName: "testImage",
+                            contentMode: .fill
+                        )
+                        .frame(
+                            width: geometry.size.width,
+                            height: geometry.size.height
+                        )
+                        .clipped()
+                    }
+                    .frame(maxWidth: .infinity)
                     .frame(height: 140)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .contentShape(RoundedRectangle(cornerRadius: 16))
+                }
+                .buttonStyle(FavoriteProductButtonStyle())
+                .accessibilityLabel("View details for \(favUIState.title)")
+                .accessibilityHint("Opens Product Details")
+
+                // Bookmark / Remove button — triggers parent to show confirmation alert
                 Button(action: {
-                    // Empty implementation as requested
+                    onRemove?()
                 }) {
                     Image("bookmark-fill")
                         .resizable()
@@ -34,54 +59,78 @@ struct FavoriteCardView: View {
                         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                 }
                 .padding(8)
+                .accessibilityLabel("Remove \(favUIState.title) from saved products")
             }
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(favUIState.title)
-                        .font(Font.AppFont.textSecondary)
-                        .foregroundStyle(Color.Favorites.titleColor)
-                        .lineLimit(1)
-                        
-                    
-                    Text(favUIState.condition.rawValue)
-                        .font(Font.AppFont.textCaption)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .foregroundStyle(Color.Teal.teal100)
-                        .background(
-                            Capsule().foregroundStyle(
-                                favUIState.condition == Condition.Safe ? Color.Teal.teal1000 : Color.Yellow.yellow500
+
+            Button(action: { onProductTap?() }) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(favUIState.title)
+                            .font(Font.AppFont.textSecondary)
+                            .foregroundStyle(Color.Favorites.titleColor)
+                            .lineLimit(1)
+
+                        Text(favUIState.condition.rawValue)
+                            .font(Font.AppFont.textCaption)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .foregroundStyle(Color.Teal.teal100)
+                            .background(
+                                Capsule().foregroundStyle(
+                                    favUIState.condition == Condition.Safe ? Color.Teal.teal1000 : Color.Yellow.yellow500
+                                )
                             )
-                        )
+                    }
+
+                    Spacer()
+
+                    VStack(spacing: 0) {
+                        Text(String(favUIState.calories))
+                        Text("Kcal")
+                    }
+                    .font(Font.AppFont.textCaption)
+                    .foregroundStyle(Color.Favorites.caloriesColor)
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 4)
+                    .background(Color.Teal.teal300)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
-                
-                Spacer()
-                
-                VStack(spacing: 0) {
-                    Text(String(favUIState.calories))
-                    Text("Kcal")
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(FavoriteProductButtonStyle())
+            .accessibilityLabel("\(favUIState.title), \(favUIState.condition.rawValue), \(favUIState.calories) calories")
+            .accessibilityHint("Opens Product Details")
+
+            SwipeToActionButton(
+                actionTitle: "Swipe right to add",
+                action: { onSliderResult in
+                    if let onAddToDaily {
+                        onAddToDaily { success in
+                            onSliderResult(success)
+                        }
+                    } else {
+                        onSliderResult(false)
+                    }
                 }
-                .font(Font.AppFont.textCaption)
-                .foregroundStyle(Color.Favorites.caloriesColor)
-                .padding(.vertical, 2)
-                .padding(.horizontal, 4)
-                .background(Color.Teal.teal300)
-                .clipShape(RoundedRectangle(cornerRadius: 4))
-            }
-            
-            SwipeToActionButton(actionTitle: "Swipe right to add") {
-                print("Product successfully added...")
-            }
-  
+            )
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 8)
         .background(Color.Favorites.cardColor)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .clipShape(RoundedRectangle(cornerRadius: 24))
         .customLightShadow()
-        
+    }
+}
 
+private struct FavoriteProductButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .contentShape(Rectangle())
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1)
+            .opacity(configuration.isPressed ? 0.86 : 1)
+            .animation(.easeOut(duration: 0.14), value: configuration.isPressed)
     }
 }
 

@@ -5,44 +5,68 @@
 import SwiftUI
 
 struct HomeGreetingSection: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     let userName: String
     let userImageURL: String?
+    var collapseProgress: CGFloat = 0
+    var onProfileTap: () -> Void = {}
     var onNotificationTap: () -> Void = {}
+
+    private var visualProgress: CGFloat {
+        reduceMotion ? 0 : collapseProgress
+    }
+
+    private var avatarSize: CGFloat {
+        48 - (12 * visualProgress)
+    }
 
     var body: some View {
         HStack(spacing: 12) {
+            Button(action: onProfileTap) {
+                HStack(spacing: 12) {
+                    Group {
+                        if let urlString = userImageURL, !urlString.isEmpty {
+                            CachedImage(
+                                urlString: urlString,
+                                failureImageName: "person.fill",
+                                contentMode: .fill
+                            )
+                        } else {
+                            fallbackImageView
+                        }
+                    }
+                    .frame(width: avatarSize, height: avatarSize)
+                    .clipShape(Circle())
 
-            Group {
-                if let urlString = userImageURL, !urlString.isEmpty {
-                    CachedImage(
-                        urlString: urlString,
-                        failureImageName: "person.fill",
-                        contentMode: .fill
-                    )
-                } else {
-                    fallbackImageView
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Hello, \(userName)!")
+                            .font(Font.AppFont.title3)
+                            .foregroundColor(Color.HomeSemantic.greetingTitle)
+
+                        Text("Your Health Comes First")
+                            .font(Font.AppFont.textSecondary)
+                            .foregroundColor(Color.HomeSemantic.greetingSubtitle)
+                            .accessibilityIdentifier("home.greetingSubtitle")
+                    }
+                    .offset(y: reduceMotion ? 0 : 3 * visualProgress)
                 }
             }
-            .frame(width: 48, height: 48)
-            .clipShape(Circle()) // Ensures the CachedImage remains perfectly round
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Hello, \(userName)!")
-                    .font(Font.AppFont.title3)
-                    .foregroundColor(Color.HomeSemantic.greetingTitle)
-
-                Text("Your Health Comes First")
-                    .font(Font.AppFont.textSecondary)
-                    .foregroundColor(Color.HomeSemantic.greetingSubtitle)
-            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("home.profileButton")
 
             Spacer()
 
-            Button(action: onNotificationTap) {
+            Button {
+                onNotificationTap()
+            } label: {
                 Image(systemName: "bell")
                     .font(.system(size: 22))
                     .foregroundColor(Color.HomeSemantic.greetingBell)
+                    .frame(width: 44, height: 44)
             }
+            .accessibilityLabel("Notifications")
+            .accessibilityIdentifier("home.notificationButton")
         }
     }
 

@@ -7,6 +7,7 @@ import Foundation
 import Observation
 
 @Observable
+@MainActor
 final class ExerciseWorkoutPlayerViewModel {
     let exercise: Exercise
 
@@ -20,17 +21,34 @@ final class ExerciseWorkoutPlayerViewModel {
     var showCancelAlert: Bool = false
     var showRestartAlert: Bool = false
     var showSuccessDialog: Bool = false
+    var showRecordingError: Bool = false
+    private(set) var recordingErrorMessage: String = "Your profile data is unavailable. Reload your profile, then try finishing again."
+    private(set) var hasRecordedWorkout: Bool = false
+    private(set) var isSavingWorkout: Bool = false
 
     private var timerTask: Task<Void, Never>?
+    private let caloriesActivityStore: CaloriesActivityStore
+    private let profileStore: UserProfileStore
+    private let notificationScheduler: SmartNotificationSchedulerProtocol
+    private let activitySyncCoordinator: CaloriesActivitySyncCoordinator
+    private let dateProvider: () -> Date
 
-    init(exercise: Exercise) {
+    init(
+        exercise: Exercise,
+        caloriesActivityStore: CaloriesActivityStore = DIContainer.shared.resolve(type: CaloriesActivityStore.self),
+        profileStore: UserProfileStore = DIContainer.shared.resolve(type: UserProfileStore.self),
+        notificationScheduler: SmartNotificationSchedulerProtocol = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self),
+        activitySyncCoordinator: CaloriesActivitySyncCoordinator = DIContainer.shared.resolve(type: CaloriesActivitySyncCoordinator.self),
+        dateProvider: @escaping () -> Date = Date.init
+    ) {
         self.exercise = exercise
+        self.caloriesActivityStore = caloriesActivityStore
+        self.profileStore = profileStore
+        self.notificationScheduler = notificationScheduler
+        self.activitySyncCoordinator = activitySyncCoordinator
+        self.dateProvider = dateProvider
         self.hasStarted = false
         self.isPaused = true
-    }
-
-    deinit {
-        stopTimer()
     }
 
     // MARK: - Timer Logic
@@ -44,10 +62,11 @@ final class ExerciseWorkoutPlayerViewModel {
     func startTimer() {
         isPaused = false
         stopTimer()
-        timerTask = Task { @MainActor [weak self] in
+        timerTask = Task { [weak self] in
             while !(Task.isCancelled) {
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
-                guard let self = self, !self.isPaused else { continue }
+                guard let self else { return }
+                guard !self.isPaused else { continue }
                 self.elapsedSeconds += 1
             }
         }
@@ -91,13 +110,25 @@ final class ExerciseWorkoutPlayerViewModel {
 
     // MARK: - Calories Calculation
 
-    /// Total burned calories: (sets * reps) * repKcal, or elapsed minutes * minKcal
+    var isCardio: Bool {
+        exercise.category.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "cardio"
+    }
+
+    var isCalorieEstimateAvailable: Bool {
+        isCardio ? exercise.minKcal != nil : (exercise.repKcal != nil || exercise.minKcal != nil)
+    }
+
+    /// Cardio is time based. Other exercises prefer reps and fall back to time.
     var totalCaloriesBurned: Double {
+        let minutes = Double(elapsedSeconds) / 60.0
+        if isCardio {
+            return minutes * (exercise.minKcal ?? 0)
+        }
+
         let totalReps = Double(setsCount * repsCount)
         if let repKcal = exercise.repKcal {
             return totalReps * repKcal
         } else if let minKcal = exercise.minKcal {
-            let minutes = Double(elapsedSeconds) / 60.0
             return minutes * minKcal
         }
         return 0.0
@@ -105,6 +136,63 @@ final class ExerciseWorkoutPlayerViewModel {
 
     var formattedCalories: String {
         String(format: "%.1f", totalCaloriesBurned)
+    }
+
+    var roundedCalories: Int {
+        max(Int(totalCaloriesBurned.rounded()), 0)
+    }
+
+    var completionDescription: String {
+        let workoutDetails = isCardio
+            ? "in \(formattedTime)"
+            : "(\(setsCount) sets x \(repsCount) reps) in \(formattedTime)"
+        let calorieDetails = isCalorieEstimateAvailable
+            ? "and burned \(roundedCalories) kcal."
+            : "Calorie estimation is unavailable for this exercise."
+        return "Great job! You completed \(exercise.name) \(workoutDetails) \(calorieDetails)"
+    }
+
+    func finishWorkout() async {
+        guard !isSavingWorkout else { return }
+        guard !hasRecordedWorkout else {
+            showSuccessDialog = true
+            return
+        }
+        guard let profileID = profileStore.currentProfile?.id else {
+            recordingErrorMessage = "Your profile data is unavailable. Reload your profile, then try finishing again."
+            showRecordingError = true
+            return
+        }
+        stopTimer()
+        isSavingWorkout = true
+        defer { isSavingWorkout = false }
+        let workoutDate = CaloriesTracking.dateString(from: dateProvider())
+        caloriesActivityStore.recordWorkout(
+            profileID: profileID,
+            date: workoutDate,
+            calories: Double(roundedCalories),
+            elapsedSeconds: elapsedSeconds
+        )
+        hasRecordedWorkout = true
+
+        let synchronized = await activitySyncCoordinator.synchronizeExercise(
+            date: workoutDate,
+            currentDate: CaloriesTracking.dateString(from: dateProvider())
+        )
+        if synchronized {
+            showSuccessDialog = true
+        } else {
+            recordingErrorMessage = "We couldn't sync this workout right now. It is saved on this device and will retry automatically."
+            showRecordingError = true
+        }
+
+        let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: dateProvider())
+        let hour = nowComponents.hour ?? 0
+        let minute = nowComponents.minute ?? 0
+        let isBeforeWorkout = (hour < 20) || (hour == 20 && minute < 30)
+        if isBeforeWorkout {
+            await notificationScheduler.cancelWorkoutNudge()
+        }
     }
 
     // MARK: - Stepper Counters

@@ -9,6 +9,12 @@ import SwiftUI
 struct HistoryRowView: View {
     // Passing the specific UI state item down to the row
     let item: UiStateHistoryItem
+    let isDisabled: Bool
+
+    init(item: UiStateHistoryItem, isDisabled: Bool = false) {
+        self.item = item
+        self.isDisabled = isDisabled
+    }
     
     var body: some View {
         HStack(spacing: 8) {
@@ -32,10 +38,12 @@ struct HistoryRowView: View {
                 Text(item.title)
                     .font(Font.AppFont.subtitle2)
                     .foregroundColor(Color.HomeSemantic.historyTitle)
+                    .lineLimit(2)
                 
                 Text(item.scannedAt)
                     .font(Font.AppFont.textCaption)
                     .foregroundColor(Color.HomeSemantic.historySubtitle)
+                    .lineLimit(2)
             }
             
             Spacer()
@@ -48,7 +56,7 @@ struct HistoryRowView: View {
                         .font(.system(size: 20))
                 } else {
                     Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundColor(item.status == .unsafe ? Color.Red.red500 : .yellow)
+                        .foregroundColor(item.status.textColor)
                         .font(.system(size: 18))
                 }
                 
@@ -70,6 +78,8 @@ struct HistoryRowView: View {
         .background(Color.HomeSemantic.historyCardBackground)
         .cornerRadius(22)
         .customLightShadow()
+        .saturation(isDisabled ? 0.65 : 1)
+        .opacity(isDisabled ? 0.55 : 1)
     }
     
     // MARK: - Helpers
@@ -97,7 +107,7 @@ struct HistoryRowView: View {
             return "leaf.fill"
         case .caution:
             return "hand.raised.fill"
-        case .unsafe:
+        case .unsafe, .failed:
             return "exclamationmark.octagon.fill"
         }
     }

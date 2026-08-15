@@ -5,8 +5,8 @@
 import Foundation
 
 enum NewsEndpoint: APIEndpoint {
-    case topHeadlines(category: String)
-    case everything(query: String)
+    case topHeadlines(category: String, page: Int, pageSize: Int)
+    case everything(query: String, page: Int, pageSize: Int)
 
     var baseURL: String {
         NewsAPIConfig.baseURL
@@ -31,10 +31,14 @@ enum NewsEndpoint: APIEndpoint {
         ]
 
         switch self {
-        case .topHeadlines(let category):
+        case .topHeadlines(let category, let page, let pageSize):
             params["category"] = category
-        case .everything(let query):
+            params["page"] = String(page)
+            params["pageSize"] = String(pageSize)
+        case .everything(let query, let page, let pageSize):
             params["q"] = query
+            params["page"] = String(page)
+            params["pageSize"] = String(pageSize)
         }
 
         return params

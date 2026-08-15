@@ -10,10 +10,10 @@ enum HomeRoute: Route {
     case mealDetail(id: String)
     case summary
     case news
-    case discover
-    case articleDetail(Article)
     case scanDetail(scanId: String)
+    case scanHistory
 
+    @MainActor
     @ViewBuilder
     var destination: some View {
         switch self {
@@ -22,13 +22,11 @@ enum HomeRoute: Route {
         case .summary:
             HomeSummaryView()
         case .news:
-            NewsView()
-        case .discover:
-            DiscoverView()
-        case .articleDetail(let article):
-            ArticleDetailView(article: article)
+            NewsFactory.makeNewsView()
         case .scanDetail(let scanId):
             ProductDetailsScreen(scanId: scanId)
+        case .scanHistory:
+            ScanHistoryFactory.makeScanHistoryView()
         }
     }
 }

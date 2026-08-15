@@ -94,21 +94,30 @@ struct ExerciseWorkoutPlayerView: View {
             }
             .background(Color.ExerciseSemantic.screenBackground.ignoresSafeArea())
             .navigationBarHidden(true)
-            .toolbar(.hidden, for: .tabBar)
-            .hideCustomTabBar(true)
         }
         // MARK: - Success Completion Alert
         .customAlert(
             isPresented: $viewModel.showSuccessDialog,
             type: .success,
             title: "Workout Completed!",
-            description: "Great job! You completed \(viewModel.exercise.name) (\(viewModel.setsCount) sets x \(viewModel.repsCount) reps) in \(viewModel.formattedTime) and burned \(viewModel.formattedCalories) kcal.",
+            description: viewModel.completionDescription,
             primaryButtonTitle: "Done",
             primaryButtonColor: Color.Teal.teal1000,
             primaryAction: {
                 viewModel.stopTimer()
                 viewModel.showSuccessDialog = false
                 router.pop()
+            }
+        )
+        .customAlert(
+            isPresented: $viewModel.showRecordingError,
+            type: .error,
+            title: viewModel.hasRecordedWorkout ? "Workout Saved Locally" : "Unable to Save Workout",
+            description: viewModel.recordingErrorMessage,
+            primaryButtonTitle: "OK",
+            primaryButtonColor: Color.Teal.teal1000,
+            primaryAction: {
+                viewModel.showRecordingError = false
             }
         )
         // MARK: - Cancel Confirmation Alert

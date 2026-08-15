@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 @Observable
 final class FamilyMemberSheetViewModel {
     let existingMember: FamilyMember?
     let allMembers: [FamilyMember]
 
-    enum AlertContext { case delete, duplicate, unsavedChanges }
+    enum AlertContext { case delete, duplicate, unsavedChanges, networkError }
     var alertContext: AlertContext = .delete
 
     var name = ValidatedField(value: "")
@@ -22,30 +23,32 @@ final class FamilyMemberSheetViewModel {
     var allergies = ChipSelectionManager()
 
     var isLoading = false
+    var isImageUploading = false
+    
+    var isSaving = false
+    var isDeleting = false
+    
     var errorMessage: String?
+    var pendingImageData: Data?
 
-    // MARK: - Dirty-Check Baseline
     private var snapshot: FamilyMemberInput?
     private var revertAction: (() -> Void)?
 
     private let getReferenceDataUseCase: GetReferenceDataUseCaseProtocol
-    private let updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol
+    private let imageCompressor: ImageCompressing
 
     var isEditMode: Bool { existingMember != nil }
 
     init(
         existingMember: FamilyMember?,
         allMembers: [FamilyMember],
-        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer
-            .shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
-        updateFamilyMembersUseCase: UpdateFamilyMembersUseCaseProtocol =
-            DIContainer.shared.resolve(
-                type: UpdateFamilyMembersUseCaseProtocol.self)
+        getReferenceDataUseCase: GetReferenceDataUseCaseProtocol = DIContainer.shared.resolve(type: GetReferenceDataUseCaseProtocol.self),
+        imageCompressor: ImageCompressing = ImageCompressor()
     ) {
         self.existingMember = existingMember
         self.allMembers = allMembers
         self.getReferenceDataUseCase = getReferenceDataUseCase
-        self.updateFamilyMembersUseCase = updateFamilyMembersUseCase
+        self.imageCompressor = imageCompressor
 
         if let member = existingMember {
             name.value = member.name
@@ -63,19 +66,10 @@ final class FamilyMemberSheetViewModel {
 
         do {
             let data = try await getReferenceDataUseCase.execute()
-
-            conditions.configure(
-                availableItems: data.diseases,
-                existingSelections: existingMember?.diseases ?? []
-            )
-            allergies.configure(
-                availableItems: data.allergies,
-                existingSelections: existingMember?.allergies ?? []
-            )
-
+            conditions.configure(availableItems: data.diseases, existingSelections: existingMember?.diseases ?? [])
+            allergies.configure(availableItems: data.allergies, existingSelections: existingMember?.allergies ?? [])
             captureSnapshot()
             setupRevertAction()
-
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -83,7 +77,6 @@ final class FamilyMemberSheetViewModel {
         isLoading = false
     }
 
-    // MARK: - Dirty Checking & Reverting
     private func captureSnapshot() {
         snapshot = buildInput()
     }
@@ -98,18 +91,11 @@ final class FamilyMemberSheetViewModel {
             guard let self = self else { return }
             self.name.value = origName
             self.relation.value = origRelation
-
-            self.conditions.configure(
-                availableItems: self.conditions.availableItems,
-                existingSelections: origDiseases
-            )
-            self.allergies.configure(
-                availableItems: self.allergies.availableItems,
-                existingSelections: origAllergies
-            )
-
+            self.conditions.configure(availableItems: self.conditions.availableItems, existingSelections: origDiseases)
+            self.allergies.configure(availableItems: self.allergies.availableItems, existingSelections: origAllergies)
             self.name.state = .normal
             self.relation.state = .normal
+            self.pendingImageData = nil
             self.captureSnapshot()
         }
     }
@@ -127,42 +113,34 @@ final class FamilyMemberSheetViewModel {
             || snapshot.relation != current.relation
             || Set(snapshot.allergyIds) != Set(current.allergyIds)
             || Set(snapshot.diseaseIds) != Set(current.diseaseIds)
+            || pendingImageData != nil
     }
 
-    // MARK: - Validation
+    @MainActor
+    func handleImageSelection(data: Data) async {
+        self.pendingImageData = imageCompressor.compress(data)
+    }
+
     func validate() -> Bool {
-        let isNameValid = name.validate(
-            using: AppValidator.displayNameValidator)
-        let isRelationValid = relation.validate(
-            using: AppValidator.displayNameValidator)
+        let isNameValid = name.validate(using: AppValidator.displayNameValidator)
+        let isRelationValid = relation.validate(using: AppValidator.displayNameValidator)
         return isNameValid && isRelationValid
     }
 
     func isDuplicate() -> Bool {
-        let currentName = name.value.trimmingCharacters(in: .whitespaces)
-            .lowercased()
-        let currentRelation = relation.value.trimmingCharacters(
-            in: .whitespaces
-        ).lowercased()
+        let currentName = name.value.trimmingCharacters(in: .whitespaces).lowercased()
+        let currentRelation = relation.value.trimmingCharacters(in: .whitespaces).lowercased()
 
         return allMembers.contains { member in
-            if let existingId = existingMember?.id, member.id == existingId {
-                return false
-            }
-
-            let memberName = member.name.trimmingCharacters(in: .whitespaces)
-                .lowercased()
-            let memberRelation = member.relation.trimmingCharacters(
-                in: .whitespaces
-            ).lowercased()
-
-            return memberName == currentName
-                && memberRelation == currentRelation
+            if let existingId = existingMember?.id, member.id == existingId { return false }
+            return member.name.trimmingCharacters(in: .whitespaces).lowercased() == currentName
+                && member.relation.trimmingCharacters(in: .whitespaces).lowercased() == currentRelation
         }
     }
 
     private func buildInput() -> FamilyMemberInput {
         FamilyMemberInput(
+            id: existingMember?.id,
             name: name.value,
             relation: relation.value,
             allergyIds: allergies.selectedIds,

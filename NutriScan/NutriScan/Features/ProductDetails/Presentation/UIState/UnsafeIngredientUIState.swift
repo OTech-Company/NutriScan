@@ -9,7 +9,12 @@ import Foundation
 
 struct UnsafeIngredientUIState: Identifiable {
     let id = UUID()
-    let name: String
-    let allergyMatch: String
-    let description: String
+    let ingredient: String
+    let reason: String
+    let type: String
+    let name: [String]
+
+    var matchText: String {
+        name.isEmpty ? type : name.joined(separator: ", ")
+    }
 }

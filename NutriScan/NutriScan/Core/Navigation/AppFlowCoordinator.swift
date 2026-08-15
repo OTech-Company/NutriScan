@@ -12,31 +12,37 @@ import SwiftUI
 /// change (e.g. `OnboardingView` finishing, `LoginView` succeeding,
 /// a logout button inside Profile).
 final class AppFlowCoordinator: ObservableObject {
-    @Published private(set) var flow: AppFlow = .splash
+    @Published private(set) var flow: AppFlow
     @Published var selectedTab: AppTab = .home
+    @Published var pendingDeletionDate: Date? = nil
+
+    let mainTabNavigation: MainTabNavigationStore
     
-    // Inject the use case (you'll bind this in your DI setup)
     private let fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol
 
     init(
         fetchAndCacheProfileUseCase: FetchAndCacheProfileUseCaseProtocol =
             DIContainer.shared.resolve(
-                type: FetchAndCacheProfileUseCaseProtocol.self)
+                type: FetchAndCacheProfileUseCaseProtocol.self),
+        mainTabNavigation: MainTabNavigationStore = MainTabNavigationStore(),
+        initialFlow: AppFlow = .splash,
+        observesSessionExpiration: Bool = true
     ) {
         self.fetchAndCacheProfileUseCase = fetchAndCacheProfileUseCase
+        self.mainTabNavigation = mainTabNavigation
+        self.flow = initialFlow
 
-        NotificationCenter.default.addObserver(
-            forName: .userDidSessionExpire,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.logout()
+        if observesSessionExpiration {
+            NotificationCenter.default.addObserver(
+                forName: .userDidSessionExpire,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                self?.logout()
+            }
         }
     }
 
-    // Replace these with real checks (Keychain token, UserDefaults flag, etc.)
-    // NOTE: key matches @AppStorage("hasSeenOnboarding") used in OnboardingScreen —
-    // keep these in sync, or better, centralize the key name as a constant.
     private var hasCompletedOnboarding: Bool {
         UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
     }
@@ -51,13 +57,36 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private var hasCompletedProfileSetup: Bool {
-        // e.g. check the fetched User entity for required profile fields,
-        // or a dedicated flag from your ProfileRepository
         UserDefaults.standard.bool(forKey: "hasCompletedProfileSetup")
     }
 
-    /// Called once, e.g. after Splash finishes its minimum display time
-    /// and/or any startup checks (session validation, remote config, etc).
+    private func parseDeletionDate(from message: String) -> Date? {
+        guard let dateStr = message.components(separatedBy: "on ").last?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            return nil
+        }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter.date(from: dateStr)
+    }
+
+    @MainActor
+    private func fetchProfileAndTransitionToMain() async {
+        do {
+            _ = try await fetchAndCacheProfileUseCase.execute()
+            flow = .main
+        } catch let error as NetworkError {
+            if case .apiError(let apiError) = error,
+               apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
+                pendingDeletionDate = parseDeletionDate(from: apiError.message ?? "")
+                flow = .pendingDeletion
+            } else {
+                flow = .main
+            }
+        } catch {
+            flow = .main
+        }
+    }
+
     @MainActor
     func finishSplash() {
         Task {
@@ -68,11 +97,7 @@ final class AppFlowCoordinator: ObservableObject {
             } else if !hasCompletedProfileSetup {
                 flow = .profileSetup
             } else {
-                // EAGER LOAD: Fetch the profile data silently.
-                // If it fails (e.g. no internet), we still let them into the main app
-                // where the Home screen can handle the empty cache gracefully.
-                _ = try? await fetchAndCacheProfileUseCase.execute()
-                flow = .main
+                await fetchProfileAndTransitionToMain()
             }
         }
     }
@@ -82,6 +107,7 @@ final class AppFlowCoordinator: ObservableObject {
         flow = .auth
     }
 
+    @MainActor
     func didAuthenticate(isPendingSetup: Bool = false, email: String? = nil) {
         if isPendingSetup {
             UserDefaults.standard.set(false, forKey: "hasCompletedProfileSetup")
@@ -91,11 +117,24 @@ final class AppFlowCoordinator: ObservableObject {
             flow = .profileSetup
         } else {
             UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
-            flow = .main
+            Task {
+                await fetchProfileAndTransitionToMain()
+            }
         }
     }
 
-    func finishProfileSetup() {
+    @MainActor
+    func didRestoreAccount() {
+        pendingDeletionDate = nil
+        flow = .main
+
+        Task {
+            _ = try? await fetchAndCacheProfileUseCase.execute()
+        }
+    }
+
+    @MainActor
+    func finishProfileSetup() async {
         if let email = UserDefaults.standard.string(forKey: "currentSetupEmail")
         {
             UserDefaults.standard.removeObject(
@@ -103,16 +142,21 @@ final class AppFlowCoordinator: ObservableObject {
             UserDefaults.standard.removeObject(forKey: "currentSetupEmail")
         }
         UserDefaults.standard.set(true, forKey: "hasCompletedProfileSetup")
-        flow = .main
+        
+        await fetchProfileAndTransitionToMain()
     }
 
     func logout() {
         try? KeychainManager.shared.delete(key: .accessToken)
         try? KeychainManager.shared.delete(key: .refreshToken)
 
-        // Clear the shared cache so the next user doesn't see old data
         let store = DIContainer.shared.resolve(type: UserProfileStore.self)
         store.clear()
+        
+        pendingDeletionDate = nil
+
+        selectedTab = .home
+        mainTabNavigation.resetAll()
 
         flow = .auth
     }

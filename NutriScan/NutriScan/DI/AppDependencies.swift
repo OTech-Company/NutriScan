@@ -17,15 +17,23 @@ struct AppDependencies {
     private static let assemblies: [Assembly] = [
         CoreAssembly(),
         SharedProfileAssembly(),
+        StepTrackerAssembly(),
+        NotificationHistoryAssembly(),
+        CaloriesAssembly(),
+        NewsAssembly(),
+        NotificationAssembly(),
+        NotificationSettingsAssembly(),
         AuthAssembly(),
         ExerciseAssembly(),
         ProfileAssembly(),
         EditProfileAssembly(),
         ScanAssembly(),
-        StepTrackerAssembly(),
         RAGAssembly(),
         SettingsAssembly(),
+        AccountRestorationAssembly(),
         ProductDetailsAssembly(),
+        CaloriesHistoryAssembly(),
+        ScanHistoryAssembly(),
         HomeAssembly()
     ]
 
@@ -53,6 +61,23 @@ struct ScanAssembly: Assembly {
     }
 }
 
+struct ScanHistoryAssembly: Assembly {
+    func assemble(container: DIContainer) {
+        let networkService = container.resolve(type: NetworkServiceProtocol.self)
+        let remoteDataSource: ScanHistoryRemoteDataSourceProtocol = ScanHistoryRemoteDataSource(networkService: networkService)
+        let repository: ScanHistoryRepositoryProtocol = ScanHistoryRepositoryImpl(remoteDataSource: remoteDataSource)
+
+        container.register(
+            type: ScanHistoryRepositoryProtocol.self,
+            component: repository
+        )
+        container.register(
+            type: ScanHistoryUseCaseProtocol.self,
+            component: ScanHistoryUseCase(repository: repository)
+        )
+    }
+}
+
 struct RAGAssembly: Assembly {
     func assemble(container: DIContainer) {
         container.register(
@@ -64,7 +89,13 @@ struct RAGAssembly: Assembly {
 
 struct StepTrackerAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
-        let repository = StepRepositoryImpl()
+        let healthKitSource = HealthKitStepDataSource()
+        let repository = StepRepositoryImpl(healthKitSource: healthKitSource)
+
+        container.register(
+            type: HealthKitStepDataSource.self,
+            component: healthKitSource
+        )
 
         // Register step tracker use cases
         container.register(

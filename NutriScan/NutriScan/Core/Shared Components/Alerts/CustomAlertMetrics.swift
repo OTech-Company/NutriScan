@@ -31,7 +31,7 @@ struct CustomAlertMetrics {
     
     // Button metrics
     static let buttonCornerRadius: CGFloat = 12
-    static let buttonHeight: CGFloat = 36
+    static let buttonHeight: CGFloat = 42
     
     // Animation timing parameters (Entrance)
     static let backdropEntranceDuration: Double = 0.15

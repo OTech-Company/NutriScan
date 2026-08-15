@@ -10,7 +10,13 @@ import SwiftUI
 struct FavoritesGridView: View {
     
     let savedItems: [FavoritesScanEntity]
+    var isLoadingNextPage: Bool = false
+    var paginationError: String? = nil
     var onItemAppear: ((FavoritesScanEntity) -> Void)? = nil
+    var onRemoveRequest: ((FavoritesScanEntity) -> Void)? = nil
+    var onProductTap: ((FavoritesScanEntity) -> Void)? = nil
+    var onRetryPagination: (() -> Void)? = nil
+    var onAddToDaily: ((String, @escaping (Bool) -> Void) -> Void)? = nil
     
     let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -21,8 +27,17 @@ struct FavoritesGridView: View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(savedItems, id: \.id) { item in
-                    FavoriteCardView(favUIState:
-                                        FavUIState(entity: item)
+                    FavoriteCardView(
+                        favUIState: FavUIState(entity: item),
+                        onRemove: {
+                            onRemoveRequest?(item)
+                        },
+                        onProductTap: {
+                            onProductTap?(item)
+                        },
+                        onAddToDaily: { onResult in
+                            onAddToDaily?(item.id, onResult)
+                        }
                     )
                     .onAppear {
                         onItemAppear?(item)
@@ -31,10 +46,20 @@ struct FavoritesGridView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 12)
+            .padding(.bottom, CustomAnimatedTabBar.contentClearance)
+            
+            // MARK: - Pagination Footer
+            if isLoadingNextPage {
+                ProgressView()
+                    .tint(Color.Teal.teal1000)
+                    .padding(.vertical, 16)
+            } else if paginationError != nil, let onRetry = onRetryPagination {
+                PaginationRetryFooter(onRetry: onRetry)
+            }
         }
     }
 }
 
 #Preview {
-    FavoritesView(viewModel: FavoritesViewModel(favoritesUseCase: FavoritesUseCase(favoritesRepository: FavoritesRepository())))
+    FavoritesFactory.makeFavoritesView()
 }

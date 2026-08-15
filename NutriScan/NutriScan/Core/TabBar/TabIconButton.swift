@@ -45,6 +45,14 @@ struct TabIconButton: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+            .accessibilityLabel(tab.title)
+            .accessibilityIdentifier(
+                tab == .scan
+                    ? "main.tab.scan.layoutPlaceholder"
+                    : "main.tab.\(tab.accessibilityIdentifier)"
+            )
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .accessibilityHidden(tab == .scan)
             .preference(
                 key: TabBarPositionKey.self,
                 value: [tab: proxy.frame(in: .named("TabBarCoordinateSpace")).midX]
