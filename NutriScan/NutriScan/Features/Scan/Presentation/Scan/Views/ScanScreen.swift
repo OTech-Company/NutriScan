@@ -62,16 +62,6 @@ struct ScanScreen: View {
                 }
 
                 VStack {
-                    HStack {
-                        GalleryButton {
-                            viewModel.presentGallery()
-                        }
-                        .padding(.leading, 16)
-
-                        Spacer()
-                    }
-                    .safeAreaPadding(.top, 8)
-
                     Spacer()
 
                     ScanStateCardView(
@@ -89,7 +79,17 @@ struct ScanScreen: View {
                         }
                     )
                     .padding(.horizontal, 16)
-                    .padding(.bottom, CustomAnimatedTabBar.contentClearance + 30)
+
+                    HStack {
+                        GalleryButton {
+                            viewModel.presentGallery()
+                        }
+                        .padding(.leading, 16)
+
+                        Spacer()
+                    }
+                    .padding(.top, 16)
+                    .padding(.bottom, CustomAnimatedTabBar.contentClearance + 20)
                 }
             }
         }
