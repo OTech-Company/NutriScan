@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 protocol Assembly {
     func assemble(container: DIContainer)
 }

@@ -108,22 +108,14 @@ struct HelpScreen: View {
             await viewModel.loadFaqs()
         }
         .customAlert(
-            activeAlert: $viewModel.activeAlert,
-            config: { alert in
-                switch alert {
-                case .warning:
-                    return CustomAlertConfig(
+            item: $viewModel.alert,
+            config: { _ in
+                CustomAlertConfig(
                         type: .warning,
                         title: "Mail Not Configured",
-                        description:
+                        message:
                             "We couldn't open a mail app. Our support email (\(viewModel.supportEmail)) has been copied to your clipboard instead.",
-                        primaryButtonTitle: "OK",
-                        primaryButtonColor: Color.Teal.teal1000
                     )
-                default:
-                    return CustomAlertConfig(
-                        type: .warning, title: "", description: "")
-                }
             },
             primaryAction: { _ in }
         )

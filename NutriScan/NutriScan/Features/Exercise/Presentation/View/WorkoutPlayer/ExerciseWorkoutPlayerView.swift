@@ -21,7 +21,7 @@ struct ExerciseWorkoutPlayerView: View {
                 HStack(spacing: 16) {
                     BackButton {
                         if viewModel.elapsedSeconds > 0 {
-                            viewModel.showCancelAlert = true
+                            viewModel.alert = .cancel
                         } else {
                             router.pop()
                         }
@@ -88,70 +88,63 @@ struct ExerciseWorkoutPlayerView: View {
                     WorkoutPausedControlsView(viewModel: viewModel)
                 } else {
                     WorkoutActiveControlsView(viewModel: viewModel) {
-                        viewModel.showCancelAlert = true
+                        viewModel.alert = .cancel
                     }
                 }
             }
             .background(Color.ExerciseSemantic.screenBackground.ignoresSafeArea())
             .navigationBarHidden(true)
         }
-        // MARK: - Success Completion Alert
         .customAlert(
-            isPresented: $viewModel.showSuccessDialog,
-            type: .success,
-            title: "Workout Completed!",
-            description: viewModel.completionDescription,
-            primaryButtonTitle: "Done",
-            primaryButtonColor: Color.Teal.teal1000,
-            primaryAction: {
-                viewModel.stopTimer()
-                viewModel.showSuccessDialog = false
-                router.pop()
-            }
-        )
-        .customAlert(
-            isPresented: $viewModel.showRecordingError,
-            type: .error,
-            title: viewModel.hasRecordedWorkout ? "Workout Saved Locally" : "Unable to Save Workout",
-            description: viewModel.recordingErrorMessage,
-            primaryButtonTitle: "OK",
-            primaryButtonColor: Color.Teal.teal1000,
-            primaryAction: {
-                viewModel.showRecordingError = false
-            }
-        )
-        // MARK: - Cancel Confirmation Alert
-        .customAlert(
-            isPresented: $viewModel.showCancelAlert,
-            type: .warning,
-            title: "Cancel Workout?",
-            description: "Are you sure you want to quit? Your current workout progress will be lost.",
-            primaryButtonTitle: "End Workout",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                viewModel.stopTimer()
-                router.pop()
+            item: $viewModel.alert,
+            config: { alert in
+                switch alert {
+                case .success:
+                    return CustomAlertConfig(
+                        type: .success,
+                        title: "Workout Completed!",
+                        message: viewModel.completionDescription,
+                        primaryButton: CustomAlertButton("Done")
+                    )
+                case .recordingError:
+                    return CustomAlertConfig(
+                        type: .error,
+                        title: viewModel.hasRecordedWorkout ? "Workout Saved Locally" : "Unable to Save Workout",
+                        message: viewModel.recordingErrorMessage
+                    )
+                case .cancel:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Cancel Workout?",
+                        message: "Are you sure you want to quit? Your current workout progress will be lost.",
+                        primaryButton: CustomAlertButton("End Workout", role: .destructive),
+                        secondaryButton: CustomAlertButton("Keep Going", role: .cancel)
+                    )
+                case .restart:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Restart Timer?",
+                        message: "This will reset your workout timer back to 00:00.",
+                        primaryButton: CustomAlertButton("Restart"),
+                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    )
+                }
             },
-            secondaryButtonTitle: "Keep Going",
-            secondaryAction: {
-                viewModel.showCancelAlert = false
-            }
-        )
-        // MARK: - Restart Confirmation Alert
-        .customAlert(
-            isPresented: $viewModel.showRestartAlert,
-            type: .warning,
-            title: "Restart Timer?",
-            description: "This will reset your workout timer back to 00:00.",
-            primaryButtonTitle: "Restart",
-            primaryButtonColor: Color.Teal.teal1000,
-            primaryAction: {
-                viewModel.restartTimer()
+            primaryAction: { alert in
+                switch alert {
+                case .success:
+                    viewModel.stopTimer()
+                    router.pop()
+                case .recordingError:
+                    break
+                case .cancel:
+                    viewModel.stopTimer()
+                    router.pop()
+                case .restart:
+                    viewModel.restartTimer()
+                }
             },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                viewModel.showRestartAlert = false
-            }
+            secondaryAction: { _ in }
         )
     }
 }

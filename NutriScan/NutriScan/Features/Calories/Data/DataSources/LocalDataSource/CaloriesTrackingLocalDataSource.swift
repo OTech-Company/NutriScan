@@ -81,6 +81,9 @@ final class CaloriesActivityStore {
 
     private let defaults: UserDefaults
     private let storageKey = "nutriscan.daily-activity-drafts.v1"
+    private let syncedStepDatesKey = "nutriscan.daily-step-sync-receipts.v1"
+    private let pendingFinalDatesKey = "nutriscan.daily-final-sync-pending.v1"
+    private let lastActiveDatesKey = "nutriscan.daily-last-active-dates.v1"
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -92,6 +95,52 @@ final class CaloriesActivityStore {
         }
     }
 
+    func hasSyncedSteps(profileID: String, date: String) -> Bool {
+        syncedStepDateIDs().contains(key(profileID: profileID, date: date))
+    }
+
+    func markStepDateSynced(profileID: String, date: String) {
+        var synced = syncedStepDateIDs()
+        synced.insert(key(profileID: profileID, date: date))
+        defaults.set(Array(synced), forKey: syncedStepDatesKey)
+        var pending = pendingFinalDateIDs()
+        pending.remove(key(profileID: profileID, date: date))
+        defaults.set(Array(pending), forKey: pendingFinalDatesKey)
+    }
+
+    func registerActiveDate(profileID: String, date: String) {
+        var dates = lastActiveDates()
+        if let previousDate = dates[profileID],
+           previousDate < date,
+           !hasSyncedSteps(profileID: profileID, date: previousDate) {
+            markFinalSyncPending(profileID: profileID, date: previousDate)
+        }
+        dates[profileID] = date
+        defaults.set(dates, forKey: lastActiveDatesKey)
+    }
+
+    func markFinalSyncPending(profileID: String, date: String) {
+        guard !hasSyncedSteps(profileID: profileID, date: date) else { return }
+        var pending = pendingFinalDateIDs()
+        pending.insert(key(profileID: profileID, date: date))
+        defaults.set(Array(pending), forKey: pendingFinalDatesKey)
+    }
+
+    func pendingFinalSyncDates(profileID: String, before date: String) -> [String] {
+        let persistedDates = pendingFinalDateIDs().compactMap { identifier -> String? in
+            let prefix = "\(profileID)|"
+            guard identifier.hasPrefix(prefix) else { return nil }
+            return String(identifier.dropFirst(prefix.count))
+        }
+        let legacyDates = drafts.values.compactMap { draft -> String? in
+            guard draft.profileID == profileID, draft.needsStepSync else { return nil }
+            return draft.date
+        }
+        return Set(persistedDates + legacyDates)
+            .filter { $0 < date && !hasSyncedSteps(profileID: profileID, date: $0) }
+            .sorted()
+    }
+
     func draft(profileID: String, date: String) -> CaloriesActivityDraft? {
         drafts[key(profileID: profileID, date: date)]
     }
@@ -101,8 +150,6 @@ final class CaloriesActivityStore {
         let draftKey = key(profileID: profileID, date: tracking.date)
         if var existing = drafts[draftKey] {
             guard !existing.isSeededFromServer else { return existing }
-            existing.stepsCnt = max(existing.stepsCnt, tracking.stepsCnt)
-            existing.stepsKcal = max(existing.stepsKcal, tracking.stepsKcal)
             existing.exerciseKcal += tracking.exerciseKcal
             existing.exerciseSeconds += tracking.exerciseMin * 60
             existing.totalMealKcal = tracking.mealCalories
@@ -115,8 +162,8 @@ final class CaloriesActivityStore {
         let draft = CaloriesActivityDraft(
             profileID: profileID,
             date: tracking.date,
-            stepsCnt: tracking.stepsCnt,
-            stepsKcal: tracking.stepsKcal,
+            stepsCnt: 0,
+            stepsKcal: 0,
             exerciseKcal: tracking.exerciseKcal,
             exerciseSeconds: tracking.exerciseMin * 60,
             totalMealKcal: tracking.mealCalories,
@@ -131,6 +178,17 @@ final class CaloriesActivityStore {
 
     func updateSteps(profileID: String, date: String, steps: Int, calories: Double) {
         let draftKey = key(profileID: profileID, date: date)
+        if hasSyncedSteps(profileID: profileID, date: date) {
+            if var draft = drafts[draftKey] {
+                draft.needsStepSync = false
+                drafts[draftKey] = draft
+                if !draft.needsExerciseSync {
+                    drafts.removeValue(forKey: draftKey)
+                }
+                persist()
+            }
+            return
+        }
         var draft = drafts[draftKey] ?? CaloriesActivityDraft(
             profileID: profileID,
             date: date,
@@ -149,6 +207,7 @@ final class CaloriesActivityStore {
         draft.stepsKcal = max(calories, 0)
         draft.needsStepSync = true
         drafts[draftKey] = draft
+        markFinalSyncPending(profileID: profileID, date: date)
         persist()
     }
 
@@ -183,8 +242,28 @@ final class CaloriesActivityStore {
 
     func pendingStepDrafts(profileID: String, before date: String) -> [CaloriesActivityDraft] {
         drafts.values
-            .filter { $0.profileID == profileID && $0.date < date && $0.needsStepSync }
+            .filter {
+                $0.profileID == profileID
+                    && $0.date < date
+                    && $0.needsStepSync
+                    && !hasSyncedSteps(profileID: profileID, date: $0.date)
+            }
             .sorted { $0.date < $1.date }
+    }
+
+    func cleanupReceiptBackedDrafts(profileID: String) {
+        var changed = false
+        for (draftKey, var draft) in drafts where draft.profileID == profileID {
+            guard hasSyncedSteps(profileID: profileID, date: draft.date) else { continue }
+            draft.needsStepSync = false
+            if draft.needsExerciseSync {
+                drafts[draftKey] = draft
+            } else {
+                drafts.removeValue(forKey: draftKey)
+            }
+            changed = true
+        }
+        if changed { persist() }
     }
 
     func pendingExerciseDrafts(profileID: String, through date: String) -> [CaloriesActivityDraft] {
@@ -193,19 +272,13 @@ final class CaloriesActivityStore {
             .sorted { $0.date < $1.date }
     }
 
-    func markStepSynced(
-        profileID: String,
-        date: String,
-        expectedSteps: Int,
-        expectedStepCalories: Double
-    ) {
+    func markStepSynced(profileID: String, date: String) {
+        markStepDateSynced(profileID: profileID, date: date)
         let draftKey = key(profileID: profileID, date: date)
         guard var draft = drafts[draftKey] else { return }
-        if draft.stepsCnt == expectedSteps && draft.stepsKcal == expectedStepCalories {
-            draft.needsStepSync = false
-            drafts[draftKey] = draft
-            persist()
-        }
+        draft.needsStepSync = false
+        drafts[draftKey] = draft
+        persist()
     }
 
     func markExerciseSynced(
@@ -251,6 +324,18 @@ final class CaloriesActivityStore {
 
     private func key(profileID: String, date: String) -> String {
         "\(profileID)|\(date)"
+    }
+
+    private func syncedStepDateIDs() -> Set<String> {
+        Set(defaults.stringArray(forKey: syncedStepDatesKey) ?? [])
+    }
+
+    private func pendingFinalDateIDs() -> Set<String> {
+        Set(defaults.stringArray(forKey: pendingFinalDatesKey) ?? [])
+    }
+
+    private func lastActiveDates() -> [String: String] {
+        defaults.dictionary(forKey: lastActiveDatesKey) as? [String: String] ?? [:]
     }
 
     private func persist() {

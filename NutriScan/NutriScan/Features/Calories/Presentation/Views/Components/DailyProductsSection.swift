@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shimmer
 
 enum MealRemovalKind: Equatable {
     case one
@@ -23,6 +24,7 @@ struct DailyProductsSection: View {
     let dailyKcal: Int
     let meals: [CalorieMeal]
     var mutatingMealIDs: Set<String> = []
+    var isLoading = false
     var showsHeader = true
     var onAddFoodTap: () -> Void = {}
     var onRemoveMealRequest: ((MealRemovalRequest) -> Void)? = nil
@@ -33,13 +35,29 @@ struct DailyProductsSection: View {
     var body: some View {
         VStack(spacing: 8) {
             if showsHeader {
-                DailyProductsHeader(dailyKcal: dailyKcal)
+                DailyProductsHeader(dailyKcal: dailyKcal, isLoading: isLoading)
             }
 
             ZStack {
-                if meals.isEmpty {
+                if isLoading {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 10) {
+                            ForEach(0..<2, id: \.self) { _ in
+                                CalorieMealLoadingCard()
+                            }
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 12)
+                    }
+                    .accessibilityHidden(true)
+                } else if meals.isEmpty {
                     VStack(spacing: 8) {
-                        AddCircleButton(size: 60, action: onAddFoodTap)
+                        AddCircleButton(
+                            accessibilityLabel: "Add food",
+                            accessibilityHint: "Opens your saved foods",
+                            size: 60,
+                            action: onAddFoodTap
+                        )
                         Text("Add Food")
                             .foregroundStyle(Color.CaloriesSemantic.dailyProductsAddFoodText)
                             .font(Font.AppFont.textSecondary)
@@ -77,9 +95,9 @@ struct DailyProductsSection: View {
             .background(
                 RoundedRectangle(cornerRadius: 24)
                     .fill(
-                        meals.isEmpty
-                            ? Color.CaloriesSemantic.dailyProductsEmptyCardBackground
-                            : Color.CaloriesSemantic.dailyProductsCarouselBackground
+                        isLoading || !meals.isEmpty
+                            ? Color.CaloriesSemantic.dailyProductsCarouselBackground
+                            : Color.CaloriesSemantic.dailyProductsEmptyCardBackground
                     )
             )
             .overlay {
@@ -107,12 +125,14 @@ struct DailyProductsSection: View {
                     showCard = true
                 }
             }
+            .allowsHitTesting(!isLoading)
         }
     }
 }
 
 struct DailyProductsHeader: View {
     let dailyKcal: Int
+    var isLoading = false
 
     var body: some View {
         HStack(spacing: 4) {
@@ -122,24 +142,76 @@ struct DailyProductsHeader: View {
 
             Spacer()
 
-            Text("\(dailyKcal)")
-                .foregroundStyle(Color.CaloriesSemantic.dailyProductsBadgeText)
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
-                .font(Font.AppFont.textCaption)
-                .contentTransition(.numericText())
-                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: dailyKcal)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.CaloriesSemantic.dailyProductsBadgeBackground)
-                )
-                .accessibilityIdentifier("calories.dailyKcal")
+            Group {
+                if isLoading {
+                    CaloriesTextShimmer(
+                        width: 42,
+                        height: 18,
+                        cornerRadius: 9,
+                        color: Color.CaloriesSemantic.dailyProductsBadgeText.opacity(0.65)
+                    )
+                } else {
+                    Text("\(dailyKcal)")
+                        .foregroundStyle(Color.CaloriesSemantic.dailyProductsBadgeText)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .font(Font.AppFont.textCaption)
+                        .contentTransition(.numericText())
+                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: dailyKcal)
+                        .accessibilityIdentifier("calories.dailyKcal")
+                }
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.CaloriesSemantic.dailyProductsBadgeBackground)
+            )
 
             Text("Kcal")
                 .foregroundStyle(Color.CaloriesSemantic.dailyProductsKcalLabel)
                 .font(Font.AppFont.textCaption)
         }
         .accessibilityElement(children: .contain)
+    }
+}
+
+private struct CalorieMealLoadingCard: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.CaloriesSemantic.shimmerPlaceholder)
+                    .frame(width: 44, height: 44)
+
+                VStack(alignment: .leading, spacing: 6) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color.CaloriesSemantic.shimmerPlaceholder)
+                        .frame(width: 76, height: 10)
+                    Capsule()
+                        .fill(Color.CaloriesSemantic.shimmerPlaceholder)
+                        .frame(width: 34, height: 16)
+                }
+            }
+
+            Spacer(minLength: 0)
+
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.CaloriesSemantic.shimmerPlaceholder)
+                .frame(width: 70, height: 24)
+        }
+        .padding(10)
+        .frame(width: 160, height: 116)
+        .background(
+            RoundedRectangle(cornerRadius: 18)
+                .fill(Color.CaloriesSemantic.dailyProductCardBackground)
+        )
+        .overlay {
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.CaloriesSemantic.dailyProductCardBorder, lineWidth: 1)
+        }
+        .redacted(reason: .placeholder)
+        .shimmering(active: !reduceMotion)
     }
 }
 

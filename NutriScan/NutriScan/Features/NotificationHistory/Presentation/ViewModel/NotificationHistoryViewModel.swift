@@ -8,10 +8,15 @@
 import Foundation
 import Combine
 
+enum NotificationHistoryAlertDestination: String, Identifiable {
+    case clearAll
+    var id: String { rawValue }
+}
+
 @MainActor
 final class NotificationHistoryViewModel: ObservableObject {
     @Published var items: [NotificationHistoryItem] = []
-    @Published var showClearAllAlert: Bool = false
+    @Published var alert: NotificationHistoryAlertDestination?
 
     private let getHistoryUseCase: GetNotificationHistoryUseCaseProtocol
     private let clearHistoryUseCase: ClearNotificationHistoryUseCaseProtocol
@@ -49,12 +54,12 @@ final class NotificationHistoryViewModel: ObservableObject {
 
     func requestClearAll() {
         guard !items.isEmpty else { return }
-        showClearAllAlert = true
+        alert = .clearAll
     }
 
     func confirmClearAll() {
         clearHistoryUseCase.execute()
         items.removeAll()
-        showClearAllAlert = false
+        alert = nil
     }
 }

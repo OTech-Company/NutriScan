@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct ProfileSetupFlowView: View {
+    private enum AlertDestination: String, Identifiable {
+        case invalidAge
+        var id: String { rawValue }
+    }
+
     @StateObject private var router = AppRouter()
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = ProfileSetupFlowFactory.makeViewModel()
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -34,18 +39,12 @@ struct ProfileSetupFlowView: View {
             .navigationBarHidden(true)
         }
         .environmentObject(router)
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(item: $alert, config: { _ in
+            CustomAlertConfig(
                     type: .error,
                     title: "Invalid Age",
-                    description: "Your age must be at least 6 years.",
-                    primaryButtonTitle: "OK"
+                    message: "Your age must be at least 6 years."
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: "", description: "")
-            }
         }, primaryAction: { _ in })
     }
 
@@ -78,7 +77,7 @@ struct ProfileSetupFlowView: View {
             let ageComponents = Calendar.current.dateComponents([.year], from: viewModel.birthdate, to: Date())
             let age = ageComponents.year ?? 0
             if age < 6 {
-                activeAlert = .error
+                alert = .invalidAge
                 return
             }
         }

@@ -28,7 +28,7 @@ enum StepHistoryRange {
 /// Domain-level contract. The Presentation layer (via UseCases) only ever
 /// depends on this protocol, never on the concrete Data-layer implementation.
 protocol StepRepositoryProtocol {
-    /// Requests permission to read motion/step data.
+    /// Requests permission to read HealthKit step data.
     func requestAuthorization() async throws -> Bool
 
     /// Emits a live stream of the running step count since `startOfDay`.
@@ -36,6 +36,9 @@ protocol StepRepositoryProtocol {
 
     /// One-shot fetch of the total steps for a given calendar day.
     func fetchSteps(for date: Date) async throws -> DailySteps
+
+    /// One-shot trusted HealthKit count for an exact range.
+    func fetchStepCount(from startDate: Date, to endDate: Date) async throws -> Int?
 
     /// One-shot fetch of a per-day step history for the given range.
     func fetchStepsHistory(for range: StepHistoryRange) async throws -> [DailySteps]

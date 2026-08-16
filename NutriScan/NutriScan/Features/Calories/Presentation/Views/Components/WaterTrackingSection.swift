@@ -11,6 +11,7 @@ struct WaterTrackingSection: View {
     let currentGlasses: Int
     let goalGlasses: Int
     var isUpdating: Bool = false
+    var isLoading = false
 
     var onAddTargetCupTap: () -> Void = {}
 
@@ -30,11 +31,15 @@ struct WaterTrackingSection: View {
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesSemantic.waterTitle)
                 Spacer()
-                Text("\(currentGlasses)/\(goalGlasses)")
-                    .font(Font.AppFont.textDefault)
-                    .foregroundStyle(Color.CaloriesSemantic.waterCount)
-                    .contentTransition(.numericText())
-                    .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                if isLoading {
+                    CaloriesTextShimmer(width: 38, height: 13, cornerRadius: 4)
+                } else {
+                    Text("\(currentGlasses)/\(goalGlasses)")
+                        .font(Font.AppFont.textDefault)
+                        .foregroundStyle(Color.CaloriesSemantic.waterCount)
+                        .contentTransition(.numericText())
+                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                }
             }
 
             HStack {
@@ -62,10 +67,17 @@ struct WaterTrackingSection: View {
                                         }
                                     }
                             )
-                            .allowsHitTesting(!isUpdating)
+                            .allowsHitTesting(!isUpdating && !isLoading)
                             .accessibilityLabel("Water cup \(index + 1) of \(goalGlasses)")
                             .accessibilityValue(isFilled ? "Drunk" : "Not drunk")
                             .accessibilityHint("Tap to change consumed water. Long press to reduce the target.")
+                            .accessibilityAddTraits(.isButton)
+                            .accessibilityAction {
+                                handleCupTap(index: index, isFilled: isFilled)
+                            }
+                            .accessibilityAction(named: "Decrease water target") {
+                                if goalGlasses > 1 { onDeleteTargetCupRequest() }
+                            }
                         }
                     }
                     .padding(.vertical, 4)
@@ -73,11 +85,13 @@ struct WaterTrackingSection: View {
 
                 Spacer()
 
-                AddCircleButton {
-                    onAddTargetCupTap()
-                }
-                .allowsHitTesting(!isUpdating)
-                .opacity(isUpdating ? 0.5 : 1)
+                AddCircleButton(
+                    accessibilityLabel: "Increase water target",
+                    accessibilityHint: "Adds one cup to today's water goal",
+                    action: onAddTargetCupTap
+                )
+                .allowsHitTesting(!isUpdating && !isLoading)
+                .opacity(isUpdating || isLoading ? 0.5 : 1)
             }
             .padding(16)
             .frame(height: 74)
@@ -99,9 +113,9 @@ struct WaterTrackingSection: View {
             onUnfillCupRequest(index)
         } else {
             fillingCupIndex = index
+            onFillCup(index)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
                 fillingCupIndex = nil
-                onFillCup(index)
             }
         }
     }

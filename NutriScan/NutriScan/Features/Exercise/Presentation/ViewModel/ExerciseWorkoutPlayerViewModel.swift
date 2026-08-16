@@ -6,6 +6,14 @@
 import Foundation
 import Observation
 
+enum ExerciseWorkoutAlertDestination: String, Identifiable {
+    case cancel
+    case restart
+    case success
+    case recordingError
+    var id: String { rawValue }
+}
+
 @Observable
 @MainActor
 final class ExerciseWorkoutPlayerViewModel {
@@ -18,10 +26,7 @@ final class ExerciseWorkoutPlayerViewModel {
     var repsCount: Int = 1
 
     // MARK: - Alert & Dialog States
-    var showCancelAlert: Bool = false
-    var showRestartAlert: Bool = false
-    var showSuccessDialog: Bool = false
-    var showRecordingError: Bool = false
+    var alert: ExerciseWorkoutAlertDestination?
     private(set) var recordingErrorMessage: String = "Your profile data is unavailable. Reload your profile, then try finishing again."
     private(set) var hasRecordedWorkout: Bool = false
     private(set) var isSavingWorkout: Bool = false
@@ -155,12 +160,12 @@ final class ExerciseWorkoutPlayerViewModel {
     func finishWorkout() async {
         guard !isSavingWorkout else { return }
         guard !hasRecordedWorkout else {
-            showSuccessDialog = true
+            alert = .success
             return
         }
         guard let profileID = profileStore.currentProfile?.id else {
             recordingErrorMessage = "Your profile data is unavailable. Reload your profile, then try finishing again."
-            showRecordingError = true
+            alert = .recordingError
             return
         }
         stopTimer()
@@ -180,10 +185,10 @@ final class ExerciseWorkoutPlayerViewModel {
             currentDate: CaloriesTracking.dateString(from: dateProvider())
         )
         if synchronized {
-            showSuccessDialog = true
+            alert = .success
         } else {
             recordingErrorMessage = "We couldn't sync this workout right now. It is saved on this device and will retry automatically."
-            showRecordingError = true
+            alert = .recordingError
         }
 
         let nowComponents = Calendar.current.dateComponents([.hour, .minute], from: dateProvider())

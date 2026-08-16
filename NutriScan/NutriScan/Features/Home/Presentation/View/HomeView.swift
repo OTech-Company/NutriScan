@@ -6,13 +6,19 @@
 import SwiftUI
 
 struct HomeView: View {
+    private enum AlertDestination: String, Identifiable {
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = HomeViewModel()
     @State private var recentHistoryNotifier = HomeRecentHistoryNotifier.shared
     @State private var showRAGChat = false
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var recentScanPendingDeletion: UiStateHistoryItem?
 
     var body: some View {
@@ -72,7 +78,7 @@ struct HomeView: View {
                         },
                         onRequestDelete: { item in
                             recentScanPendingDeletion = item
-                            activeAlert = .delete
+                            alert = .delete
                         }
                     )
                 }
@@ -92,7 +98,7 @@ struct HomeView: View {
         }
         .onChange(of: viewModel.deleteErrorMessage) { _, message in
             if message != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
         .fullScreenCover(isPresented: $showRAGChat) {
@@ -104,28 +110,23 @@ struct HomeView: View {
             )
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
                         title: "Delete Scan?",
-                        description: "This scan will be removed from your history.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
+                        message: "This scan will be removed from your history.",
+                        primaryButton: CustomAlertButton("Delete", role: .destructive),
+                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
                         title: "Delete Failed",
-                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
-                        primaryButtonTitle: "OK",
-                        primaryButtonColor: Color.Red.red500
+                        message: viewModel.deleteErrorMessage ?? "Could not delete this scan."
                     )
-                default:
-                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
                 }
             },
             primaryAction: { alert in
@@ -138,8 +139,6 @@ struct HomeView: View {
                     }
                 case .error:
                     viewModel.deleteErrorMessage = nil
-                default:
-                    break
                 }
             },
             secondaryAction: { alert in
