@@ -3594,7 +3594,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "السجل الحديث"
+            "value" : "الممسوحة مؤخراً"
           }
         },
         "en" : {
@@ -5311,7 +5311,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سجل السجل"
+            "value" : "سجل المسح"
           }
         },
         "en" : {
@@ -5455,7 +5455,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سجل المسح الضوئي"
+            "value" : "سجل المسح"
           }
         },
         "en" : {
