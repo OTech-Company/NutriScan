@@ -30,8 +30,17 @@ enum AppLanguage: String, CaseIterable, CustomStringConvertible {
         return language
     }
 
+    static var bundle: Bundle {
+        let code = current == .arabic ? "ar" : "en"
+        if let path = Bundle.main.path(forResource: code, ofType: "lproj"),
+           let bundle = Bundle(path: path) {
+            return bundle
+        }
+        return Bundle.main
+    }
+
     /// Resolves a String Catalog key using the in-app language (not device locale).
     static func localized(_ key: String.LocalizationValue) -> String {
-        String(localized: key, locale: current.locale)
+        String(localized: key, bundle: bundle, locale: current.locale)
     }
 }

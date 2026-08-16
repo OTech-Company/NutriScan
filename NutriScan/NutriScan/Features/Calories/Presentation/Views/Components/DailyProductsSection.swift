@@ -260,7 +260,7 @@ private struct AddFoodCarouselCard: View {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 28, weight: .semibold))
                     .foregroundStyle(Color.CaloriesSemantic.dailyProductQuantityBadgeBackground)
-                Text(LocalizationKeys.Calories.addMealsTitle.localized)
+                Text(LocalizationKeys.Calories.addFood.localized)
                     .font(Font.AppFont.textCaption)
                     .foregroundStyle(Color.CaloriesSemantic.dailyProductAddCardText)
             }

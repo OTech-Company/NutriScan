@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotificationHistoryHeader: View {
-    let title: String = "Notifications"
+    let title: String = LocalizationKeys.Profile.notifications.localized
     var onBack: () -> Void
     var onClearAll: () -> Void
     var onSettingsTap: () -> Void

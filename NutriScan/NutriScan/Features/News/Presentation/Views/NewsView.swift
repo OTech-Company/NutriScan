@@ -17,7 +17,7 @@ struct NewsView: View {
 
             CustomSearchBar(
                 text: searchBinding,
-                prompt: "Search health news",
+                prompt: LocalizationKeys.News.searchPlaceholder.localized,
                 onSearch: viewModel.submitSearch
             )
             .padding(.horizontal, NewsFeedMetrics.screenPadding)

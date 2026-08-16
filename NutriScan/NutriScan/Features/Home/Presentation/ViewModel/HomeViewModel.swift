@@ -23,7 +23,7 @@ final class HomeViewModel {
     private let scanHistoryUseCase: ScanHistoryUseCaseProtocol
     private let observeProfileUseCase: ObserveProfileUseCaseProtocol
 
-    var dailyTip: String = "Stay hydrated! Drink at least 8 glasses of water today."
+    var dailyTip: String = LocalizationKeys.Home.defaultDailyTip.localized
     var recentHistory: [UiStateHistoryItem] = []
     var isLoadingHistory = false
     var deleteErrorMessage: String? = nil

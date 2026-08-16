@@ -11,6 +11,7 @@ struct SearchSelectionSheet: View {
     let title: String
     @Binding var searchQuery: String
     let results: [String]
+    var placeholder: String? = nil
     let onSelect: (String) -> Void
 
     var body: some View {
@@ -56,7 +57,7 @@ struct SearchSelectionSheet: View {
             TextField(
                 "",
                 text: $searchQuery,
-                prompt: Text(LocalizationKeys.Exercise.searchPlaceholder.localized)
+                prompt: Text(placeholder ?? LocalizationKeys.Common.searchPlaceholder.localized)
                     .foregroundColor(Color.EditProfileSemantics.textSecondary)
             )
             .font(Font.AppFont.textPrimary)
@@ -114,6 +115,7 @@ struct SearchSelectionSheet: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(Color.EditProfileSemantics.textSecondary)
+                    .flipsForRightToLeftLayoutDirection(true)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)

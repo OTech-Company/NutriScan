@@ -39,8 +39,8 @@ struct ProfileSetupFlowView: View {
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: LocalizationKeys.ProfileSetup.invalidAge.localized,
-                    description: "Your age must be at least 6 years.",
+                    title: LocalizationKeys.ProfileSetup.invalidAgeTitle.localized,
+                    description: LocalizationKeys.ProfileSetup.invalidAgeDesc.localized,
                     primaryButtonTitle: LocalizationKeys.Common.ok.localized
                 )
             default:

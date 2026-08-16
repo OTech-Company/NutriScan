@@ -18,13 +18,12 @@ struct SettingsView: View {
 
     var body: some View {
 
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            SettingsHeaderSection {
+                router.pop()
+            }
 
-                SettingsHeaderSection {
-                    router.pop()
-                }
-
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 12) {
                     MenuRowView(
                         icon: "person.badge.shield.checkmark.fill",

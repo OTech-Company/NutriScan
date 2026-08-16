@@ -7,7 +7,7 @@ import SwiftUI
 
 struct CustomSearchBar: View {
     @Binding var text: String
-    var prompt: String = LocalizationKeys.Exercise.searchPlaceholder.localized
+    var prompt: String = LocalizationKeys.Common.searchPlaceholder.localized
     var onSearch: (() -> Void)? = nil
     
     var body: some View {

@@ -44,6 +44,7 @@ struct BackButton: View {
             Image(systemName: "chevron.backward")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(iconColor)
+                .flipsForRightToLeftLayoutDirection(true)
                 .frame(width: 48, height: 48)
                 .background(backgroundColor)
                 .cornerRadius(10)

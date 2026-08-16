@@ -75,6 +75,7 @@ struct CalorieGoalsSection: View {
                                     HStack(spacing: 4) {
                                         Text(LocalizationKeys.Calories.completePersonalInfo.localized)
                                         Image(systemName: "chevron.right")
+                                            .flipsForRightToLeftLayoutDirection(true)
                                     }
                                     .font(Font.AppFont.textCaption)
                                     .foregroundStyle(Color.CaloriesSemantic.goalsValueText)

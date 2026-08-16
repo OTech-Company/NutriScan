@@ -77,6 +77,7 @@ struct SwipeToActionButton: View {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)
+                        .flipsForRightToLeftLayoutDirection(true)
                 case .submitting:
                     ProgressView()
                         .controlSize(.small)

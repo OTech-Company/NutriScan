@@ -27,6 +27,7 @@ struct MenuRowView: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(Color.SettingsSemantic.rowChevron)
+                    .flipsForRightToLeftLayoutDirection(true)
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 12)

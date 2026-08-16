@@ -52,6 +52,7 @@ struct ForgotPasswordOptionsSection: View {
                         Image(systemName: "chevron.right")
                             .font(.system(size: 14, weight: .bold))
                             .foregroundColor(isSelected ? Color.ForgotPasswordSemantic.arrowSelectedColor : Color.ForgotPasswordSemantic.arrowColor)
+                            .flipsForRightToLeftLayoutDirection(true)
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 14)

@@ -34,6 +34,7 @@ struct LocalizationKeys {
         static let other: String.LocalizationValue = "common.other"
         static let start: String.LocalizationValue = "common.start"
         static let fieldRequired: String.LocalizationValue = "common.field_required"
+        static let searchPlaceholder: String.LocalizationValue = "common.search_placeholder"
     }
 
     // MARK: - Auth
@@ -250,6 +251,8 @@ struct LocalizationKeys {
         static let yourExercise: String.LocalizationValue = "profile_setup.your_exercise"
         static let male: String.LocalizationValue = "profile_setup.male"
         static let female: String.LocalizationValue = "profile_setup.female"
+        static let invalidAgeTitle: String.LocalizationValue = "profile_setup.invalid_age_title"
+        static let invalidAgeDesc: String.LocalizationValue = "profile_setup.invalid_age_desc"
     }
 
     // MARK: - Profile
@@ -285,6 +288,7 @@ struct LocalizationKeys {
         static let deleteScanTitle: String.LocalizationValue = "home.delete_scan_title"
         static let deleteScanDesc: String.LocalizationValue = "home.delete_scan_desc"
         static let deleteFailedTitle: String.LocalizationValue = "home.delete_failed_title"
+        static let defaultDailyTip: String.LocalizationValue = "home.default_daily_tip"
     }
 
     // MARK: - ScanHistory
@@ -323,6 +327,7 @@ struct LocalizationKeys {
         static let adding: String.LocalizationValue = "favorites.adding"
         static let added: String.LocalizationValue = "favorites.added"
         static let ready: String.LocalizationValue = "favorites.ready"
+        static let searchPlaceholder: String.LocalizationValue = "favorites.search_placeholder"
     }
 
     // MARK: - Notifications
@@ -461,6 +466,7 @@ struct LocalizationKeys {
         static let noConnectionPaginationDesc: String.LocalizationValue = "news.no_connection_pagination_desc"
         static let couldntLoadArticlesDesc: String.LocalizationValue = "news.couldnt_load_articles_desc"
         static let clearSearch: String.LocalizationValue = "news.clear_search"
+        static let searchPlaceholder: String.LocalizationValue = "news.search_placeholder"
     }
 
     // MARK: - PersonalInformation

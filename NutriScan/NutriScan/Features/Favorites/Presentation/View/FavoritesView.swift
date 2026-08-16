@@ -42,7 +42,7 @@ struct FavoritesView: View {
         VStack(spacing: 16) {
             CustomSearchBar(
                 text: $searchText,
-                prompt: "Search favorites",
+                prompt: LocalizationKeys.Favorites.searchPlaceholder.localized,
                 onSearch: {
                     appliedSearchText = searchText
                     Task {
