@@ -7,6 +7,7 @@ struct ScanStateCardView: View {
     let isLoadingDetail: Bool
     let scanDetail: ScanDetail?
     let capturedImageData: Data?
+    var isSaved: Bool = false
     var onSave: () -> Void
     var onRetry: () -> Void
     var onTapDetail: (ScanDetail) -> Void
@@ -57,6 +58,7 @@ struct ScanStateCardView: View {
             productName: detail.productName,
             brandName: nil,
             scanSummary: detail.foodSafetyResponse?.summary,
+            isSaved: isSaved,
             onSave: onSave
         )
         .onTapGesture {

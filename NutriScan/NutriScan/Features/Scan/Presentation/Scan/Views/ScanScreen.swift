@@ -70,6 +70,7 @@ struct ScanScreen: View {
                         isLoadingDetail: viewModel.isLoadingDetail,
                         scanDetail: viewModel.scanDetail,
                         capturedImageData: viewModel.capturedImageData,
+                        isSaved: viewModel.isSaved,
                         onSave: { viewModel.toggleSaveFavorite() },
                         onRetry: { viewModel.reset() },
                         onTapDetail: { detail in

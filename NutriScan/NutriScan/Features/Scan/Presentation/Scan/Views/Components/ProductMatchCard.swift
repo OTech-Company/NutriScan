@@ -12,6 +12,7 @@ struct ProductMatchCard: View {
     let productName: String?
     let brandName: String?
     let scanSummary: String?
+    var isSaved: Bool = false
     var onSave: (() -> Void)?
     var onRetry: (() -> Void)?
 
@@ -115,32 +116,22 @@ struct ProductMatchCard: View {
                         .fill(Color.black.opacity(0.15)) // Darker container for the spinner
                 )
 
-        case .safe:
-            Button {
-                onSave?()
-            } label: {
-                Image(systemName: "bookmark.fill")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(width: 48, height: 48)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14)
-                            .fill(Color.Teal.teal400)
-                    )
-            }
-
-        case .unsafe:
-            Button {
-                onSave?()
-            } label: {
-                Image(systemName: "bookmark")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(width: 48, height: 48)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14)
-                            .fill(Color.Teal.teal400)
-                    )
+        case .safe, .unsafe:
+            // The favorite button is only rendered when a save handler exists
+            // (i.e. the scan actually succeeded). Failed scans show no button.
+            if onSave != nil {
+                Button {
+                    onSave?()
+                } label: {
+                    Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 48, height: 48)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.Teal.teal400)
+                        )
+                }
             }
         }
     }

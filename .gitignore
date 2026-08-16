@@ -68,3 +68,33 @@ fastlane/test_output
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Documents & Knowledge Base
+#
+# Do not commit source documents (RAG knowledge base, references, PDFs, etc.)
+*.pdf
+*.epub
+*.doc
+*.docx
+*.odt
+*.rtf
+*.pages
+*.xls
+*.xlsx
+*.ppt
+*.pptx
+*.csv
+
+# Document folders (any folder used to hold source documents)
+Documents/
+KnowledgeBase/
+knowledge_base/
+knowledgebase/
+RAGDocs/
+RAG_Documents/
+RAG-documents/
+RAGData/
+RAG_Data/
+rag-documents/
+docs/reference/
+documents/
