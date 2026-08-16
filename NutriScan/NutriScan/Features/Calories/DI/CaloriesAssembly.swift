@@ -7,7 +7,7 @@
 
 import Foundation
 
-@preconcurrency struct CaloriesAssembly: Assembly {
+struct CaloriesAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
 
         let service = CaloriesTrackingServiceImpl()

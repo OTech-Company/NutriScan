@@ -17,8 +17,6 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to scan product barcodes.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>We need access to your motion data to track your daily steps.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>We need access to your health data to read your step history.</string>
 	<key>NSHealthUpdateUsageDescription</key>

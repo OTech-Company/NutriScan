@@ -9,11 +9,19 @@ import PhotosUI
 import SwiftUI
 
 struct FamilyMemberSheetView: View {
+    private enum AlertDestination: String, Identifiable {
+        case duplicate
+        case unsavedChanges
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
 
     @State private var isEditingMode: Bool
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var selectedPhotoItem: PhotosPickerItem?
 
     let onSave: (FamilyMemberInput, Data?) async -> String?
@@ -40,8 +48,7 @@ struct FamilyMemberSheetView: View {
                 input, viewModel.pendingImageData)
             {
                 viewModel.errorMessage = errorMessage
-                viewModel.alertContext = .networkError
-                activeAlert = .error
+                alert = .error
             } else {
                 dismiss()
             }
@@ -194,8 +201,7 @@ struct FamilyMemberSheetView: View {
                         if !viewModel.isEditMode {
                             // Adding new member flow
                             if viewModel.isDuplicate() {
-                                viewModel.alertContext = .duplicate
-                                activeAlert = .warning
+                                alert = .duplicate
                             } else if let input = viewModel.submit() {
                                 performSave(input: input)
                             }
@@ -203,11 +209,9 @@ struct FamilyMemberSheetView: View {
                             if isEditingMode {
                                 if viewModel.validateFieldsOrInputs() {
                                     if viewModel.isDuplicate() {
-                                        viewModel.alertContext = .duplicate
-                                        activeAlert = .warning
+                                        alert = .duplicate
                                     } else if viewModel.hasUnsavedChanges {
-                                        viewModel.alertContext = .unsavedChanges
-                                        activeAlert = .warning
+                                        alert = .unsavedChanges
                                     } else {
                                         withAnimation { isEditingMode = false }
                                     }
@@ -224,8 +228,7 @@ struct FamilyMemberSheetView: View {
 
                 if viewModel.isEditMode, onDelete != nil {
                     Button(action: {
-                        viewModel.alertContext = .delete
-                        activeAlert = .warning
+                        alert = .delete
                     }) {
                         Text("Delete")
                             .font(
@@ -268,60 +271,48 @@ struct FamilyMemberSheetView: View {
                 onSelect: { viewModel.allergies.select($0) })
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
-                case .warning:
-                    switch viewModel.alertContext {
-                    case .duplicate:
-                        return CustomAlertConfig(
-                            type: .warning, title: "Duplicate Member",
-                            description: "This family member already exists.",
-                            primaryButtonTitle: "Ok",
-                            primaryButtonColor: Color.Teal.teal1000)
-                    case .unsavedChanges:
-                        return CustomAlertConfig(
-                            type: .warning, title: "Save Changes",
-                            description:
-                                "You have modified this family member's details. Are you sure you want to save?",
-                            primaryButtonTitle: "Save",
-                            primaryButtonColor: Color.Teal.teal1000,
-                            secondaryButtonTitle: "Discard")
-                    case .delete:
-                        return CustomAlertConfig(
-                            type: .warning, title: "Delete Member",
-                            description:
-                                "Are you sure you want to delete this family member?",
-                            primaryButtonTitle: "Delete",
-                            primaryButtonColor: Color.Red.red500,
-                            secondaryButtonTitle: "Cancel")
-                    case .networkError:
-                        return CustomAlertConfig(
-                            type: .error, title: "", description: "")
-                    }
+                case .duplicate:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Duplicate Member",
+                        message: "This family member already exists."
+                    )
+                case .unsavedChanges:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Save Changes",
+                        message: "You have modified this family member's details. Are you sure you want to save?",
+                        primaryButton: CustomAlertButton("Save"),
+                        secondaryButton: CustomAlertButton("Discard", role: .cancel)
+                    )
+                case .delete:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: "Delete Member",
+                        message: "Are you sure you want to delete this family member?",
+                        primaryButton: CustomAlertButton("Delete", role: .destructive),
+                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    )
                 case .error:
                     return CustomAlertConfig(
-                        type: .error, title: "Action Failed",
-                        description: viewModel.errorMessage
-                            ?? "An unexpected network error occurred.",
-                        primaryButtonTitle: "Ok",
-                        primaryButtonColor: Color.Teal.teal1000)
-                default:
-                    return CustomAlertConfig(
-                        type: .warning, title: "", description: "")
+                        type: .error,
+                        title: "Action Failed",
+                        message: viewModel.errorMessage ?? "An unexpected network error occurred."
+                    )
                 }
             },
             primaryAction: { alert in
-                if alert == .warning {
-                    switch viewModel.alertContext {
+                switch alert {
                     case .delete:
                         if let onDelete = onDelete {
                             Task {
                                 viewModel.isDeleting = true
                                 if let error = await onDelete() {
                                     viewModel.errorMessage = error
-                                    viewModel.alertContext = .networkError
-                                    activeAlert = .error
+                                    self.alert = .error
                                 } else {
                                     dismiss()
                                 }
@@ -332,20 +323,16 @@ struct FamilyMemberSheetView: View {
                         }
                     case .unsavedChanges:
                         if viewModel.isDuplicate() {
-                            viewModel.alertContext = .duplicate
-                            activeAlert = .warning
+                            self.alert = .duplicate
                         } else if let input = viewModel.submit() {
                             performSave(input: input)
                         }
-                    case .duplicate, .networkError:
+                    case .duplicate, .error:
                         viewModel.errorMessage = nil
                     }
-                } else if alert == .error {
-                    viewModel.errorMessage = nil
-                }
             },
-            secondaryAction: { _ in
-                if viewModel.alertContext == .unsavedChanges {
+            secondaryAction: { alert in
+                if alert == .unsavedChanges {
                     viewModel.revertChanges()
                     withAnimation { isEditingMode = false }
                 }

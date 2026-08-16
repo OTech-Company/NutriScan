@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
+    private enum AlertDestination: String, Identifiable {
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ScanHistoryViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var scanPendingDeletion: ScanHistoryEntity?
     
     init(viewModel: ScanHistoryViewModel) {
@@ -73,7 +79,7 @@ struct ScanHistoryView: View {
                             }
                             .onLongPressGesture {
                                 scanPendingDeletion = scan
-                                activeAlert = .delete
+                                alert = .delete
                             }
                             .transition(.asymmetric(
                                 insertion: .move(edge: .bottom).combined(with: .opacity),
@@ -112,32 +118,27 @@ struct ScanHistoryView: View {
         }
         .onChange(of: viewModel.deleteErrorMessage) { _, message in
             if message != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
                         title: "Delete Scan?",
-                        description: "This scan will be removed from your history.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
+                        message: "This scan will be removed from your history.",
+                        primaryButton: CustomAlertButton("Delete", role: .destructive),
+                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
                         title: "Delete Failed",
-                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
-                        primaryButtonTitle: "OK",
-                        primaryButtonColor: Color.Red.red500
+                        message: viewModel.deleteErrorMessage ?? "Could not delete this scan."
                     )
-                default:
-                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
                 }
             },
             primaryAction: { alert in
@@ -150,8 +151,6 @@ struct ScanHistoryView: View {
                     }
                 case .error:
                     viewModel.deleteErrorMessage = nil
-                default:
-                    break
                 }
             },
             secondaryAction: { alert in

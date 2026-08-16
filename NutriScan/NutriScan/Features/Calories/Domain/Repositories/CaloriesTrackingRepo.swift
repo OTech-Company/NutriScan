@@ -24,5 +24,5 @@ protocol CaloriesTrackingRepo {
         stepsKcal: Double?,
         exerciseKcal: Double?,
         exerciseMin: Double?
-    ) async throws -> CaloriesTracking
+    ) async throws
 }

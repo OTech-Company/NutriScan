@@ -457,7 +457,6 @@
 		C50388A7301B55B00045358F /* ExerciseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503880F301B55B00045358F /* ExerciseService.swift */; };
 		C50388A8301B55B00045358F /* ExerciseRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503882C301B55B00045358F /* ExerciseRowCard.swift */; };
 		C50388AA301B55B00045358F /* CategoryResponseDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038809301B55B00045358F /* CategoryResponseDTO+Domain.swift */; };
-		C50388AB301B55B00045358F /* PedometerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503883D301B55B00045358F /* PedometerDataSource.swift */; };
 		C50388AC301B55B00045358F /* ExerciseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038820301B55B00045358F /* ExerciseFactory.swift */; };
 		C50388AD301B55B00045358F /* StepAnalyticsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038843301B55B00045358F /* StepAnalyticsCalculator.swift */; };
 		C50388AE301B55B00045358F /* ExerciseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503881F301B55B00045358F /* ExerciseAssembly.swift */; };
@@ -495,7 +494,6 @@
 		C51E9D4C30155E56009DF262 /* ProductDetailsEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D0830155E56009DF262 /* ProductDetailsEndPoint.swift */; };
 		C51E9D4D30155E56009DF262 /* ProductNutritionUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D2130155E56009DF262 /* ProductNutritionUIState.swift */; };
 		C51E9D4E30155E56009DF262 /* ProductDetailsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C51E9D1E30155E56009DF262 /* ProductDetailsUIState.swift */; };
-		C546296B301239330032F885 /* ActiveAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462961301239330032F885 /* ActiveAlert.swift */; };
 		C546296C301239330032F885 /* CustomAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462962301239330032F885 /* CustomAlert.swift */; };
 		C546296D301239330032F885 /* CustomAlertCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462963301239330032F885 /* CustomAlertCard.swift */; };
 		C546296E301239330032F885 /* CustomAlertConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5462964301239330032F885 /* CustomAlertConfig.swift */; };
@@ -1128,7 +1126,6 @@
 		C5038837301B55B00045358F /* ExerciseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListViewModel.swift; sourceTree = "<group>"; };
 		C5038838301B55B00045358F /* ExerciseWorkoutPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseWorkoutPlayerViewModel.swift; sourceTree = "<group>"; };
 		C503883C301B55B00045358F /* HealthKitStepDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStepDataSource.swift; sourceTree = "<group>"; };
-		C503883D301B55B00045358F /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		C503883F301B55B00045358F /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		C5038842301B55B00045358F /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
 		C5038843301B55B00045358F /* StepAnalyticsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepAnalyticsCalculator.swift; sourceTree = "<group>"; };
@@ -1176,7 +1173,6 @@
 		C51E9D2C30155E56009DF262 /* UnsafeIngredientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsafeIngredientCard.swift; sourceTree = "<group>"; };
 		C51E9D2E30155E56009DF262 /* ProductDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsScreen.swift; sourceTree = "<group>"; };
 		C51E9D3030155E56009DF262 /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
-		C5462961301239330032F885 /* ActiveAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveAlert.swift; sourceTree = "<group>"; };
 		C5462962301239330032F885 /* CustomAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlert.swift; sourceTree = "<group>"; };
 		C5462963301239330032F885 /* CustomAlertCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertCard.swift; sourceTree = "<group>"; };
 		C5462964301239330032F885 /* CustomAlertConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertConfig.swift; sourceTree = "<group>"; };
@@ -3953,7 +3949,6 @@
 			isa = PBXGroup;
 			children = (
 				C503883C301B55B00045358F /* HealthKitStepDataSource.swift */,
-				C503883D301B55B00045358F /* PedometerDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4285,7 +4280,6 @@
 		C546296A301239330032F885 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
-				C5462961301239330032F885 /* ActiveAlert.swift */,
 				C5462962301239330032F885 /* CustomAlert.swift */,
 				C5462963301239330032F885 /* CustomAlertCard.swift */,
 				C5462964301239330032F885 /* CustomAlertConfig.swift */,
@@ -5444,7 +5438,6 @@
 				A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */,
 				D489D1B23018E1D000E7A1DF /* UserProfileResponseDTO.swift in Sources */,
 				E819F50A7311DC9A0B9515CB /* MealDetailViewModel.swift in Sources */,
-				C546296B301239330032F885 /* ActiveAlert.swift in Sources */,
 				E1A000013018000100000002 /* TermsItem.swift in Sources */,
 				E1A000023018000100000002 /* TermsLocalDataSourceProtocol.swift in Sources */,
 				E1A000033018000100000002 /* TermsLocalDataSourceImpl.swift in Sources */,
@@ -5738,7 +5731,6 @@
 				C50388A7301B55B00045358F /* ExerciseService.swift in Sources */,
 				C50388A8301B55B00045358F /* ExerciseRowCard.swift in Sources */,
 				C50388AA301B55B00045358F /* CategoryResponseDTO+Domain.swift in Sources */,
-				C50388AB301B55B00045358F /* PedometerDataSource.swift in Sources */,
 				C50388AC301B55B00045358F /* ExerciseFactory.swift in Sources */,
 				C50388AD301B55B00045358F /* StepAnalyticsCalculator.swift in Sources */,
 				C596173B301FDEFB001DB715 /* CaloriesHistoryView.swift in Sources */,

@@ -91,35 +91,42 @@ struct SettingsView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
         .customAlert(
-            isPresented: $viewModel.showLogoutAlert,
-            type: .warning,
-            title: "Logout",
-            description: "Are you sure you want to log out of NutriScan?",
-            primaryButtonTitle: "Logout",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                viewModel.confirmLogout(flowCoordinator: flowCoordinator)
-            },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                viewModel.cancelLogout()
-            }
-        )
-        .customAlert(
-            isPresented: $viewModel.showDeleteAccountAlert,
-            type: .warning,
-            title: "Delete Account",
-            description: "Are you sure you want to delete your account? You will have a 15-day grace period to restore it before permanent deletion.",
-            primaryButtonTitle: "Delete Account",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                Task {
-                    await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+            item: $viewModel.alert,
+            config: { alert in
+                switch alert {
+                case .logout:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: "Logout",
+                        message: "Are you sure you want to log out of NutriScan?",
+                        primaryButton: CustomAlertButton("Logout", role: .destructive),
+                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    )
+                case .deleteAccount:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: "Delete Account",
+                        message: "Are you sure you want to delete your account? You will have a 15-day grace period to restore it before permanent deletion.",
+                        primaryButton: CustomAlertButton("Delete Account", role: .destructive),
+                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    )
                 }
             },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                viewModel.cancelDeleteAccount()
+            primaryAction: { alert in
+                switch alert {
+                case .logout:
+                    viewModel.confirmLogout(flowCoordinator: flowCoordinator)
+                case .deleteAccount:
+                    Task {
+                        await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+                    }
+                }
+            },
+            secondaryAction: { alert in
+                switch alert {
+                case .logout: viewModel.cancelLogout()
+                case .deleteAccount: viewModel.cancelDeleteAccount()
+                }
             }
         )
     }

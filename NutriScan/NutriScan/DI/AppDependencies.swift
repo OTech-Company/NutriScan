@@ -10,6 +10,7 @@
 //
 import Foundation
 
+@MainActor
 struct AppDependencies {
 
     /// Ordered so Core (shared services) registers before any feature

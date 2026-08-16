@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct HealthProfileSetupView: View {
+    private enum AlertDestination: String, Identifiable {
+        case saveError
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
@@ -22,7 +27,7 @@ struct HealthProfileSetupView: View {
     @State private var conditionSearchQuery = ""
     @State private var allergySearchQuery = ""
 
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var isFinishingSetup = false
 
     // MARK: - Filtered Results for Search Sheets
@@ -132,7 +137,7 @@ struct HealthProfileSetupView: View {
                                 isFinishingSetup = true
                                 await flowCoordinator.finishProfileSetup()
                             } else {
-                                activeAlert = .error
+                                alert = .saveError
                             }
                         }
                     }
@@ -174,18 +179,13 @@ struct HealthProfileSetupView: View {
                 }
             )
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(item: $alert, config: { _ in
+            CustomAlertConfig(
                     type: .error,
                     title: "Update Failed",
-                    description: viewModel.saveError ?? "An unknown error occurred while saving your profile.",
-                    primaryButtonTitle: "Dismiss"
+                    message: viewModel.saveError ?? "An unknown error occurred while saving your profile.",
+                    primaryButton: CustomAlertButton("Dismiss")
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: "", description: "")
-            }
         }, primaryAction: { _ in })
     }
 }

@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct CaloriesScreen: View {
+    private enum AlertDestination: String, Identifiable {
+        case healthAccess
+        case loadingError
+        case mealRemoval
+        case waterRemoval
+        case targetCupRemoval
+        var id: String { rawValue }
+    }
+
     @Environment(\.scenePhase) private var scenePhase
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
@@ -19,13 +28,10 @@ struct CaloriesScreen: View {
     @State private var showStepsAndExercise = false
     @State private var showWater = false
 
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
 
     @State private var mealRemovalRequest: MealRemovalRequest? = nil
-    @State private var showMealRemovalConfirmation = false
     @State private var unfillCupIndex: Int? = nil
-    @State private var showWaterRemovalConfirmation = false
-    @State private var deleteTargetCupRequested = false
     @State private var stepPersistenceTask: Task<Void, Never>?
 
     init() {
@@ -49,26 +55,30 @@ struct CaloriesScreen: View {
                     await handleActivation()
                 },
                 topBar: { _ in
-                    DailyProductsHeader(dailyKcal: caloriesViewModel.dailyKcal)
+                    DailyProductsHeader(
+                        dailyKcal: caloriesViewModel.dailyKcal,
+                        isLoading: caloriesViewModel.isInitialLoading
+                    )
                         .padding(.horizontal, 22)
                         .frame(height: 60)
                         .accessibilityIdentifier("calories.topBar")
                 }
-            ) {
-                VStack(spacing: 0) {
-                    VStack(spacing: 24) {
+                ) {
+                    VStack(spacing: 0) {
+                        VStack(spacing: 24) {
 
                         DailyProductsSection(
                             dailyKcal: caloriesViewModel.dailyKcal,
                             meals: caloriesViewModel.meals,
                             mutatingMealIDs: caloriesViewModel.mutatingMealIDs,
+                            isLoading: caloriesViewModel.isInitialLoading,
                             showsHeader: false,
                             onAddFoodTap: {
                                 flowCoordinator.selectedTab = .bookmark
                             },
                             onRemoveMealRequest: { request in
                                 mealRemovalRequest = request
-                                showMealRemovalConfirmation = true
+                                alert = .mealRemoval
                             }
                         )
                         .opacity(showDailyProducts ? 1 : 0)
@@ -78,6 +88,7 @@ struct CaloriesScreen: View {
                             mealCalories: caloriesViewModel.dailyKcal,
                             targetCalories: caloriesViewModel.calorieGoal,
                             caloriesBurned: caloriesViewModel.totalBurnedKcal,
+                            isLoading: caloriesViewModel.isInitialLoading,
                             onCompleteProfileTap: {
                                 router.push(ProfileRoute.personalInformation)
                             }
@@ -97,6 +108,7 @@ struct CaloriesScreen: View {
                             ExerciseCardView(
                                 exerciseKcal: Int(caloriesViewModel.exerciseKcal.rounded()),
                                 exerciseMinutes: caloriesViewModel.exerciseMinutes,
+                                isLoading: caloriesViewModel.isInitialLoading,
                                 onAddTap: {
                                     router.push(CaloriesRoute.exercises)
                                 }
@@ -109,6 +121,7 @@ struct CaloriesScreen: View {
                             currentGlasses: caloriesViewModel.waterCurrent,
                             goalGlasses: caloriesViewModel.waterGoal,
                             isUpdating: caloriesViewModel.isUpdatingWater,
+                            isLoading: caloriesViewModel.isInitialLoading,
                             onAddTargetCupTap: {
                                 caloriesViewModel.addTargetCup()
                             },
@@ -117,38 +130,27 @@ struct CaloriesScreen: View {
                             },
                             onUnfillCupRequest: { index in
                                 unfillCupIndex = index
-                                showWaterRemovalConfirmation = true
+                                alert = .waterRemoval
                             },
                             onDeleteTargetCupRequest: {
-                                deleteTargetCupRequested = true
+                                alert = .targetCupRemoval
                             }
                         )
                         .opacity(showWater ? 1 : 0)
                         .offset(y: showWater ? 0 : 30)
+                        }
+                        .padding(22)
+
+                        Spacer(minLength: CustomAnimatedTabBar.contentClearance)
                     }
-                    .padding(22)
-
-                    Spacer(minLength: CustomAnimatedTabBar.contentClearance)
-                }
-            }
-
-            if caloriesViewModel.isLoading {
-                ZStack {
-                    Color.CaloriesSemantic.background.opacity(0.6)
-                        .ignoresSafeArea()
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .tint(Color.Teal.teal1000)
-                        .scaleEffect(1.4)
-                }
-                .transition(.opacity)
             }
         }
+        .animation(.easeOut(duration: 0.2), value: caloriesViewModel.isInitialLoading)
         .onAppear {
             stepViewModel.onAppear()
             triggerEntranceAnimations()
             if stepViewModel.errorMessage != nil {
-                activeAlert = .warning
+                alert = .healthAccess
             }
         }
         .onDisappear {
@@ -178,12 +180,12 @@ struct CaloriesScreen: View {
         }
         .onChange(of: stepViewModel.errorMessage) { _, error in
             if error != nil {
-                activeAlert = .warning
+                alert = .healthAccess
             }
         }
         .onChange(of: caloriesViewModel.errorMessage) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .loadingError
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
@@ -192,45 +194,54 @@ struct CaloriesScreen: View {
         .task {
             await handleActivation()
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
+        .customAlert(item: $alert, config: { alert in
             switch alert {
-            case .warning:
+            case .healthAccess:
                 return CustomAlertConfig(
                     type: .warning,
-                    title: "Motion & Fitness",
-                    description: stepViewModel.errorMessage ?? "Permission required",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000
+                    title: "Health Access",
+                    message: stepViewModel.errorMessage ?? "Permission required"
                 )
-            case .error:
+            case .loadingError:
                 return CustomAlertConfig(
-                    type: .warning,
+                    type: .error,
                     title: "Something went wrong",
-                    description: caloriesViewModel.errorMessage ?? "Please try again.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000
+                    message: caloriesViewModel.errorMessage ?? "Please try again."
                 )
-            default:
+            case .mealRemoval:
                 return CustomAlertConfig(
-                    type: .warning,
-                    title: "Notice",
-                    description: stepViewModel.errorMessage ?? ""
+                    type: .delete,
+                    title: mealRemovalRequest?.kind == .one ? "Remove One Serving?" : "Remove Meal?",
+                    message: mealRemovalRequest?.kind == .one
+                        ? "One serving will be removed from today's log."
+                        : "All servings of this meal will be removed from today's log.",
+                    primaryButton: CustomAlertButton("Remove", role: .destructive),
+                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                )
+            case .waterRemoval:
+                return CustomAlertConfig(
+                    type: .delete,
+                    title: "Remove Water?",
+                    message: "Do you want to mark this cup as undrunk?",
+                    primaryButton: CustomAlertButton("Remove", role: .destructive),
+                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                )
+            case .targetCupRemoval:
+                return CustomAlertConfig(
+                    type: .delete,
+                    title: "Remove Target Cup?",
+                    message: "This will reduce your daily water goal by 1 cup.",
+                    primaryButton: CustomAlertButton("Remove", role: .destructive),
+                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
                 )
             }
-        }, primaryAction: { _ in
-            caloriesViewModel.dismissError()
-            activeAlert = .none
-        })
-        .customAlert(
-            isPresented: $showMealRemovalConfirmation,
-            type: .delete,
-            title: mealRemovalRequest?.kind == .one ? "Remove One Serving?" : "Remove Meal?",
-            description: mealRemovalRequest?.kind == .one
-                ? "One serving will be removed from today's log."
-                : "All servings of this meal will be removed from today's log.",
-            primaryButtonTitle: "Remove",
-            primaryButtonColor: Color.red,
-            primaryAction: {
+        }, primaryAction: { alert in
+            switch alert {
+            case .healthAccess:
+                break
+            case .loadingError:
+                caloriesViewModel.dismissError()
+            case .mealRemoval:
                 if let request = mealRemovalRequest {
                     Task {
                         switch request.kind {
@@ -242,48 +253,21 @@ struct CaloriesScreen: View {
                     }
                 }
                 mealRemovalRequest = nil
-                showMealRemovalConfirmation = false
-            },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                mealRemovalRequest = nil
-                showMealRemovalConfirmation = false
-            }
-        )
-        .customAlert(
-            isPresented: $showWaterRemovalConfirmation,
-            type: .delete,
-            title: "Remove Water?",
-            description: "Do you want to mark this cup as undrunk?",
-            primaryButtonTitle: "Remove",
-            primaryButtonColor: Color.red,
-            primaryAction: {
+            case .waterRemoval:
                 if unfillCupIndex != nil {
                     caloriesViewModel.removeConsumedCup()
                 }
                 unfillCupIndex = nil
-                showWaterRemovalConfirmation = false
-            },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                unfillCupIndex = nil
-                showWaterRemovalConfirmation = false
-            }
-        )
-        .customAlert(
-            isPresented: $deleteTargetCupRequested,
-            type: .delete,
-            title: "Remove Target Cup?",
-            description: "This will reduce your daily water goal by 1 cup.",
-            primaryButtonTitle: "Remove",
-            primaryButtonColor: Color.red,
-            primaryAction: { 
+            case .targetCupRemoval:
                 caloriesViewModel.removeTargetCup()
-                deleteTargetCupRequested = false
-            },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: { deleteTargetCupRequested = false }
-        )
+            }
+        }, secondaryAction: { alert in
+            if alert == .mealRemoval {
+                mealRemovalRequest = nil
+            } else if alert == .waterRemoval {
+                unfillCupIndex = nil
+            }
+        })
     }
 
     private func triggerEntranceAnimations() {
@@ -300,7 +284,7 @@ struct CaloriesScreen: View {
     }
 
     private func persistCurrentSteps(for date: String?) {
-        guard stepViewModel.isAuthorized else { return }
+        guard stepViewModel.isAuthorized, stepViewModel.hasHealthKitReading else { return }
         let analytics = stepViewModel.todayAnalytics()
         if let date {
             caloriesViewModel.updateSteps(

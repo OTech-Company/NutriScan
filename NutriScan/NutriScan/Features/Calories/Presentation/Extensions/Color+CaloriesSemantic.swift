@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Shimmer
 
 // MARK: - Calories Feature Semantic Colors
 extension Color {
@@ -13,6 +14,7 @@ extension Color {
         // MARK: General
         static let background = Color(light: .white, dark: Color.Teal.teal1600)
         static let cardBackground = Color(light: .white, dark: Color.Teal.teal1400)
+        static let shimmerPlaceholder = Color(light: Color.Gray.gray300, dark: Color.Teal.teal1200)
         
         // MARK: Daily Products Section
         static let dailyProductsTitle = Color(light: Color.Teal.teal1200, dark: Color.Teal.teal1000)
@@ -69,5 +71,23 @@ extension Color {
         static let chartCardBackground = Color(light: .white, dark: Color.Teal.teal1400)
         static let axisText = Color(light: Color.Gray.gray800, dark: Color.Gray.gray600)
         static let chartTitle = Color(light: Color.Gray.gray1400, dark: .white)
+    }
+}
+
+struct CaloriesTextShimmer: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    let width: CGFloat
+    let height: CGFloat
+    var cornerRadius: CGFloat = 5
+    var color: Color = Color.CaloriesSemantic.shimmerPlaceholder
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(color)
+            .frame(width: width, height: height)
+            .redacted(reason: .placeholder)
+            .shimmering(active: !reduceMotion)
+            .accessibilityHidden(true)
     }
 }

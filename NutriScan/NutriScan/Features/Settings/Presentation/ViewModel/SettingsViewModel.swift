@@ -8,6 +8,12 @@
 import Foundation
 import Observation
 
+enum SettingsAlertDestination: String, Identifiable {
+    case logout
+    case deleteAccount
+    var id: String { rawValue }
+}
+
 @Observable
 final class SettingsViewModel {
     private let getAppearanceUseCase: GetAppearanceUseCaseProtocol
@@ -28,8 +34,7 @@ final class SettingsViewModel {
         }
     }
 
-    var showLogoutAlert: Bool = false
-    var showDeleteAccountAlert: Bool = false
+    var alert: SettingsAlertDestination?
     var isDeletingAccount: Bool = false
     var deleteError: String? = nil
 
@@ -51,29 +56,29 @@ final class SettingsViewModel {
     }
 
     func requestLogout() {
-        showLogoutAlert = true
+        alert = .logout
     }
 
     func confirmLogout(flowCoordinator: AppFlowCoordinator) {
-        showLogoutAlert = false
+        alert = nil
         flowCoordinator.logout()
     }
 
     func cancelLogout() {
-        showLogoutAlert = false
+        alert = nil
     }
 
     func requestDeleteAccount() {
-        showDeleteAccountAlert = true
+        alert = .deleteAccount
     }
 
     func cancelDeleteAccount() {
-        showDeleteAccountAlert = false
+        alert = nil
     }
 
     @MainActor
     func confirmDeleteAccount(flowCoordinator: AppFlowCoordinator) async {
-        showDeleteAccountAlert = false
+        alert = nil
         isDeletingAccount = true
         deleteError = nil
         defer { isDeletingAccount = false }
@@ -86,4 +91,3 @@ final class SettingsViewModel {
         }
     }
 }
-
