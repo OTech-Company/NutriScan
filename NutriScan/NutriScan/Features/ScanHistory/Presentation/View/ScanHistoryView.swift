@@ -65,11 +65,15 @@ struct ScanHistoryView: View {
 
             } else if let searchEmpty = viewModel.searchEmptyState, viewModel.isInSearchMode {
                 // No search results
-                EmptyStateView(emptyState: searchEmpty) {
-                    searchText = ""
-                    appliedSearchText = ""
-                    viewModel.clearSearch()
-                }
+                EmptyStateView(
+                    emptyState: searchEmpty,
+                    action: {
+                        searchText = ""
+                        appliedSearchText = ""
+                        viewModel.clearSearch()
+                    },
+                    actionLabel: LocalizationKeys.ScanHistory.clearSearch.localized
+                )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             } else if viewModel.isLoadingInitial && viewModel.scans.isEmpty {

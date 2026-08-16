@@ -3445,6 +3445,9 @@
         }
       }
     },
+    "Height" : {
+
+    },
     "Home Summary" : {
 
     },
@@ -5517,22 +5520,6 @@
         }
       }
     },
-    "scan_history.title" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "سجل المسح"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scan History"
-          }
-        }
-      }
-    },
     "scan_history.search_placeholder" : {
       "localizations" : {
         "ar" : {
@@ -5545,6 +5532,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search scan history..."
+          }
+        }
+      }
+    },
+    "scan_history.clear_search" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح البحث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Search"
+          }
+        }
+      }
+    },
+    "scan_history.title" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سجل المسح"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan History"
           }
         }
       }
@@ -7521,6 +7540,9 @@
       }
     },
     "Version %@" : {
+
+    },
+    "Weight" : {
 
     },
     "x%lld" : {
