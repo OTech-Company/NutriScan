@@ -17,6 +17,11 @@
 		<string>KOSans-Medium.otf</string>
 		<string>KOSans-SemiBold.otf</string>
 		<string>KOSans-Bold.otf</string>
-	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to scan product barcodes.</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We need access to your health data to read your step history.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We need access to your health data to update your step count.</string>
 </dict>
 </plist>

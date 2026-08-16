@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct LoginView: View {
+    private enum AlertDestination: String, Identifiable {
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var viewModel: LoginViewModel
 
     init(viewModel: LoginViewModel) {
@@ -87,29 +92,21 @@ struct LoginView: View {
         }
         .onChange(of: viewModel.generalError) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(
+            item: $alert,
+            config: { _ in
+                CustomAlertConfig(
                     type: .error,
                     title: LocalizationKeys.Auth.Login.failedTitle.localized,
-                    description: viewModel.generalError ?? LocalizationKeys.Auth.Login.failedUnknown.localized,
-                    primaryButtonTitle: LocalizationKeys.Auth.Login.tryAgain.localized,
-                    primaryButtonColor: Color.Red.red500
+                    message: viewModel.generalError ?? LocalizationKeys.Auth.Login.failedUnknown.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Auth.Login.tryAgain.localized)
                 )
-            default:
-                return CustomAlertConfig(
-                    type: .error,
-                    title: LocalizationKeys.Common.error.localized,
-                    description: viewModel.generalError ?? ""
-                )
-            }
-        }, primaryAction: { _ in
-            viewModel.generalError = nil
-        })
+            },
+            primaryAction: { _ in viewModel.generalError = nil }
+        )
     }
 
     private func handleSignIn() {

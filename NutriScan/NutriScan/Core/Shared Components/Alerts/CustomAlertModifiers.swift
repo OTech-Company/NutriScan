@@ -7,142 +7,131 @@
 
 import SwiftUI
 
-// MARK: - Internal View Wrapper to Handle Mount/Unmount
-private struct CustomAlertModifier: ViewModifier {
-    @Binding var isPresented: Bool
-    
-    let type: CustomAlertType
-    let title: String
-    let description: String
-    let primaryButtonTitle: String
-    let primaryButtonColor: Color
-    let primaryAction: () -> Void
-    let secondaryButtonTitle: String?
-    let secondaryAction: (() -> Void)?
-    
-    @State private var isMounted: Bool = false
-    
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-            
-            if isMounted {
-                CustomAlert(
-                    type: type,
-                    title: title,
-                    description: description,
-                    primaryButtonTitle: primaryButtonTitle,
-                    primaryButtonColor: primaryButtonColor,
-                    primaryAction: primaryAction,
-                    secondaryButtonTitle: secondaryButtonTitle,
-                    secondaryAction: secondaryAction,
-                    isPresented: $isPresented,
-                    isMounted: $isMounted
-                )
-                .zIndex(100)
+struct CustomAlertPresentationState<Item: Identifiable> where Item.ID: Equatable {
+    private(set) var presentedItem: Item?
+    private(set) var pendingItem: Item?
+    private(set) var isVisible = false
+
+    mutating func synchronize(with sourceItem: Item?) {
+        guard let sourceItem else {
+            pendingItem = nil
+            if presentedItem != nil {
+                isVisible = false
             }
+            return
         }
-        .onAppear {
-            if isPresented {
-                isMounted = true
-            }
+
+        guard let presentedItem else {
+            present(sourceItem)
+            return
         }
-        .onChange(of: isPresented) { oldValue, newValue in
-            if newValue {
-                isMounted = true
-            }
-            // CustomAlert handles the transition to false (triggers exit animation, then sets isMounted to false)
-        }
+
+        guard presentedItem.id != sourceItem.id else { return }
+        pendingItem = sourceItem
+        isVisible = false
+    }
+
+    mutating func present(_ item: Item) {
+        presentedItem = item
+        isVisible = true
+    }
+
+    mutating func beginDismissal(of selectedItem: Item) {
+        guard presentedItem?.id == selectedItem.id else { return }
+        isVisible = false
+    }
+
+    mutating func finishDismissal(sourceItem: Item?) -> Item? {
+        presentedItem = nil
+        isVisible = false
+        defer { pendingItem = nil }
+        return pendingItem ?? sourceItem
     }
 }
 
-private struct ActiveAlertModifier: ViewModifier {
-    @Binding var activeAlert: ActiveAlert
-    
-    let config: (ActiveAlert) -> CustomAlertConfig
-    let primaryAction: (ActiveAlert) -> Void
-    let secondaryAction: ((ActiveAlert) -> Void)?
-    
-    @State private var mountedAlert: ActiveAlert = .none
-    
+private struct CustomAlertModifier<Item: Identifiable>: ViewModifier where Item.ID: Equatable {
+    @Binding var item: Item?
+
+    let config: (Item) -> CustomAlertConfig
+    let primaryAction: (Item) -> Void
+    let secondaryAction: ((Item) -> Void)?
+
+    @State private var presentation = CustomAlertPresentationState<Item>()
+
     func body(content: Content) -> some View {
         ZStack {
             content
-            
-            if mountedAlert != .none {
-                let resolved = config(mountedAlert)
-                
+                .allowsHitTesting(presentation.presentedItem == nil)
+                .accessibilityHidden(presentation.presentedItem != nil)
+
+            if let presentedItem = presentation.presentedItem {
+                let resolvedConfig = config(presentedItem)
+
                 CustomAlert(
-                    type: resolved.type,
-                    title: resolved.title,
-                    description: resolved.description,
-                    primaryButtonTitle: resolved.primaryButtonTitle,
-                    primaryButtonColor: resolved.primaryButtonColor,
+                    config: resolvedConfig,
+                    isPresented: presentation.isVisible,
                     primaryAction: {
-                        primaryAction(mountedAlert)
+                        beginDismissal(of: presentedItem)
+                        primaryAction(presentedItem)
                     },
-                    secondaryButtonTitle: resolved.secondaryButtonTitle,
-                    secondaryAction: {
-                        secondaryAction?(mountedAlert)
-                    },
-                    activeAlert: $activeAlert,
-                    mountedAlert: $mountedAlert
+                    secondaryAction: resolvedConfig.secondaryButton == nil
+                        ? nil
+                        : secondaryAction.map { action in
+                            {
+                                beginDismissal(of: presentedItem)
+                                action(presentedItem)
+                            }
+                        },
+                    onDismissed: finishDismissal
                 )
                 .zIndex(100)
             }
         }
         .onAppear {
-            if activeAlert != .none {
-                mountedAlert = activeAlert
+            if let item {
+                presentation.present(item)
             }
         }
-        .onChange(of: activeAlert) { oldValue, newValue in
-            if newValue != .none {
-                mountedAlert = newValue
+        .onChange(of: item?.id) { _, _ in
+            synchronizePresentation()
+        }
+    }
+
+    private func synchronizePresentation() {
+        presentation.synchronize(with: item)
+    }
+
+    private func beginDismissal(of selectedItem: Item) {
+        if item?.id == selectedItem.id {
+            item = nil
+        }
+        presentation.beginDismissal(of: selectedItem)
+    }
+
+    private func finishDismissal() {
+        if let nextItem = presentation.finishDismissal(sourceItem: item) {
+            DispatchQueue.main.async {
+                presentation.present(nextItem)
             }
-            // CustomAlert handles the transition to .none (triggers exit animation, then sets mountedAlert to .none)
         }
     }
 }
 
 extension View {
-    /// Present a CustomAlert over the current view (Single Alert pattern)
-    func customAlert(
-        isPresented: Binding<Bool>,
-        type: CustomAlertType,
-        title: String,
-        description: String,
-        primaryButtonTitle: String = "OK",
-        primaryButtonColor: Color = Color.Teal.teal1000,
-        primaryAction: @escaping () -> Void,
-        secondaryButtonTitle: String? = nil,
-        secondaryAction: (() -> Void)? = nil
-    ) -> some View {
-        self.modifier(CustomAlertModifier(
-            isPresented: isPresented,
-            type: type,
-            title: title,
-            description: description,
-            primaryButtonTitle: primaryButtonTitle,
-            primaryButtonColor: primaryButtonColor,
-            primaryAction: primaryAction,
-            secondaryButtonTitle: secondaryButtonTitle,
-            secondaryAction: secondaryAction
-        ))
-    }
-    
-    /// Present a CustomAlert over the current view using enum-based state management
-    func customAlert(
-        activeAlert: Binding<ActiveAlert>,
-        config: @escaping (ActiveAlert) -> CustomAlertConfig,
-        primaryAction: @escaping (ActiveAlert) -> Void,
-        secondaryAction: ((ActiveAlert) -> Void)? = nil
-    ) -> some View {
-        self.modifier(ActiveAlertModifier(
-            activeAlert: activeAlert,
-            config: config,
-            primaryAction: primaryAction,
-            secondaryAction: secondaryAction
-        ))
+    /// Presents one custom alert destination at a time and queues replacements until dismissal completes.
+    func customAlert<Item: Identifiable>(
+        item: Binding<Item?>,
+        config: @escaping (Item) -> CustomAlertConfig,
+        primaryAction: @escaping (Item) -> Void,
+        secondaryAction: ((Item) -> Void)? = nil
+    ) -> some View where Item.ID: Equatable {
+        modifier(
+            CustomAlertModifier(
+                item: item,
+                config: config,
+                primaryAction: primaryAction,
+                secondaryAction: secondaryAction
+            )
+        )
     }
 }

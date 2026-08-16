@@ -20,7 +20,7 @@ struct WorkoutActiveControlsView: View {
                 HStack(spacing: 16) {
                     // Restart Button
                     Button {
-                        viewModel.showRestartAlert = true
+                        viewModel.alert = .restart
                     } label: {
                         Text(LocalizationKeys.Exercise.restart.localized)
                             .font(Font.AppFont.subtitle2)

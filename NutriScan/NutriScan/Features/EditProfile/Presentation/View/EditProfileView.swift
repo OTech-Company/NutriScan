@@ -7,10 +7,16 @@
 import SwiftUI
 
 struct EditProfileView: View {
+    private enum AlertDestination: String, Identifiable {
+        case error
+        case saveChanges
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel = EditProfileViewModel()
     @State private var isEditingMode = false
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
 
     var body: some View {
         ZStack {
@@ -121,7 +127,7 @@ struct EditProfileView: View {
                             if isEditingMode {
                                 if viewModel.validateFields() {
                                     if viewModel.hasUnsavedChanges {
-                                        activeAlert = .warning
+                                        alert = .saveChanges
                                     } else {
                                         // Exit edit mode smoothly if no data changed
                                         withAnimation { isEditingMode = false }
@@ -148,52 +154,46 @@ struct EditProfileView: View {
         }
         .onChange(of: viewModel.errorMessage) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
                         title: LocalizationKeys.Common.actionFailed.localized,
-                        description: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
-                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
-                        primaryButtonColor: Color.Red.red500
+                        message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
-                case .warning:
+                case .saveChanges:
                     return CustomAlertConfig(
                         type: .warning,
                         title: LocalizationKeys.Profile.saveChangesTitle.localized,
-                        description: LocalizationKeys.EditProfile.saveChangesDesc.localized,
-                        primaryButtonTitle: LocalizationKeys.Common.save.localized,
-                        primaryButtonColor: Color.Teal.teal1000,
-                        secondaryButtonTitle: LocalizationKeys.EditProfile.discard.localized
+                        message: LocalizationKeys.EditProfile.saveChangesDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.save.localized, role: .standard),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.EditProfile.discard.localized, role: .cancel)
                     )
-                default:
-                    return CustomAlertConfig(
-                        type: .warning, title: "", description: "")
+                    )
                 }
             },
             primaryAction: { alert in
                 switch alert {
                 case .error:
                     viewModel.errorMessage = nil
-                case .warning:
+                case .saveChanges:
                     Task {
                         await viewModel.performSave()
                         if viewModel.errorMessage == nil {
                             withAnimation { isEditingMode = false }
                         }
                     }
-                default:
-                    break
                 }
             },
             secondaryAction: { alert in
-                if alert == .warning {
+                if alert == .saveChanges {
                     viewModel.revertChanges()
                     withAnimation { isEditingMode = false }
                 }

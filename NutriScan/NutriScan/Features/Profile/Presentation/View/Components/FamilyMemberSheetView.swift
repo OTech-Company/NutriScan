@@ -9,11 +9,19 @@ import PhotosUI
 import SwiftUI
 
 struct FamilyMemberSheetView: View {
+    private enum AlertDestination: String, Identifiable {
+        case duplicate
+        case unsavedChanges
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @State private var viewModel: FamilyMemberSheetViewModel
     @Environment(\.dismiss) private var dismiss
 
     @State private var isEditingMode: Bool
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var selectedPhotoItem: PhotosPickerItem?
 
     let onSave: (FamilyMemberInput, Data?) async -> String?
@@ -40,8 +48,7 @@ struct FamilyMemberSheetView: View {
                 input, viewModel.pendingImageData)
             {
                 viewModel.errorMessage = errorMessage
-                viewModel.alertContext = .networkError
-                activeAlert = .error
+                alert = .error
             } else {
                 dismiss()
             }
@@ -194,8 +201,7 @@ struct FamilyMemberSheetView: View {
                         if !viewModel.isEditMode {
                             // Adding new member flow
                             if viewModel.isDuplicate() {
-                                viewModel.alertContext = .duplicate
-                                activeAlert = .warning
+                                alert = .duplicate
                             } else if let input = viewModel.submit() {
                                 performSave(input: input)
                             }
@@ -203,11 +209,9 @@ struct FamilyMemberSheetView: View {
                             if isEditingMode {
                                 if viewModel.validateFieldsOrInputs() {
                                     if viewModel.isDuplicate() {
-                                        viewModel.alertContext = .duplicate
-                                        activeAlert = .warning
+                                        alert = .duplicate
                                     } else if viewModel.hasUnsavedChanges {
-                                        viewModel.alertContext = .unsavedChanges
-                                        activeAlert = .warning
+                                        alert = .unsavedChanges
                                     } else {
                                         withAnimation { isEditingMode = false }
                                     }
@@ -224,8 +228,7 @@ struct FamilyMemberSheetView: View {
 
                 if viewModel.isEditMode, onDelete != nil {
                     Button(action: {
-                        viewModel.alertContext = .delete
-                        activeAlert = .warning
+                        alert = .delete
                     }) {
                         Text(LocalizationKeys.Common.delete.localized)
                             .font(
@@ -270,60 +273,50 @@ struct FamilyMemberSheetView: View {
                 onSelect: { viewModel.allergies.select($0) })
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
-                case .warning:
-                    switch viewModel.alertContext {
-                    case .duplicate:
-                        return CustomAlertConfig(
-                            type: .warning, title: LocalizationKeys.Profile.duplicateMemberTitle.localized,
-                            description: LocalizationKeys.Profile.duplicateMemberDesc.localized,
-                            primaryButtonTitle: LocalizationKeys.Common.ok.localized,
-                            primaryButtonColor: Color.Teal.teal1000)
-                    case .unsavedChanges:
-                        return CustomAlertConfig(
-                            type: .warning, title: LocalizationKeys.Profile.saveChangesTitle.localized,
-                            description:
-                                "You have modified this family member's details. Are you sure you want to save?",
-                            primaryButtonTitle: LocalizationKeys.Common.save.localized,
-                            primaryButtonColor: Color.Teal.teal1000,
-                            secondaryButtonTitle: "Discard")
-                    case .delete:
-                        return CustomAlertConfig(
-                            type: .warning, title: LocalizationKeys.Profile.deleteMemberTitle.localized,
-                            description:
-                                "Are you sure you want to delete this family member?",
-                            primaryButtonTitle: LocalizationKeys.Common.delete.localized,
-                            primaryButtonColor: Color.Red.red500,
-                            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized)
-                    case .networkError:
-                        return CustomAlertConfig(
-                            type: .error, title: "", description: "")
-                    }
+                case .duplicate:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: LocalizationKeys.Profile.duplicateMemberTitle.localized,
+                        message: LocalizationKeys.Profile.duplicateMemberDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
+                    )
+                case .unsavedChanges:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: LocalizationKeys.Profile.saveChangesTitle.localized,
+                        message: LocalizationKeys.EditProfile.saveChangesDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.save.localized),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.EditProfile.discard.localized, role: .cancel)
+                    )
+                case .delete:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: LocalizationKeys.Profile.deleteMemberTitle.localized,
+                        message: LocalizationKeys.Profile.deleteMemberDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                    )
                 case .error:
                     return CustomAlertConfig(
-                        type: .error, title: LocalizationKeys.Common.actionFailed.localized,
-                        description: viewModel.errorMessage
-                            ?? LocalizationKeys.Common.unknownError.localized,
-                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
-                        primaryButtonColor: Color.Teal.teal1000)
-                default:
-                    return CustomAlertConfig(
-                        type: .warning, title: "", description: "")
+                        type: .error,
+                        title: LocalizationKeys.Common.actionFailed.localized,
+                        message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
+                    )
                 }
             },
             primaryAction: { alert in
-                if alert == .warning {
-                    switch viewModel.alertContext {
+                switch alert {
                     case .delete:
                         if let onDelete = onDelete {
                             Task {
                                 viewModel.isDeleting = true
                                 if let error = await onDelete() {
                                     viewModel.errorMessage = error
-                                    viewModel.alertContext = .networkError
-                                    activeAlert = .error
+                                    self.alert = .error
                                 } else {
                                     dismiss()
                                 }
@@ -334,20 +327,16 @@ struct FamilyMemberSheetView: View {
                         }
                     case .unsavedChanges:
                         if viewModel.isDuplicate() {
-                            viewModel.alertContext = .duplicate
-                            activeAlert = .warning
+                            self.alert = .duplicate
                         } else if let input = viewModel.submit() {
                             performSave(input: input)
                         }
-                    case .duplicate, .networkError:
+                    case .duplicate, .error:
                         viewModel.errorMessage = nil
                     }
-                } else if alert == .error {
-                    viewModel.errorMessage = nil
-                }
             },
-            secondaryAction: { _ in
-                if viewModel.alertContext == .unsavedChanges {
+            secondaryAction: { alert in
+                if alert == .unsavedChanges {
                     viewModel.revertChanges()
                     withAnimation { isEditingMode = false }
                 }

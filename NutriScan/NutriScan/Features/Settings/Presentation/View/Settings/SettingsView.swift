@@ -90,35 +90,42 @@ struct SettingsView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
         .customAlert(
-            isPresented: $viewModel.showLogoutAlert,
-            type: .warning,
-            title: LocalizationKeys.Settings.logoutAlertTitle.localized,
-            description: LocalizationKeys.Settings.logoutAlertDescription.localized,
-            primaryButtonTitle: LocalizationKeys.Settings.logoutAlertConfirm.localized,
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                viewModel.confirmLogout(flowCoordinator: flowCoordinator)
-            },
-            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
-            secondaryAction: {
-                viewModel.cancelLogout()
-            }
-        )
-        .customAlert(
-            isPresented: $viewModel.showDeleteAccountAlert,
-            type: .warning,
-            title: LocalizationKeys.Settings.deleteAlertTitle.localized,
-            description: LocalizationKeys.Settings.deleteAlertDescription.localized,
-            primaryButtonTitle: LocalizationKeys.Settings.deleteAlertConfirm.localized,
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                Task {
-                    await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+            item: $viewModel.alert,
+            config: { alert in
+                switch alert {
+                case .logout:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: LocalizationKeys.Settings.logoutAlertTitle.localized,
+                        message: LocalizationKeys.Settings.logoutAlertDescription.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Settings.logoutAlertConfirm.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                    )
+                case .deleteAccount:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: LocalizationKeys.Settings.deleteAlertTitle.localized,
+                        message: LocalizationKeys.Settings.deleteAlertDescription.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Settings.deleteAlertConfirm.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                    )
                 }
             },
-            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
-            secondaryAction: {
-                viewModel.cancelDeleteAccount()
+            primaryAction: { alert in
+                switch alert {
+                case .logout:
+                    viewModel.confirmLogout(flowCoordinator: flowCoordinator)
+                case .deleteAccount:
+                    Task {
+                        await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+                    }
+                }
+            },
+            secondaryAction: { alert in
+                switch alert {
+                case .logout: viewModel.cancelLogout()
+                case .deleteAccount: viewModel.cancelDeleteAccount()
+                }
             }
         )
     }

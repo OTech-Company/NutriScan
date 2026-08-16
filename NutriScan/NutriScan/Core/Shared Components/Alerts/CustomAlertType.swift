@@ -8,27 +8,29 @@
 import SwiftUI
 import UIKit
 
-enum CustomAlertType {
+enum CustomAlertType: CaseIterable, Hashable, Sendable {
     case warning
     case success
     case error
     case delete
-    case internet
+    case noInternet
     
     var iconName: String {
         switch self {
-        case .warning, .delete: return "icWarning"
+        case .warning: return "icWarning"
+        case .delete: return "trash"
         case .success: return "successFilled"
         case .error: return "errorIcon"
-        case .internet: return "noWifiIcon"
+        case .noInternet: return "noWifiIcon"
         }
     }
     
     var iconColor: Color {
         switch self {
-        case .warning, .delete: return Color.Yellow.yellow500
+        case .warning: return Color.Yellow.yellow500
+        case .delete: return Color.Red.red500
         case .success: return Color.Teal.teal600
-        case .error, .internet: return Color.Red.red500
+        case .error, .noInternet: return Color.Red.red500
         }
     }
     
@@ -36,7 +38,7 @@ enum CustomAlertType {
         switch self {
         case .success: return .success
         case .warning, .delete: return .warning
-        case .error, .internet: return .error
+        case .error, .noInternet: return .error
         }
     }
 }

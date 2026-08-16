@@ -9,13 +9,18 @@ import Foundation
 import SwiftUI
 import UIKit
 
+enum HelpAlertDestination: String, Identifiable {
+    case mailNotConfigured
+    var id: String { rawValue }
+}
+
 @MainActor
 @Observable
 final class HelpViewModel {
     var faqItems: [FaqItem] = []
     var expandedFaqId: Int? = nil
     var isLoading: Bool = false
-    var activeAlert: ActiveAlert = .none
+    var alert: HelpAlertDestination?
     
     private let getFaqUseCase: GetFaqUseCaseProtocol
     let supportEmail = "minawagdy2228@gmail.com"
@@ -53,6 +58,6 @@ final class HelpViewModel {
     /// Handles the fallback logic if the device cannot open a mail app
     func handleMailAppFailure() {
         UIPasteboard.general.string = supportEmail
-        activeAlert = .warning
+        alert = .mailNotConfigured
     }
 }

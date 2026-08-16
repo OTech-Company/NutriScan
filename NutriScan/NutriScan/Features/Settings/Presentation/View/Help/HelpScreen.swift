@@ -108,21 +108,15 @@ struct HelpScreen: View {
             await viewModel.loadFaqs()
         }
         .customAlert(
-            activeAlert: $viewModel.activeAlert,
-            config: { alert in
-                switch alert {
-                case .warning:
-                    return CustomAlertConfig(
+            item: $viewModel.alert,
+            config: { _ in
+                CustomAlertConfig(
                         type: .warning,
                         title: LocalizationKeys.Settings.mailNotConfigured.localized,
-                        description: LocalizationKeys.Settings.mailNotConfiguredDesc.localized,
-                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
-                        primaryButtonColor: Color.Teal.teal1000
+                        message: LocalizationKeys.Settings.mailNotConfiguredDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                     )
-                default:
-                    return CustomAlertConfig(
-                        type: .warning, title: "", description: "")
-                }
+                    )
             },
             primaryAction: { _ in }
         )

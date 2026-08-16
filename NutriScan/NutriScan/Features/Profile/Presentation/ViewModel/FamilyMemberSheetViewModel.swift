@@ -13,9 +13,6 @@ final class FamilyMemberSheetViewModel {
     let existingMember: FamilyMember?
     let allMembers: [FamilyMember]
 
-    enum AlertContext { case delete, duplicate, unsavedChanges, networkError }
-    var alertContext: AlertContext = .delete
-
     var name = ValidatedField(value: "")
     var relation = ValidatedField(value: "")
 

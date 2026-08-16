@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct ProductDetailsScreen: View {
+    private enum AlertDestination: String, Identifiable {
+        case loadError
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var viewModel: ProductDetailsViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var isHeaderPresented = false
     @State private var isContentPresented = false
     @State private var isHoldingShimmer: Bool
@@ -60,27 +65,21 @@ struct ProductDetailsScreen: View {
         }
         .onChange(of: viewModel.failureMessage) { _, message in
             if message != nil && canPresentLoadError {
-                activeAlert = .error
+                alert = .loadError
             }
         }
         .onChange(of: canPresentLoadError) { _, canPresent in
             if canPresent && viewModel.failureMessage != nil {
-                activeAlert = .error
+                alert = .loadError
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(item: $alert, config: { _ in
+            CustomAlertConfig(
                     type: .error,
                     title: LocalizationKeys.Common.error.localized,
-                    description: viewModel.failureMessage ?? LocalizationKeys.Common.unknownError.localized,
-                    primaryButtonTitle: LocalizationKeys.Common.retry.localized,
-                    primaryButtonColor: Color.Teal.teal1000
+                    message: viewModel.failureMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.retry.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: LocalizationKeys.Common.error.localized, description: "")
-            }
         }, primaryAction: { _ in
             viewModel.failureMessage = nil
             loadGeneration += 1

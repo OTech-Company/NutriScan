@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct AccountRestorationView: View {
+    private enum AlertDestination: String, Identifiable {
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @State private var viewModel: AccountRestorationViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
 
     init(viewModel: AccountRestorationViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -66,27 +71,22 @@ struct AccountRestorationView: View {
         }
         .onChange(of: viewModel.generalError) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(
+            item: $alert,
+            config: { _ in
+                CustomAlertConfig(
                     type: .error,
                     title: LocalizationKeys.Auth.AccountRestoration.failedTitle.localized,
-                    description: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
-                    primaryButtonTitle: LocalizationKeys.Common.tryAgain.localized,
-                    primaryButtonColor: Color.Red.red500
+                    message: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .warning, title: "", description: "")
-            }
-        }, primaryAction: { alert in
-            if alert == .error {
-                viewModel.generalError = nil
-            }
-        })
+                )
+            },
+            primaryAction: { _ in viewModel.generalError = nil }
+        )
     }
 }
 
@@ -94,4 +94,3 @@ struct AccountRestorationView: View {
     AccountRestorationFactory.makeAccountRestorationView()
         .environmentObject(AppFlowCoordinator())
 }
-

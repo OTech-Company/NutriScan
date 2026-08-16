@@ -10,6 +10,7 @@
 //
 import Foundation
 
+@MainActor
 struct AppDependencies {
 
     /// Ordered so Core (shared services) registers before any feature
@@ -40,84 +41,5 @@ struct AppDependencies {
     static func setup() {
         let container = DIContainer.shared
         assemblies.forEach { $0.assemble(container: container) }
-    }
-}
-
-struct ScanAssembly: Assembly {
-    func assemble(container: DIContainer) {
-        let repository = ScanRepositoryImpl()
-        container.register(
-            type: FetchScansUseCase.self,
-            component: FetchScansUseCaseImpl(repository: repository)
-        )
-        container.register(
-            type: SubmitScanImageUseCase.self,
-            component: SubmitScanImageUseCaseImpl(repository: repository)
-        )
-        container.register(
-            type: FetchScanDetailUseCase.self,
-            component: FetchScanDetailUseCaseImpl(repository: repository)
-        )
-    }
-}
-
-struct ScanHistoryAssembly: Assembly {
-    func assemble(container: DIContainer) {
-        let networkService = container.resolve(type: NetworkServiceProtocol.self)
-        let remoteDataSource: ScanHistoryRemoteDataSourceProtocol = ScanHistoryRemoteDataSource(networkService: networkService)
-        let repository: ScanHistoryRepositoryProtocol = ScanHistoryRepositoryImpl(remoteDataSource: remoteDataSource)
-
-        container.register(
-            type: ScanHistoryRepositoryProtocol.self,
-            component: repository
-        )
-        container.register(
-            type: ScanHistoryUseCaseProtocol.self,
-            component: ScanHistoryUseCase(repository: repository)
-        )
-    }
-}
-
-struct RAGAssembly: Assembly {
-    func assemble(container: DIContainer) {
-        container.register(
-            type: QueryRAGUseCase.self,
-            component: QueryRAGUseCaseImpl(repository: RAGRepositoryImpl())
-        )
-    }
-}
-
-struct StepTrackerAssembly: Assembly {
-    @MainActor func assemble(container: DIContainer) {
-        let healthKitSource = HealthKitStepDataSource()
-        let repository = StepRepositoryImpl(healthKitSource: healthKitSource)
-
-        container.register(
-            type: HealthKitStepDataSource.self,
-            component: healthKitSource
-        )
-
-        // Register step tracker use cases
-        container.register(
-            type: ObserveDailyStepsUseCase.self,
-            component: ObserveDailyStepsUseCase(repository: repository)
-        )
-        container.register(
-            type: RequestStepAuthorizationUseCase.self,
-            component: RequestStepAuthorizationUseCase(repository: repository)
-        )
-        container.register(
-            type: FetchStepsHistoryUseCase.self,
-            component: FetchStepsHistoryUseCase(repository: repository)
-        )
-
-        // Register user profile service using the shared observer use case
-        container.register(
-            type: UserProfileService.self,
-            component: UserProfileService(
-                observeProfileUseCase: container.resolve(
-                    type: ObserveProfileUseCaseProtocol.self)
-            )
-        )
     }
 }

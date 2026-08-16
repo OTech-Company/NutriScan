@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
+    private enum AlertDestination: String, Identifiable {
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ScanHistoryViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var scanPendingDeletion: ScanHistoryEntity?
     
     init(viewModel: ScanHistoryViewModel) {
@@ -73,7 +79,7 @@ struct ScanHistoryView: View {
                             }
                             .onLongPressGesture {
                                 scanPendingDeletion = scan
-                                activeAlert = .delete
+                                alert = .delete
                             }
                             .transition(.asymmetric(
                                 insertion: .move(edge: .bottom).combined(with: .opacity),
@@ -112,32 +118,28 @@ struct ScanHistoryView: View {
         }
         .onChange(of: viewModel.deleteErrorMessage) { _, message in
             if message != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
                         title: LocalizationKeys.Home.deleteScanTitle.localized,
-                        description: LocalizationKeys.Home.deleteScanDesc.localized,
-                        primaryButtonTitle: LocalizationKeys.Common.delete.localized,
-                        primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: LocalizationKeys.Common.cancel.localized
+                        message: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
                         title: LocalizationKeys.Home.deleteFailedTitle.localized,
-                        description: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
-                        primaryButtonTitle: LocalizationKeys.Common.ok.localized,
-                        primaryButtonColor: Color.Red.red500
+                        message: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
-                default:
-                    return CustomAlertConfig(type: .warning, title: LocalizationKeys.Common.error.localized, description: "")
                 }
             },
             primaryAction: { alert in
@@ -150,8 +152,6 @@ struct ScanHistoryView: View {
                     }
                 case .error:
                     viewModel.deleteErrorMessage = nil
-                default:
-                    break
                 }
             },
             secondaryAction: { alert in

@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct ProfileSetupFlowView: View {
+    private enum AlertDestination: String, Identifiable {
+        case invalidAge
+        var id: String { rawValue }
+    }
+
     @StateObject private var router = AppRouter()
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = ProfileSetupFlowFactory.makeViewModel()
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
 
     var body: some View {
         NavigationStack(path: $router.path) {
@@ -34,18 +39,14 @@ struct ProfileSetupFlowView: View {
             .navigationBarHidden(true)
         }
         .environmentObject(router)
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(item: $alert, config: { _ in
+            CustomAlertConfig(
                     type: .error,
                     title: LocalizationKeys.ProfileSetup.invalidAgeTitle.localized,
-                    description: LocalizationKeys.ProfileSetup.invalidAgeDesc.localized,
-                    primaryButtonTitle: LocalizationKeys.Common.ok.localized
+                    message: LocalizationKeys.ProfileSetup.invalidAgeDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: "", description: "")
-            }
+                )
         }, primaryAction: { _ in })
     }
 
@@ -78,7 +79,7 @@ struct ProfileSetupFlowView: View {
             let ageComponents = Calendar.current.dateComponents([.year], from: viewModel.birthdate, to: Date())
             let age = ageComponents.year ?? 0
             if age < 6 {
-                activeAlert = .error
+                alert = .invalidAge
                 return
             }
         }

@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct HealthProfileSetupView: View {
+    private enum AlertDestination: String, Identifiable {
+        case saveError
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
@@ -22,7 +27,7 @@ struct HealthProfileSetupView: View {
     @State private var conditionSearchQuery = ""
     @State private var allergySearchQuery = ""
 
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var isFinishingSetup = false
 
     // MARK: - Filtered Results for Search Sheets
@@ -132,7 +137,7 @@ struct HealthProfileSetupView: View {
                                 isFinishingSetup = true
                                 await flowCoordinator.finishProfileSetup()
                             } else {
-                                activeAlert = .error
+                                alert = .saveError
                             }
                         }
                     }
@@ -176,18 +181,14 @@ struct HealthProfileSetupView: View {
                 }
             )
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(item: $alert, config: { _ in
+            CustomAlertConfig(
                     type: .error,
                     title: LocalizationKeys.ProfileSetup.updateFailedTitle.localized,
-                    description: viewModel.saveError ?? LocalizationKeys.Common.unknownError.localized,
-                    primaryButtonTitle: LocalizationKeys.Common.dismiss.localized
+                    message: viewModel.saveError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.dismiss.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: "", description: "")
-            }
+                )
         }, primaryAction: { _ in })
     }
 }

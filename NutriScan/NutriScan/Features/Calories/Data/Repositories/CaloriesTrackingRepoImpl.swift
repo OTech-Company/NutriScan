@@ -20,7 +20,11 @@ final class CaloriesTrackingRepoImpl: CaloriesTrackingRepo {
     }
 
     func getCaloriesTrackingByDate(date: String) async throws -> CaloriesTracking {
-        CaloriesTracking(from: try await service.fetchByDate(date: date))
+        let dto = try await service.fetchByDate(date: date)
+        if let responseDate = dto.date, responseDate != date {
+            throw NetworkError.decodingFailed
+        }
+        return CaloriesTracking(from: dto, fallbackDate: date)
     }
 
     func addMeal(date: String, scanId: String, mealCnt: Int) async throws -> CalorieMeal {
@@ -47,7 +51,7 @@ final class CaloriesTrackingRepoImpl: CaloriesTrackingRepo {
         stepsKcal: Double?,
         exerciseKcal: Double?,
         exerciseMin: Double?
-    ) async throws -> CaloriesTracking {
+    ) async throws {
         let body = PatchCaloriesTrackingDTO(
             targetWaterCnt: targetWaterCnt,
             waterCnt: waterCnt,
@@ -57,6 +61,5 @@ final class CaloriesTrackingRepoImpl: CaloriesTrackingRepo {
             exerciseMin: exerciseMin
         )
         try await service.patchTracking(date: date, body: body)
-        return CaloriesTracking(from: try await service.fetchByDate(date: date))
     }
 }

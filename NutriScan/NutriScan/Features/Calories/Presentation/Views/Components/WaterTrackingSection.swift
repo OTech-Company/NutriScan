@@ -11,6 +11,7 @@ struct WaterTrackingSection: View {
     let currentGlasses: Int
     let goalGlasses: Int
     var isUpdating: Bool = false
+    var isLoading = false
 
     var onAddTargetCupTap: () -> Void = {}
 
@@ -30,16 +31,20 @@ struct WaterTrackingSection: View {
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesSemantic.waterTitle)
                 Spacer()
-                HStack(spacing: 2) {
-                    Text(verbatim: "\(currentGlasses)")
-                        .contentTransition(.numericText())
-                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
-                    Text(verbatim: "/")
-                        .font(.system(size: 16, weight: .regular))
-                    Text(verbatim: "\(goalGlasses)")
+                if isLoading {
+                    CaloriesTextShimmer(width: 38, height: 13, cornerRadius: 4)
+                } else {
+                    HStack(spacing: 2) {
+                        Text(verbatim: "\(currentGlasses)")
+                            .contentTransition(.numericText())
+                            .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                        Text(verbatim: "/")
+                            .font(.system(size: 16, weight: .regular))
+                        Text(verbatim: "\(goalGlasses)")
+                    }
+                    .font(Font.AppFont.textDefault)
+                    .foregroundStyle(Color.CaloriesSemantic.waterCount)
                 }
-                .font(Font.AppFont.textDefault)
-                .foregroundStyle(Color.CaloriesSemantic.waterCount)
             }
 
             HStack {
@@ -67,10 +72,17 @@ struct WaterTrackingSection: View {
                                         }
                                     }
                             )
-                            .allowsHitTesting(!isUpdating)
+                            .allowsHitTesting(!isUpdating && !isLoading)
                             .accessibilityLabel("\(LocalizationKeys.Accessibility.waterCup.localized) \(index + 1) \(LocalizationKeys.StepTracker.ofGoal.localized) \(goalGlasses)")
                             .accessibilityValue(isFilled ? LocalizationKeys.Calories.cups.localized : "")
                             .accessibilityHint(LocalizationKeys.Accessibility.waterCupHint.localized)
+                            .accessibilityAddTraits(.isButton)
+                            .accessibilityAction {
+                                handleCupTap(index: index, isFilled: isFilled)
+                            }
+                            .accessibilityAction(named: LocalizationKeys.Accessibility.decreaseWaterTarget.localized) {
+                                if goalGlasses > 1 { onDeleteTargetCupRequest() }
+                            }
                         }
                     }
                     .padding(.vertical, 4)
@@ -78,11 +90,13 @@ struct WaterTrackingSection: View {
 
                 Spacer()
 
-                AddCircleButton {
-                    onAddTargetCupTap()
-                }
-                .allowsHitTesting(!isUpdating)
-                .opacity(isUpdating ? 0.5 : 1)
+                AddCircleButton(
+                    accessibilityLabel: "Increase water target",
+                    accessibilityHint: "Adds one cup to today's water goal",
+                    action: onAddTargetCupTap
+                )
+                .allowsHitTesting(!isUpdating && !isLoading)
+                .opacity(isUpdating || isLoading ? 0.5 : 1)
             }
             .padding(16)
             .frame(height: 74)
@@ -104,9 +118,9 @@ struct WaterTrackingSection: View {
             onUnfillCupRequest(index)
         } else {
             fillingCupIndex = index
+            onFillCup(index)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
                 fillingCupIndex = nil
-                onFillCup(index)
             }
         }
     }

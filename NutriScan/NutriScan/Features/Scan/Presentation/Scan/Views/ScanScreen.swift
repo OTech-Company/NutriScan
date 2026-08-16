@@ -1,9 +1,16 @@
+import PhotosUI
 import SwiftUI
 
 struct ScanScreen: View {
+    private enum AlertDestination: String, Identifiable {
+        case scanError
+        var id: String { rawValue }
+    }
 
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
+    @State private var gallerySelection: PhotosPickerItem?
+    @State private var alert: AlertDestination?
 
     private let viewfinderHeight: CGFloat = 520
     private let viewfinderHorizontalPadding: CGFloat = 20
@@ -11,6 +18,14 @@ struct ScanScreen: View {
 
     init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
         _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    private static func jpegNormalized(_ data: Data) -> Data {
+        guard let image = UIImage(data: data),
+              let jpeg = image.jpegData(compressionQuality: 0.9) else {
+            return data
+        }
+        return jpeg
     }
 
     var body: some View {
@@ -53,6 +68,7 @@ struct ScanScreen: View {
 
                 VStack {
                     Spacer()
+
                     ScanStateCardView(
                         isSubmitting: viewModel.isSubmitting,
                         latestScan: viewModel.latestScan,
@@ -68,7 +84,17 @@ struct ScanScreen: View {
                         }
                     )
                     .padding(.horizontal, 16)
-                    .padding(.bottom, CustomAnimatedTabBar.contentClearance + 30)
+
+                    HStack {
+                        GalleryButton {
+                            viewModel.presentGallery()
+                        }
+                        .padding(.leading, 16)
+
+                        Spacer()
+                    }
+                    .padding(.top, 16)
+                    .padding(.bottom, CustomAnimatedTabBar.contentClearance + 20)
                 }
             }
         }
@@ -77,17 +103,35 @@ struct ScanScreen: View {
         .onDisappear {
             viewModel.reset()
         }
+        .photosPicker(
+            isPresented: $viewModel.isGalleryPresented,
+            selection: $gallerySelection,
+            matching: .images
+        )
+        .onChange(of: gallerySelection) { _, newItem in
+            guard let newItem else { return }
+            Task {
+                if let data = try? await newItem.loadTransferable(type: Data.self) {
+                    let jpegData = Self.jpegNormalized(data)
+                    viewModel.onPhotoCaptured(jpegData)
+                }
+                gallerySelection = nil
+            }
+        }
+        .onChange(of: viewModel.errorMessage) { _, message in
+            alert = message == nil ? nil : .scanError
+        }
         .customAlert(
-            isPresented: Binding(
-                get: { viewModel.errorMessage != nil },
-                set: { if !$0 { viewModel.dismissError() } }
-            ),
-            type: .error,
-            title: LocalizationKeys.Scan.scanFailed.localized,
-            description: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
-            primaryButtonTitle: LocalizationKeys.Common.ok.localized,
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: { viewModel.dismissError() }
+            item: $alert,
+            config: { _ in
+                CustomAlertConfig(
+                    type: .error,
+                    title: LocalizationKeys.Scan.scanFailed.localized,
+                    message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
+                )
+            },
+            primaryAction: { _ in viewModel.dismissError() }
         )
     }
 }

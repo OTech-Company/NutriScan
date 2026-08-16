@@ -67,21 +67,22 @@ struct NotificationHistoryView: View {
             viewModel.loadHistory()
         }
         .customAlert(
-            isPresented: $viewModel.showClearAllAlert,
-            type: .warning,
-            title: LocalizationKeys.Notifications.clearAllTitle.localized,
-            description: LocalizationKeys.Notifications.clearAllDesc.localized,
-            primaryButtonTitle: LocalizationKeys.Notifications.clearAll.localized,
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
+            item: $viewModel.alert,
+            config: { _ in
+                CustomAlertConfig(
+                    type: .delete,
+                    title: LocalizationKeys.Notifications.clearAllTitle.localized,
+                    message: LocalizationKeys.Notifications.clearAllDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Notifications.clearAll.localized, role: .destructive),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                )
+            },
+            primaryAction: { _ in
                 withAnimation(.easeInOut) {
                     viewModel.confirmClearAll()
                 }
             },
-            secondaryButtonTitle: LocalizationKeys.Common.cancel.localized,
-            secondaryAction: {
-                viewModel.showClearAllAlert = false
-            }
+            secondaryAction: { _ in viewModel.alert = nil }
         )
     }
 }
