@@ -87,13 +87,12 @@ struct ScanHistoryView: View {
                 // Shimmer placeholder during initial load
                 shimmerList
                 
-            } else if let error = viewModel.initialLoadError, viewModel.scans.isEmpty {
+            } else if let loadEmptyState = viewModel.initialLoadEmptyState, viewModel.scans.isEmpty {
                 // Full-screen error when initial load fails with no data
-                ListErrorView(message: error) {
-                    Task {
-                        await viewModel.loadScanHistory()
-                    }
+                EmptyStateView(emptyState: loadEmptyState) {
+                    Task { await viewModel.loadScanHistory() }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             } else if viewModel.scans.isEmpty {
                 // Empty state

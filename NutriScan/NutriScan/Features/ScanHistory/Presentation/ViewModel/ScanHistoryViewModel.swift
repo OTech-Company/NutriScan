@@ -23,7 +23,7 @@ final class ScanHistoryViewModel {
     private(set) var isInSearchMode: Bool = false
     
     /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
-    var initialLoadError: String? = nil
+    var initialLoadEmptyState: EmptyState? = nil
     /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
     var paginationError: String? = nil
     var deleteErrorMessage: String? = nil
@@ -42,7 +42,7 @@ final class ScanHistoryViewModel {
     
     /// Only fetches if data is empty and there's no previous error.
     func loadScanHistoryIfNeeded() async {
-        guard scans.isEmpty && initialLoadError == nil else { return }
+        guard scans.isEmpty && initialLoadEmptyState == nil else { return }
         await loadScanHistory()
     }
     
@@ -50,7 +50,7 @@ final class ScanHistoryViewModel {
     func loadScanHistory() async {
         currentPage = 0
         hasMorePages = true
-        initialLoadError = nil
+        initialLoadEmptyState = nil
         paginationError = nil
         isLoadingInitial = true
         scans.removeAll()
@@ -75,7 +75,7 @@ final class ScanHistoryViewModel {
             scans = result.scans
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialLoadError = nil
+            initialLoadEmptyState = nil
         } catch {
             // Failure — restore previous data
             scans = previousScans
@@ -168,6 +168,10 @@ final class ScanHistoryViewModel {
         return false
     }
 
+    private func determineInitialEmptyState(for error: Error) -> EmptyState {
+        return isNetworkError(error) ? .noConnection : .serverProblem
+    }
+
     /// Clears the active search and restores the full scan list.
     func clearSearch() {
         isInSearchMode = false
@@ -205,10 +209,10 @@ final class ScanHistoryViewModel {
             scans = result.scans
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialLoadError = nil
+            initialLoadEmptyState = nil
         } catch {
             if scans.isEmpty {
-                initialLoadError = error.localizedDescription
+                initialLoadEmptyState = determineInitialEmptyState(for: error)
             }
         }
         
