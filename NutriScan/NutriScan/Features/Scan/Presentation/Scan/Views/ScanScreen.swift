@@ -9,7 +9,6 @@ struct ScanScreen: View {
 
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
-    @State private var isGalleryPresented = false
     @State private var gallerySelection: PhotosPickerItem?
     @State private var alert: AlertDestination?
 
@@ -27,27 +26,6 @@ struct ScanScreen: View {
             return data
         }
         return jpeg
-    }
-
-    private var galleryButton: some View {
-        Button {
-            isGalleryPresented = true
-        } label: {
-            Image(systemName: "photo.on.rectangle.angled")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: 48, height: 48)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white.opacity(0.15))
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.Teal.teal1000.opacity(0.6), lineWidth: 1)
-                )
-                .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
-        }
-        .accessibilityLabel("Choose from gallery")
     }
 
     var body: some View {
@@ -108,8 +86,10 @@ struct ScanScreen: View {
                     .padding(.horizontal, 16)
 
                     HStack {
-                        galleryButton
-                            .padding(.leading, 16)
+                        GalleryButton {
+                            viewModel.presentGallery()
+                        }
+                        .padding(.leading, 16)
 
                         Spacer()
                     }
@@ -124,7 +104,7 @@ struct ScanScreen: View {
             viewModel.reset()
         }
         .photosPicker(
-            isPresented: $isGalleryPresented,
+            isPresented: $viewModel.isGalleryPresented,
             selection: $gallerySelection,
             matching: .images
         )

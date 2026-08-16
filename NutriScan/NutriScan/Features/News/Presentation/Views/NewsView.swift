@@ -111,7 +111,12 @@ struct NewsView: View {
                             : .easeOut(duration: 0.25).delay(min(Double(index) * 0.035, 0.25)),
                         value: viewModel.resultRevision
                     )
+                    .onAppear {
+                        viewModel.loadNextPageIfNeeded(currentArticle: article)
+                    }
                 }
+
+                paginationFooter
             }
             .padding(.horizontal, NewsFeedMetrics.screenPadding)
             .padding(.bottom, 24)
@@ -120,6 +125,36 @@ struct NewsView: View {
             await viewModel.onPullToRefresh()
         }
         .id(viewModel.resultRevision)
+    }
+
+    @ViewBuilder
+    private var paginationFooter: some View {
+        if viewModel.isLoadingNextPage {
+            ProgressView()
+                .tint(NewsFeedPalette.accent)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 18)
+                .accessibilityLabel("Loading more articles")
+        } else if let failure = viewModel.paginationFailure {
+            VStack(spacing: 10) {
+                Text(
+                    failure == .noConnection
+                        ? "No connection. Check your internet and try again."
+                        : "Couldn't load more articles. Please try again."
+                )
+                .font(NewsFeedTypography.articleCaption)
+                .foregroundStyle(NewsFeedPalette.textSecondary)
+                .multilineTextAlignment(.center)
+
+                Button("Try Again") {
+                    viewModel.retryPagination()
+                }
+                .font(NewsFeedTypography.metadataStrong)
+                .foregroundStyle(NewsFeedPalette.accent)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+        }
     }
 
     private var skeletonList: some View {
@@ -236,15 +271,4 @@ private struct NewsEmptyStateView: View {
 #Preview("No Profile Conditions") {
     NewsView(viewModel: .preview(.noProfileConditions))
         .environmentObject(AppRouter())
-}
-
-private extension NewsViewModel.FailureState {
-    var emptyState: EmptyState {
-        switch self {
-        case .noConnection:
-            return .noConnection
-        case .serverProblem:
-            return .serverProblem
-        }
-    }
 }

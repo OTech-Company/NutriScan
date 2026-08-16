@@ -8,10 +8,15 @@
 
 import Foundation
 
+struct NewsPage {
+    let articles: [Article]
+    let hasMore: Bool
+}
+
 protocol NewsRepositoryProtocol {
     /// Top headlines for a fixed NewsAPI category (e.g. "health").
-    func fetchTopHeadlines(category: String) async throws -> [Article]
+    func fetchTopHeadlines(category: String, page: Int, pageSize: Int) async throws -> NewsPage
 
     /// Free-text search against NewsAPI's `/everything` endpoint.
-    func searchArticles(query: String) async throws -> [Article]
+    func searchArticles(query: String, page: Int, pageSize: Int) async throws -> NewsPage
 }

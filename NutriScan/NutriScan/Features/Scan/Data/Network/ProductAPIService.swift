@@ -5,6 +5,7 @@ import Foundation
 protocol ScanAPIServicing {
     func fetchScans(page: Int, size: Int) async throws -> ScanPageDTO
     func submitScan(imageData: Data) async throws -> ScanSubmissionDTO
+    func submitBarcode(barcode: String) async throws -> ScanSubmissionDTO
     func fetchScanDetail(scanId: String) async throws -> ScanDetailDTO
 }
 
@@ -36,6 +37,23 @@ final class ScanAPIService: ScanAPIServicing {
 
     func submitScan(imageData: Data) async throws -> ScanSubmissionDTO {
         let endpoint = ScanSubmitEndpoint(imageData: imageData)
+
+        do {
+            return try await networkService.request(endpoint)
+        } catch let error as NetworkError {
+            switch error {
+            case .decodingFailed:
+                throw ScanError.decoding
+            default:
+                throw ScanError.network(error.localizedDescription)
+            }
+        } catch {
+            throw ScanError.network(error.localizedDescription)
+        }
+    }
+
+    func submitBarcode(barcode: String) async throws -> ScanSubmissionDTO {
+        let endpoint = ScanEndpoint.submitBarcode(barcode: barcode)
 
         do {
             return try await networkService.request(endpoint)

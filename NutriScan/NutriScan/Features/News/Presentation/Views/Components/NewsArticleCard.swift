@@ -8,10 +8,13 @@ struct NewsArticleCard: View {
     let onShare: () -> Void
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 10) {
             Button(action: onOpen) {
                 articleImage
-                    .frame(width: 130, height: 130)
+                    .frame(
+                        width: NewsFeedMetrics.articleImageSize,
+                        height: NewsFeedMetrics.articleImageSize
+                    )
                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
             .buttonStyle(.plain)
@@ -80,8 +83,12 @@ struct NewsArticleCard: View {
             }
             .frame(maxWidth: .infinity, minHeight: 140, maxHeight: 140, alignment: .topLeading)
         }
-        .padding(8)
-        .frame(maxWidth: .infinity, minHeight: 156, maxHeight: 156)
+        .padding(NewsFeedMetrics.cardContentInset)
+        .frame(
+            maxWidth: .infinity,
+            minHeight: NewsFeedMetrics.cardHeight,
+            maxHeight: NewsFeedMetrics.cardHeight
+        )
         .background(NewsFeedPalette.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .customLightShadow()
@@ -95,7 +102,10 @@ struct NewsArticleCard: View {
             failurePadding: 36
         )
         .foregroundStyle(NewsFeedPalette.imagePlaceholderForeground)
-        .frame(width: 130, height: 130)
+        .frame(
+            width: NewsFeedMetrics.articleImageSize,
+            height: NewsFeedMetrics.articleImageSize
+        )
         .clipped()
         .accessibilityHidden(true)
     }
@@ -105,10 +115,13 @@ struct NewsArticleCardSkeleton: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 10) {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(NewsFeedPalette.skeleton)
-                .frame(width: 137, height: 140)
+                .frame(
+                    width: NewsFeedMetrics.articleImageSize,
+                    height: NewsFeedMetrics.articleImageSize
+                )
 
             VStack(alignment: .leading, spacing: 10) {
                 RoundedRectangle(cornerRadius: 4).fill(NewsFeedPalette.skeleton).frame(height: 12)
@@ -120,8 +133,12 @@ struct NewsArticleCardSkeleton: View {
             }
             .padding(.vertical, 8)
         }
-        .padding(8)
-        .frame(maxWidth: .infinity, minHeight: 156, maxHeight: 156)
+        .padding(NewsFeedMetrics.cardContentInset)
+        .frame(
+            maxWidth: .infinity,
+            minHeight: NewsFeedMetrics.cardHeight,
+            maxHeight: NewsFeedMetrics.cardHeight
+        )
         .background(NewsFeedPalette.cardBackground)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .shimmering(active: !reduceMotion)

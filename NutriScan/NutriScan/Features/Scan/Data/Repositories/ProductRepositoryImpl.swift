@@ -21,6 +21,14 @@ final class ScanRepositoryImpl: ScanRepository {
         )
     }
 
+    func submitBarcode(barcode: String) async throws -> ScanSubmission {
+        let dto = try await apiService.submitBarcode(barcode: barcode)
+        return ScanSubmission(
+            scanId: dto.scanId,
+            status: ScanStatus(rawValue: dto.status) ?? .processing
+        )
+    }
+
     func fetchScanDetail(scanId: String) async throws -> ScanDetail {
         let dto = try await apiService.fetchScanDetail(scanId: scanId)
         print("row DTO: \(dto)")

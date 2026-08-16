@@ -15,13 +15,28 @@ final class NewsRepository: NewsRepositoryProtocol {
         self.remoteDataSource = remoteDataSource
     }
 
-    func fetchTopHeadlines(category: String) async throws -> [Article] {
-        let response = try await remoteDataSource.fetchTopHeadlines(category: category)
-        return ArticleMapper.map(response.articles)
+    func fetchTopHeadlines(category: String, page: Int, pageSize: Int) async throws -> NewsPage {
+        let response = try await remoteDataSource.fetchTopHeadlines(
+            category: category,
+            page: page,
+            pageSize: pageSize
+        )
+        return mapPage(response, page: page, pageSize: pageSize)
     }
 
-    func searchArticles(query: String) async throws -> [Article] {
-        let response = try await remoteDataSource.fetchEverything(query: query)
-        return ArticleMapper.map(response.articles)
+    func searchArticles(query: String, page: Int, pageSize: Int) async throws -> NewsPage {
+        let response = try await remoteDataSource.fetchEverything(
+            query: query,
+            page: page,
+            pageSize: pageSize
+        )
+        return mapPage(response, page: page, pageSize: pageSize)
+    }
+
+    private func mapPage(_ response: NewsResponseDTO, page: Int, pageSize: Int) -> NewsPage {
+        NewsPage(
+            articles: ArticleMapper.map(response.articles),
+            hasMore: page * pageSize < response.totalResults
+        )
     }
 }

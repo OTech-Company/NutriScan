@@ -14,7 +14,7 @@ struct SplashView: View {
         
     var body: some View {
         ZStack {
-            (isAnimated ? Color.white : Color.Teal.teal1300)
+            (isAnimated ? SplashSemanticColor.backgroundFinal : SplashSemanticColor.backgroundInitial)
                 .ignoresSafeArea()
             
             GeometryReader { geo in
@@ -23,8 +23,12 @@ struct SplashView: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    isAnimated ? Color.Teal.teal1000 : Color.Teal.teal400,
-                                    isAnimated ? Color.Teal.teal700 : Color.Teal.teal300
+                                    isAnimated
+                                        ? SplashSemanticColor.largeGlowFinalLeading
+                                        : SplashSemanticColor.largeGlowInitialLeading,
+                                    isAnimated
+                                        ? SplashSemanticColor.largeGlowFinalTrailing
+                                        : SplashSemanticColor.largeGlowInitialTrailing
                                 ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
@@ -43,8 +47,12 @@ struct SplashView: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    isAnimated ? Color.Teal.teal400 : Color.Teal.teal300,
-                                    isAnimated ? Color.Teal.teal200 : Color.Teal.teal100
+                                    isAnimated
+                                        ? SplashSemanticColor.smallGlowFinalLeading
+                                        : SplashSemanticColor.smallGlowInitialLeading,
+                                    isAnimated
+                                        ? SplashSemanticColor.smallGlowFinalTrailing
+                                        : SplashSemanticColor.smallGlowInitialTrailing
                                 ],
                                 startPoint: .bottomLeading,
                                 endPoint: .topTrailing
@@ -64,20 +72,24 @@ struct SplashView: View {
             
             ZStack {
                 Image("logo white")
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 240)
+                    .foregroundStyle(SplashSemanticColor.logoInitial)
                     .opacity(logoAppears ? 0 : 1)
                     .scaleEffect(logoAppears ? 0.9 : 1.0)
                     .blur(radius: logoAppears ? 10 : 0)
                 
                 Image("logo teal")
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 240)
+                    .foregroundStyle(SplashSemanticColor.logoFinal)
                     .opacity(logoAppears ? 1 : 0)
                     .scaleEffect(logoAppears ? 1.0 : 0.9)
-                    .shadow(color: Color.Teal.teal1000.opacity(0.15), radius: 15, x: 0, y: 8)
+                    .shadow(color: SplashSemanticColor.logoShadow, radius: 15, x: 0, y: 8)
             }
         }
         .onAppear {
