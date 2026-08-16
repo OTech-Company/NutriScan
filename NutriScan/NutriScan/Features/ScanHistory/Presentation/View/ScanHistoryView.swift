@@ -64,15 +64,22 @@ struct ScanHistoryView: View {
                 shimmerList
 
             } else if let searchEmpty = viewModel.searchEmptyState, viewModel.isInSearchMode {
-                // No search results
+                // .noConnection / .serverProblem → retry; .noSearchResults → clear search
+                let isRetryable = searchEmpty == .noConnection || searchEmpty == .serverProblem
                 EmptyStateView(
                     emptyState: searchEmpty,
                     action: {
-                        searchText = ""
-                        appliedSearchText = ""
-                        viewModel.clearSearch()
+                        if isRetryable {
+                            Task { await viewModel.searchScans(query: appliedSearchText) }
+                        } else {
+                            searchText = ""
+                            appliedSearchText = ""
+                            viewModel.clearSearch()
+                        }
                     },
-                    actionLabel: LocalizationKeys.ScanHistory.clearSearch.localized
+                    actionLabel: isRetryable
+                        ? nil  // use the default "Try Again" label from EmptyState
+                        : LocalizationKeys.ScanHistory.clearSearch.localized
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 

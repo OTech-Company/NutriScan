@@ -115,11 +115,20 @@ final class ScanHistoryViewModel {
             return
         }
 
+        // Fast-fail if offline — never show stale cached results or a misleading
+        // "No results found" state when the real problem is no connectivity.
+        guard NetworkMonitor.shared.isConnected else {
+            isInSearchMode = true
+            isSearching = false
+            searchEmptyState = .noConnection
+            return
+        }
+
         isInSearchMode = true
         isSearching = true
         searchEmptyState = nil
 
-        // Ensure we have the full list to filter against
+        // Snapshot the full list so we can filter it (and restore it on clear)
         if allScans.isEmpty {
             allScans = scans
         }
@@ -131,13 +140,32 @@ final class ScanHistoryViewModel {
             scans = filtered
             searchEmptyState = filtered.isEmpty ? .noSearchResults : nil
         } catch {
-            // On network failure fall back to client-side filter over cached list
-            let filtered = allScans.filter { $0.productName.localizedCaseInsensitiveContains(trimmed) }
-            scans = filtered
-            searchEmptyState = filtered.isEmpty ? .noSearchResults : nil
+            if isNetworkError(error) {
+                // Connection dropped mid-request — restore list and show no-connection
+                scans = allScans
+                searchEmptyState = .noConnection
+            } else {
+                // Non-network failure (e.g. decoding): surface as a server error
+                scans = allScans
+                searchEmptyState = .serverProblem
+            }
         }
 
         isSearching = false
+    }
+
+    // MARK: - Helpers
+
+    private func isNetworkError(_ error: Error) -> Bool {
+        if !NetworkMonitor.shared.isConnected { return true }
+        if let urlError = error as? URLError,
+           urlError.code == .notConnectedToInternet || urlError.code == .dataNotAllowed {
+            return true
+        }
+        if let networkError = error as? NetworkError, case .noInternet = networkError {
+            return true
+        }
+        return false
     }
 
     /// Clears the active search and restores the full scan list.
