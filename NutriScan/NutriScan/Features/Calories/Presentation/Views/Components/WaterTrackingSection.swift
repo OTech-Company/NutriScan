@@ -30,11 +30,16 @@ struct WaterTrackingSection: View {
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesSemantic.waterTitle)
                 Spacer()
-                Text(verbatim: "\(currentGlasses) / \(goalGlasses)")
-                    .font(Font.AppFont.textDefault)
-                    .foregroundStyle(Color.CaloriesSemantic.waterCount)
-                    .contentTransition(.numericText())
-                    .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                HStack(spacing: 2) {
+                    Text(verbatim: "\(currentGlasses)")
+                        .contentTransition(.numericText())
+                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                    Text(verbatim: "/")
+                        .font(.system(size: 16, weight: .regular))
+                    Text(verbatim: "\(goalGlasses)")
+                }
+                .font(Font.AppFont.textDefault)
+                .foregroundStyle(Color.CaloriesSemantic.waterCount)
             }
 
             HStack {
