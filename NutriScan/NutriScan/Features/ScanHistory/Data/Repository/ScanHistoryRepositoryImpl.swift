@@ -21,4 +21,8 @@ class ScanHistoryRepositoryImpl: ScanHistoryRepositoryProtocol {
     func deleteScan(scanId: String) async throws {
         try await remoteDataSource.deleteScan(scanId: scanId)
     }
+
+    func getSuggestions(query: String) async throws -> [String] {
+        return try await remoteDataSource.getSuggestions(query: query)
+    }
 }
