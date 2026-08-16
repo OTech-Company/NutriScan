@@ -36,6 +36,8 @@ struct LocalizationKeys {
         static let fieldRequired: String.LocalizationValue = "common.field_required"
         static let searchPlaceholder: String.LocalizationValue = "common.search_placeholder"
         static let searchOptionsPlaceholder: String.LocalizationValue = "common.search_options_placeholder"
+        static let cm: String.LocalizationValue = "cm"
+        static let kg: String.LocalizationValue = "kg"
     }
 
     // MARK: - Auth
@@ -256,6 +258,22 @@ struct LocalizationKeys {
         static let invalidAgeDesc: String.LocalizationValue = "profile_setup.invalid_age_desc"
         static let searchConditionsPlaceholder: String.LocalizationValue = "profile_setup.search_conditions_placeholder"
         static let searchAllergiesPlaceholder: String.LocalizationValue = "profile_setup.search_allergies_placeholder"
+        static let genderTitlePrefix: String.LocalizationValue = "profile_setup.gender_title_prefix"
+        static let genderTitleHighlight: String.LocalizationValue = "profile_setup.gender_title_highlight"
+        static let genderSubtitle: String.LocalizationValue = "profile_setup.gender_subtitle"
+        static let birthdateTitlePrefix: String.LocalizationValue = "profile_setup.birthdate_title_prefix"
+        static let birthdateTitleHighlight: String.LocalizationValue = "profile_setup.birthdate_title_highlight"
+        static let birthdateSubtitle: String.LocalizationValue = "profile_setup.birthdate_subtitle"
+        static let weightTitlePrefix: String.LocalizationValue = "profile_setup.weight_title_prefix"
+        static let weightTitleHighlight: String.LocalizationValue = "profile_setup.weight_title_highlight"
+        static let weightSubtitle: String.LocalizationValue = "profile_setup.weight_subtitle"
+        static let heightTitlePrefix: String.LocalizationValue = "profile_setup.height_title_prefix"
+        static let heightTitleHighlight: String.LocalizationValue = "profile_setup.height_title_highlight"
+        static let heightTitleSuffix: String.LocalizationValue = "profile_setup.height_title_suffix"
+        static let heightSubtitle: String.LocalizationValue = "profile_setup.height_subtitle"
+        static let healthProfileStepTitlePrefix: String.LocalizationValue = "profile_setup.health_profile_step_title_prefix"
+        static let healthProfileStepTitleHighlight: String.LocalizationValue = "profile_setup.health_profile_step_title_highlight"
+        static let healthProfileStepSubtitle: String.LocalizationValue = "profile_setup.health_profile_step_subtitle"
     }
 
     // MARK: - Profile
@@ -380,6 +398,8 @@ struct LocalizationKeys {
         static let period: String.LocalizationValue = "step_tracker.period"
         static let day: String.LocalizationValue = "step_tracker.day"
         static let ofGoal: String.LocalizationValue = "step_tracker.of_goal"
+        static let km: String.LocalizationValue = "km"
+        static let min: String.LocalizationValue = "min"
     }
 
     // MARK: - Exercise
@@ -440,6 +460,7 @@ struct LocalizationKeys {
         static let filterByDate: String.LocalizationValue = "calories_history.filter_by_date"
         static let historyIncompleteResponse: String.LocalizationValue = "calories_history.incomplete_response"
         static let historyNotFound: String.LocalizationValue = "calories_history.not_found"
+        static let target: String.LocalizationValue = "target"
     }
 
     // MARK: - ProductDetails
@@ -457,6 +478,8 @@ struct LocalizationKeys {
         static let sodium: String.LocalizationValue = "product_details.sodium"
         static let scanFailed: String.LocalizationValue = "product_details.scan_failed"
         static let failedUpdateFavorite: String.LocalizationValue = "product_details.failed_update_favorite"
+        static let g: String.LocalizationValue = "g"
+        static let mg: String.LocalizationValue = "mg"
     }
 
     // MARK: - News

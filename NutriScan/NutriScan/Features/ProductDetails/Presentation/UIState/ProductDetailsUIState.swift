@@ -98,19 +98,19 @@ extension ProductDetailsUIState {
         
         self.nutritionState = ProductNutritionUIState(
             nutritionFacts: [
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.calories.localized, value: "\(details.calories) kcal"),
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.calories.localized, value: "\(details.calories) \(LocalizationKeys.Favorites.kcal.localized)"),
                 NutritionFactUIState(title: LocalizationKeys.ProductDetails.protein.localized, value: Self.formattedGrams(details.proteinGrams)),
                 NutritionFactUIState(title: LocalizationKeys.ProductDetails.carbs.localized, value: Self.formattedGrams(details.carbsGrams)),
                 NutritionFactUIState(title: LocalizationKeys.ProductDetails.fat.localized, value: Self.formattedGrams(details.fatG)),
                 NutritionFactUIState(title: LocalizationKeys.ProductDetails.sugar.localized, value: Self.formattedGrams(details.sugarG)),
                 NutritionFactUIState(title: LocalizationKeys.ProductDetails.fiber.localized, value: Self.formattedGrams(details.fiberGrams)),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.sodium.localized, value: "\(Self.formattedNumber(details.sodiumMg)) mg")
+                NutritionFactUIState(title: LocalizationKeys.ProductDetails.sodium.localized, value: "\(Self.formattedNumber(details.sodiumMg)) \(LocalizationKeys.ProductDetails.mg.localized)")
             ]
         )
     }
 
     private static func formattedGrams(_ value: Double) -> String {
-        "\(formattedNumber(value)) g"
+        "\(formattedNumber(value)) \(LocalizationKeys.ProductDetails.g.localized)"
     }
 
     private static func formattedNumber(_ value: Double) -> String {

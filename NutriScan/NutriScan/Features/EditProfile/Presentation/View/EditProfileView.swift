@@ -71,7 +71,7 @@ struct EditProfileView: View {
                                 MeasureFieldView(
                                     label: LocalizationKeys.Common.height.localized,
                                     value: $viewModel.height.value,
-                                    unit: "cm", isEditing: isEditingMode)
+                                    unit: LocalizationKeys.Common.cm.localized, isEditing: isEditingMode)
                                 if viewModel.height.state == .error {
                                     CustomTextFieldError(
                                         errorMessage: viewModel.height.error
@@ -83,7 +83,7 @@ struct EditProfileView: View {
                                 MeasureFieldView(
                                     label: LocalizationKeys.Common.weight.localized,
                                     value: $viewModel.weight.value,
-                                    unit: "kg", isEditing: isEditingMode)
+                                    unit: LocalizationKeys.Common.kg.localized, isEditing: isEditingMode)
                                 if viewModel.weight.state == .error {
                                     CustomTextFieldError(
                                         errorMessage: viewModel.weight.error

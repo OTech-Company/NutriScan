@@ -90,7 +90,20 @@
 
     },
     "%lld Kcal" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld سعرة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Kcal"
+          }
+        }
+      }
     },
     "%llds" : {
 
@@ -1931,6 +1944,22 @@
         }
       }
     },
+    "cm" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cm"
+          }
+        }
+      }
+    },
     "common.action_failed" : {
       "localizations" : {
         "ar" : {
@@ -2327,6 +2356,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Weight"
+          }
+        }
+      }
+    },
+    "cups" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أكواب"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cups"
           }
         }
       }
@@ -3332,6 +3378,22 @@
         }
       }
     },
+    "g" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "g"
+          }
+        }
+      }
+    },
     "Hello, %@!" : {
 
     },
@@ -3546,11 +3608,105 @@
         }
       }
     },
+    "kcal" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سعرة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kcal"
+          }
+        }
+      }
+    },
     "Kcal" : {
-
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سعرة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kcal"
+          }
+        }
+      }
+    },
+    "kg" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كجم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kg"
+          }
+        }
+      }
+    },
+    "km" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km"
+          }
+        }
+      }
     },
     "Meal Detail: %@" : {
 
+    },
+    "mg" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مجم"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mg"
+          }
+        }
+      }
+    },
+    "min" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دقيقة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "min"
+          }
+        }
+      }
     },
     "news.clear_search" : {
       "localizations" : {
@@ -4400,6 +4556,54 @@
         }
       }
     },
+    "profile_setup.birthdate_subtitle" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يساعدنا عمرك في ضبط توصياتك اليومية بدقة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your age helps us fine-tune your daily recommendations."
+          }
+        }
+      }
+    },
+    "profile_setup.birthdate_title_highlight" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاريخ ميلادك"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "birthday"
+          }
+        }
+      }
+    },
+    "profile_setup.birthdate_title_prefix" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما هو "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When's your "
+          }
+        }
+      }
+    },
     "profile_setup.chronic_conditions" : {
       "localizations" : {
         "ar" : {
@@ -4428,6 +4632,102 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Female"
+          }
+        }
+      }
+    },
+    "profile_setup.gender_subtitle" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يساعدنا هذا في تخصيص أهداف السعرات الحرارية والتغذية الخاصة بك."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This helps us personalize your calorie and nutrition targets."
+          }
+        }
+      }
+    },
+    "profile_setup.gender_title_highlight" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جنسك"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "gender"
+          }
+        }
+      }
+    },
+    "profile_setup.gender_title_prefix" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما هو "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's your "
+          }
+        }
+      }
+    },
+    "profile_setup.health_profile_step_subtitle" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أخبرنا بالمزيد حتى نتمكن من تصميم خطتك."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell us a bit more so we can tailor your plan."
+          }
+        }
+      }
+    },
+    "profile_setup.health_profile_step_title_highlight" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الصحي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "profile"
+          }
+        }
+      }
+    },
+    "profile_setup.health_profile_step_title_prefix" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملفك "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your health "
           }
         }
       }
@@ -4476,6 +4776,70 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "We'll use your height to personalize your nutrition insights and calorie calculations."
+          }
+        }
+      }
+    },
+    "profile_setup.height_subtitle" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سنستخدم طولك لتخصيص تحليلاتك الغذائية وحساب السعرات الحرارية."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We'll use your height to personalize your nutrition insights and calorie calculations."
+          }
+        }
+      }
+    },
+    "profile_setup.height_title_highlight" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "طولك"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "tall"
+          }
+        }
+      }
+    },
+    "profile_setup.height_title_prefix" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما هو "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How "
+          }
+        }
+      }
+    },
+    "profile_setup.height_title_suffix" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " are you?"
           }
         }
       }
@@ -4653,6 +5017,54 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Update Failed"
+          }
+        }
+      }
+    },
+    "profile_setup.weight_subtitle" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يساعدنا وزنك في تقدير احتياجاتك اليومية من السعرات الحرارية بشكل أكثر دقة."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your weight helps us estimate your daily calorie needs more accurately."
+          }
+        }
+      }
+    },
+    "profile_setup.weight_title_highlight" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "وزنك الحالي"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "weight"
+          }
+        }
+      }
+    },
+    "profile_setup.weight_title_prefix" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ما هو "
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your current "
           }
         }
       }
@@ -6465,6 +6877,23 @@
         }
       }
     },
+    "steps" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطوة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "steps"
+          }
+        }
+      }
+    },
     "tab.calories" : {
       "localizations" : {
         "ar" : {
@@ -6547,6 +6976,22 @@
     },
     "Tap to animate progress" : {
 
+    },
+    "target" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الهدف"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "target"
+          }
+        }
+      }
     },
     "validation.email.invalid" : {
       "localizations" : {

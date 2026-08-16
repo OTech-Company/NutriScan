@@ -11,8 +11,8 @@ enum ProfileSetupGender: String, CaseIterable {
 
     var title: String {
         switch self {
-        case .male: return "Male"
-        case .female: return "Female"
+        case .male: return LocalizationKeys.ProfileSetup.male.localized
+        case .female: return LocalizationKeys.ProfileSetup.female.localized
         }
     }
 }

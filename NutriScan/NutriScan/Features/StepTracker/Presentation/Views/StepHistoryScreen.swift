@@ -291,7 +291,7 @@ struct StepHistoryScreen: View {
                 iconColor: .orange,
                 title: LocalizationKeys.StepTracker.caloriesBurned.localized,
                 value: "\(periodAnalytics.caloriesBurned)",
-                unit: "kcal"
+                unit: LocalizationKeys.Favorites.kcal.localized
             )
 
             StatCardView(
@@ -299,7 +299,7 @@ struct StepHistoryScreen: View {
                 iconColor: Color.Teal.teal1000,
                 title: LocalizationKeys.StepTracker.distanceCovered.localized,
                 value: String(format: "%.1f", periodAnalytics.distanceKm),
-                unit: "km"
+                unit: LocalizationKeys.StepTracker.km.localized
             )
 
             StatCardView(
@@ -307,7 +307,7 @@ struct StepHistoryScreen: View {
                 iconColor: Color.Teal.teal1000,
                 title: LocalizationKeys.StepTracker.activeMinutes.localized,
                 value: "\(periodAnalytics.activeMinutes)",
-                unit: "min"
+                unit: LocalizationKeys.StepTracker.min.localized
             )
         }
     }
