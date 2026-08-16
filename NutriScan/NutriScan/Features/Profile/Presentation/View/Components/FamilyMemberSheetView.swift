@@ -353,5 +353,6 @@ struct FamilyMemberSheetView: View {
                 }
             }
         )
+        .environment(\.layoutDirection, AppLanguage.current.layoutDirection)
     }
 }

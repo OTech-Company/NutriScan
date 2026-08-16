@@ -30,6 +30,7 @@ struct SearchSelectionSheet: View {
         }
         .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
         .presentationDetents([.medium, .large])
+        .environment(\.layoutDirection, AppLanguage.current.layoutDirection)
     }
 
     // MARK: - Subviews
