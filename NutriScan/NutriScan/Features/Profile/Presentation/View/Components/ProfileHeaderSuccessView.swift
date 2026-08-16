@@ -34,7 +34,7 @@ struct ProfileHeaderSuccessView: View {
                     .font(Font.AppFont.title4)
                     .foregroundColor(Color.ProfileSemantics.userName)
 
-                Text("\(state.streakDays) \(LocalizationKeys.Profile.dayStreak.localized)")
+                Text(streakText)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.ProfileSemantics.streakText)
                     .padding(
@@ -70,6 +70,25 @@ struct ProfileHeaderSuccessView: View {
         .padding(.horizontal, ProfileSemantics.Spacing.horizontalPadding)
         .padding(.top, ProfileSemantics.Spacing.headerVerticalPadding)
         .padding(.bottom, ProfileSemantics.Spacing.headerVerticalPadding)
+    }
+
+    private var streakText: String {
+        if AppLanguage.current == .arabic {
+            switch state.streakDays {
+            case 0:
+                return "0 يوم متتالي"
+            case 1:
+                return "1 يوم متتالي"
+            case 2:
+                return "يومان متتاليان"
+            case 3...10:
+                return "\(state.streakDays) أيام متتالية"
+            default:
+                return "\(state.streakDays) يوماً متتالياً"
+            }
+        } else {
+            return "\(state.streakDays)-day streak"
+        }
     }
 }
 
