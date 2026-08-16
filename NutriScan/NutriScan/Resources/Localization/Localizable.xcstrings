@@ -73,6 +73,16 @@
         }
       }
     },
+    "%@. %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@. %2$@"
+          }
+        }
+      }
+    },
     "%lld" : {
 
     },
@@ -162,6 +172,22 @@
         }
       }
     },
+    "accessibility.decrease_water_target" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تقليل هدف الماء"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Decrease water target"
+          }
+        }
+      }
+    },
     "accessibility.history_for" : {
       "localizations" : {
         "ar" : {
@@ -238,6 +264,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens Product Details"
+          }
+        }
+      }
+    },
+    "accessibility.opens_saved_foods" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يفتح الأطعمة المحفوظة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens your saved foods"
           }
         }
       }
@@ -1943,6 +1985,9 @@
           }
         }
       }
+    },
+    "Choose from gallery" : {
+
     },
     "cm" : {
       "localizations" : {
@@ -6697,6 +6742,21 @@
           }
         }
       }
+    },
+    "Show Delete" : {
+
+    },
+    "Show Error" : {
+
+    },
+    "Show No Internet" : {
+
+    },
+    "Show Success" : {
+
+    },
+    "Show Warning" : {
+
     },
     "step_tracker.active_minutes" : {
       "localizations" : {

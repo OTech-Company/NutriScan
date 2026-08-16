@@ -53,6 +53,7 @@ struct LoginView: View {
                         )
                             .padding(.top, 24)
                         
+                        /*
                         AuthDivider()
                             .padding(.top, 32)
                         
@@ -62,6 +63,7 @@ struct LoginView: View {
                             SocialLoginButton(iconName: "instagram", action: {})
                         }
                         .padding(.top, 24)
+                        */
                         
                         Spacer(minLength: 40)
                         HStack(spacing: 4) {

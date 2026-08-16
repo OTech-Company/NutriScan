@@ -589,6 +589,8 @@ struct LocalizationKeys {
         static let waterCupHint: String.LocalizationValue = "accessibility.water_cup_hint"
         static let chooseHistoryDate: String.LocalizationValue = "accessibility.choose_history_date"
         static let removeDateFilter: String.LocalizationValue = "accessibility.remove_date_filter"
+        static let opensSavedFoods: String.LocalizationValue = "accessibility.opens_saved_foods"
+        static let decreaseWaterTarget: String.LocalizationValue = "accessibility.decrease_water_target"
     }
 
     // MARK: - RAG
