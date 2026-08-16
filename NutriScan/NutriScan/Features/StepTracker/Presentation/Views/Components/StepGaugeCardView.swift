@@ -78,6 +78,7 @@ struct StepGaugeCardView: View {
                     }
                     .padding(.bottom, 2)
                 }
+                .environment(\.layoutDirection, .leftToRight)
                 .padding(16)
             }
             .frame(width: 126, height: 126)

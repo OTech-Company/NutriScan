@@ -356,6 +356,7 @@ struct LocalizationKeys {
         static let added: String.LocalizationValue = "favorites.added"
         static let ready: String.LocalizationValue = "favorites.ready"
         static let searchPlaceholder: String.LocalizationValue = "favorites.search_placeholder"
+        static let swipeToAdd: String.LocalizationValue = "favorites.swipe_to_add"
     }
 
     // MARK: - Notifications

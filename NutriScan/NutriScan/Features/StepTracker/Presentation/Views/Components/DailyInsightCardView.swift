@@ -27,6 +27,7 @@ struct DailyInsightCardView: View {
                         .font(.system(size: 20, weight: .medium))
                         .foregroundColor(Color.Teal.teal1000)
                 }
+                .environment(\.layoutDirection, .leftToRight)
 
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(alignment: .firstTextBaseline, spacing: 4) {

@@ -1975,7 +1975,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "احتياجك اليومي (TDEE)"
+            "value" : "احتياجك اليومي"
           }
         },
         "en" : {
@@ -3419,6 +3419,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search saved products..."
+          }
+        }
+      }
+    },
+    "favorites.swipe_to_add" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اسحب لليسار للإضافة"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Swipe right to add"
           }
         }
       }

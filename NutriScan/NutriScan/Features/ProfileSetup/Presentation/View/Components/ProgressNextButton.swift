@@ -49,6 +49,7 @@ struct ProgressNextButton: View {
                     .foregroundColor(Color.Teal.teal100)
                     .flipsForRightToLeftLayoutDirection(true)
             }
+            .environment(\.layoutDirection, .leftToRight)
         }
         .padding()
     }

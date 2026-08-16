@@ -102,7 +102,7 @@ struct FavoriteCardView: View {
             .accessibilityHint(LocalizationKeys.Accessibility.opensProductDetails.localized)
 
             SwipeToActionButton(
-                actionTitle: "Swipe right to add",
+                actionTitle: LocalizationKeys.Favorites.swipeToAdd.localized,
                 action: { onSliderResult in
                     if let onAddToDaily {
                         onAddToDaily { success in
