@@ -18,6 +18,8 @@ struct ScanHistoryView: View {
     @State private var viewModel: ScanHistoryViewModel
     @State private var alert: AlertDestination?
     @State private var scanPendingDeletion: ScanHistoryEntity?
+    @State private var searchText = ""
+    @State private var appliedSearchText = ""
     
     init(viewModel: ScanHistoryViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -37,20 +39,60 @@ struct ScanHistoryView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 16)
+            .padding(.bottom, 8)
+
+            CustomSearchBar(
+                text: $searchText,
+                prompt: LocalizationKeys.ScanHistory.searchPlaceholder.localized,
+                onSearch: {
+                    appliedSearchText = searchText
+                    Task {
+                        if appliedSearchText.isEmpty {
+                            viewModel.clearSearch()
+                        } else {
+                            await viewModel.searchScans(query: appliedSearchText)
+                        }
+                    }
+                }
+            )
+            .padding(.horizontal, 20)
             .padding(.bottom, 16)
             
             // MARK: - State-driven content
-            if viewModel.isLoadingInitial && viewModel.scans.isEmpty {
+            if viewModel.isSearching {
+                // Shimmer placeholder while search is in-flight
+                shimmerList
+
+            } else if let searchEmpty = viewModel.searchEmptyState, viewModel.isInSearchMode {
+                // .noConnection / .serverProblem → retry; .noSearchResults → clear search
+                let isRetryable = searchEmpty == .noConnection || searchEmpty == .serverProblem
+                EmptyStateView(
+                    emptyState: searchEmpty,
+                    action: {
+                        if isRetryable {
+                            Task { await viewModel.searchScans(query: appliedSearchText) }
+                        } else {
+                            searchText = ""
+                            appliedSearchText = ""
+                            viewModel.clearSearch()
+                        }
+                    },
+                    actionLabel: isRetryable
+                        ? nil  // use the default "Try Again" label from EmptyState
+                        : LocalizationKeys.ScanHistory.clearSearch.localized
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            } else if viewModel.isLoadingInitial && viewModel.scans.isEmpty {
                 // Shimmer placeholder during initial load
                 shimmerList
                 
-            } else if let error = viewModel.initialLoadError, viewModel.scans.isEmpty {
+            } else if let loadEmptyState = viewModel.initialLoadEmptyState, viewModel.scans.isEmpty {
                 // Full-screen error when initial load fails with no data
-                ListErrorView(message: error) {
-                    Task {
-                        await viewModel.loadScanHistory()
-                    }
+                EmptyStateView(emptyState: loadEmptyState) {
+                    Task { await viewModel.loadScanHistory() }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             } else if viewModel.scans.isEmpty {
                 // Empty state
@@ -86,7 +128,9 @@ struct ScanHistoryView: View {
                                 removal: .scale(scale: 0.96).combined(with: .opacity)
                             ))
                             .onAppear {
-                                viewModel.loadNextPageIfNeeded(currentItem: scan)
+                                if !viewModel.isInSearchMode {
+                                    viewModel.loadNextPageIfNeeded(currentItem: scan)
+                                }
                             }
                         }
                         
@@ -107,6 +151,9 @@ struct ScanHistoryView: View {
                     .animation(.spring(response: 0.28, dampingFraction: 0.85), value: viewModel.scans.map(\.id))
                 }
                 .refreshable {
+                    searchText = ""
+                    appliedSearchText = ""
+                    viewModel.clearSearch()
                     await viewModel.refreshScanHistory()
                 }
             }
@@ -177,36 +224,3 @@ struct ScanHistoryView: View {
     }
 }
 
-#Preview {
-    class MockScanHistoryUseCase: ScanHistoryUseCaseProtocol {
-        func getScanHistory(page: Int, size: Int) async throws -> (scans: [ScanHistoryEntity], totalPages: Int) {
-            let mockData = [
-                ScanHistoryEntity(
-                    id: "1",
-                    productName: "Almarai Fresh Milk",
-                    imageUrl: "",
-                    calories: 150,
-                    scannedAt: "2026-07-27T10:15:00Z",
-                    status: .safe,
-                    scanStatus: .completed
-                ),
-                ScanHistoryEntity(
-                    id: "2",
-                    productName: "Lays Classic Potato Chips",
-                    imageUrl: "",
-                    calories: 240,
-                    scannedAt: "2026-07-26T14:30:00Z",
-                    status: .caution,
-                    scanStatus: .completed
-                )
-            ]
-            return (scans: mockData, totalPages: 1)
-        }
-
-        func deleteScan(scanId: String) async throws {}
-    }
-
-    let viewModel = ScanHistoryViewModel(scanHistoryUseCase: MockScanHistoryUseCase())
-    return ScanHistoryView(viewModel: viewModel)
-        .environmentObject(AppRouter())
-}

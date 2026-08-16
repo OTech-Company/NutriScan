@@ -328,6 +328,8 @@ struct LocalizationKeys {
         static let yesterdayWithTime: String.LocalizationValue = "scan_history.yesterday_with_time"
         static let today: String.LocalizationValue = "scan_history.today"
         static let yesterday: String.LocalizationValue = "scan_history.yesterday"
+        static let searchPlaceholder: String.LocalizationValue = "scan_history.search_placeholder"
+        static let clearSearch: String.LocalizationValue = "scan_history.clear_search"
     }
 
     // MARK: - Scan

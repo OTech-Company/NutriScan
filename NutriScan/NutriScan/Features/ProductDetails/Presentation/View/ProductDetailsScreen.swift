@@ -78,11 +78,14 @@ struct ProductDetailsScreen: View {
                     type: .error,
                     title: LocalizationKeys.Common.error.localized,
                     message: viewModel.failureMessage ?? LocalizationKeys.Common.unknownError.localized,
-                    primaryButton: CustomAlertButton(LocalizationKeys.Common.retry.localized)
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.retry.localized),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.back.localized, role: .cancel)
                 )
         }, primaryAction: { _ in
             viewModel.failureMessage = nil
             loadGeneration += 1
+        }, secondaryAction: { _ in
+            router.pop()
         })
     }
 
