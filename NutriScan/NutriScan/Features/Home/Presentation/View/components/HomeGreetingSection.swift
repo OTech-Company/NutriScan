@@ -40,7 +40,7 @@ struct HomeGreetingSection: View {
                     .clipShape(Circle())
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Hello, \(userName)!")
+                        Text(String(format: LocalizationKeys.Home.greeting.localized, userName))
                             .font(Font.AppFont.title3)
                             .foregroundColor(Color.HomeSemantic.greetingTitle)
 

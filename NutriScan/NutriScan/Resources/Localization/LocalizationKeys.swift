@@ -302,6 +302,7 @@ struct LocalizationKeys {
 
     // MARK: - Home
     struct Home {
+        static let greeting: String.LocalizationValue = "home.greeting"
         static let explore: String.LocalizationValue = "home.explore"
         static let healthComesFirst: String.LocalizationValue = "home.health_comes_first"
         static let recentHistory: String.LocalizationValue = "home.recent_history"
