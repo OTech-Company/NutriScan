@@ -188,7 +188,6 @@ struct HealthProfileSetupView: View {
                     message: viewModel.saveError ?? LocalizationKeys.Common.unknownError.localized,
                     primaryButton: CustomAlertButton(LocalizationKeys.Common.dismiss.localized)
                 )
-                )
         }, primaryAction: { _ in })
     }
 }

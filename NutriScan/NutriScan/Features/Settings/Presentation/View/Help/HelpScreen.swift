@@ -116,7 +116,6 @@ struct HelpScreen: View {
                         message: LocalizationKeys.Settings.mailNotConfiguredDesc.localized,
                         primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                     )
-                    )
             },
             primaryAction: { _ in }
         )

@@ -46,7 +46,6 @@ struct ProfileSetupFlowView: View {
                     message: LocalizationKeys.ProfileSetup.invalidAgeDesc.localized,
                     primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                 )
-                )
         }, primaryAction: { _ in })
     }
 

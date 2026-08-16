@@ -176,7 +176,6 @@ struct EditProfileView: View {
                         primaryButton: CustomAlertButton(LocalizationKeys.Common.save.localized, role: .standard),
                         secondaryButton: CustomAlertButton(LocalizationKeys.EditProfile.discard.localized, role: .cancel)
                     )
-                    )
                 }
             },
             primaryAction: { alert in

@@ -5162,6 +5162,22 @@
         }
       }
     },
+    "profile.delete_member_desc" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل أنت تأكد من أنك تريد حذف هذا الفرد من العائلة؟"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Are you sure you want to delete this family member?"
+          }
+        }
+      }
+    },
     "profile.delete_member_title" : {
       "localizations" : {
         "ar" : {

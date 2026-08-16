@@ -83,7 +83,6 @@ struct AccountRestorationView: View {
                     message: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
                     primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized)
                 )
-                )
             },
             primaryAction: { _ in viewModel.generalError = nil }
         )

@@ -297,6 +297,7 @@ struct LocalizationKeys {
         static let duplicateMemberDesc: String.LocalizationValue = "profile.duplicate_member_desc"
         static let saveChangesTitle: String.LocalizationValue = "profile.save_changes_title"
         static let deleteMemberTitle: String.LocalizationValue = "profile.delete_member_title"
+        static let deleteMemberDesc: String.LocalizationValue = "profile.delete_member_desc"
         static let dayStreak: String.LocalizationValue = "profile.day_streak"
     }
 
