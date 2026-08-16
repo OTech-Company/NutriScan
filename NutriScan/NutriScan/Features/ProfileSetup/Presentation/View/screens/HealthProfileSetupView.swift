@@ -151,6 +151,7 @@ struct HealthProfileSetupView: View {
                 title: LocalizationKeys.ProfileSetup.searchConditions.localized,
                 searchQuery: $conditionSearchQuery,
                 results: filteredConditions.map(\.name),
+                placeholder: LocalizationKeys.ProfileSetup.searchConditionsPlaceholder.localized,
                 onSelect: { selectedConditionName in
                     if let cond = viewModel.allConditions.first(where: { $0.name == selectedConditionName }) {
                         viewModel.toggleCondition(cond)
@@ -165,6 +166,7 @@ struct HealthProfileSetupView: View {
                 title: LocalizationKeys.ProfileSetup.searchAllergies.localized,
                 searchQuery: $allergySearchQuery,
                 results: filteredAllergies.map(\.name),
+                placeholder: LocalizationKeys.ProfileSetup.searchAllergiesPlaceholder.localized,
                 onSelect: { selectedAllergyName in
                     if let allg = viewModel.allAllergies.first(where: { $0.name == selectedAllergyName }) {
                         viewModel.toggleAllergy(allg)

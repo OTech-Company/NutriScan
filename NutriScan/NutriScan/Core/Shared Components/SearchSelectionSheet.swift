@@ -57,7 +57,7 @@ struct SearchSelectionSheet: View {
             TextField(
                 "",
                 text: $searchQuery,
-                prompt: Text(placeholder ?? LocalizationKeys.Common.searchPlaceholder.localized)
+                prompt: Text(placeholder ?? LocalizationKeys.Common.searchOptionsPlaceholder.localized)
                     .foregroundColor(Color.EditProfileSemantics.textSecondary)
             )
             .font(Font.AppFont.textPrimary)

@@ -209,6 +209,7 @@ struct EditProfileView: View {
                 title: LocalizationKeys.ProfileSetup.searchConditions.localized,
                 searchQuery: $viewModel.conditions.searchQuery,
                 results: viewModel.conditions.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchConditionsPlaceholder.localized,
                 onSelect: { selectedCondition in
                     viewModel.conditions.select(selectedCondition)
                 }
@@ -219,6 +220,7 @@ struct EditProfileView: View {
                 title: LocalizationKeys.ProfileSetup.searchAllergies.localized,
                 searchQuery: $viewModel.allergies.searchQuery,
                 results: viewModel.allergies.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchAllergiesPlaceholder.localized,
                 onSelect: { selectedAllergy in
                     viewModel.allergies.select(selectedAllergy)
                 }

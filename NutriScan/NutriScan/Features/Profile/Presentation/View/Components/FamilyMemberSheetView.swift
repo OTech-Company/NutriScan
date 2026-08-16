@@ -258,6 +258,7 @@ struct FamilyMemberSheetView: View {
                 title: LocalizationKeys.ProfileSetup.searchConditions.localized,
                 searchQuery: $viewModel.conditions.searchQuery,
                 results: viewModel.conditions.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchConditionsPlaceholder.localized,
                 onSelect: { viewModel.conditions.select($0) })
         }
         .sheet(isPresented: $viewModel.allergies.showSearchSheet) {
@@ -265,6 +266,7 @@ struct FamilyMemberSheetView: View {
                 title: LocalizationKeys.ProfileSetup.searchAllergies.localized,
                 searchQuery: $viewModel.allergies.searchQuery,
                 results: viewModel.allergies.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchAllergiesPlaceholder.localized,
                 onSelect: { viewModel.allergies.select($0) })
         }
         .customAlert(

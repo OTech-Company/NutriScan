@@ -32,7 +32,10 @@ struct ExercisesView: View {
             .padding(.bottom, 16)
 
             // MARK: Search Bar
-            CustomSearchBar(text: $viewModel.searchQuery)
+            CustomSearchBar(
+                text: $viewModel.searchQuery,
+                prompt: LocalizationKeys.Exercise.searchPlaceholder.localized
+            )
                 .padding(.horizontal, 20)
                 .padding(.bottom, 16)
 

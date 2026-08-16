@@ -35,6 +35,7 @@ struct LocalizationKeys {
         static let start: String.LocalizationValue = "common.start"
         static let fieldRequired: String.LocalizationValue = "common.field_required"
         static let searchPlaceholder: String.LocalizationValue = "common.search_placeholder"
+        static let searchOptionsPlaceholder: String.LocalizationValue = "common.search_options_placeholder"
     }
 
     // MARK: - Auth
@@ -253,6 +254,8 @@ struct LocalizationKeys {
         static let female: String.LocalizationValue = "profile_setup.female"
         static let invalidAgeTitle: String.LocalizationValue = "profile_setup.invalid_age_title"
         static let invalidAgeDesc: String.LocalizationValue = "profile_setup.invalid_age_desc"
+        static let searchConditionsPlaceholder: String.LocalizationValue = "profile_setup.search_conditions_placeholder"
+        static let searchAllergiesPlaceholder: String.LocalizationValue = "profile_setup.search_allergies_placeholder"
     }
 
     // MARK: - Profile

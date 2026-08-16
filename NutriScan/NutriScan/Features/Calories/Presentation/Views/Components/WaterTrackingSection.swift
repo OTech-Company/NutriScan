@@ -30,7 +30,7 @@ struct WaterTrackingSection: View {
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesSemantic.waterTitle)
                 Spacer()
-                Text("\(currentGlasses)/\(goalGlasses)")
+                Text(verbatim: "\(currentGlasses) / \(goalGlasses)")
                     .font(Font.AppFont.textDefault)
                     .foregroundStyle(Color.CaloriesSemantic.waterCount)
                     .contentTransition(.numericText())

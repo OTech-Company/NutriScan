@@ -54,7 +54,8 @@ struct StepGaugeCardView: View {
                         Text(LocalizationKeys.StepTracker.steps.localized)
                             .font(Font.AppFont.textCaption)
                             .foregroundColor(Color.CaloriesSemantic.stepsLabel)
-                            .frame(width: 32, height: 15)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
 
                         Text("\(currentSteps.formatted())")
                             .font(Font.AppFont.numbers)
