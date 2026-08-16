@@ -12,7 +12,12 @@ enum AppLanguage: String, CaseIterable, CustomStringConvertible {
     case english = "En"
     case arabic  = "Ar"
 
-    var description: String { rawValue }
+    var description: String {
+        switch self {
+        case .english: return LocalizationKeys.Settings.languageEnglish.localized
+        case .arabic:  return LocalizationKeys.Settings.languageArabic.localized
+        }
+    }
 
     var locale: Locale {
         Locale(identifier: self == .arabic ? "ar" : "en")
