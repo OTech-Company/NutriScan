@@ -5533,6 +5533,22 @@
         }
       }
     },
+    "scan_history.search_placeholder" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابحث في سجل المسح..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search scan history..."
+          }
+        }
+      }
+    },
     "scan_history.today" : {
       "localizations" : {
         "ar" : {

@@ -15,6 +15,12 @@ final class ScanHistoryViewModel {
     var isLoadingInitial: Bool = false
     var isLoadingNextPage: Bool = false
     var isRefreshing: Bool = false
+
+    // MARK: - Search State
+    var isSearching: Bool = false
+    var searchEmptyState: EmptyState? = nil
+    private var allScans: [ScanHistoryEntity] = []
+    private(set) var isInSearchMode: Bool = false
     
     /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
     var initialLoadError: String? = nil
@@ -96,6 +102,52 @@ final class ScanHistoryViewModel {
         paginationError = nil
         Task {
             await fetchNextPage()
+        }
+    }
+
+    // MARK: - Search
+
+    /// Searches scan history using the suggestions endpoint, then filters the displayed list.
+    func searchScans(query: String) async {
+        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else {
+            clearSearch()
+            return
+        }
+
+        isInSearchMode = true
+        isSearching = true
+        searchEmptyState = nil
+
+        // Ensure we have the full list to filter against
+        if allScans.isEmpty {
+            allScans = scans
+        }
+
+        do {
+            let matchingNames = try await scanHistoryUseCase.getSuggestions(query: trimmed)
+            let nameSet = Set(matchingNames.map { $0.lowercased() })
+            let filtered = allScans.filter { nameSet.contains($0.productName.lowercased()) }
+            scans = filtered
+            searchEmptyState = filtered.isEmpty ? .noSearchResults : nil
+        } catch {
+            // On network failure fall back to client-side filter over cached list
+            let filtered = allScans.filter { $0.productName.localizedCaseInsensitiveContains(trimmed) }
+            scans = filtered
+            searchEmptyState = filtered.isEmpty ? .noSearchResults : nil
+        }
+
+        isSearching = false
+    }
+
+    /// Clears the active search and restores the full scan list.
+    func clearSearch() {
+        isInSearchMode = false
+        isSearching = false
+        searchEmptyState = nil
+        if !allScans.isEmpty {
+            scans = allScans
+            allScans = []
         }
     }
 
