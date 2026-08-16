@@ -17,6 +17,7 @@
 		<string>KOSans-Medium.otf</string>
 		<string>KOSans-SemiBold.otf</string>
 		<string>KOSans-Bold.otf</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to scan product barcodes.</string>
 	<key>NSHealthShareUsageDescription</key>
