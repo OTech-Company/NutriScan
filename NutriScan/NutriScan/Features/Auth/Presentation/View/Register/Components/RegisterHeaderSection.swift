@@ -15,7 +15,7 @@ struct RegisterHeaderSection: View {
                 .frame(height: 40)
                 .padding(.top, 128)
 
-            Text("Sign Up For Free!")
+            Text(LocalizationKeys.Auth.Register.title.localized)
                 .font(Font.AppFont.title2)
                 .foregroundColor(Color.RegisterSemantic.headerTitle)
                 .multilineTextAlignment(.center)

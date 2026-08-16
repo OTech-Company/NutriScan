@@ -48,7 +48,7 @@ struct EditProfileView: View {
 
                         VStack(spacing: 4) {
                             EditableFieldView(
-                                placeholder: "first name",
+                                placeholder: LocalizationKeys.Auth.Register.firstNamePlaceholder.localized,
                                 text: $viewModel.firstName.value,
                                 isEditing: isEditingMode)
                             if viewModel.firstName.state == .error {
@@ -59,7 +59,7 @@ struct EditProfileView: View {
 
                         VStack(spacing: 4) {
                             EditableFieldView(
-                                placeholder: "last name",
+                                placeholder: LocalizationKeys.Auth.Register.lastNamePlaceholder.localized,
                                 text: $viewModel.lastName.value,
                                 isEditing: isEditingMode)
                             if viewModel.lastName.state == .error {
@@ -75,9 +75,9 @@ struct EditProfileView: View {
                         HStack(alignment: .top, spacing: 12) {
                             VStack(spacing: 4) {
                                 MeasureFieldView(
-                                    label: "Height",
+                                    label: LocalizationKeys.Common.height.localized,
                                     value: $viewModel.height.value,
-                                    unit: "cm", isEditing: isEditingMode)
+                                    unit: LocalizationKeys.Common.cm.localized, isEditing: isEditingMode)
                                 if viewModel.height.state == .error {
                                     CustomTextFieldError(
                                         errorMessage: viewModel.height.error
@@ -87,9 +87,9 @@ struct EditProfileView: View {
 
                             VStack(spacing: 4) {
                                 MeasureFieldView(
-                                    label: "Weight",
+                                    label: LocalizationKeys.Common.weight.localized,
                                     value: $viewModel.weight.value,
-                                    unit: "kg", isEditing: isEditingMode)
+                                    unit: LocalizationKeys.Common.kg.localized, isEditing: isEditingMode)
                                 if viewModel.weight.state == .error {
                                     CustomTextFieldError(
                                         errorMessage: viewModel.weight.error
@@ -100,7 +100,7 @@ struct EditProfileView: View {
                     }
 
                     SelectableChipsSectionView(
-                        title: "Chronic Conditions",
+                        title: LocalizationKeys.ProfileSetup.chronicConditions.localized,
                         items: viewModel.conditions.chips,
                         onAddOther: {
                             viewModel.conditions.showSearchSheet = true
@@ -111,7 +111,7 @@ struct EditProfileView: View {
                     .disabled(!isEditingMode)
 
                     SelectableChipsSectionView(
-                        title: "Allergies",
+                        title: LocalizationKeys.ProfileSetup.allergies.localized,
                         items: viewModel.allergies.chips,
                         onAddOther: {
                             viewModel.allergies.showSearchSheet = true
@@ -122,7 +122,7 @@ struct EditProfileView: View {
                     .disabled(!isEditingMode)
 
                     CustomPuffedButton(
-                        title: isEditingMode ? "Save" : "Edit",
+                        title: isEditingMode ? LocalizationKeys.Common.save.localized : LocalizationKeys.Common.edit.localized,
                         action: {
                             if isEditingMode {
                                 if viewModel.validateFields() {
@@ -164,17 +164,17 @@ struct EditProfileView: View {
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Action Failed",
-                        message: viewModel.errorMessage ?? "An unknown error occurred"
+                        title: LocalizationKeys.Common.actionFailed.localized,
+                        message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
                 case .saveChanges:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Save Changes",
-                        message:
-                            "You have modified your profile data. Are you sure you want to save these changes?",
-                        primaryButton: CustomAlertButton("Save"),
-                        secondaryButton: CustomAlertButton("Discard", role: .cancel)
+                        title: LocalizationKeys.Profile.saveChangesTitle.localized,
+                        message: LocalizationKeys.EditProfile.saveChangesDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.save.localized, role: .standard),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.EditProfile.discard.localized, role: .cancel)
                     )
                 }
             },
@@ -205,9 +205,10 @@ struct EditProfileView: View {
         }
         .sheet(isPresented: $viewModel.conditions.showSearchSheet) {
             SearchSelectionSheet(
-                title: "Search Conditions",
+                title: LocalizationKeys.ProfileSetup.searchConditions.localized,
                 searchQuery: $viewModel.conditions.searchQuery,
                 results: viewModel.conditions.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchConditionsPlaceholder.localized,
                 onSelect: { selectedCondition in
                     viewModel.conditions.select(selectedCondition)
                 }
@@ -215,9 +216,10 @@ struct EditProfileView: View {
         }
         .sheet(isPresented: $viewModel.allergies.showSearchSheet) {
             SearchSelectionSheet(
-                title: "Search Allergies",
+                title: LocalizationKeys.ProfileSetup.searchAllergies.localized,
                 searchQuery: $viewModel.allergies.searchQuery,
                 results: viewModel.allergies.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchAllergiesPlaceholder.localized,
                 onSelect: { selectedAllergy in
                     viewModel.allergies.select(selectedAllergy)
                 }

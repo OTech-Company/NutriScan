@@ -128,7 +128,7 @@ final class RAGVoiceChatViewModel: NSObject {
             do {
                 let message = try await queryUseCase.execute(question: trimmed, language: queryLanguage)
                 await MainActor.run {
-                    self.speak(message.answer ?? "no answer recieved")
+                    self.speak(message.answer ?? LocalizationKeys.Common.unknownError.localized)
                 }
             } catch {
                 await MainActor.run {

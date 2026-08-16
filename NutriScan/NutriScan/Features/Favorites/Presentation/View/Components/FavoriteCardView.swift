@@ -41,8 +41,8 @@ struct FavoriteCardView: View {
                     .contentShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .buttonStyle(FavoriteProductButtonStyle())
-                .accessibilityLabel("View details for \(favUIState.title)")
-                .accessibilityHint("Opens Product Details")
+                .accessibilityLabel("\(LocalizationKeys.Accessibility.viewDetailsFor.localized) \(favUIState.title)")
+                .accessibilityHint(LocalizationKeys.Accessibility.opensProductDetails.localized)
 
                 // Bookmark / Remove button — triggers parent to show confirmation alert
                 Button(action: {
@@ -59,7 +59,7 @@ struct FavoriteCardView: View {
                         .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                 }
                 .padding(8)
-                .accessibilityLabel("Remove \(favUIState.title) from saved products")
+                .accessibilityLabel("\(LocalizationKeys.Common.delete.localized) \(favUIState.title)")
             }
 
             Button(action: { onProductTap?() }) {
@@ -86,7 +86,7 @@ struct FavoriteCardView: View {
 
                     VStack(spacing: 0) {
                         Text(String(favUIState.calories))
-                        Text("Kcal")
+                        Text(LocalizationKeys.Favorites.kcal.localized)
                     }
                     .font(Font.AppFont.textCaption)
                     .foregroundStyle(Color.Favorites.caloriesColor)
@@ -98,11 +98,11 @@ struct FavoriteCardView: View {
                 .frame(maxWidth: .infinity)
             }
             .buttonStyle(FavoriteProductButtonStyle())
-            .accessibilityLabel("\(favUIState.title), \(favUIState.condition.rawValue), \(favUIState.calories) calories")
-            .accessibilityHint("Opens Product Details")
+            .accessibilityLabel("\(favUIState.title), \(favUIState.condition.rawValue), \(favUIState.calories) \(LocalizationKeys.Favorites.kcal.localized)")
+            .accessibilityHint(LocalizationKeys.Accessibility.opensProductDetails.localized)
 
             SwipeToActionButton(
-                actionTitle: "Swipe right to add",
+                actionTitle: LocalizationKeys.Favorites.swipeToAdd.localized,
                 action: { onSliderResult in
                     if let onAddToDaily {
                         onAddToDaily { success in

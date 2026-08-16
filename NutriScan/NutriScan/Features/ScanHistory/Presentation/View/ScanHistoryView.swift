@@ -28,7 +28,7 @@ struct ScanHistoryView: View {
             // Custom header with BackButton
             HStack(spacing: 16) {
                 BackButton { router.pop() }
-                Text("Scan History")
+                Text(LocalizationKeys.ScanHistory.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesHistorySemantic.title)
                     .lineLimit(1)
@@ -128,16 +128,17 @@ struct ScanHistoryView: View {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Scan?",
-                        message: "This scan will be removed from your history.",
-                        primaryButton: CustomAlertButton("Delete", role: .destructive),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Home.deleteScanTitle.localized,
+                        message: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Delete Failed",
-                        message: viewModel.deleteErrorMessage ?? "Could not delete this scan."
+                        title: LocalizationKeys.Home.deleteFailedTitle.localized,
+                        message: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
                 }
             },

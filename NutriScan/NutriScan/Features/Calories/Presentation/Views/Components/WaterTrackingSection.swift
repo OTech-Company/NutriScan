@@ -27,18 +27,23 @@ struct WaterTrackingSection: View {
     var body: some View {
         VStack(spacing: 8) {
             HStack {
-                Text("Water")
+                Text(LocalizationKeys.Calories.water.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesSemantic.waterTitle)
                 Spacer()
                 if isLoading {
                     CaloriesTextShimmer(width: 38, height: 13, cornerRadius: 4)
                 } else {
-                    Text("\(currentGlasses)/\(goalGlasses)")
-                        .font(Font.AppFont.textDefault)
-                        .foregroundStyle(Color.CaloriesSemantic.waterCount)
-                        .contentTransition(.numericText())
-                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                    HStack(spacing: 2) {
+                        Text(verbatim: "\(currentGlasses)")
+                            .contentTransition(.numericText())
+                            .animation(.spring(response: 0.4, dampingFraction: 0.7), value: currentGlasses)
+                        Text(verbatim: "/")
+                            .font(.system(size: 16, weight: .regular))
+                        Text(verbatim: "\(goalGlasses)")
+                    }
+                    .font(Font.AppFont.textDefault)
+                    .foregroundStyle(Color.CaloriesSemantic.waterCount)
                 }
             }
 
@@ -68,14 +73,14 @@ struct WaterTrackingSection: View {
                                     }
                             )
                             .allowsHitTesting(!isUpdating && !isLoading)
-                            .accessibilityLabel("Water cup \(index + 1) of \(goalGlasses)")
-                            .accessibilityValue(isFilled ? "Drunk" : "Not drunk")
-                            .accessibilityHint("Tap to change consumed water. Long press to reduce the target.")
+                            .accessibilityLabel("\(LocalizationKeys.Accessibility.waterCup.localized) \(index + 1) \(LocalizationKeys.StepTracker.ofGoal.localized) \(goalGlasses)")
+                            .accessibilityValue(isFilled ? LocalizationKeys.Calories.cups.localized : "")
+                            .accessibilityHint(LocalizationKeys.Accessibility.waterCupHint.localized)
                             .accessibilityAddTraits(.isButton)
                             .accessibilityAction {
                                 handleCupTap(index: index, isFilled: isFilled)
                             }
-                            .accessibilityAction(named: "Decrease water target") {
+                            .accessibilityAction(named: LocalizationKeys.Accessibility.decreaseWaterTarget.localized) {
                                 if goalGlasses > 1 { onDeleteTargetCupRequest() }
                             }
                         }

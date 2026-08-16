@@ -84,11 +84,11 @@ struct HealthProfileSetupView: View {
                     Spacer()
                         .frame(height: 150)
                     
-                    Text("Setup Your Health\nProfile")
+                    Text(LocalizationKeys.ProfileSetup.healthProfileTitle.localized)
                         .font(Font.AppFont.title2)
                         .foregroundStyle(Color.HealthProfileSetupSemantic.title)
                     
-                    Text("Help us tailor NutriScan to your specific dietary\nneeds and health conditions.")
+                    Text(LocalizationKeys.ProfileSetup.healthProfileSubtitle.localized)
                         .font(Font.AppFont.textSecondary)
                         .foregroundColor(Color.HealthProfileSetupSemantic.subtitle)
                         .lineSpacing(2)
@@ -98,7 +98,7 @@ struct HealthProfileSetupView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 24) {
                         SelectableChipsSectionView(
-                            title: "Chronic Conditions",
+                            title: LocalizationKeys.ProfileSetup.chronicConditions.localized,
                             items: viewModel.allConditions.map { ProfileChipItem(name: $0.name, isSelected: viewModel.selectedConditions.contains($0), isNewlyAdded: false) },
                             onAddOther: { showConditionSearchSheet = true },
                             onToggle: { conditionName in
@@ -110,7 +110,7 @@ struct HealthProfileSetupView: View {
                         )
                         
                         SelectableChipsSectionView(
-                            title: "Allergies",
+                            title: LocalizationKeys.ProfileSetup.allergies.localized,
                             items: viewModel.allAllergies.map { ProfileChipItem(name: $0.name, isSelected: viewModel.selectedAllergies.contains($0), isNewlyAdded: false) },
                             onAddOther: { showAllergySearchSheet = true },
                             onToggle: { allergyName in
@@ -129,7 +129,7 @@ struct HealthProfileSetupView: View {
             VStack {
                 Spacer()
                 CustomPuffedButton(
-                    title: (viewModel.isSaving || isFinishingSetup) ? "Saving..." : "Save",
+                    title: (viewModel.isSaving || isFinishingSetup) ? LocalizationKeys.ProfileSetup.saving.localized : LocalizationKeys.ProfileSetup.save.localized,
                     action: {
                         Task {
                             let success = await viewModel.saveProfile()
@@ -153,9 +153,10 @@ struct HealthProfileSetupView: View {
         .navigationBarHidden(true)
         .sheet(isPresented: $showConditionSearchSheet) {
             SearchSelectionSheet(
-                title: "Search Conditions",
+                title: LocalizationKeys.ProfileSetup.searchConditions.localized,
                 searchQuery: $conditionSearchQuery,
                 results: filteredConditions.map(\.name),
+                placeholder: LocalizationKeys.ProfileSetup.searchConditionsPlaceholder.localized,
                 onSelect: { selectedConditionName in
                     if let cond = viewModel.allConditions.first(where: { $0.name == selectedConditionName }) {
                         viewModel.toggleCondition(cond)
@@ -167,9 +168,10 @@ struct HealthProfileSetupView: View {
         }
         .sheet(isPresented: $showAllergySearchSheet) {
             SearchSelectionSheet(
-                title: "Search Allergies",
+                title: LocalizationKeys.ProfileSetup.searchAllergies.localized,
                 searchQuery: $allergySearchQuery,
                 results: filteredAllergies.map(\.name),
+                placeholder: LocalizationKeys.ProfileSetup.searchAllergiesPlaceholder.localized,
                 onSelect: { selectedAllergyName in
                     if let allg = viewModel.allAllergies.first(where: { $0.name == selectedAllergyName }) {
                         viewModel.toggleAllergy(allg)
@@ -182,9 +184,9 @@ struct HealthProfileSetupView: View {
         .customAlert(item: $alert, config: { _ in
             CustomAlertConfig(
                     type: .error,
-                    title: "Update Failed",
-                    message: viewModel.saveError ?? "An unknown error occurred while saving your profile.",
-                    primaryButton: CustomAlertButton("Dismiss")
+                    title: LocalizationKeys.ProfileSetup.updateFailedTitle.localized,
+                    message: viewModel.saveError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.dismiss.localized)
                 )
         }, primaryAction: { _ in })
     }

@@ -47,7 +47,9 @@ struct ProgressNextButton: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 24, weight: .semibold))
                     .foregroundColor(Color.Teal.teal100)
+                    .flipsForRightToLeftLayoutDirection(true)
             }
+            .environment(\.layoutDirection, .leftToRight)
         }
         .padding()
     }

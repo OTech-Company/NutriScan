@@ -199,40 +199,42 @@ struct CaloriesScreen: View {
             case .healthAccess:
                 return CustomAlertConfig(
                     type: .warning,
-                    title: "Health Access",
-                    message: stepViewModel.errorMessage ?? "Permission required"
+                    title: LocalizationKeys.Calories.motionAndFitnessTitle.localized,
+                    message: stepViewModel.errorMessage ?? LocalizationKeys.Calories.permissionRequired.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                 )
             case .loadingError:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Something went wrong",
-                    message: caloriesViewModel.errorMessage ?? "Please try again."
+                    title: LocalizationKeys.Common.somethingWentWrong.localized,
+                    message: caloriesViewModel.errorMessage ?? LocalizationKeys.Common.tryAgain.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                 )
             case .mealRemoval:
                 return CustomAlertConfig(
                     type: .delete,
-                    title: mealRemovalRequest?.kind == .one ? "Remove One Serving?" : "Remove Meal?",
+                    title: mealRemovalRequest?.kind == .one ? LocalizationKeys.Calories.removeOneServingTitle.localized : LocalizationKeys.Calories.removeMealTitle.localized,
                     message: mealRemovalRequest?.kind == .one
-                        ? "One serving will be removed from today's log."
-                        : "All servings of this meal will be removed from today's log.",
-                    primaryButton: CustomAlertButton("Remove", role: .destructive),
-                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        ? LocalizationKeys.Calories.removeOneServingDesc.localized
+                        : LocalizationKeys.Calories.removeMealDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                 )
             case .waterRemoval:
                 return CustomAlertConfig(
                     type: .delete,
-                    title: "Remove Water?",
-                    message: "Do you want to mark this cup as undrunk?",
-                    primaryButton: CustomAlertButton("Remove", role: .destructive),
-                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    title: LocalizationKeys.Calories.removeWaterTitle.localized,
+                    message: LocalizationKeys.Calories.removeWaterDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                 )
             case .targetCupRemoval:
                 return CustomAlertConfig(
                     type: .delete,
-                    title: "Remove Target Cup?",
-                    message: "This will reduce your daily water goal by 1 cup.",
-                    primaryButton: CustomAlertButton("Remove", role: .destructive),
-                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    title: LocalizationKeys.Calories.removeTargetCupTitle.localized,
+                    message: LocalizationKeys.Calories.removeTargetCupDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                 )
             }
         }, primaryAction: { alert in

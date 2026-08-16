@@ -16,14 +16,14 @@ struct RecentHistoryView: View {
     var body: some View {
         VStack(spacing: 16) {
             HStack {
-                Text("Recent History")
+                Text(LocalizationKeys.Home.recentHistory.localized)
                     .font(Font.AppFont.title3)
                     .foregroundColor(Color.HomeSemantic.historyHeaderTitle)
 
                 Spacer()
 
                 Button(action: onViewAll) {
-                    Text("View All")
+                    Text(LocalizationKeys.Home.viewAll.localized)
                         .font(Font.AppFont.textDefault)
                         .foregroundColor(Color.HomeSemantic.historyHeaderAction)
                 }

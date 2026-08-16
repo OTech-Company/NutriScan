@@ -44,7 +44,7 @@ struct FavoritesView: View {
         VStack(spacing: 16) {
             CustomSearchBar(
                 text: $searchText,
-                prompt: "Search favorites",
+                prompt: LocalizationKeys.Favorites.searchPlaceholder.localized,
                 onSearch: {
                     appliedSearchText = searchText
                     Task {
@@ -135,24 +135,25 @@ struct FavoritesView: View {
                 case .remove:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Remove Product",
-                        message: "Are you sure you want to remove \"\(itemToRemove?.productName ?? "")\" from your favorites?",
-                        primaryButton: CustomAlertButton("Remove", role: .destructive),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Favorites.removeProductTitle.localized,
+                        message: String(format: LocalizationKeys.Favorites.removeProductDesc.localized, itemToRemove?.productName ?? ""),
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .addMealError:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Couldn't Add Meal",
+                        title: LocalizationKeys.Favorites.couldntAddMealTitle.localized,
                         message: addMealErrorMessage,
-                        primaryButton: CustomAlertButton("Try Again"),
-                        secondaryButton: CustomAlertButton("Dismiss", role: .cancel)
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.dismiss.localized, role: .cancel)
                     )
                 case .noInternet:
                     return CustomAlertConfig(
                         type: .noInternet,
-                        title: "No Internet Connection",
-                        message: "Please check your connection and try again."
+                        title: LocalizationKeys.Common.noInternetConnection.localized,
+                        message: LocalizationKeys.Favorites.noInternetDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                     )
                 }
             },
@@ -171,7 +172,7 @@ struct FavoritesView: View {
                         if viewModel.addMealFailure == .offline {
                             self.alert = .noInternet
                         } else {
-                            addMealErrorMessage = viewModel.addMealFailure?.message ?? "Something went wrong. Please try again."
+                            addMealErrorMessage = viewModel.addMealFailure?.message ?? LocalizationKeys.Common.somethingWentWrong.localized
                             self.alert = .addMealError
                         }
                     }

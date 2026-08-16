@@ -154,7 +154,7 @@ struct FamilyMemberSheetView: View {
                 VStack(spacing: EditProfileSemantics.Spacing.fieldVertical) {
                     VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
-                            placeholder: "Member name",
+                            placeholder: LocalizationKeys.Profile.memberNamePlaceholder.localized,
                             text: $viewModel.name.value,
                             isEditing: isEditingMode)
                         if viewModel.name.state == .error {
@@ -165,7 +165,7 @@ struct FamilyMemberSheetView: View {
 
                     VStack(spacing: ProfileSemantics.Spacing.smallSpacing) {
                         EditableFieldView(
-                            placeholder: "Relation (e.g. Son, Mother)",
+                            placeholder: LocalizationKeys.Profile.relationPlaceholder.localized,
                             text: $viewModel.relation.value,
                             isEditing: isEditingMode)
                         if viewModel.relation.state == .error {
@@ -176,7 +176,7 @@ struct FamilyMemberSheetView: View {
                 }
 
                 SelectableChipsSectionView(
-                    title: "Chronic Conditions",
+                    title: LocalizationKeys.ProfileSetup.chronicConditions.localized,
                     items: viewModel.conditions.chips,
                     onAddOther: { viewModel.conditions.showSearchSheet = true },
                     onToggle: { viewModel.conditions.toggle($0) },
@@ -184,15 +184,15 @@ struct FamilyMemberSheetView: View {
                 ).disabled(!isEditingMode)
 
                 SelectableChipsSectionView(
-                    title: "Allergies", items: viewModel.allergies.chips,
+                    title: LocalizationKeys.ProfileSetup.allergies.localized, items: viewModel.allergies.chips,
                     onAddOther: { viewModel.allergies.showSearchSheet = true },
                     onToggle: { viewModel.allergies.toggle($0) },
                     onRemove: { viewModel.allergies.remove($0) }
                 ).disabled(!isEditingMode)
 
                 let buttonTitle: String = {
-                    if !viewModel.isEditMode { return "Add Member" }
-                    return isEditingMode ? "Save" : "Edit"
+                    if !viewModel.isEditMode { return LocalizationKeys.Profile.addMember.localized }
+                    return isEditingMode ? LocalizationKeys.Common.save.localized : LocalizationKeys.Common.edit.localized
                 }()
 
                 CustomPuffedButton(
@@ -230,7 +230,7 @@ struct FamilyMemberSheetView: View {
                     Button(action: {
                         alert = .delete
                     }) {
-                        Text("Delete")
+                        Text(LocalizationKeys.Common.delete.localized)
                             .font(
                                 .system(
                                     size: ProfileSemantics.Sizes.buttonTextSize,
@@ -258,16 +258,18 @@ struct FamilyMemberSheetView: View {
         .task { await viewModel.loadReferenceData() }
         .sheet(isPresented: $viewModel.conditions.showSearchSheet) {
             SearchSelectionSheet(
-                title: "Search Conditions",
+                title: LocalizationKeys.ProfileSetup.searchConditions.localized,
                 searchQuery: $viewModel.conditions.searchQuery,
                 results: viewModel.conditions.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchConditionsPlaceholder.localized,
                 onSelect: { viewModel.conditions.select($0) })
         }
         .sheet(isPresented: $viewModel.allergies.showSearchSheet) {
             SearchSelectionSheet(
-                title: "Search Allergies",
+                title: LocalizationKeys.ProfileSetup.searchAllergies.localized,
                 searchQuery: $viewModel.allergies.searchQuery,
                 results: viewModel.allergies.filteredItems,
+                placeholder: LocalizationKeys.ProfileSetup.searchAllergiesPlaceholder.localized,
                 onSelect: { viewModel.allergies.select($0) })
         }
         .customAlert(
@@ -277,30 +279,32 @@ struct FamilyMemberSheetView: View {
                 case .duplicate:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Duplicate Member",
-                        message: "This family member already exists."
+                        title: LocalizationKeys.Profile.duplicateMemberTitle.localized,
+                        message: LocalizationKeys.Profile.duplicateMemberDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                     )
                 case .unsavedChanges:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Save Changes",
-                        message: "You have modified this family member's details. Are you sure you want to save?",
-                        primaryButton: CustomAlertButton("Save"),
-                        secondaryButton: CustomAlertButton("Discard", role: .cancel)
+                        title: LocalizationKeys.Profile.saveChangesTitle.localized,
+                        message: LocalizationKeys.EditProfile.saveChangesDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.save.localized),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.EditProfile.discard.localized, role: .cancel)
                     )
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Member",
-                        message: "Are you sure you want to delete this family member?",
-                        primaryButton: CustomAlertButton("Delete", role: .destructive),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Profile.deleteMemberTitle.localized,
+                        message: LocalizationKeys.Profile.deleteMemberDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Action Failed",
-                        message: viewModel.errorMessage ?? "An unexpected network error occurred."
+                        title: LocalizationKeys.Common.actionFailed.localized,
+                        message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                     )
                 }
             },
@@ -338,5 +342,6 @@ struct FamilyMemberSheetView: View {
                 }
             }
         )
+        .environment(\.layoutDirection, AppLanguage.current.layoutDirection)
     }
 }

@@ -71,10 +71,10 @@ struct NotificationHistoryView: View {
             config: { _ in
                 CustomAlertConfig(
                     type: .delete,
-                    title: "Clear All Notifications",
-                    message: "Are you sure you want to delete all notification history? This action cannot be undone.",
-                    primaryButton: CustomAlertButton("Clear All", role: .destructive),
-                    secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                    title: LocalizationKeys.Notifications.clearAllTitle.localized,
+                    message: LocalizationKeys.Notifications.clearAllDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Notifications.clearAll.localized, role: .destructive),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                 )
             },
             primaryAction: { _ in

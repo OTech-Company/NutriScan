@@ -53,12 +53,12 @@ struct DailyProductsSection: View {
                 } else if meals.isEmpty {
                     VStack(spacing: 8) {
                         AddCircleButton(
-                            accessibilityLabel: "Add food",
-                            accessibilityHint: "Opens your saved foods",
+                            accessibilityLabel: LocalizationKeys.Calories.addFood.localized,
+                            accessibilityHint: LocalizationKeys.Accessibility.opensSavedFoods.localized,
                             size: 60,
                             action: onAddFoodTap
                         )
-                        Text("Add Food")
+                        Text(LocalizationKeys.Calories.addFood.localized)
                             .foregroundStyle(Color.CaloriesSemantic.dailyProductsAddFoodText)
                             .font(Font.AppFont.textSecondary)
                     }
@@ -136,7 +136,7 @@ struct DailyProductsHeader: View {
 
     var body: some View {
         HStack(spacing: 4) {
-            Text("Daily Products")
+            Text(LocalizationKeys.Calories.dailyProducts.localized)
                 .font(Font.AppFont.title4)
                 .foregroundStyle(Color.CaloriesSemantic.dailyProductsTitle)
 
@@ -227,7 +227,7 @@ private struct CalorieMealCard: View {
                 productImage
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(meal.productName.isEmpty ? "Unknown Product" : meal.productName)
+                    Text(meal.productName.isEmpty ? LocalizationKeys.Calories.unknownProduct.localized : meal.productName)
                         .font(Font.AppFont.textCaption)
                         .foregroundStyle(Color.CaloriesSemantic.dailyProductTitleText)
                         .lineLimit(2)
@@ -288,10 +288,10 @@ private struct CalorieMealCard: View {
             RoundedRectangle(cornerRadius: 18)
                 .stroke(Color.CaloriesSemantic.dailyProductCardBorder, lineWidth: 1)
         }
-        .accessibilityAction(named: "Remove one serving") {
+        .accessibilityAction(named: LocalizationKeys.Calories.removeOneServingTitle.localized) {
             if meal.mealCnt > 1 { onRemoveOne() }
         }
-        .accessibilityAction(named: "Remove all servings") {
+        .accessibilityAction(named: LocalizationKeys.Calories.removeMealTitle.localized) {
             onRemoveAll()
         }
     }
@@ -332,7 +332,7 @@ private struct AddFoodCarouselCard: View {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 28, weight: .semibold))
                     .foregroundStyle(Color.CaloriesSemantic.dailyProductQuantityBadgeBackground)
-                Text("Add Food")
+                Text(LocalizationKeys.Calories.addFood.localized)
                     .font(Font.AppFont.textCaption)
                     .foregroundStyle(Color.CaloriesSemantic.dailyProductAddCardText)
             }

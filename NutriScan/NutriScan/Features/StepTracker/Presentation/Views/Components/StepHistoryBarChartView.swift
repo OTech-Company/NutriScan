@@ -39,7 +39,7 @@ struct StepHistoryBarChartView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Step History")
+            Text(LocalizationKeys.StepTracker.stepHistory.localized)
                 .font(.custom("PlusJakartaSans-SemiBold", size: 18))
                 .foregroundColor(Color.CaloriesSemantic.chartTitle)
 
@@ -60,13 +60,13 @@ struct StepHistoryBarChartView: View {
     private var chart: some View {
         Chart(history, id: \.date) { day in
             BarMark(
-                x: .value("Day", day.date, unit: .day),
-                y: .value("Steps", day.stepCount)
+                x: .value(LocalizationKeys.StepTracker.day.localized, day.date, unit: .day),
+                y: .value(LocalizationKeys.StepTracker.steps.localized, day.stepCount)
             )
             .foregroundStyle(barColor(for: day.stepCount))
             .cornerRadius(4)
 
-            RuleMark(y: .value("Goal", goalSteps))
+            RuleMark(y: .value(LocalizationKeys.StepTracker.goal.localized, goalSteps))
                 .foregroundStyle(Color.Teal.teal500)
                 .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
         }
@@ -102,7 +102,7 @@ struct StepHistoryBarChartView: View {
             Image(systemName: "chart.bar")
                 .font(.system(size: 28))
                 .foregroundColor(Color.Teal.teal400)
-            Text("No step history yet")
+            Text(LocalizationKeys.StepTracker.noHistory.localized)
                 .font(.custom("LexendDeca-Regular", size: 14))
                 .foregroundColor(Color.CaloriesSemantic.axisText)
         }

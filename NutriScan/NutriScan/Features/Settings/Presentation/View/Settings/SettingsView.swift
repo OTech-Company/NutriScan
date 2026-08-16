@@ -18,25 +18,24 @@ struct SettingsView: View {
 
     var body: some View {
 
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            SettingsHeaderSection {
+                router.pop()
+            }
 
-                SettingsHeaderSection {
-                    router.pop()
-                }
-
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 12) {
                     MenuRowView(
                         icon: "person.badge.shield.checkmark.fill",
-                        title: "Profile Settings",
+                        title: LocalizationKeys.Settings.profileSettings.localized,
                         action: {
                             router.push(SettingsRoute.profileSettings)
                         }
                     )
-                    
+
                     MenuRowView(
                         icon: "bell.badge.fill",
-                        title: "Notification Settings",
+                        title: LocalizationKeys.Settings.notificationSettings.localized,
                         action: {
                             router.push(SettingsRoute.notificationSettings)
                         }
@@ -44,21 +43,21 @@ struct SettingsView: View {
 
                     SettingsSegmentRow(
                         icon: "circle.lefthalf.filled",
-                        title: "Appearance",
+                        title: LocalizationKeys.Settings.appearance.localized,
                         options: AppAppearance.allCases,
                         selected: $viewModel.selectedAppearance
                     )
 
                     SettingsSegmentRow(
                         icon: "globe",
-                        title: "Language",
+                        title: LocalizationKeys.Settings.language.localized,
                         options: AppLanguage.allCases,
                         selected: $viewModel.selectedLanguage
                     )
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Terms and Conditions",
+                        title: LocalizationKeys.Settings.terms.localized,
                         action: {
                             router.push(SettingsRoute.termsAndConditions)
                         }
@@ -66,7 +65,7 @@ struct SettingsView: View {
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Help",
+                        title: LocalizationKeys.Settings.help.localized,
                         action: {
                             router.push(SettingsRoute.help)
                         }
@@ -97,18 +96,18 @@ struct SettingsView: View {
                 case .logout:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Logout",
-                        message: "Are you sure you want to log out of NutriScan?",
-                        primaryButton: CustomAlertButton("Logout", role: .destructive),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Settings.logoutAlertTitle.localized,
+                        message: LocalizationKeys.Settings.logoutAlertDescription.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Settings.logoutAlertConfirm.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .deleteAccount:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Account",
-                        message: "Are you sure you want to delete your account? You will have a 15-day grace period to restore it before permanent deletion.",
-                        primaryButton: CustomAlertButton("Delete Account", role: .destructive),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Settings.deleteAlertTitle.localized,
+                        message: LocalizationKeys.Settings.deleteAlertDescription.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Settings.deleteAlertConfirm.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 }
             },

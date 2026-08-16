@@ -33,11 +33,17 @@ struct SwipeToActionButton: View {
         case success
     }
 
+    private var isRTL: Bool {
+        AppLanguage.current.layoutDirection == .rightToLeft
+    }
+
     var body: some View {
+        let isRTL = isRTL
         let maxDrag = max(0, trackWidth - thumbWidth - (trackInset * 2))
         let thumbDisplayWidth = phase == .success && !reduceMotion
             ? max(thumbWidth, trackWidth - (trackInset * 2))
             : thumbWidth
+
         let thumbOffset: CGFloat = {
             switch phase {
             case .success where reduceMotion:
@@ -48,6 +54,13 @@ struct SwipeToActionButton: View {
                 return max(0, min(dragOffset, maxDrag))
             }
         }()
+
+        // Physical X-offset in LTR coordinate space:
+        // English (LTR): starts at left (trackInset), moves right (+thumbOffset)
+        // Arabic (RTL): starts at right (trackWidth - thumbWidth - trackInset), moves left (-thumbOffset)
+        let thumbXPosition: CGFloat = isRTL
+            ? (trackWidth - thumbDisplayWidth - trackInset) - thumbOffset
+            : trackInset + thumbOffset
 
         ZStack(alignment: .leading) {
             // Background Track
@@ -64,7 +77,8 @@ struct SwipeToActionButton: View {
                 .font(Font.AppFont.lexendDecaLight12)
                 .foregroundColor(Color.Favorites.swipeTextColor)
                 .frame(maxWidth: .infinity)
-                .padding(.leading, phase == .idle ? 28 : 0)
+                .padding(.leading, phase == .idle ? (isRTL ? 0 : 28) : 0)
+                .padding(.trailing, phase == .idle ? (isRTL ? 28 : 0) : 0)
                 .opacity(phase == .success ? 0 : 1)
 
             // Sliding Thumb / Button
@@ -74,7 +88,7 @@ struct SwipeToActionButton: View {
 
                 switch phase {
                 case .idle:
-                    Image(systemName: "chevron.right")
+                    Image(systemName: isRTL ? "chevron.left" : "chevron.right")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundStyle(.white)
                 case .submitting:
@@ -89,8 +103,9 @@ struct SwipeToActionButton: View {
                 }
             }
             .frame(width: thumbDisplayWidth, height: thumbHeight)
-            .offset(x: trackInset + thumbOffset)
+            .offset(x: thumbXPosition)
         }
+        .environment(\.layoutDirection, .leftToRight)
         .frame(height: trackHeight)
         .background(
             GeometryReader { geo in
@@ -112,8 +127,9 @@ struct SwipeToActionButton: View {
                     // Prevent vertical scrolling from triggering horizontal swipe
                     guard abs(value.translation.width) > abs(value.translation.height) else { return }
                     
-                    if value.translation.width >= 0 {
-                        dragOffset = min(value.translation.width, maxDrag)
+                    let translation = isRTL ? -value.translation.width : value.translation.width
+                    if translation >= 0 {
+                        dragOffset = min(translation, maxDrag)
                     }
                 }
                 .onEnded { value in
@@ -136,9 +152,9 @@ struct SwipeToActionButton: View {
             newPhase == .success
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("Add meal to daily tracking")
+        .accessibilityLabel(LocalizationKeys.Accessibility.addMealTracking.localized)
         .accessibilityValue(accessibilityValue)
-        .accessibilityHint("Swipe right or activate to add this saved product")
+        .accessibilityHint(LocalizationKeys.Accessibility.swipeAddProduct.localized)
         .accessibilityAction {
             submit(maxDrag: maxDrag)
         }
@@ -215,8 +231,8 @@ struct SwipeToActionButton: View {
     private var sliderTitle: String {
         switch phase {
         case .idle: return actionTitle
-        case .submitting: return "Adding..."
-        case .success: return "Added!"
+        case .submitting: return LocalizationKeys.Favorites.adding.localized
+        case .success: return LocalizationKeys.Favorites.added.localized
         }
     }
 

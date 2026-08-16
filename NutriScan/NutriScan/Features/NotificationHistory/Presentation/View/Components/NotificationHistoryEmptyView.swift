@@ -21,11 +21,11 @@ struct NotificationHistoryEmptyView: View {
             }
             .padding(.top, 40)
 
-            Text("No Notifications Yet")
+            Text(LocalizationKeys.Notifications.emptyTitle.localized)
                 .font(Font.AppFont.numbers)
                 .foregroundColor(.white)
 
-            Text("You're all caught up! When you receive reminders or updates, they will appear here.")
+            Text(LocalizationKeys.Notifications.emptyDesc.localized)
                 .font(Font.AppFont.textSecondary)
                 .foregroundColor(Color.Teal.teal200.opacity(0.8))
                 .multilineTextAlignment(.center)

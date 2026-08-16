@@ -38,7 +38,7 @@ struct LoginView: View {
                             Button(action: {
                                 router.push(AuthRoute.forgotPassword)
                             }) {
-                                Text("Forgot Password?")
+                                Text(LocalizationKeys.Auth.Login.forgotPassword.localized)
                                     .font(Font.AppFont.textSecondary)
                                     .fontWeight(.medium)
                                     .foregroundColor(Color.LoginSemantic.forgotPasswordText)
@@ -46,9 +46,14 @@ struct LoginView: View {
                         }
                         .padding(.top, 12)
                         
-                        CustomPuffedButton(title: "Sign in", action: handleSignIn, isLoading: viewModel.isLoading)
+                        CustomPuffedButton(
+                            title: LocalizationKeys.Auth.Login.signIn.localized,
+                            action: handleSignIn,
+                            isLoading: viewModel.isLoading
+                        )
                             .padding(.top, 24)
                         
+                        /*
                         AuthDivider()
                             .padding(.top, 32)
                         
@@ -58,17 +63,18 @@ struct LoginView: View {
                             SocialLoginButton(iconName: "instagram", action: {})
                         }
                         .padding(.top, 24)
+                        */
                         
                         Spacer(minLength: 40)
                         HStack(spacing: 4) {
-                            Text("Don't have an account?")
+                            Text(LocalizationKeys.Auth.Login.noAccount.localized)
                                 .font(Font.AppFont.textSecondary)
                                 .foregroundColor(Color.LoginSemantic.footerText)
                             
                             Button(action: {
                                 router.push(AuthRoute.register)
                             }) {
-                                Text("Sign Up.")
+                                Text(LocalizationKeys.Auth.Login.signUp.localized)
                                     .font(Font.AppFont.textSecondary)
                                     .fontWeight(.bold)
                                     .foregroundColor(Color.LoginSemantic.footerLink)
@@ -96,9 +102,9 @@ struct LoginView: View {
             config: { _ in
                 CustomAlertConfig(
                     type: .error,
-                    title: "Login Failed",
-                    message: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButton: CustomAlertButton("Try Again")
+                    title: LocalizationKeys.Auth.Login.failedTitle.localized,
+                    message: viewModel.generalError ?? LocalizationKeys.Auth.Login.failedUnknown.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Auth.Login.tryAgain.localized)
                 )
             },
             primaryAction: { _ in viewModel.generalError = nil }

@@ -60,7 +60,7 @@ struct SuccessDialog: View {
                 }
 
                 Button(action: onDismiss) {
-                    Text("Continue")
+                    Text(LocalizationKeys.Common.continueAction.localized)
                         .font(Font.AppFont.subtitle1)
                         .fontWeight(.semibold)
                         .foregroundColor(.white)

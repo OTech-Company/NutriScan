@@ -17,19 +17,19 @@ enum PasswordResetOption: String, CaseIterable, Identifiable {
     
     var title: String {
         switch self {
-        case .email: return "Send via Email"
-        case .twoFactor: return "Send via 2FA"
-        case .googleAuth: return "Send via Google Auth"
-        case .sms: return "Send via SMS"
+        case .email: return LocalizationKeys.Auth.ForgotPassword.optionEmailTitle.localized
+        case .twoFactor: return LocalizationKeys.Auth.ForgotPassword.option2faTitle.localized
+        case .googleAuth: return LocalizationKeys.Auth.ForgotPassword.optionGauthTitle.localized
+        case .sms: return LocalizationKeys.Auth.ForgotPassword.optionSmsTitle.localized
         }
     }
     
     var subtitle: String {
         switch self {
-        case .email: return "Reset password via email."
-        case .twoFactor: return "Reset password via 2FA."
-        case .googleAuth: return "Reset password via G-Auth."
-        case .sms: return "Reset password via SMS."
+        case .email: return LocalizationKeys.Auth.ForgotPassword.optionEmailDesc.localized
+        case .twoFactor: return LocalizationKeys.Auth.ForgotPassword.option2faDesc.localized
+        case .googleAuth: return LocalizationKeys.Auth.ForgotPassword.optionGauthDesc.localized
+        case .sms: return LocalizationKeys.Auth.ForgotPassword.optionSmsDesc.localized
         }
     }
     

@@ -11,62 +11,62 @@ struct AppValidator {
     
     static func displayNameValidator(_ displayName: String?) -> String? {
         guard let displayName = displayName, !displayName.isEmpty else {
-            return "Full name is required"
+            return LocalizationKeys.Validation.Name.fullRequired.localized
         }
         if displayName.count < 3 || displayName.count > 20 {
-            return "Full name must be between 3 and 20 characters"
+            return LocalizationKeys.Validation.Name.fullLength.localized
         }
         return nil
     }
 
     static func firstNameValidator(_ name: String?) -> String? {
         guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return "First name is required"
+            return LocalizationKeys.Validation.Name.firstRequired.localized
         }
         if name.count < 2 || name.count > 50 {
-            return "First name must be between 2 and 50 characters"
+            return LocalizationKeys.Validation.Name.firstLength.localized
         }
         return nil
     }
 
     static func lastNameValidator(_ name: String?) -> String? {
         guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            return "Last name is required"
+            return LocalizationKeys.Validation.Name.lastRequired.localized
         }
         if name.count < 2 || name.count > 50 {
-            return "Last name must be between 2 and 50 characters"
+            return LocalizationKeys.Validation.Name.lastLength.localized
         }
         return nil
     }
 
     static func validateMobile(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Mobile number is required"
+            return LocalizationKeys.Validation.Mobile.required.localized
         }
         if value.count != 11 {
-            return "Mobile number must be 11 digits"
+            return LocalizationKeys.Validation.Mobile.length.localized
         }
         let pattern = #"^(010|011|012|015)\d{8}$"#
         let regexPredicate = NSPredicate(format: "SELF MATCHES %@", pattern)
         if !regexPredicate.evaluate(with: value) {
-            return "Invalid mobile number"
+            return LocalizationKeys.Validation.Mobile.invalid.localized
         }
         return nil
     }
 
     static func validateVerifyCode(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Verification code is required"
+            return LocalizationKeys.Validation.VerifyCode.required.localized
         }
 
         if value.count != 6 {
-            return "Verification code must be 6 digits"
+            return LocalizationKeys.Validation.VerifyCode.length.localized
         }
 
         let pattern = #"^[0-9]{6}$"#
         let regexPredicate = NSPredicate(format: "SELF MATCHES %@", pattern)
         if !regexPredicate.evaluate(with: value) {
-            return "Invalid verification code"
+            return LocalizationKeys.Validation.VerifyCode.invalid.localized
         }
 
         return nil
@@ -74,10 +74,10 @@ struct AppValidator {
 
     static func passwordValidator(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Password is required"
+            return LocalizationKeys.Validation.Password.required.localized
         }
         if value.count < 8 {
-            return "Password must be at least 8 characters"
+            return LocalizationKeys.Validation.Password.minLength.localized
         }
         return nil
     }
@@ -87,26 +87,26 @@ struct AppValidator {
             return validationError
         }
         if value != password {
-            return "Passwords do not match"
+            return LocalizationKeys.Validation.Password.mismatch.localized
         }
         return nil
     }
 
     static func emailValidator(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Email is required"
+            return LocalizationKeys.Validation.Email.required.localized
         }
         let pattern = #"^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$"#
         let regexPredicate = NSPredicate(format: "SELF MATCHES %@", pattern)
         if !regexPredicate.evaluate(with: value) {
-            return "Invalid email address"
+            return LocalizationKeys.Validation.Email.invalid.localized
         }
         return nil
     }
 
     static func validateRequiredTextField(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "This field is required"
+            return LocalizationKeys.Common.fieldRequired.localized
         }
         return nil
     }
@@ -115,20 +115,20 @@ struct AppValidator {
     
     static func heightValidator(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Height is required"
+            return LocalizationKeys.Validation.Height.required.localized
         }
         guard let h = Double(value), h >= 50, h <= 300 else {
-            return "Invalid height"
+            return LocalizationKeys.Validation.Height.invalid.localized
         }
         return nil
     }
     
     static func weightValidator(_ value: String?) -> String? {
         guard let value = value, !value.isEmpty else {
-            return "Weight is required"
+            return LocalizationKeys.Validation.Weight.required.localized
         }
         guard let w = Double(value), w >= 20, w <= 500 else {
-            return "Invalid weight"
+            return LocalizationKeys.Validation.Weight.invalid.localized
         }
         return nil
     }

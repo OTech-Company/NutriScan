@@ -13,7 +13,7 @@ struct ExploreSectionHeader: View {
         VStack(spacing: 16) {
             // Header
             HStack {
-                Text("Explore")
+                Text(LocalizationKeys.Home.explore.localized)
                     .font(Font.AppFont.title3)
                     .foregroundColor(Color.HomeSemantic.historyHeaderTitle)
  

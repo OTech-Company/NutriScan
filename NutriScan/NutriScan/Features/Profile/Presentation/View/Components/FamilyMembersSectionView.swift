@@ -16,7 +16,7 @@ struct FamilyMembersSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.sectionTitleSpacing) {
-            Text("Family Members")
+            Text(LocalizationKeys.Profile.familyMembers.localized)
                 .font(Font.AppFont.title4)
                 .foregroundColor(Color.ProfileSemantics.sectionTitle)
 

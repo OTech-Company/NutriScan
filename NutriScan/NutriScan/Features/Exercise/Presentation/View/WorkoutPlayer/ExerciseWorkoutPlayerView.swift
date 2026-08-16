@@ -27,7 +27,7 @@ struct ExerciseWorkoutPlayerView: View {
                         }
                     }
 
-                    Text("Exercise")
+                    Text(LocalizationKeys.Exercise.exerciseLabel.localized)
                         .font(Font.AppFont.subtitle1)
                         .foregroundColor(Color.ExerciseSemantic.rowTitle)
 
@@ -72,7 +72,7 @@ struct ExerciseWorkoutPlayerView: View {
                 // MARK: Timer Display
                 VStack(spacing: 4) {
                     if viewModel.isPaused {
-                        Text("Total Time")
+                        Text(LocalizationKeys.Exercise.totalTime.localized)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.ExerciseSemantic.playerTimerLabel)
                     }
@@ -102,9 +102,9 @@ struct ExerciseWorkoutPlayerView: View {
                 case .success:
                     return CustomAlertConfig(
                         type: .success,
-                        title: "Workout Completed!",
+                        title: LocalizationKeys.Exercise.workoutCompletedTitle.localized,
                         message: viewModel.completionDescription,
-                        primaryButton: CustomAlertButton("Done")
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.done.localized)
                     )
                 case .recordingError:
                     return CustomAlertConfig(
@@ -115,18 +115,18 @@ struct ExerciseWorkoutPlayerView: View {
                 case .cancel:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Cancel Workout?",
-                        message: "Are you sure you want to quit? Your current workout progress will be lost.",
-                        primaryButton: CustomAlertButton("End Workout", role: .destructive),
-                        secondaryButton: CustomAlertButton("Keep Going", role: .cancel)
+                        title: LocalizationKeys.Exercise.cancelWorkoutTitle.localized,
+                        message: LocalizationKeys.Exercise.cancelWorkoutDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Exercise.endWorkout.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Exercise.keepGoing.localized, role: .cancel)
                     )
                 case .restart:
                     return CustomAlertConfig(
                         type: .warning,
-                        title: "Restart Timer?",
-                        message: "This will reset your workout timer back to 00:00.",
-                        primaryButton: CustomAlertButton("Restart"),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Exercise.restartTimerTitle.localized,
+                        message: LocalizationKeys.Exercise.restartTimerDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Exercise.restart.localized),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 }
             },

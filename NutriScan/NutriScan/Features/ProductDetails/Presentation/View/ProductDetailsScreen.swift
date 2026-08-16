@@ -76,9 +76,9 @@ struct ProductDetailsScreen: View {
         .customAlert(item: $alert, config: { _ in
             CustomAlertConfig(
                     type: .error,
-                    title: "Error",
-                    message: viewModel.failureMessage ?? "An unknown error occurred",
-                    primaryButton: CustomAlertButton("Retry")
+                    title: LocalizationKeys.Common.error.localized,
+                    message: viewModel.failureMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.retry.localized)
                 )
         }, primaryAction: { _ in
             viewModel.failureMessage = nil
@@ -90,7 +90,7 @@ struct ProductDetailsScreen: View {
         HStack {
             HStack(spacing: 16) {
                 BackButton(action: { router.pop() }, style: .onTeal)
-                Text("Product Details")
+                Text(LocalizationKeys.ProductDetails.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.white)
             }

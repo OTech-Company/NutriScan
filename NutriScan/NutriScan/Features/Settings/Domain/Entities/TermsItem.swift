@@ -14,11 +14,13 @@ struct TermsItem: Identifiable, Equatable {
 }
 
 extension TermsItem {
-    static let dummyItems: [TermsItem] = [
-        TermsItem(id: -1, title: "Acceptance of Terms", body: "By creating an account and using NutriScan, you agree to these Terms and Conditions. If you don't agree, please don't use the app."),
-        TermsItem(id: -2, title: "Use of the App", body: "NutriScan is provided for personal nutrition tracking. You agree to use it only for lawful purposes and to keep your account credentials secure."),
-        TermsItem(id: -3, title: "Not Medical Advice", body: "Nutrition information, calorie estimates, and NutriGPT responses are for informational purposes only and are not a substitute for professional medical or dietary advice."),
-        TermsItem(id: -4, title: "Scanning and Camera Data", body: "Photos taken for barcode or receipt scanning are processed to extract nutrition data and are not shared with third parties beyond what's required to provide this feature."),
-        TermsItem(id: -5, title: "AI Assistant (NutriGPT)", body: "Responses from NutriGPT are generated automatically and may occasionally be inaccurate. Use your judgment before acting on AI-provided suggestions.")
-    ]
+    static var dummyItems: [TermsItem] {
+        [
+            TermsItem(id: -1, title: LocalizationKeys.Settings.terms1Title.localized, body: LocalizationKeys.Settings.terms1Body.localized),
+            TermsItem(id: -2, title: LocalizationKeys.Settings.terms2Title.localized, body: LocalizationKeys.Settings.terms2Body.localized),
+            TermsItem(id: -3, title: LocalizationKeys.Settings.terms3Title.localized, body: LocalizationKeys.Settings.terms3Body.localized),
+            TermsItem(id: -4, title: LocalizationKeys.Settings.terms4Title.localized, body: LocalizationKeys.Settings.terms4Body.localized),
+            TermsItem(id: -5, title: LocalizationKeys.Settings.terms5Title.localized, body: LocalizationKeys.Settings.terms5Body.localized)
+        ]
+    }
 }

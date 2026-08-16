@@ -23,7 +23,7 @@ struct HelpScreen: View {
             Color.HelperSemantic.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                SettingsHeaderSection(title: "Help", subtitle: nil) {
+                SettingsHeaderSection(title: LocalizationKeys.Settings.help.localized, subtitle: nil) {
                     router.pop()
                 }
 
@@ -38,7 +38,7 @@ struct HelpScreen: View {
                             alignment: .leading,
                             spacing: HelperSemantics.Spacing.itemSpacing
                         ) {
-                            Text("Frequently Asked Questions")
+                            Text(LocalizationKeys.Settings.faqTitle.localized)
                                 .font(Font.AppFont.subtitle1)
                                 .foregroundColor(
                                     Color.HelperSemantic.sectionTitle)
@@ -80,7 +80,7 @@ struct HelpScreen: View {
 
                         // MARK: - Credits Section
                         VStack(spacing: 4) {
-                            Text("Made with ❤️ by NutriScan Team")
+                            Text(LocalizationKeys.Settings.madeWith.localized)
                                 .font(Font.AppFont.textCaption)
 
                             let version =
@@ -112,9 +112,9 @@ struct HelpScreen: View {
             config: { _ in
                 CustomAlertConfig(
                         type: .warning,
-                        title: "Mail Not Configured",
-                        message:
-                            "We couldn't open a mail app. Our support email (\(viewModel.supportEmail)) has been copied to your clipboard instead.",
+                        title: LocalizationKeys.Settings.mailNotConfigured.localized,
+                        message: LocalizationKeys.Settings.mailNotConfiguredDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                     )
             },
             primaryAction: { _ in }

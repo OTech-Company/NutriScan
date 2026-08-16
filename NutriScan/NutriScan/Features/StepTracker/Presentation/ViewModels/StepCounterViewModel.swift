@@ -120,7 +120,7 @@ final class StepCounterViewModel {
             isAuthorized = granted
             errorMessage = nil
             guard granted else {
-                errorMessage = "Health access is required to count your steps."
+                errorMessage = LocalizationKeys.Calories.permissionRequired.localized
                 return
             }
             startObserving()

@@ -15,11 +15,11 @@ struct AccountRestorationHeaderSection: View {
 
             // Text Block
             VStack(alignment: .leading, spacing: 8) {
-                Text("Restore Account")
+                Text(LocalizationKeys.Auth.AccountRestoration.headerTitle.localized)
                     .font(Font.AppFont.plusJakartaSansBold28)
                     .foregroundColor(Color.AccountRestorationSemantic.headerTitle)
-                
-                Text("Your account is scheduled for deletion.")
+
+                Text(LocalizationKeys.Auth.AccountRestoration.headerSubtitle.localized)
                     .font(Font.AppFont.lexendDecaMedium16)
                     .foregroundColor(Color.AccountRestorationSemantic.headerSubtitle)
             }

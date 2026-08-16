@@ -21,7 +21,7 @@ struct ProfileHeaderFailureView: View {
                 )
 
             VStack(alignment: .leading, spacing: ProfileSemantics.Spacing.tinySpacing) {
-                Text("Failed to load profile")
+                Text(LocalizationKeys.Profile.failedToLoad.localized)
                     .font(Font.AppFont.title4)
                     .foregroundColor(Color.ProfileSemantics.userName)
 

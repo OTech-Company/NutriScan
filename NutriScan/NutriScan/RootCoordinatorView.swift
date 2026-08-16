@@ -25,6 +25,7 @@ struct RootCoordinatorView: View {
         type: CaloriesActivitySyncCoordinator.self
     )
     @AppStorage("appAppearance") private var appAppearance: AppAppearance = .system
+    @AppStorage("appLanguage") private var appLanguage: AppLanguage = .english
     private let isUITesting: Bool
 
     init() {
@@ -41,8 +42,11 @@ struct RootCoordinatorView: View {
     var body: some View {
         currentFlowView
             .preferredColorScheme(appAppearance.colorScheme)
+            .environment(\.locale, appLanguage.locale)
+            .environment(\.layoutDirection, appLanguage.layoutDirection)
             .environmentObject(flowCoordinator)
             .animation(.default, value: flowCoordinator.flow)
+            .id(appLanguage)
             .task(id: flowCoordinator.flow) {
                 guard !isUITesting, flowCoordinator.flow == .main else { return }
                 await dailyActivitySyncCoordinator.synchronizePendingDates()

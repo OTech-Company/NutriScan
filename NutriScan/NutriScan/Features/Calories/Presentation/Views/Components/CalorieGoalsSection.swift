@@ -63,33 +63,34 @@ struct CalorieGoalsSection: View {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 4) {
                             Image("calories-fill")
-                            Text("Calorie Goals")
+                            Text(LocalizationKeys.Calories.calorieGoals.localized)
                                 .font(Font.AppFont.subtitle1)
                                 .foregroundStyle(Color.CaloriesSemantic.goalsTitle)
                         }
 
                         VStack(spacing: 8) {
                             if isLoading {
-                                calorieRow(title: "Your TDEE", calories: nil)
+                                calorieRow(title: LocalizationKeys.Calories.yourTDEE.localized, calories: nil)
                             } else if let targetCalories {
-                                calorieRow(title: "Your TDEE", calories: Int(targetCalories.rounded()))
+                                calorieRow(title: LocalizationKeys.Calories.yourTDEE.localized, calories: Int(targetCalories.rounded()))
                             } else {
                                 Button(action: onCompleteProfileTap) {
                                     HStack(spacing: 4) {
-                                        Text("Complete Personal Information")
+                                        Text(LocalizationKeys.Calories.completePersonalInfo.localized)
                                         Image(systemName: "chevron.right")
+                                            .flipsForRightToLeftLayoutDirection(true)
                                     }
                                     .font(Font.AppFont.textCaption)
                                     .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
                                 }
-                                .accessibilityHint("Opens Personal Information to set your calorie goal")
+                                .accessibilityHint(LocalizationKeys.Accessibility.opensPersonalInfo.localized)
                             }
                             calorieRow(
-                                title: "Calories Gained",
+                                title: LocalizationKeys.Calories.caloriesGained.localized,
                                 calories: isLoading ? nil : mealCalories
                             )
                             calorieRow(
-                                title: "Calories Burned",
+                                title: LocalizationKeys.Calories.caloriesBurned.localized,
                                 calories: isLoading ? nil : Int(caloriesBurned.rounded())
                             )
                         }

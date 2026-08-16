@@ -27,7 +27,7 @@ struct ExerciseCardView: View {
                         }
                         .scaleEffect(showContent ? 1 : 0)
                         .rotationEffect(.degrees(showContent ? 0 : -45))
-                    Text("Your\nExercise")
+                    Text(LocalizationKeys.ProfileSetup.yourExercise.localized)
                         .font(Font.AppFont.textCaption)
                         .foregroundStyle(Color.CaloriesSemantic.exerciseTitle)
                         .opacity(showContent ? 1 : 0)
@@ -51,11 +51,11 @@ struct ExerciseCardView: View {
                                 .font(Font.AppFont.numbers)
                                 .foregroundStyle(Color.CaloriesSemantic.exerciseKcalValue)
                                 .contentTransition(.numericText())
-                            Text("Kcal")
+                            Text(LocalizationKeys.Favorites.kcal.localized)
                                 .font(Font.AppFont.textSecondary)
                                 .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
                         }
-                        Text("\(exerciseMinutes.formatted(.number.precision(.fractionLength(1)))) min today")
+                        Text("\(exerciseMinutes.formatted(.number.precision(.fractionLength(1)))) \(LocalizationKeys.Calories.minToday.localized)")
                             .font(Font.AppFont.textSecondary)
                             .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
                     }

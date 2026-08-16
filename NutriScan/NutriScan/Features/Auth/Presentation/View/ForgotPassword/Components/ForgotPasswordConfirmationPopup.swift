@@ -25,18 +25,18 @@ struct ForgotPasswordConfirmationPopup: View {
                 }
 
             VStack(spacing: 0) {
-                
+
                 // MARK: - Popup Card
                 VStack(alignment: .leading, spacing: 0) {
                     if viewModel.popupState == .enterEmail {
                         // MARK: Title
-                        Text("Reset Password")
+                        Text(LocalizationKeys.Auth.ForgotPassword.resetTitle.localized)
                             .font(Font.AppFont.title1)
                             .foregroundColor(Color.ForgotPasswordSemantic.confirmationTitle)
                             .padding(.top, 8)
 
                         // MARK: Description
-                        Text("Enter the email address associated with your account. We will send you a secure link to reset your password on our web portal.")
+                        Text(LocalizationKeys.Auth.ForgotPassword.resetDescription.localized)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.ForgotPasswordSemantic.confirmationSubtitle)
                             .lineSpacing(4)
@@ -44,10 +44,10 @@ struct ForgotPasswordConfirmationPopup: View {
 
                         // MARK: Email Input Field
                         CustomTextField(
-                            title: "Email Address",
+                            title: LocalizationKeys.Auth.ForgotPassword.emailTitle.localized,
                             leadingIcon: "envelope",
                             errorMessage: viewModel.email.error,
-                            placeHolder: "please enter your email",
+                            placeHolder: LocalizationKeys.Auth.ForgotPassword.emailPlaceholder.localized,
                             textFieldValue: $viewModel.email.value,
                             state: $viewModel.email.state
                         )
@@ -58,7 +58,7 @@ struct ForgotPasswordConfirmationPopup: View {
 
                         // MARK: Action Button
                         CustomPuffedButton(
-                            title: "Send Reset Link",
+                            title: LocalizationKeys.Auth.ForgotPassword.sendResetLink.localized,
                             action: onSendLink,
                             isLoading: viewModel.isLoading
                         )
@@ -69,17 +69,17 @@ struct ForgotPasswordConfirmationPopup: View {
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: .infinity)
-                            .padding(.all, -26) 
+                            .padding(.all, -26)
                             .customTealShadow()
-                        
+
                         // MARK: Title
-                        Text("Reset Link Sent!")
+                        Text(LocalizationKeys.Auth.ForgotPassword.resetLinkSentTitle.localized)
                             .font(Font.AppFont.title1)
                             .foregroundColor(Color.ForgotPasswordSemantic.confirmationTitle)
                             .padding(.top, 12)
 
                         // MARK: Subtitle
-                        Text("We've sent a secure password reset link to:\n\(viewModel.email.value)\n\nPlease check your inbox and click the link to reset your password on the web.")
+                        Text("\(LocalizationKeys.Auth.ForgotPassword.resetLinkSentDesc.localized)\n\(viewModel.email.value)\n\n\(LocalizationKeys.Auth.ForgotPassword.checkInbox.localized)")
                             .font(Font.AppFont.textPrimary)
                             .foregroundColor(Color.ForgotPasswordSemantic.confirmationSubtitle)
                             .lineSpacing(4)
@@ -87,7 +87,7 @@ struct ForgotPasswordConfirmationPopup: View {
 
                         // MARK: Resend Button
                         CustomPuffedButton(
-                            title: "Resend Link",
+                            title: LocalizationKeys.Auth.ForgotPassword.resendLink.localized,
                             action: onResendLink,
                             isLoading: viewModel.isLoading
                         )

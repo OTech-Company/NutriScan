@@ -13,46 +13,46 @@ enum EmptyState {
     var title: String {
         switch self {
         case .noConnection:
-            return "No Internet Connection"
+            return LocalizationKeys.EmptyState.titleNoConnection.localized
         case .error404:
-            return "Error 404"
+            return LocalizationKeys.EmptyState.titleError404.localized
         case .noScans:
-            return "No Scans yet"
+            return LocalizationKeys.EmptyState.titleNoScans.localized
         case .noNotificationPermission:
-            return "Turn on notifications"
+            return LocalizationKeys.EmptyState.titleNotificationPermission.localized
         case .noNotifications:
-            return "No Notifications"
+            return LocalizationKeys.EmptyState.titleNoNotifications.localized
         case .noSaved:
-            return "No Saved scans"
+            return LocalizationKeys.EmptyState.titleNoSaved.localized
         case .noSearchResults:
-            return "No results found"
+            return LocalizationKeys.EmptyState.titleNoSearchResults.localized
         case .noCaloriesHistory:
-            return "No Calories History"
+            return LocalizationKeys.EmptyState.titleNoCaloriesHistory.localized
         case .serverProblem:
-            return "Server problem"
+            return LocalizationKeys.EmptyState.titleServerProblem.localized
         }
     }
     
     var description: String {
         switch self {
         case .noConnection:
-            return "Oops! It seems you're currently offline."
+            return LocalizationKeys.EmptyState.descNoConnection.localized
         case .error404:
-            return "Oops! The page you're looking for can't be found."
+            return LocalizationKeys.EmptyState.descError404.localized
         case .noScans:
-            return "Start your first scan to see whether a product is safe for you."
+            return LocalizationKeys.EmptyState.descNoScans.localized
         case .noNotificationPermission:
-            return "Enable notifications to receive scan updates, reminders, and important health alerts."
+            return LocalizationKeys.EmptyState.descNotificationPermission.localized
         case .noNotifications:
-            return "No new notifications right now.\nWe'll let you know when something important needs your attention."
+            return LocalizationKeys.EmptyState.descNoNotifications.localized
         case .noSaved:
-            return "You have nothing on your list yet.\nIt's never too late to change it :)"
+            return LocalizationKeys.EmptyState.descNoSaved.localized
         case .noSearchResults:
-            return "No results found. Please try again."
+            return LocalizationKeys.EmptyState.descNoSearchResults.localized
         case .noCaloriesHistory:
-            return "Start tracking your calories to see your daily progress."
+            return LocalizationKeys.EmptyState.descNoCaloriesHistory.localized
         case .serverProblem:
-            return "We're having trouble loading your data. Please try again in a moment."
+            return LocalizationKeys.EmptyState.descServerProblem.localized
         }
     }
     
@@ -82,21 +82,21 @@ enum EmptyState {
     var actionLabel: String {
         switch self {
         case .error404:
-            return "go to home"
+            return LocalizationKeys.EmptyState.actionGoToHome.localized
         case .noScans:
-            return "Start Scanning"
+            return LocalizationKeys.EmptyState.actionStartScanning.localized
         case .noNotificationPermission:
-            return "Go to settings"
+            return LocalizationKeys.EmptyState.actionGoToSettings.localized
         case .noNotifications:
-            return "Go back"
+            return LocalizationKeys.EmptyState.actionGoBack.localized
         case .noSaved:
-            return "Go to Scans"
+            return LocalizationKeys.EmptyState.actionGoToScans.localized
         case .noSearchResults:
-            return "Go to Scan"
+            return LocalizationKeys.EmptyState.actionGoToScan.localized
         case .noCaloriesHistory:
-            return "Add meals"
+            return LocalizationKeys.EmptyState.actionAddMeals.localized
         case .serverProblem, .noConnection:
-            return "Try again"
+            return LocalizationKeys.EmptyState.actionTryAgain.localized
         }
     }
 }

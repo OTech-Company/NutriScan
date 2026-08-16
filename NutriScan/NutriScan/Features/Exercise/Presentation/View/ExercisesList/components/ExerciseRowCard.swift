@@ -46,6 +46,7 @@ struct ExerciseRowCard: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundColor(Color.ExerciseSemantic.rowChevron)
+                    .flipsForRightToLeftLayoutDirection(true)
             }
             .padding(.horizontal, 16)
             .frame(height: 88)

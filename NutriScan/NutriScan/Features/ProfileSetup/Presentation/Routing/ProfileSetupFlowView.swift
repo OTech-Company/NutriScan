@@ -42,8 +42,9 @@ struct ProfileSetupFlowView: View {
         .customAlert(item: $alert, config: { _ in
             CustomAlertConfig(
                     type: .error,
-                    title: "Invalid Age",
-                    message: "Your age must be at least 6 years."
+                    title: LocalizationKeys.ProfileSetup.invalidAgeTitle.localized,
+                    message: LocalizationKeys.ProfileSetup.invalidAgeDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                 )
         }, primaryAction: { _ in })
     }

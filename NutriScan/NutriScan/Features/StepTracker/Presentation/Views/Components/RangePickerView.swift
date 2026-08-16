@@ -6,10 +6,10 @@ struct RangePickerView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                chipButton(title: "Week", range: .lastWeek)
-                chipButton(title: "Month", range: .lastMonth)
-                chipButton(title: "3 Months", range: .last3Months)
-                chipButton(title: "6 Months", range: .last6Months)
+                chipButton(title: LocalizationKeys.StepTracker.week.localized, range: .lastWeek)
+                chipButton(title: LocalizationKeys.StepTracker.month.localized, range: .lastMonth)
+                chipButton(title: LocalizationKeys.StepTracker.threeMonths.localized, range: .last3Months)
+                chipButton(title: LocalizationKeys.StepTracker.sixMonths.localized, range: .last6Months)
             }
             .padding(.horizontal, 20)
         }

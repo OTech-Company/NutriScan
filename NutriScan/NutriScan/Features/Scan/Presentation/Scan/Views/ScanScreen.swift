@@ -126,8 +126,9 @@ struct ScanScreen: View {
             config: { _ in
                 CustomAlertConfig(
                     type: .error,
-                    title: "Scan Failed",
-                    message: viewModel.errorMessage ?? "Unknown error"
+                    title: LocalizationKeys.Scan.scanFailed.localized,
+                    message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
                 )
             },
             primaryAction: { _ in viewModel.dismissError() }

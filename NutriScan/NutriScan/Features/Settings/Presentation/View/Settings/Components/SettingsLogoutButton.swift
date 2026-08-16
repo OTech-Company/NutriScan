@@ -22,7 +22,7 @@ struct SettingsLogoutButton: View {
                     .background(Color.SettingsSemantic.logoutIconBackground)
                     .clipShape(Circle())
 
-                Text("Logout")
+                Text(LocalizationKeys.Settings.logout.localized)
                     .font(Font.AppFont.textPrimary)
                     .fontWeight(.semibold)
                     .foregroundColor(Color.SettingsSemantic.logoutTitle)

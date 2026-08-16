@@ -22,11 +22,11 @@ struct ScanHistoryEmptyStateView: View {
                     .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray400))
             }
             
-            Text("No Scan History")
-                .font(.AppFont.title3)
+            Text(LocalizationKeys.ScanHistory.emptyTitle.localized)
+                .font(Font.AppFont.title3)
                 .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
             
-            Text("Your scanned products will appear here.")
+            Text(LocalizationKeys.ScanHistory.emptyDesc.localized)
                 .font(.AppFont.textSecondary)
                 .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray300))
                 .multilineTextAlignment(.center)

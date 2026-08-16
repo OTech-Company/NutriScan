@@ -19,7 +19,7 @@ struct SafetyLevelText: View {
 
     var body: some View {
         HStack(spacing:8) {
-            Text(isScanFailed ? "scan field" : safetyLevel.rawValue)
+            Text(isScanFailed ? LocalizationKeys.ProductDetails.scanFailed.localized : safetyLevel.rawValue)
                 .font(Font.AppFont.subtitle2)
                 .foregroundStyle(isScanFailed ? Color.Red.red500 : .white)
                 .padding(.horizontal, 8)
@@ -28,7 +28,7 @@ struct SafetyLevelText: View {
                     RoundedRectangle(cornerRadius: 8)
                         .foregroundStyle(isScanFailed ? Color.Red.red100 : safetyLevel.color)
                 }
-            Text("For you")
+            Text(LocalizationKeys.ProductDetails.forYou.localized)
                 .font(Font.AppFont.subtitle2)
                 .foregroundStyle(Color(light: Color.Teal.teal1000, dark: Color.Teal.teal500))
             Spacer()

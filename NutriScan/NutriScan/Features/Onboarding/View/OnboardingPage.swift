@@ -33,24 +33,24 @@ enum OnboardingPage: Int, CaseIterable {
     
     var title: String {
         switch self {
-        case .scanLabels: return "Scan Food Labels\nInstantly"
-        case .knowWhatsSafe: return "Know What's Safe\nfor You"
-        case .shopWithConfidence: return "Shop with\nConfidence"
+        case .scanLabels: return LocalizationKeys.Onboarding.scanLabelsTitle.localized
+        case .knowWhatsSafe: return LocalizationKeys.Onboarding.knowWhatsSafeTitle.localized
+        case .shopWithConfidence: return LocalizationKeys.Onboarding.shopWithConfidenceTitle.localized
         }
     }
     
     var description: String {
         switch self {
-        case .scanLabels: return "Point your camera at any food label and let AI read even the smallest Arabic and English ingredients in seconds."
-        case .knowWhatsSafe: return "Get a personalized safety rating based on your allergies and health conditions, with simple explanations you can trust."
-        case .shopWithConfidence: return "Discover healthier alternatives, avoid hidden risks, and make smarter food choices every time you shop."
+        case .scanLabels: return LocalizationKeys.Onboarding.scanLabelsDesc.localized
+        case .knowWhatsSafe: return LocalizationKeys.Onboarding.knowWhatsSafeDesc.localized
+        case .shopWithConfidence: return LocalizationKeys.Onboarding.shopWithConfidenceDesc.localized
         }
     }
     
     var buttonTitle: String {
         switch self {
-        case .scanLabels, .knowWhatsSafe: return "Next"
-        case .shopWithConfidence: return "Let's Start"
+        case .scanLabels, .knowWhatsSafe: return LocalizationKeys.Onboarding.next.localized
+        case .shopWithConfidence: return LocalizationKeys.Onboarding.letsStart.localized
         }
     }
 }

@@ -78,7 +78,7 @@ struct ExerciseDetailSheet: View {
 
                 // MARK: Instructions
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Instructions")
+                    Text(LocalizationKeys.Exercise.instructions.localized)
                         .font(Font.AppFont.subtitle1)
                         .foregroundColor(Color.ExerciseSemantic.instructionHead)
 
@@ -106,7 +106,7 @@ struct ExerciseDetailSheet: View {
                                     isExpanded = true
                                 }
                             } label: {
-                                Text("read more")
+                                Text(LocalizationKeys.Exercise.readMore.localized)
                                     .font(Font.AppFont.textSecondary)
                                     .foregroundColor(Color.ExerciseSemantic.readMoreText)
                             }
@@ -117,7 +117,7 @@ struct ExerciseDetailSheet: View {
                 .padding(.horizontal, 20)
 
                 // MARK: CTA — Start Workout
-                CustomPuffedButton(title: "Start Workout", action: onStartWorkout)
+                CustomPuffedButton(title: LocalizationKeys.Exercise.startWorkout.localized, action: onStartWorkout)
                     .padding(.horizontal, 20)
                     .padding(.top, 20)
                     .padding(.bottom, 32)

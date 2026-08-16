@@ -14,51 +14,51 @@ struct RegisterFormFieldsSection: View {
     var body: some View {
         VStack(spacing: 20) {
             CustomTextField(
-                title: "First Name",
+                title: LocalizationKeys.Auth.Register.firstNameTitle.localized,
                 leadingIcon: "person",
                 isPassword: false,
                 errorMessage: viewModel.firstName.error,
-                placeHolder: "Enter your first name...",
+                placeHolder: LocalizationKeys.Auth.Register.firstNamePlaceholder.localized,
                 textFieldValue: $viewModel.firstName.value,
                 state: $viewModel.firstName.state
             )
 
             CustomTextField(
-                title: "Last Name",
+                title: LocalizationKeys.Auth.Register.lastNameTitle.localized,
                 leadingIcon: "person",
                 isPassword: false,
                 errorMessage: viewModel.lastName.error,
-                placeHolder: "Enter your last name...",
+                placeHolder: LocalizationKeys.Auth.Register.lastNamePlaceholder.localized,
                 textFieldValue: $viewModel.lastName.value,
                 state: $viewModel.lastName.state
             )
 
             CustomTextField(
-                title: "Email Address",
+                title: LocalizationKeys.Auth.Register.emailTitle.localized,
                 leadingIcon: "envelope",
                 isPassword: false,
                 errorMessage: viewModel.email.error,
-                placeHolder: "Enter your email",
+                placeHolder: LocalizationKeys.Auth.Register.emailPlaceholder.localized,
                 textFieldValue: $viewModel.email.value,
                 state: $viewModel.email.state
             )
 
             CustomTextField(
-                title: "Password",
+                title: LocalizationKeys.Auth.Register.passwordTitle.localized,
                 leadingIcon: "lock",
                 isPassword: true,
                 errorMessage: viewModel.password.error,
-                placeHolder: "Enter your password",
+                placeHolder: LocalizationKeys.Auth.Register.passwordPlaceholder.localized,
                 textFieldValue: $viewModel.password.value,
                 state: $viewModel.password.state
             )
 
             CustomTextField(
-                title: "Password Confirmation",
+                title: LocalizationKeys.Auth.Register.confirmPasswordTitle.localized,
                 leadingIcon: "lock",
                 isPassword: true,
                 errorMessage: viewModel.confirmPassword.error,
-                placeHolder: "Repeat password",
+                placeHolder: LocalizationKeys.Auth.Register.confirmPasswordPlaceholder.localized,
                 textFieldValue: $viewModel.confirmPassword.value,
                 state: $viewModel.confirmPassword.state
             )

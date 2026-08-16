@@ -176,9 +176,9 @@ final class ScanHistoryViewModel {
         let timeString = timeFormatter.string(from: parsedDate)
         
         if let days = components.day, days == 0 {
-            return "Today, \(timeString)"
+            return "\(LocalizationKeys.ScanHistory.today.localized), \(timeString)"
         } else if let days = components.day, days == 1 {
-            return "Yesterday, \(timeString)"
+            return "\(LocalizationKeys.ScanHistory.yesterday.localized), \(timeString)"
         } else if let days = components.day, days > 1 {
             return "\(days) days ago, \(timeString)"
         } else {

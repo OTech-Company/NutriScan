@@ -52,12 +52,12 @@ struct HomeView: View {
                 ExploreSectionHeader()
 
                 VStack {
-                    MenuRowView(icon: "newspaper.fill", title: "Health News") {
+                    MenuRowView(icon: "newspaper.fill", title: LocalizationKeys.Home.healthNews.localized) {
                         router.push(HomeRoute.news)
                     }
                     MenuRowView(
                         icon: "bubble.left.and.bubble.right.fill",
-                        title: "Chat with AI"
+                        title: LocalizationKeys.Home.chatWithAI.localized
                     ) {
                         showRAGChat = true
                     }
@@ -116,16 +116,17 @@ struct HomeView: View {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Scan?",
-                        message: "This scan will be removed from your history.",
-                        primaryButton: CustomAlertButton("Delete", role: .destructive),
-                        secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+                        title: LocalizationKeys.Home.deleteScanTitle.localized,
+                        message: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Delete Failed",
-                        message: viewModel.deleteErrorMessage ?? "Could not delete this scan."
+                        title: LocalizationKeys.Home.deleteFailedTitle.localized,
+                        message: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
                 }
             },

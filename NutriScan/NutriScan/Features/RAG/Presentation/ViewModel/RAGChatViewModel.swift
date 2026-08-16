@@ -18,7 +18,10 @@ final class RAGChatViewModel {
     /// listening locale. Each individual query's language is auto-detected from
     /// whatever the user actually typed or said (see `send()`), so the user is
     /// always free to write or speak in either English or Arabic.
-    var language: RAGLanguage = .deviceDefault
+    ///
+    /// Defaults to the app's selected language (AppLanguage.current) so the
+    /// chatbot starts in whichever language the user set in the app settings.
+    var language: RAGLanguage = AppLanguage.current == .arabic ? .arabic : .english
 
     /// Exposed (not private) so the chat view can hand it to the voice chat flow.
     let queryUseCase: QueryRAGUseCase

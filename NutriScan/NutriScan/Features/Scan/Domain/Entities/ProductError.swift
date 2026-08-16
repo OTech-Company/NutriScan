@@ -9,13 +9,13 @@ enum ScanError: Error, Equatable {
     var userMessage: String {
         switch self {
         case .scanNotFound(let scanId):
-            return "No scan found with ID \(scanId)."
+            return "\(LocalizationKeys.Scan.noScanFoundWithId.localized) \(scanId)."
         case .network:
-            return "Couldn't reach the server. Check your connection."
+            return LocalizationKeys.Common.noInternetConnection.localized
         case .decoding:
-            return "Something went wrong reading the scan data."
+            return LocalizationKeys.Common.actionFailed.localized
         case .unknown:
-            return "Something went wrong. Please try again."
+            return LocalizationKeys.Common.somethingWentWrong.localized
         }
     }
 }

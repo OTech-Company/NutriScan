@@ -44,7 +44,7 @@ struct SelectableChipsSectionView: View {
                     }
                 }
                 
-                SelectableChip(title: "Other", state: .add, action: onAddOther)
+                SelectableChip(title: LocalizationKeys.Common.other.localized, state: .add, action: onAddOther)
             }
         }
     }

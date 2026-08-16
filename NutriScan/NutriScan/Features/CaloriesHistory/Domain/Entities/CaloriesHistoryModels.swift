@@ -60,9 +60,9 @@ enum CaloriesHistoryError: Error, Equatable, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidIdentity, .invalidDate:
-            return "The calorie history response is incomplete."
+            return LocalizationKeys.Calories.historyIncompleteResponse.localized
         case .notFound:
-            return "No calorie history was found for this date."
+            return LocalizationKeys.Calories.historyNotFound.localized
         }
     }
 }

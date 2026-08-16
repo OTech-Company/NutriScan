@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotificationHistoryHeader: View {
-    let title: String = "Notifications"
+    let title: String = LocalizationKeys.Profile.notifications.localized
     var onBack: () -> Void
     var onClearAll: () -> Void
     var onSettingsTap: () -> Void
@@ -23,7 +23,7 @@ struct NotificationHistoryHeader: View {
 
                 HStack(spacing: 16) {
                     Button(action: onClearAll) {
-                        Text("Clear All")
+                        Text(LocalizationKeys.Notifications.clearAll.localized)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.NotificationHistorySemantic.clearAllButton)
                     }

@@ -40,11 +40,11 @@ struct HomeGreetingSection: View {
                     .clipShape(Circle())
 
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Hello, \(userName)!")
+                        Text(String(format: LocalizationKeys.Home.greeting.localized, userName))
                             .font(Font.AppFont.title3)
                             .foregroundColor(Color.HomeSemantic.greetingTitle)
 
-                        Text("Your Health Comes First")
+                        Text(LocalizationKeys.Home.healthComesFirst.localized)
                             .font(Font.AppFont.textSecondary)
                             .foregroundColor(Color.HomeSemantic.greetingSubtitle)
                             .accessibilityIdentifier("home.greetingSubtitle")
@@ -65,7 +65,7 @@ struct HomeGreetingSection: View {
                     .foregroundColor(Color.HomeSemantic.greetingBell)
                     .frame(width: 44, height: 44)
             }
-            .accessibilityLabel("Notifications")
+            .accessibilityLabel(LocalizationKeys.Notifications.notificationSettings.localized)
             .accessibilityIdentifier("home.notificationButton")
         }
     }

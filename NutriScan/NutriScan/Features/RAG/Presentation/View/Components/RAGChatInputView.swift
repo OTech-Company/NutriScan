@@ -33,7 +33,7 @@ struct RAGChatInputView: View {
                         .foregroundStyle(isDictating ? Color.RAGSemantic.errorText : Color.RAGSemantic.sendButton)
                 }
                 .disabled(isLoading)
-                .accessibilityLabel(isDictating ? "Stop voice input" : "Start voice input")
+                .accessibilityLabel(isDictating ? LocalizationKeys.RAG.stopListening.localized : LocalizationKeys.RAG.startSpeaking.localized)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)

@@ -26,11 +26,11 @@ enum AppTab: String, CaseIterable {
 
     var title: String {
         switch self {
-        case .home: return "Home"
-        case .calories: return "Calories"
-        case .scan: return "Scan"
-        case .bookmark: return "Favorites"
-        case .profile: return "Profile"
+        case .home: return LocalizationKeys.TabBar.home.localized
+        case .calories: return LocalizationKeys.TabBar.calories.localized
+        case .scan: return LocalizationKeys.TabBar.scan.localized
+        case .bookmark: return LocalizationKeys.TabBar.favorites.localized
+        case .profile: return LocalizationKeys.TabBar.profile.localized
         }
     }
 
