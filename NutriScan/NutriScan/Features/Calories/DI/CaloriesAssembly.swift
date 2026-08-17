@@ -10,8 +10,12 @@ import Foundation
 struct CaloriesAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
 
+        let dayProvider = container.resolve(type: DailyTrackingDayProviding.self)
         let service = CaloriesTrackingServiceImpl()
-        let repository: CaloriesTrackingRepo = CaloriesTrackingRepoImpl(service: service)
+        let repository: CaloriesTrackingRepo = CaloriesTrackingRepoImpl(
+            service: service,
+            dayProvider: dayProvider
+        )
         container.register(type: CaloriesTrackingRepo.self, component: repository)
 
         let caloriesActivityStore = CaloriesActivityStore()
@@ -56,7 +60,8 @@ struct CaloriesAssembly: Assembly {
                 profileStore: container.resolve(type: UserProfileStore.self),
                 getCaloriesTrackingByDateUseCase: getCaloriesTrackingByDateUseCase,
                 updateWaterUseCase: updateWaterUseCase,
-                fetchHistoryUseCase: container.resolve(type: FetchStepsHistoryUseCase.self)
+                fetchHistoryUseCase: container.resolve(type: FetchStepsHistoryUseCase.self),
+                dayProvider: dayProvider
             )
         )
     }

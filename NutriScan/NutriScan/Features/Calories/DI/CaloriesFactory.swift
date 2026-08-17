@@ -11,7 +11,7 @@ import Foundation
 enum CaloriesFactory {
 
     static func makeCaloriesViewModel() -> CaloriesViewModel {
-        let getCaloriesTrackingByDateUseCase = DIContainer.shared.resolve(type: GetCaloriesTrackingByDateUseCaseProtocol.self)
+        let getTodayCaloriesTrackingUseCase = DIContainer.shared.resolve(type: GetTodayCaloriesTrackingUseCaseProtocol.self)
         let addMealUseCase = DIContainer.shared.resolve(type: AddCaloriesMealUseCaseProtocol.self)
         let deleteMealUseCase = DIContainer.shared.resolve(type: DeleteMealUseCaseProtocol.self)
         let updateMealUseCase = DIContainer.shared.resolve(type: UpdateMealUseCaseProtocol.self)
@@ -20,9 +20,10 @@ enum CaloriesFactory {
         let profileStore = DIContainer.shared.resolve(type: UserProfileStore.self)
         let caloriesActivitySyncCoordinator = DIContainer.shared.resolve(type: CaloriesActivitySyncCoordinator.self)
         let notificationScheduler = DIContainer.shared.resolve(type: SmartNotificationSchedulerProtocol.self)
+        let dayProvider = DIContainer.shared.resolve(type: DailyTrackingDayProviding.self)
 
         return CaloriesViewModel(
-            getCaloriesTrackingByDateUseCase: getCaloriesTrackingByDateUseCase,
+            getTodayCaloriesTrackingUseCase: getTodayCaloriesTrackingUseCase,
             addMealUseCase: addMealUseCase,
             deleteMealUseCase: deleteMealUseCase,
             updateMealUseCase: updateMealUseCase,
@@ -30,7 +31,8 @@ enum CaloriesFactory {
             caloriesActivityStore: caloriesActivityStore,
             profileStore: profileStore,
             caloriesActivitySyncCoordinator: caloriesActivitySyncCoordinator,
-            notificationScheduler: notificationScheduler
+            notificationScheduler: notificationScheduler,
+            dayProvider: dayProvider
         )
     }
 }

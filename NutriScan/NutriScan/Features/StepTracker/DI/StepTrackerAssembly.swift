@@ -7,6 +7,7 @@ import Foundation
 
 struct StepTrackerAssembly: Assembly {
     @MainActor func assemble(container: DIContainer) {
+        let dayProvider = container.resolve(type: DailyTrackingDayProviding.self)
         let healthKitSource = HealthKitStepDataSource()
         let repository = StepRepositoryImpl(healthKitSource: healthKitSource)
 
@@ -18,7 +19,10 @@ struct StepTrackerAssembly: Assembly {
         // Register step tracker use cases
         container.register(
             type: ObserveDailyStepsUseCase.self,
-            component: ObserveDailyStepsUseCase(repository: repository)
+            component: ObserveDailyStepsUseCase(
+                repository: repository,
+                dayProvider: dayProvider
+            )
         )
         container.register(
             type: RequestStepAuthorizationUseCase.self,

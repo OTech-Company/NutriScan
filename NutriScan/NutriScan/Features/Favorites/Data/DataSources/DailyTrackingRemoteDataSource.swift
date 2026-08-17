@@ -8,6 +8,8 @@
 import Foundation
 
 protocol DailyTrackingRemoteDataSourceProtocol {
+    /// Creates or returns the backend's current daily tracking record.
+    func getToday() async throws -> DailyTrackingTodayDTO
     /// Attempts to add a new meal entry. Throws if the network call fails.
     func addMeal(date: String, scanId: String, mealCnt: Int) async throws -> DailyTrackingMealDTO
     /// Updates the meal count for an existing entry.
@@ -22,6 +24,10 @@ final class DailyTrackingRemoteDataSource: DailyTrackingRemoteDataSourceProtocol
 
     init(networkService: NetworkServiceProtocol = NetworkService.shared) {
         self.networkService = networkService
+    }
+
+    func getToday() async throws -> DailyTrackingTodayDTO {
+        try await networkService.request(DailyTrackingEndpoint.getToday)
     }
 
     func addMeal(date: String, scanId: String, mealCnt: Int) async throws -> DailyTrackingMealDTO {

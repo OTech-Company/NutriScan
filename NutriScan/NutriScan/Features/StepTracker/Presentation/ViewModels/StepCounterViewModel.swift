@@ -22,9 +22,12 @@ final class StepCounterViewModel {
     private let requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
     private let profileService: UserProfileService
+    private let dayProvider: DailyTrackingDayProviding
+    private let dateProvider: () -> Date
     private let fallbackWeightKg: Double
     private let fallbackHeightCm: Double
     private var observationTask: Task<Void, Never>?
+    private var serverDayRolloverTask: Task<Void, Never>?
 
     /// Full history fetched once (last 6 months), cached for slicing.
     private var fullHistoryCache: [DailySteps] = []
@@ -35,6 +38,8 @@ final class StepCounterViewModel {
         requestAuthUseCase: RequestStepAuthorizationUseCaseProtocol,
         fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol,
         profileService: UserProfileService = DIContainer.shared.resolve(type: UserProfileService.self),
+        dayProvider: DailyTrackingDayProviding = DIContainer.shared.resolve(type: DailyTrackingDayProviding.self),
+        dateProvider: @escaping () -> Date = Date.init,
         weightKg: Double = 70.0,
         heightCm: Double = 170.0
     ) {
@@ -42,6 +47,8 @@ final class StepCounterViewModel {
         self.requestAuthUseCase = requestAuthUseCase
         self.fetchHistoryUseCase = fetchHistoryUseCase
         self.profileService = profileService
+        self.dayProvider = dayProvider
+        self.dateProvider = dateProvider
         self.fallbackWeightKg = weightKg
         self.fallbackHeightCm = heightCm
     }
@@ -55,6 +62,7 @@ final class StepCounterViewModel {
     }
 
     func onAppear() {
+        scheduleServerDayRolloverIfNeeded()
         Task {
             await requestAuthorizationAndObserve()
         }
@@ -62,6 +70,8 @@ final class StepCounterViewModel {
 
     func onDisappear() {
         observationTask?.cancel()
+        serverDayRolloverTask?.cancel()
+        serverDayRolloverTask = nil
     }
 
     func rolloverToCurrentDay() {
@@ -70,6 +80,7 @@ final class StepCounterViewModel {
         if isAuthorized {
             startObserving()
         }
+        scheduleServerDayRolloverIfNeeded()
     }
 
     /// Fetches the full 6-month history once. Subsequent calls use the cache.
@@ -139,6 +150,19 @@ final class StepCounterViewModel {
                 self.hasHealthKitReading = true
                 self.todaySteps = steps
             }
+        }
+    }
+
+    private func scheduleServerDayRolloverIfNeeded() {
+        guard serverDayRolloverTask == nil,
+              let boundary = dayProvider.nextDayBoundary(after: dateProvider()) else { return }
+
+        let delay = max(boundary.timeIntervalSince(dateProvider()), 0.1)
+        serverDayRolloverTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard !Task.isCancelled, let self else { return }
+            self.serverDayRolloverTask = nil
+            self.rolloverToCurrentDay()
         }
     }
 

@@ -24,6 +24,10 @@ struct UpdateMealRequestBody: Encodable {
 
 enum DailyTrackingEndpoint: APIEndpoint {
 
+    /// GET /api/v1/daily-tracking/today
+    /// Creates or returns the backend's current daily tracking record.
+    case getToday
+
     /// POST /api/v1/daily-tracking/{date}/meals
     /// Adds a new product to today's daily meals.
     case addMeal(date: String, scanId: String, mealCnt: Int)
@@ -33,7 +37,7 @@ enum DailyTrackingEndpoint: APIEndpoint {
     case updateMeal(date: String, scanId: String, mealCnt: Int)
 
     /// GET /api/v1/daily-tracking/{date}
-    /// Fetches the device-local date's tracking data, including meals.
+    /// Fetches a historical tracking date, including meals.
     case getByDate(date: String)
 
     // MARK: - APIEndpoint
@@ -44,6 +48,8 @@ enum DailyTrackingEndpoint: APIEndpoint {
 
     var path: String {
         switch self {
+        case .getToday:
+            return "/api/v1/daily-tracking/today"
         case .addMeal(let date, _, _):
             return "/api/v1/daily-tracking/\(date)/meals"
         case .updateMeal(let date, let scanId, _):
@@ -55,6 +61,8 @@ enum DailyTrackingEndpoint: APIEndpoint {
 
     var method: HTTPMethod {
         switch self {
+        case .getToday:
+            return .get
         case .addMeal:
             return .post
         case .updateMeal:
@@ -74,7 +82,7 @@ enum DailyTrackingEndpoint: APIEndpoint {
             return .json(AddMealRequestBody(scanId: scanId, mealCnt: mealCnt))
         case .updateMeal(_, _, let mealCnt):
             return .json(UpdateMealRequestBody(mealCnt: mealCnt))
-        case .getByDate:
+        case .getToday, .getByDate:
             return .none
         }
     }

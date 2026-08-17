@@ -74,21 +74,11 @@ extension CaloriesTracking {
     }
 
     static func dateString(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = Calendar.current.timeZone
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: date)
+        ServerDailyTrackingDayProvider().dateIdentifier(for: date)
     }
 
     static func date(from string: String) -> Date? {
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.timeZone = Calendar.current.timeZone
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.date(from: string)
+        ServerDailyTrackingDayProvider().date(from: string)
     }
 }
 

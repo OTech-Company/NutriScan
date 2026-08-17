@@ -10,13 +10,23 @@ import Foundation
 final class CaloriesTrackingRepoImpl: CaloriesTrackingRepo {
 
     private let service: CaloriesTrackingService
+    private let dayProvider: DailyTrackingDayProviding
 
-    init(service: CaloriesTrackingService) {
+    init(
+        service: CaloriesTrackingService,
+        dayProvider: DailyTrackingDayProviding
+    ) {
         self.service = service
+        self.dayProvider = dayProvider
     }
 
     func getTodayCaloriesTracking() async throws -> CaloriesTracking {
-        CaloriesTracking(from: try await service.fetchToday())
+        let dto = try await service.fetchToday()
+        guard let responseDate = dto.date,
+              dayProvider.date(from: responseDate) != nil else {
+            throw NetworkError.decodingFailed
+        }
+        return CaloriesTracking(from: dto, fallbackDate: responseDate)
     }
 
     func getCaloriesTrackingByDate(date: String) async throws -> CaloriesTracking {

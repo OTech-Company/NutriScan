@@ -11,5 +11,9 @@ import Foundation
 struct CoreAssembly: Assembly {
     func assemble(container: DIContainer) {
         container.register(type: NetworkServiceProtocol.self, component: NetworkService())
+        container.register(
+            type: DailyTrackingDayProviding.self,
+            component: ServerDailyTrackingDayProvider()
+        )
     }
 }

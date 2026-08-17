@@ -10,7 +10,16 @@ enum FavoritesFactory {
         let remoteDataSource = FavoritesRemoteDataSource(networkService: networkService)
         let repository = FavoritesRepository(remoteDataSource: remoteDataSource)
         let useCase = FavoritesUseCase(favoritesRepository: repository)
-        let addMealUseCase: AddMealUseCaseProtocol = AddMealUseCase()
+        let dailyTrackingRemoteDataSource = DailyTrackingRemoteDataSource(
+            networkService: networkService
+        )
+        let dailyTrackingRepository = DailyTrackingRepository(
+            remoteDataSource: dailyTrackingRemoteDataSource,
+            dayProvider: DIContainer.shared.resolve(type: DailyTrackingDayProviding.self)
+        )
+        let addMealUseCase: AddMealUseCaseProtocol = AddMealUseCase(
+            repository: dailyTrackingRepository
+        )
         return FavoritesViewModel(
             favoritesUseCase: useCase,
             addMealUseCase: addMealUseCase
