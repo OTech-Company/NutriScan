@@ -41,6 +41,7 @@ struct ProductDetailsFoodSafetyResponseDTO: Decodable {
     let verdict: String?
     let flaggedIngredients: [ProductDetailsFlaggedIngredientDTO]?
     let summary: String?
+    let familyAlerts: [ProductDetailsFamilyAlertDTO]?
 }
 
 struct ProductDetailsFlaggedIngredientDTO: Decodable {
@@ -48,6 +49,12 @@ struct ProductDetailsFlaggedIngredientDTO: Decodable {
     let reason: String?
     let type: String?
     let name: [String]?
+}
+
+struct ProductDetailsFamilyAlertDTO: Decodable {
+    let targetProfile: String?
+    let severity: String?
+    let reason: String?
 }
 
 struct ProductDetailsNutritionFactsDTO: Decodable {

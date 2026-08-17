@@ -11,4 +11,11 @@ struct FoodSafetyResponseDTO: Decodable {
     let verdict: String?
     let flaggedIngredients: [ScanFlaggedIngredientDTO]?
     let summary: String?
+    let familyAlerts: [ScanFamilyAlertDTO]?
+}
+
+struct ScanFamilyAlertDTO: Decodable {
+    let targetProfile: String?
+    let severity: String?
+    let reason: String?
 }
