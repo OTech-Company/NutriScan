@@ -12,6 +12,7 @@ struct RecentHistoryView: View {
     var onViewAll: () -> Void = {}
     var onTap: (String) -> Void = { _ in }
     var onRequestDelete: (UiStateHistoryItem) -> Void = { _ in }
+    var onStartScan: () -> Void = {}
 
     var body: some View {
         VStack(spacing: 16) {
@@ -22,30 +23,36 @@ struct RecentHistoryView: View {
 
                 Spacer()
 
-                Button(action: onViewAll) {
-                    Text(LocalizationKeys.Home.viewAll.localized)
-                        .font(Font.AppFont.textDefault)
-                        .foregroundColor(Color.HomeSemantic.historyHeaderAction)
+                if !historyItems.isEmpty {
+                    Button(action: onViewAll) {
+                        Text(LocalizationKeys.Home.viewAll.localized)
+                            .font(Font.AppFont.textDefault)
+                            .foregroundColor(Color.HomeSemantic.historyHeaderAction)
+                    }
                 }
             }
 
-            VStack(spacing: 16) {
-                ForEach(historyItems) { item in
-                    HistoryRowView(item: item)
-                        .contentShape(RoundedRectangle(cornerRadius: 22))
-                        .onTapGesture {
-                            onTap(item.id)
-                        }
-                        .onLongPressGesture {
-                            onRequestDelete(item)
-                        }
-                        .transition(.asymmetric(
-                            insertion: .move(edge: .bottom).combined(with: .opacity),
-                            removal: .scale(scale: 0.96).combined(with: .opacity)
-                        ))
+            if historyItems.isEmpty {
+                EmptyStateView(emptyState: .noScans, action: onStartScan, isCompact: true)
+            } else {
+                VStack(spacing: 16) {
+                    ForEach(historyItems) { item in
+                        HistoryRowView(item: item)
+                            .contentShape(RoundedRectangle(cornerRadius: 22))
+                            .onTapGesture {
+                                onTap(item.id)
+                            }
+                            .onLongPressGesture {
+                                onRequestDelete(item)
+                            }
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .bottom).combined(with: .opacity),
+                                removal: .scale(scale: 0.96).combined(with: .opacity)
+                            ))
+                    }
                 }
+                .animation(.spring(response: 0.28, dampingFraction: 0.85), value: historyItems.map(\.id))
             }
-            .animation(.spring(response: 0.28, dampingFraction: 0.85), value: historyItems.map(\.id))
         }
     }
 }

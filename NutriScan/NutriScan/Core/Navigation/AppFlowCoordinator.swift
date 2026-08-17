@@ -136,10 +136,9 @@ final class AppFlowCoordinator: ObservableObject {
     @MainActor
     func didRestoreAccount() {
         pendingDeletionDate = nil
-        flow = .main
 
         Task {
-            _ = try? await fetchAndCacheProfileUseCase.execute()
+            await fetchProfileAndTransitionToMain()
         }
     }
 
