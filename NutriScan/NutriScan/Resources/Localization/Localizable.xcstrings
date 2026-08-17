@@ -3445,9 +3445,6 @@
         }
       }
     },
-    "Height" : {
-
-    },
     "Home Summary" : {
 
     },
@@ -5488,6 +5485,22 @@
         }
       }
     },
+    "scan_history.clear_search" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسح البحث"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear Search"
+          }
+        }
+      }
+    },
     "scan_history.empty_desc" : {
       "localizations" : {
         "ar" : {
@@ -5532,22 +5545,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search scan history..."
-          }
-        }
-      }
-    },
-    "scan_history.clear_search" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "مسح البحث"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clear Search"
           }
         }
       }
@@ -7540,9 +7537,6 @@
       }
     },
     "Version %@" : {
-
-    },
-    "Weight" : {
 
     },
     "x%lld" : {

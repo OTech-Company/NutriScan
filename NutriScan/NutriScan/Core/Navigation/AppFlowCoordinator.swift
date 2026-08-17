@@ -15,6 +15,7 @@ final class AppFlowCoordinator: ObservableObject {
     @Published private(set) var flow: AppFlow
     @Published var selectedTab: AppTab = .home
     @Published var pendingDeletionDate: Date? = nil
+    @Published var splashAlertItem: SplashAlertItem? = nil
 
     let mainTabNavigation: MainTabNavigationStore
     
@@ -79,11 +80,13 @@ final class AppFlowCoordinator: ObservableObject {
                apiError.error == "ACCOUNT_PENDING_DELETION" || apiError.status == 409 {
                 pendingDeletionDate = parseDeletionDate(from: apiError.message ?? "")
                 flow = .pendingDeletion
+            } else if case .unauthorized = error {
+                logout()
             } else {
-                flow = .main
+                splashAlertItem = SplashAlertItem(error: error)
             }
         } catch {
-            flow = .main
+            splashAlertItem = SplashAlertItem(error: error)
         }
     }
 
@@ -99,6 +102,13 @@ final class AppFlowCoordinator: ObservableObject {
             } else {
                 await fetchProfileAndTransitionToMain()
             }
+        }
+    }
+
+    @MainActor
+    func retryFetchProfile() {
+        Task {
+            await fetchProfileAndTransitionToMain()
         }
     }
 
@@ -159,5 +169,19 @@ final class AppFlowCoordinator: ObservableObject {
         mainTabNavigation.resetAll()
 
         flow = .auth
+    }
+}
+
+struct SplashAlertItem: Identifiable, Equatable {
+    let id: UUID
+    let error: Error
+
+    init(error: Error) {
+        self.id = UUID()
+        self.error = error
+    }
+
+    static func == (lhs: SplashAlertItem, rhs: SplashAlertItem) -> Bool {
+        lhs.id == rhs.id
     }
 }
