@@ -12,13 +12,21 @@ protocol ObserveDailyStepsUseCaseProtocol {
 
 final class ObserveDailyStepsUseCase: ObserveDailyStepsUseCaseProtocol {
     private let repository: StepRepositoryProtocol
+    private let dayProvider: DailyTrackingDayProviding
+    private let dateProvider: () -> Date
 
-    init(repository: StepRepositoryProtocol) {
+    init(
+        repository: StepRepositoryProtocol,
+        dayProvider: DailyTrackingDayProviding,
+        dateProvider: @escaping () -> Date = Date.init
+    ) {
         self.repository = repository
+        self.dayProvider = dayProvider
+        self.dateProvider = dateProvider
     }
 
     func execute() -> AsyncStream<Int> {
-        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let startOfDay = dayProvider.calendar.startOfDay(for: dateProvider())
         return repository.observeLiveSteps(from: startOfDay)
     }
 }

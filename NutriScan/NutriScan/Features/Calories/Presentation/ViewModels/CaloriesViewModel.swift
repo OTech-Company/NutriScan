@@ -35,15 +35,18 @@ final class CaloriesViewModel {
 
     private var profileID: String? { profileStore.currentProfile?.id }
     private var currentDateString: String {
-        CaloriesTracking.dateString(from: dateProvider())
+        dayProvider.dateIdentifier(for: dateProvider())
     }
 
     private var todayDraft: CaloriesActivityDraft? {
         guard let profileID else { return nil }
-        return caloriesActivityStore.draft(profileID: profileID, date: currentDateString)
+        return caloriesActivityStore.draft(
+            profileID: profileID,
+            date: loadedDate ?? currentDateString
+        )
     }
 
-    private let getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol
+    private let getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol
     private let addMealUseCase: AddCaloriesMealUseCaseProtocol
     private let deleteMealUseCase: DeleteMealUseCaseProtocol
     private let updateMealUseCase: UpdateMealUseCaseProtocol
@@ -52,13 +55,15 @@ final class CaloriesViewModel {
     private let profileStore: UserProfileStore
     private let caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator
     private let notificationScheduler: SmartNotificationSchedulerProtocol
+    private let dayProvider: DailyTrackingDayProviding
     private let dateProvider: () -> Date
     private var loadGeneration = 0
     private var waterMutationID: UUID?
     private var contentMutationGeneration = 0
+    private var serverDayRolloverTask: Task<Void, Never>?
 
     init(
-        getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol,
+        getTodayCaloriesTrackingUseCase: GetTodayCaloriesTrackingUseCaseProtocol,
         addMealUseCase: AddCaloriesMealUseCaseProtocol,
         deleteMealUseCase: DeleteMealUseCaseProtocol,
         updateMealUseCase: UpdateMealUseCaseProtocol,
@@ -67,9 +72,10 @@ final class CaloriesViewModel {
         profileStore: UserProfileStore,
         caloriesActivitySyncCoordinator: CaloriesActivitySyncCoordinator,
         notificationScheduler: SmartNotificationSchedulerProtocol,
+        dayProvider: DailyTrackingDayProviding,
         dateProvider: @escaping () -> Date = Date.init
     ) {
-        self.getCaloriesTrackingByDateUseCase = getCaloriesTrackingByDateUseCase
+        self.getTodayCaloriesTrackingUseCase = getTodayCaloriesTrackingUseCase
         self.addMealUseCase = addMealUseCase
         self.deleteMealUseCase = deleteMealUseCase
         self.updateMealUseCase = updateMealUseCase
@@ -78,6 +84,7 @@ final class CaloriesViewModel {
         self.profileStore = profileStore
         self.caloriesActivitySyncCoordinator = caloriesActivitySyncCoordinator
         self.notificationScheduler = notificationScheduler
+        self.dayProvider = dayProvider
         self.dateProvider = dateProvider
     }
 
@@ -87,6 +94,7 @@ final class CaloriesViewModel {
     }
 
     func activate() async {
+        scheduleServerDayRolloverIfNeeded()
         let requestedDate = currentDateString
         if let profileID {
             caloriesActivityStore.registerActiveDate(profileID: profileID, date: requestedDate)
@@ -108,6 +116,7 @@ final class CaloriesViewModel {
     }
 
     func fetchTodayTracking() async {
+        scheduleServerDayRolloverIfNeeded()
         let requestedDate = currentDateString
         if let profileID {
             caloriesActivityStore.registerActiveDate(profileID: profileID, date: requestedDate)
@@ -140,20 +149,27 @@ final class CaloriesViewModel {
         errorMessage = nil
         do {
             var tracking = sanitizeServerSteps(
-                try await getCaloriesTrackingByDateUseCase.execute(date: requestedDate)
+                try await getTodayCaloriesTrackingUseCase.execute()
             )
             guard generation == loadGeneration,
                   mutationGeneration == contentMutationGeneration,
                   !isUpdatingWater,
                   mutatingMealIDs.isEmpty,
-                  loadedDate == requestedDate,
-                  currentDateString == requestedDate,
-                  tracking.date == requestedDate else {
+                  loadedDate == requestedDate else {
                 await finishLoading(
                     generation: generation,
                     minimumShimmerTask: minimumShimmerTask
                 )
                 return
+            }
+
+            let activeDate = tracking.date
+            loadedDate = activeDate
+            if let profileID {
+                caloriesActivityStore.registerActiveDate(
+                    profileID: profileID,
+                    date: activeDate
+                )
             }
 
             let needsDefaultWaterTarget = tracking.targetWaterCnt <= 0
@@ -180,7 +196,7 @@ final class CaloriesViewModel {
             if needsDefaultWaterTarget {
                 do {
                     try await updateWaterUseCase.execute(
-                        date: requestedDate,
+                        date: activeDate,
                         targetWaterCnt: 8,
                         waterCnt: nil,
                         stepsCnt: nil,
@@ -190,8 +206,7 @@ final class CaloriesViewModel {
                     )
                 } catch {
                     if generation == loadGeneration,
-                       loadedDate == requestedDate,
-                       currentDateString == requestedDate,
+                       loadedDate == activeDate,
                        !isCancellation(error) {
                         pendingErrorMessage = error.localizedDescription
                     }
@@ -222,6 +237,19 @@ final class CaloriesViewModel {
         if generation == loadGeneration {
             isInitialLoading = false
             isRefreshing = false
+        }
+    }
+
+    private func scheduleServerDayRolloverIfNeeded() {
+        guard serverDayRolloverTask == nil,
+              let boundary = dayProvider.nextDayBoundary(after: dateProvider()) else { return }
+
+        let delay = max(boundary.timeIntervalSince(dateProvider()), 0.1)
+        serverDayRolloverTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(delay))
+            guard !Task.isCancelled, let self else { return }
+            self.serverDayRolloverTask = nil
+            await self.activate()
         }
     }
 
@@ -575,6 +603,7 @@ final class CaloriesActivitySyncCoordinator {
     private let getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol
     private let updateWaterUseCase: UpdateWaterUseCaseProtocol
     private let fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
+    private let dayProvider: DailyTrackingDayProviding
     private var syncingStepDates: Set<String> = []
     private var syncingExerciseDates: Set<String> = []
 
@@ -583,13 +612,15 @@ final class CaloriesActivitySyncCoordinator {
         profileStore: UserProfileStore,
         getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol,
         updateWaterUseCase: UpdateWaterUseCaseProtocol,
-        fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol
+        fetchHistoryUseCase: FetchStepsHistoryUseCaseProtocol,
+        dayProvider: DailyTrackingDayProviding
     ) {
         self.caloriesActivityStore = caloriesActivityStore
         self.profileStore = profileStore
         self.getCaloriesTrackingByDateUseCase = getCaloriesTrackingByDateUseCase
         self.updateWaterUseCase = updateWaterUseCase
         self.fetchHistoryUseCase = fetchHistoryUseCase
+        self.dayProvider = dayProvider
     }
 
     func synchronizePendingDates(before currentDate: String = CaloriesTracking.todayString) async {
@@ -718,10 +749,10 @@ final class CaloriesActivitySyncCoordinator {
     }
 
     private func refreshedSteps(for dateString: String) async throws -> Int? {
-        guard let date = CaloriesTracking.date(from: dateString) else { return nil }
-        let calendar = Calendar.current
-        let start = calendar.startOfDay(for: date)
-        let end = calendar.date(byAdding: .day, value: 1, to: start) ?? start
-        return try await fetchHistoryUseCase.executeCount(from: start, to: end)
+        guard let interval = dayProvider.dayInterval(for: dateString) else { return nil }
+        return try await fetchHistoryUseCase.executeCount(
+            from: interval.start,
+            to: interval.end
+        )
     }
 }
