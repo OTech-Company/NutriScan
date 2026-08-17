@@ -64,6 +64,29 @@ struct RootCoordinatorView: View {
                 let bootstrapper = DIContainer.shared.resolve(type: NotificationBootstrapperProtocol.self)
                 await bootstrapper.start()
             }
+            .customAlert(
+                item: $flowCoordinator.splashAlertItem,
+                config: { item in
+                    let isNoInternet: Bool
+                    if let networkError = item.error as? NetworkError, case .noInternet = networkError {
+                        isNoInternet = true
+                    } else if let urlError = item.error as? URLError, urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost {
+                        isNoInternet = true
+                    } else {
+                        isNoInternet = false
+                    }
+                    
+                    return CustomAlertConfig(
+                        type: isNoInternet ? .noInternet : .error,
+                        title: isNoInternet ? LocalizationKeys.Common.noInternetConnection.localized : LocalizationKeys.Common.error.localized,
+                        message: item.error.localizedDescription,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized, role: .standard)
+                    )
+                },
+                primaryAction: { _ in
+                    flowCoordinator.retryFetchProfile()
+                }
+            )
     }
 
     @ViewBuilder

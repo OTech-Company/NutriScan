@@ -139,6 +139,10 @@ final class NetworkService: NetworkServiceProtocol {
             Task.detached(priority: .background) {
                 NetworkLogger.log(error: error, for: request, startTime: startTime)
             }
+            if let urlError = error as? URLError,
+               urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost {
+                throw NetworkError.noInternet
+            }
             throw NetworkError.unknown(error)
         }
     }

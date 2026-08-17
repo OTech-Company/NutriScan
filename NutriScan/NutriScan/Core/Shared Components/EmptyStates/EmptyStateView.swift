@@ -11,37 +11,48 @@ struct EmptyStateView: View {
     let emptyState: EmptyState
     let action: () -> Void
     var actionLabel: String? = nil
+    var isCompact: Bool = false
+
     var body: some View {
-        VStack(spacing: 24) {
-            Image(emptyState.image)
+        VStack(spacing: isCompact ? 12 : 24) {
+            if isCompact {
+                Image(emptyState.image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100 ,height: 100)
+            } else {
+                Image(emptyState.image)
+            }
             
-            VStack(spacing: 8){
+            VStack(spacing: isCompact ? 4 : 8) {
                 Text(emptyState.title)
                     .foregroundStyle(Color(light: Color.Gray.gray1600, dark: Color.Teal.teal500))
-                    .font(Font.AppFont.title3)
+                    .font(isCompact ? Font.AppFont.textSecondary : Font.AppFont.title3)
+                    .fontWeight(isCompact ? .bold : .semibold)
                     .multilineTextAlignment(.center)
                 
                 Text(emptyState.description)
-                    .font(Font.AppFont.textPrimary)
+                    .font(isCompact ? Font.AppFont.textCaption : Font.AppFont.textPrimary)
                     .foregroundStyle(Color(light: Color.Gray.gray600, dark: Color.Teal.teal1300))
                     .multilineTextAlignment(.center)
             }
             
-            Button(action: action){
-                Text((actionLabel ?? emptyState.actionLabel).uppercased())
-                    .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
-                    .font(Font.AppFont.textSecondary)
-                    .padding(.horizontal, 32)
-                    .frame(height: 44)
-                
-            }
-            .background{
-                RoundedRectangle(cornerRadius: 24)
-                    .foregroundStyle(Color.Teal.teal1000)
-                
+            let resolvedLabel = (actionLabel ?? emptyState.actionLabel).trimmingCharacters(in: .whitespaces)
+            if !resolvedLabel.isEmpty {
+                Button(action: action) {
+                    Text(resolvedLabel.uppercased())
+                        .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
+                        .font(isCompact ? Font.AppFont.textCaption : Font.AppFont.textSecondary)
+                        .padding(.horizontal, isCompact ? 20 : 32)
+                        .frame(height: isCompact ? 36 : 44)
+                }
+                .background {
+                    RoundedRectangle(cornerRadius: isCompact ? 18 : 24)
+                        .foregroundStyle(Color.Teal.teal1000)
+                }
             }
         }
-        .padding(22)
+        .padding(isCompact ? 12 : 22)
     }
 }
 
