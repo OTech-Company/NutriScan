@@ -8,17 +8,18 @@
 import Foundation
 
 class ProductDetailsRepoImpl: ProductDetailsRepo {
-    let service : ProductDetailsService
+    private let service: ProductDetailsService
+    
+    init(service: ProductDetailsService) {
+        self.service = service
+    }
     
     func getProductDetails(scanId: String) async throws -> ProductDetails {
-        ProductDetails(from: try await service.fetchScanDetails(scanId: scanId))
+        let response = try await service.fetchScanDetails(scanId: scanId)
+        return ProductDetails(from: response)
     }
     
     func updateFavorite(scanId: String, isFavorite: Bool) async throws {
         try await service.updateFavorite(scanId: scanId, isFavorite: isFavorite)
-    }
-    
-    init(service: ProductDetailsService) {
-        self.service = service
     }
 }

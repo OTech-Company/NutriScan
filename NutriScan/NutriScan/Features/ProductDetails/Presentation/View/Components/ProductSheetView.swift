@@ -20,6 +20,9 @@ struct ProductSheetView: View {
             VStack(alignment: .leading, spacing: 16) {
                 ProductHeaderSection(state: state.headerState)
                 ProductSafetySection(state: state.safetyState)
+                if !state.familyAlertsState.alerts.isEmpty {
+                    ProductFamilyAlertsSection(state: state.familyAlertsState)
+                }
                 ProductIngredientsSection(state: state.ingredientsState)
                 ProductNutritionSection(state: state.nutritionState)
                 Spacer(minLength: 24)
@@ -57,6 +60,7 @@ struct ProductDetailsShimmerView: View {
             VStack(alignment: .leading, spacing: 16) {
                 imageAndTitlePlaceholder
                 safetyPlaceholder
+                familyAlertsPlaceholder
                 ingredientsPlaceholder
                 nutritionPlaceholder
                 Spacer(minLength: 24)
@@ -148,6 +152,33 @@ struct ProductDetailsShimmerView: View {
         .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 
+    private var familyAlertsPlaceholder: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            placeholder(width: 148, height: 18, radius: 5)
+
+            ForEach(0..<2, id: \.self) { index in
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 8) {
+                        placeholder(width: 96, height: 14, radius: 5)
+                        placeholder(width: index == 0 ? 74 : 64, height: 20, radius: 10)
+                    }
+
+                    placeholder(height: 13, radius: 5)
+                    placeholder(width: index == 0 ? 188 : 160, height: 13, radius: 5)
+                    placeholder(width: index == 0 ? 142 : 126, height: 13, radius: 5)
+                }
+                .padding(12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(placeholderColor.opacity(0.55))
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(sectionBackground)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
+    }
+
     private var nutritionPlaceholder: some View {
         VStack(alignment: .leading, spacing: 12) {
             placeholder(width: 138, height: 18, radius: 5)
@@ -199,6 +230,144 @@ struct ProductDetailsShimmerView: View {
             ? Color.white.opacity(0.28)
             : Color.white.opacity(0.72)
         return Gradient(colors: [.clear, highlight, .clear])
+    }
+}
+
+struct ProductFamilyAlertsSection: View {
+    let state: ProductFamilyAlertsUIState
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "person.2.fill")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Color.Red.red500)
+                Text("Family alerts")
+                    .font(Font.AppFont.subtitle2)
+                    .foregroundStyle(Color(light: Color.Gray.gray1000, dark: Color.Teal.teal500))
+            }
+
+            Text("Based on this scan, these profiles may need extra caution:")
+                .font(Font.AppFont.textCaption)
+                .foregroundStyle(Color(light: Color.Gray.gray800, dark: Color.Teal.teal500))
+
+            VStack(spacing: 10) {
+                ForEach(state.alerts) { alert in
+                    ProductFamilyAlertCard(state: alert)
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 18)
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color.Red.red100.opacity(0.8),
+                            Color(light: Color.Gray.gray100, dark: Color.Teal.teal1500)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 18)
+                .strokeBorder(Color.Red.red500.opacity(0.18), lineWidth: 1)
+        }
+    }
+}
+
+struct ProductFamilyAlertCard: View {
+    let state: ProductFamilyAlertUIState
+
+    private var severityColor: Color {
+        switch state.severity.uppercased() {
+        case "UNSAFE":
+            return Color.Red.red500
+        case "CAUTION":
+            return Color.Yellow.yellow500
+        case "SAFE":
+            return Color.Teal.teal700
+        default:
+            return Color.Teal.teal1000
+        }
+    }
+
+    private var severityBackground: Color {
+        switch state.severity.uppercased() {
+        case "UNSAFE":
+            return Color.Red.red100
+        case "CAUTION":
+            return Color.Yellow.yellow500.opacity(0.18)
+        case "SAFE":
+            return Color.Teal.teal100
+        default:
+            return Color.Teal.teal200
+        }
+    }
+
+    private var iconName: String {
+        switch state.severity.uppercased() {
+        case "UNSAFE":
+            return "exclamationmark.triangle.fill"
+        case "CAUTION":
+            return "exclamationmark.circle.fill"
+        case "SAFE":
+            return "checkmark.seal.fill"
+        default:
+            return "person.crop.circle.badge.questionmark"
+        }
+    }
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .center, spacing: 8) {
+                    Text(state.targetProfile)
+                        .font(Font.AppFont.subtitle2)
+                        .foregroundStyle(Color(light: Color.Teal.teal1000, dark: Color.Teal.teal400))
+                        .lineLimit(1)
+
+                    Text(state.severity.uppercased())
+                        .font(Font.AppFont.textSecondary.weight(.bold))
+                        .foregroundStyle(severityColor)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background {
+                            Capsule()
+                                .fill(severityBackground)
+                        }
+                }
+
+                Text(state.reason)
+                    .font(Font.AppFont.textCaption)
+                    .foregroundStyle(Color(light: Color.Gray.gray800, dark: Color.Teal.teal500))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 8)
+
+            Image(systemName: iconName)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(severityColor)
+                .padding(10)
+                .background {
+                    Circle()
+                        .fill(severityBackground)
+                }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color(light: .white, dark: Color.Teal.teal1600).opacity(0.88))
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 14)
+                .strokeBorder(severityColor.opacity(0.15), lineWidth: 1)
+        }
     }
 }
 

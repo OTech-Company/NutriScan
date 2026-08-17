@@ -19,23 +19,27 @@ final class ScanViewModel: ObservableObject {
     private let submitScanImageUseCase: SubmitScanImageUseCase
     private let submitBarcodeScanUseCase: SubmitBarcodeScanUseCase
     private let fetchScanDetailUseCase: FetchScanDetailUseCase
+    private let updateFavoriteUseCase: UpdateFavoriteUseCase
     private var pendingLostTask: Task<Void, Never>?
 
     nonisolated init(
         submitScanImageUseCase: SubmitScanImageUseCase,
         submitBarcodeScanUseCase: SubmitBarcodeScanUseCase,
-        fetchScanDetailUseCase: FetchScanDetailUseCase
+        fetchScanDetailUseCase: FetchScanDetailUseCase,
+        updateFavoriteUseCase: UpdateFavoriteUseCase
     ) {
         self.submitScanImageUseCase = submitScanImageUseCase
         self.submitBarcodeScanUseCase = submitBarcodeScanUseCase
         self.fetchScanDetailUseCase = fetchScanDetailUseCase
+        self.updateFavoriteUseCase = updateFavoriteUseCase
     }
 
     nonisolated static func makeDefault() -> ScanViewModel {
         ScanViewModel(
             submitScanImageUseCase: DIContainer.shared.resolve(type: SubmitScanImageUseCase.self),
             submitBarcodeScanUseCase: DIContainer.shared.resolve(type: SubmitBarcodeScanUseCase.self),
-            fetchScanDetailUseCase: DIContainer.shared.resolve(type: FetchScanDetailUseCase.self)
+            fetchScanDetailUseCase: DIContainer.shared.resolve(type: FetchScanDetailUseCase.self),
+            updateFavoriteUseCase: DIContainer.shared.resolve(type: UpdateFavoriteUseCase.self)
         )
     }
 
@@ -124,7 +128,17 @@ final class ScanViewModel: ObservableObject {
     }
 
     func toggleSaveFavorite() {
-        isSaved.toggle()
+        guard let detail = scanDetail, detail.status == .completed else { return }
+        let newValue = !isSaved
+        isSaved = newValue
+        Task {
+            do {
+                try await updateFavoriteUseCase.execute(scanId: detail.scanId, isFavorite: newValue)
+            } catch {
+                isSaved = !newValue
+                errorMessage = ScanError.unknown.userMessage
+            }
+        }
     }
 
     func loadScanDetail(scanId: String) {

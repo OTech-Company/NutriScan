@@ -23,6 +23,7 @@ struct ScanFoodSafetyResponse: Hashable {
     let verdict: ScanResultVerdict
     let flaggedIngredients: [ScanFlaggedIngredient]
     let summary: String
+    let familyAlerts: [ScanFamilyAlert]
 }
 
 struct ScanFlaggedIngredient: Hashable {
@@ -30,6 +31,12 @@ struct ScanFlaggedIngredient: Hashable {
     let reason: String
     let type: ScanFlagType
     let name: [String]
+}
+
+struct ScanFamilyAlert: Hashable {
+    let targetProfile: String
+    let severity: String
+    let reason: String
 }
 
 struct ScanNutritionFacts: Hashable {

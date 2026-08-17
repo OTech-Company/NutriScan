@@ -16,6 +16,7 @@ struct ProductDetails {
     let verdict: String
     let summary: String
     let flaggedIngredients: [ProductDetailsFlaggedIngredient]
+    let familyAlerts: [ProductDetailsFamilyAlert]
     let calories: Int
     let proteinGrams: Double
     let carbsGrams: Double
@@ -33,6 +34,12 @@ struct ProductDetailsFlaggedIngredient {
     let name: [String]
 }
 
+struct ProductDetailsFamilyAlert {
+    let targetProfile: String
+    let severity: String
+    let reason: String
+}
+
 extension ProductDetails {
     init(from scan: ScanDetail, imageData: Data? = nil) {
         self.scanId = scan.scanId
@@ -48,6 +55,13 @@ extension ProductDetails {
                 reason: $0.reason,
                 type: $0.type.rawValue,
                 name: $0.name
+            )
+        } ?? []
+        self.familyAlerts = scan.foodSafetyResponse?.familyAlerts.map {
+            ProductDetailsFamilyAlert(
+                targetProfile: $0.targetProfile,
+                severity: $0.severity,
+                reason: $0.reason
             )
         } ?? []
         self.calories = scan.nutritionFacts?.calories ?? 0
@@ -75,6 +89,13 @@ extension ProductDetails {
                 reason: $0.reason ?? "No reason provided",
                 type: $0.type ?? "Unknown type",
                 name: $0.name ?? []
+            )
+        } ?? []
+        self.familyAlerts = dto.foodSafetyResponse?.familyAlerts?.map {
+            ProductDetailsFamilyAlert(
+                targetProfile: $0.targetProfile ?? "Unknown profile",
+                severity: $0.severity ?? "UNKNOWN",
+                reason: $0.reason ?? ""
             )
         } ?? []
         

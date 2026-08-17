@@ -20,5 +20,9 @@ struct ProductDetailsAssembly: Assembly {
             type: GetProductDetailsUseCase.self,
             component: GetProductDetailsUseCase(repository: container.resolve(type: ProductDetailsRepo.self))
         )
+        container.register(
+            type: UpdateFavoriteUseCase.self,
+            component: UpdateFavoriteUseCase(repository: container.resolve(type: ProductDetailsRepo.self))
+        )
     }
 }

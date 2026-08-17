@@ -2,12 +2,21 @@ import Foundation
 
 final class ScanRepositoryImpl: ScanRepository {
 
+
     private let apiService: ScanAPIServicing
 
     init(apiService: ScanAPIServicing = ScanAPIService()) {
         self.apiService = apiService
     }
 
+    func submitBarcode(barcode: String) async throws -> ScanSubmission {
+        let dto = try await apiService.submitBarcode(barcode: barcode)
+        return ScanSubmission(
+            scanId: dto.scanId,
+            status: ScanStatus(rawValue: dto.status) ?? .processing
+        )
+    }
+    
     func fetchScans(page: Int, size: Int) async throws -> ScanPage {
         let dto = try await apiService.fetchScans(page: page, size: size)
         return mapPage(dto)
@@ -15,14 +24,6 @@ final class ScanRepositoryImpl: ScanRepository {
 
     func submitScan(imageData: Data) async throws -> ScanSubmission {
         let dto = try await apiService.submitScan(imageData: imageData)
-        return ScanSubmission(
-            scanId: dto.scanId,
-            status: ScanStatus(rawValue: dto.status) ?? .processing
-        )
-    }
-
-    func submitBarcode(barcode: String) async throws -> ScanSubmission {
-        let dto = try await apiService.submitBarcode(barcode: barcode)
         return ScanSubmission(
             scanId: dto.scanId,
             status: ScanStatus(rawValue: dto.status) ?? .processing
@@ -78,7 +79,8 @@ final class ScanRepositoryImpl: ScanRepository {
         ScanFoodSafetyResponse(
             verdict: ScanResultVerdict(rawValue: dto.verdict ?? "UNKNOWN") ?? .unknown,
             flaggedIngredients: dto.flaggedIngredients?.map(mapIngredient) ?? [],
-            summary: dto.summary ?? ""
+            summary: dto.summary ?? "",
+            familyAlerts: dto.familyAlerts?.map(mapFamilyAlert) ?? []
         )
     }
 
@@ -88,6 +90,14 @@ final class ScanRepositoryImpl: ScanRepository {
             reason: dto.reason ?? "",
             type: ScanFlagType(rawValue: dto.type ?? "OTHER") ?? .other,
             name: dto.name ?? []
+        )
+    }
+
+    private func mapFamilyAlert(_ dto: ScanFamilyAlertDTO) -> ScanFamilyAlert {
+        ScanFamilyAlert(
+            targetProfile: dto.targetProfile ?? "Unknown profile",
+            severity: dto.severity ?? "UNKNOWN",
+            reason: dto.reason ?? ""
         )
     }
 

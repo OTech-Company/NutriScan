@@ -12,9 +12,10 @@ struct ScanScreen: View {
     @State private var gallerySelection: PhotosPickerItem?
     @State private var alert: AlertDestination?
 
-    private let viewfinderHeight: CGFloat = 520
-    private let viewfinderHorizontalPadding: CGFloat = 20
-    private let viewfinderOffsetY: CGFloat = -40
+    // Adjusted sizes and offsets to prevent viewfinder overlay
+    private let viewfinderHeight: CGFloat = 500
+    private let viewfinderHorizontalPadding: CGFloat = 24
+    private let viewfinderOffsetY: CGFloat = -70
 
     init(viewModel: ScanViewModel = ScanViewModel.makeDefault()) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -34,6 +35,7 @@ struct ScanScreen: View {
             let viewfinderY = (geo.size.height - viewfinderHeight) / 2 + viewfinderOffsetY
 
             ZStack {
+                // MARK: - Camera Feed & Mask
                 BarcodeScannerView(
                     onDetect: { code, position, size in
                         viewModel.onBarcodeDetected(code, at: position, size: size)
@@ -54,6 +56,7 @@ struct ScanScreen: View {
                     .frame(width: viewfinderWidth, height: viewfinderHeight)
                     .position(x: geo.size.width / 2, y: viewfinderY + (viewfinderHeight / 2))
 
+                // MARK: - Barcode Highlight Overlay
                 if let barcode = viewModel.detectedBarcode,
                    let position = viewModel.barcodePosition {
                     BarcodeOverlayView(
@@ -66,15 +69,18 @@ struct ScanScreen: View {
                     .animation(.spring(response: 0.3, dampingFraction: 0.9), value: viewModel.barcodePosition)
                 }
 
-                VStack {
+                // MARK: - Bottom Controls & Status Card
+                VStack(spacing: 12) {
                     Spacer()
 
+                    // Product Result / Status Card
                     ScanStateCardView(
                         isSubmitting: viewModel.isSubmitting,
                         latestScan: viewModel.latestScan,
                         isLoadingDetail: viewModel.isLoadingDetail,
                         scanDetail: viewModel.scanDetail,
                         capturedImageData: viewModel.capturedImageData,
+                        isSaved: viewModel.isSaved,
                         onSave: { viewModel.toggleSaveFavorite() },
                         onRetry: { viewModel.reset() },
                         onTapDetail: { detail in
@@ -85,6 +91,7 @@ struct ScanScreen: View {
                     )
                     .padding(.horizontal, 16)
 
+                    // Bottom Row (Gallery Picker Button)
                     HStack {
                         GalleryButton {
                             viewModel.presentGallery()
@@ -93,9 +100,8 @@ struct ScanScreen: View {
 
                         Spacer()
                     }
-                    .padding(.top, 16)
-                    .padding(.bottom, CustomAnimatedTabBar.contentClearance + 20)
                 }
+                .padding(.bottom, CustomAnimatedTabBar.contentClearance + 12)
             }
         }
         .ignoresSafeArea()

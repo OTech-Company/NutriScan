@@ -12,6 +12,7 @@ struct ProductDetailsUIState {
     var isFavorite: Bool
     let headerState: ProductHeaderUIState
     let safetyState: ProductSafetyUIState
+    let familyAlertsState: ProductFamilyAlertsUIState
     let ingredientsState: ProductIngredientsUIState
     let nutritionState: ProductNutritionUIState
     
@@ -27,6 +28,20 @@ struct ProductDetailsUIState {
             safetyLevel: .unsafe,
             safetyDescription: "This dessert is high in sugar and fat, making it inappropriate for your declared chronic conditions, particularly diabetes and heart-related issues.",
             isScanFailed: false
+        ),
+        familyAlertsState: ProductFamilyAlertsUIState(
+            alerts: [
+                .init(
+                    targetProfile: "Diabetes",
+                    severity: "UNSAFE",
+                    reason: "This product contains a high amount of sugar and can negatively affect blood glucose control."
+                ),
+                .init(
+                    targetProfile: "Heart Failure",
+                    severity: "CAUTION",
+                    reason: "The sodium and saturated fat content may not align with a heart-friendly diet."
+                )
+            ]
         ),
         ingredientsState: ProductIngredientsUIState(
             safetyLevel: .unsafe,
@@ -83,6 +98,16 @@ extension ProductDetailsUIState {
             safetyDescription: details.summary,
             isScanFailed: details.status.uppercased() == ScanStatus.failed.rawValue
         )
+
+        self.familyAlertsState = ProductFamilyAlertsUIState(
+            alerts: details.familyAlerts.map {
+                ProductFamilyAlertUIState(
+                    targetProfile: $0.targetProfile,
+                    severity: $0.severity,
+                    reason: $0.reason
+                )
+            }
+        )
         
         self.ingredientsState = ProductIngredientsUIState(
             safetyLevel: parsedSafety,
@@ -98,19 +123,19 @@ extension ProductDetailsUIState {
         
         self.nutritionState = ProductNutritionUIState(
             nutritionFacts: [
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.calories.localized, value: "\(details.calories) \(LocalizationKeys.Favorites.kcal.localized)"),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.protein.localized, value: Self.formattedGrams(details.proteinGrams)),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.carbs.localized, value: Self.formattedGrams(details.carbsGrams)),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.fat.localized, value: Self.formattedGrams(details.fatG)),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.sugar.localized, value: Self.formattedGrams(details.sugarG)),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.fiber.localized, value: Self.formattedGrams(details.fiberGrams)),
-                NutritionFactUIState(title: LocalizationKeys.ProductDetails.sodium.localized, value: "\(Self.formattedNumber(details.sodiumMg)) \(LocalizationKeys.ProductDetails.mg.localized)")
+                NutritionFactUIState(title: "Calories", value: "\(details.calories) kcal"),
+                NutritionFactUIState(title: "Protein", value: Self.formattedGrams(details.proteinGrams)),
+                NutritionFactUIState(title: "Carbs", value: Self.formattedGrams(details.carbsGrams)),
+                NutritionFactUIState(title: "Fat", value: Self.formattedGrams(details.fatG)),
+                NutritionFactUIState(title: "Sugar", value: Self.formattedGrams(details.sugarG)),
+                NutritionFactUIState(title: "Fiber", value: Self.formattedGrams(details.fiberGrams)),
+                NutritionFactUIState(title: "Sodium", value: "\(Self.formattedNumber(details.sodiumMg)) mg")
             ]
         )
     }
 
     private static func formattedGrams(_ value: Double) -> String {
-        "\(formattedNumber(value)) \(LocalizationKeys.ProductDetails.g.localized)"
+        "\(formattedNumber(value)) g"
     }
 
     private static func formattedNumber(_ value: Double) -> String {
@@ -119,4 +144,15 @@ extension ProductDetailsUIState {
         }
         return String(format: "%.1f", value)
     }
+}
+
+struct ProductFamilyAlertsUIState {
+    let alerts: [ProductFamilyAlertUIState]
+}
+
+struct ProductFamilyAlertUIState: Identifiable {
+    let id = UUID()
+    let targetProfile: String
+    let severity: String
+    let reason: String
 }
