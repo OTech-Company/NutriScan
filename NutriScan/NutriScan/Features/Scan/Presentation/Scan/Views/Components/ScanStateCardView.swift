@@ -46,11 +46,34 @@ struct ScanStateCardView: View {
     private func resultCard(detail: ScanDetail) -> some View {
         let status: ProductMatchStatus = {
             switch detail.foodSafetyResponse?.verdict {
-            case .safe:  return .safe
-            case .unsafe, .caution: return .unsafe
-            default:     return .processing
+            case .safe:
+                return .safe
+            case .caution:
+                return .caution
+            case .unsafe:
+                return .unsafe
+            default:
+                return .processing
             }
         }()
+
+        let familyAlerts: [FamilyMemberAlert] = detail.foodSafetyResponse?.familyAlerts.map { alert in
+            let severity: AlertSeverity = {
+                switch alert.severity.uppercased() {
+                case "SAFE", "NONE":
+                    return .safe
+                case "CAUTION":
+                    return .caution
+                default:
+                    return .unsafe
+                }
+            }()
+
+            return FamilyMemberAlert(
+                name: alert.targetProfile,
+                severity: severity
+            )
+        } ?? []
 
         return ProductMatchCard(
             status: status,
@@ -59,6 +82,7 @@ struct ScanStateCardView: View {
             brandName: nil,
             scanSummary: detail.foodSafetyResponse?.summary,
             isSaved: isSaved,
+            familyAlerts: familyAlerts,
             onSave: onSave
         )
         .onTapGesture {

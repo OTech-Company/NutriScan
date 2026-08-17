@@ -1,10 +1,52 @@
 import SwiftUI
 
+// MARK: - Models
+
 enum ProductMatchStatus {
     case processing
     case safe
+    case caution
     case unsafe
+    
+    var rawValue: String {
+        switch self {
+        case .processing: return LocalizationKeys.Scan.processing.localized
+        case .safe:       return LocalizationKeys.Scan.safe.localized
+        case .caution:    return "Caution"
+        case .unsafe:     return LocalizationKeys.Scan.unsafe.localized
+        }
+    }
 }
+
+enum AlertSeverity {
+    case safe
+    case caution
+    case unsafe
+    
+    var title: String {
+        switch self {
+        case .safe: return "Safe"
+        case .caution: return "Caution"
+        case .unsafe: return "Unsafe"
+        }
+    }
+    
+    var backgroundColor: Color {
+        switch self {
+        case .safe: return Color.Teal.teal400
+        case .caution: return Color.orange
+        case .unsafe: return Color.red.opacity(0.85)
+        }
+    }
+}
+
+struct FamilyMemberAlert: Identifiable {
+    let id = UUID()
+    let name: String
+    let severity: AlertSeverity
+}
+
+// MARK: - ProductMatchCard Component
 
 struct ProductMatchCard: View {
     let status: ProductMatchStatus
@@ -13,31 +55,46 @@ struct ProductMatchCard: View {
     let brandName: String?
     let scanSummary: String?
     var isSaved: Bool = false
+    var familyAlerts: [FamilyMemberAlert] = []
     var onSave: (() -> Void)?
     var onRetry: (() -> Void)?
 
     var body: some View {
-        HStack(spacing: 12) {
-            productThumbnail
+        VStack(alignment: .leading, spacing: 10) {
+            // MARK: Main Row
+            HStack(spacing: 12) {
+                productThumbnail
 
-            VStack(alignment: .leading, spacing: 4) {
-                if let brand = brandName {
-                    Text(brand.uppercased())
-                        .font(.custom("LexendDeca-Medium", size: 11))
-                        .foregroundColor(Color.Teal.teal400)
+                VStack(alignment: .leading, spacing: 4) {
+                    if let brand = brandName {
+                        Text(brand.uppercased())
+                            .font(.custom("LexendDeca-Medium", size: 11))
+                            .foregroundColor(Color.Teal.teal400)
+                    }
+
+                    Text(displayTitle)
+                        .font(.custom("PlusJakartaSans-Bold", size: 17))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+
+                    mainStatusBadge
                 }
 
-                Text(displayTitle)
-                    .font(.custom("PlusJakartaSans-Bold", size: 17))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
+                Spacer()
 
-                statusBadge
+                trailingAction
             }
 
-            Spacer()
-
-            trailingAction
+            // MARK: Family Members Alerts Row
+            if !familyAlerts.isEmpty && status != .processing {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(familyAlerts) { member in
+                            familyStatusBadge(for: member)
+                        }
+                    }
+                }
+            }
         }
         .padding(12)
         .background(
@@ -46,6 +103,8 @@ struct ProductMatchCard: View {
         )
         .shadow(color: .black.opacity(0.2), radius: 10, y: 4)
     }
+
+    // MARK: Subviews
 
     @ViewBuilder
     private var productThumbnail: some View {
@@ -71,37 +130,51 @@ struct ProductMatchCard: View {
         switch status {
         case .processing:
             return productName ?? LocalizationKeys.Scan.analyzing.localized
-        case .safe:
-            return productName ?? scanSummary ?? LocalizationKeys.Scan.scanComplete.localized
-        case .unsafe:
+        case .safe, .caution, .unsafe:
             return productName ?? scanSummary ?? LocalizationKeys.Scan.scanComplete.localized
         }
     }
 
-    private var statusBadge: some View {
-        Text(status.rawValue)
+    @ViewBuilder
+    private var mainStatusBadge: some View {
+        let badgeText: String = {
+            switch status {
+            case .processing: return status.rawValue
+            case .safe: return "Safe for you"
+            case .caution: return "Caution for you"
+            case .unsafe: return "Unsafe for you"
+            }
+        }()
+
+        let bgColor: Color = {
+            switch status {
+            case .processing: return .yellow
+            case .safe: return Color.Teal.teal400
+            case .caution: return Color.orange
+            case .unsafe: return Color.red.opacity(0.85)
+            }
+        }()
+
+        let textColor: Color = (status == .processing) ? Color(red: 0.1, green: 0.2, blue: 0.25) : .white
+
+        Text(badgeText)
             .font(.custom("LexendDeca-Medium", size: 12))
-            .foregroundColor(badgeTextColor)
+            .foregroundColor(textColor)
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
-            .background(badgeColor)
+            .background(bgColor)
             .clipShape(Capsule())
     }
 
-    // MARK: - Dynamic Colors
-    
-    private var badgeTextColor: Color {
-        switch status {
-        case .processing: return Color(red: 0.1, green: 0.2, blue: 0.25) // Dark color for contrast against yellow
-        case .safe, .unsafe: return .white
-        }
-    }
-
-    private var badgeColor: Color {
-        switch status {
-        case .processing: return .yellow
-        case .safe, .unsafe: return Color.Teal.teal400 // Brighter cyan to match image
-        }
+    @ViewBuilder
+    private func familyStatusBadge(for member: FamilyMemberAlert) -> some View {
+        Text("\(member.severity.title) for \(member.name)")
+            .font(.custom("LexendDeca-Medium", size: 12))
+            .foregroundColor(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(member.severity.backgroundColor)
+            .clipShape(Capsule())
     }
 
     @ViewBuilder
@@ -113,12 +186,10 @@ struct ProductMatchCard: View {
                 .frame(width: 48, height: 48)
                 .background(
                     RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.black.opacity(0.15)) // Darker container for the spinner
+                        .fill(Color.black.opacity(0.15))
                 )
 
-        case .safe, .unsafe:
-            // The favorite button is only rendered when a save handler exists
-            // (i.e. the scan actually succeeded). Failed scans show no button.
+        case .safe, .caution, .unsafe:
             if onSave != nil {
                 Button {
                     onSave?()
@@ -133,16 +204,6 @@ struct ProductMatchCard: View {
                         )
                 }
             }
-        }
-    }
-}
-
-extension ProductMatchStatus {
-    var rawValue: String {
-        switch self {
-        case .processing: return LocalizationKeys.Scan.processing.localized
-        case .safe:       return LocalizationKeys.Scan.safe.localized
-        case .unsafe:     return LocalizationKeys.Scan.unsafe.localized
         }
     }
 }
