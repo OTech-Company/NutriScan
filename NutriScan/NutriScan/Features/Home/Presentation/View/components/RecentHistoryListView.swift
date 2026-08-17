@@ -23,12 +23,10 @@ struct RecentHistoryView: View {
 
                 Spacer()
 
-                if !historyItems.isEmpty {
-                    Button(action: onViewAll) {
-                        Text(LocalizationKeys.Home.viewAll.localized)
-                            .font(Font.AppFont.textDefault)
-                            .foregroundColor(Color.HomeSemantic.historyHeaderAction)
-                    }
+                Button(action: onViewAll) {
+                    Text(LocalizationKeys.Home.viewAll.localized)
+                        .font(Font.AppFont.textDefault)
+                        .foregroundColor(Color.HomeSemantic.historyHeaderAction)
                 }
             }
 

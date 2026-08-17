@@ -37,16 +37,19 @@ struct EmptyStateView: View {
                     .multilineTextAlignment(.center)
             }
             
-            Button(action: action) {
-                Text((actionLabel ?? emptyState.actionLabel).uppercased())
-                    .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
-                    .font(isCompact ? Font.AppFont.textCaption : Font.AppFont.textSecondary)
-                    .padding(.horizontal, isCompact ? 20 : 32)
-                    .frame(height: isCompact ? 36 : 44)
-            }
-            .background {
-                RoundedRectangle(cornerRadius: isCompact ? 18 : 24)
-                    .foregroundStyle(Color.Teal.teal1000)
+            let resolvedLabel = (actionLabel ?? emptyState.actionLabel).trimmingCharacters(in: .whitespaces)
+            if !resolvedLabel.isEmpty {
+                Button(action: action) {
+                    Text(resolvedLabel.uppercased())
+                        .foregroundStyle(Color(light: Color.Teal.teal100, dark: Color.Teal.teal1600))
+                        .font(isCompact ? Font.AppFont.textCaption : Font.AppFont.textSecondary)
+                        .padding(.horizontal, isCompact ? 20 : 32)
+                        .frame(height: isCompact ? 36 : 44)
+                }
+                .background {
+                    RoundedRectangle(cornerRadius: isCompact ? 18 : 24)
+                        .foregroundStyle(Color.Teal.teal1000)
+                }
             }
         }
         .padding(isCompact ? 12 : 22)

@@ -35,6 +35,18 @@ final class ExerciseListViewModel {
     var hasNextPage: Bool = true
     var currentPage: Int = 1
     var exercisesError: String? = nil
+    var lastError: Error? = nil
+
+    var initialLoadEmptyState: EmptyState? {
+        guard let error = lastError, exercises.isEmpty else { return nil }
+        if let networkError = error as? NetworkError, case .noInternet = networkError {
+            return .noConnection
+        }
+        if let urlError = error as? URLError, urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost {
+            return .noConnection
+        }
+        return .serverProblem
+    }
 
     // MARK: - Data
     var categories: [ExerciseCategory] = [.all]
@@ -64,6 +76,13 @@ final class ExerciseListViewModel {
         }
     }
 
+    func retryInitialLoad() async {
+        if categories.count <= 1 {
+            await loadCategories()
+        }
+        await loadInitialExercises()
+    }
+
     // MARK: - Exercises Networking & Pagination
 
     func loadInitialExercises() async {
@@ -90,8 +109,10 @@ final class ExerciseListViewModel {
             self.exercises = result.exercises
             self.hasNextPage = result.hasNext
             self.currentPage = result.currentPage
+            self.lastError = nil
         } catch {
             self.exercisesError = error.localizedDescription
+            self.lastError = error
         }
     }
 

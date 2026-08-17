@@ -92,7 +92,7 @@ enum EmptyState {
         case .noSaved:
             return LocalizationKeys.EmptyState.actionGoToScans.localized
         case .noSearchResults:
-            return LocalizationKeys.EmptyState.actionGoToScan.localized
+            return LocalizationKeys.ScanHistory.clearSearch.localized
         case .noCaloriesHistory:
             return LocalizationKeys.EmptyState.actionAddMeals.localized
         case .serverProblem, .noConnection:
