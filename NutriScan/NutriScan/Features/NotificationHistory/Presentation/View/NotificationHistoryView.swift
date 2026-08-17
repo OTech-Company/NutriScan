@@ -29,7 +29,9 @@ struct NotificationHistoryView: View {
             // Content Section
             if viewModel.items.isEmpty {
                 Spacer()
-                NotificationHistoryEmptyView()
+                EmptyStateView(emptyState: .noNotifications, action: {
+                    router.pop()
+                })
                 Spacer()
             } else {
                 ScrollView(showsIndicators: false) {

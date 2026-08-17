@@ -79,6 +79,9 @@ struct HomeView: View {
                         onRequestDelete: { item in
                             recentScanPendingDeletion = item
                             alert = .delete
+                        },
+                        onStartScan: {
+                            flowCoordinator.selectedTab = .scan
                         }
                     )
                 }

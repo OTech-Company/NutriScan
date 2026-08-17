@@ -25,8 +25,20 @@ struct ExerciseListView: View {
     private var listContent: some View {
         if viewModel.isLoadingExercises && viewModel.exercises.isEmpty {
             loadingStateView
+        } else if let failureState = viewModel.initialLoadEmptyState {
+            EmptyStateView(emptyState: failureState) {
+                Task {
+                    await viewModel.retryInitialLoad()
+                }
+            }
         } else if viewModel.exercises.isEmpty {
-            EmptyExerciseStateView()
+            if !viewModel.searchQuery.trimmingCharacters(in: .whitespaces).isEmpty {
+                EmptyStateView(emptyState: .noSearchResults, action: {
+                    viewModel.searchQuery = ""
+                })
+            } else {
+                EmptyExerciseStateView()
+            }
         } else {
             contentListView
         }
