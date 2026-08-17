@@ -23,7 +23,7 @@ struct AddMemberCardView: View {
                         .foregroundColor(Color.ProfileSemantics.addMemberIcon)
                 }
 
-                Text("ADD MEMBER")
+                Text(LocalizationKeys.Profile.addMember.localized)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.ProfileSemantics.addMemberText)
                     .multilineTextAlignment(.center)

@@ -12,7 +12,7 @@ struct ShowDetailsButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text("Show Details")
+            Text(LocalizationKeys.Profile.showDetails.localized)
                 .font(Font.AppFont.lexendDecaLight10)
                 .foregroundColor(Color.Teal.teal100)
                 .frame(

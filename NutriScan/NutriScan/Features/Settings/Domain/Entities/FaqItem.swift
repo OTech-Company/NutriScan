@@ -14,11 +14,13 @@ struct FaqItem: Identifiable, Equatable {
 }
 
 extension FaqItem {
-    static let dummyItems: [FaqItem] = [
-        FaqItem(id: -1, question: "How do I scan a product correctly in NutriScan?", answer: ""),
-        FaqItem(id: -2, question: "What is NutriGPT and how does it analyze my food?", answer: ""),
-        FaqItem(id: -3, question: "How do I add a family member to my account?", answer: ""),
-        FaqItem(id: -4, question: "Where is my scan history located in profile?", answer: ""),
-        FaqItem(id: -5, question: "How to edit my profile details easily?", answer: "")
-    ]
+    static var dummyItems: [FaqItem] {
+        [
+            FaqItem(id: -1, question: LocalizationKeys.Settings.faq1Question.localized, answer: LocalizationKeys.Settings.faq1Answer.localized),
+            FaqItem(id: -2, question: LocalizationKeys.Settings.faq2Question.localized, answer: LocalizationKeys.Settings.faq2Answer.localized),
+            FaqItem(id: -3, question: LocalizationKeys.Settings.faq3Question.localized, answer: LocalizationKeys.Settings.faq3Answer.localized),
+            FaqItem(id: -4, question: LocalizationKeys.Settings.faq4Question.localized, answer: LocalizationKeys.Settings.faq4Answer.localized),
+            FaqItem(id: -5, question: LocalizationKeys.Settings.faq5Question.localized, answer: LocalizationKeys.Settings.faq5Answer.localized)
+        ]
+    }
 }

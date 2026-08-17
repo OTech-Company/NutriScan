@@ -15,19 +15,19 @@ struct AccountRestorationActionsSection: View {
     var body: some View {
         VStack(spacing: 16) {
             CustomPuffedButton(
-                title: "Restore My Account",
+                title: LocalizationKeys.Auth.AccountRestoration.restoreButton.localized,
                 action: onRestore,
                 isLoading: isLoading
             )
             .padding(.horizontal, 20)
-            
+
             Button(action: onLogout) {
                 HStack(spacing: 4) {
-                    Text("Want to exit?")
+                    Text(LocalizationKeys.Auth.AccountRestoration.wantToExit.localized)
                         .font(Font.AppFont.textSecondary)
                         .foregroundColor(Color.AccountRestorationSemantic.instructionText)
-                    
-                    Text("Log Out")
+
+                    Text(LocalizationKeys.Auth.AccountRestoration.logOut.localized)
                         .font(Font.AppFont.textSecondary)
                         .fontWeight(.bold)
                         .foregroundColor(Color.AccountRestorationSemantic.linkText)

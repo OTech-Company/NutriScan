@@ -13,7 +13,7 @@ struct AuthDivider: View {
             Rectangle()
                 .fill(Color.LoginSemantic.dividerLine)
                 .frame(height: 1)
-            Text("OR")
+            Text(LocalizationKeys.Auth.Login.or.localized)
                 .font(Font.AppFont.textCaption)
                 .foregroundColor(Color.LoginSemantic.dividerLabel)
                 .padding(.horizontal, 8)

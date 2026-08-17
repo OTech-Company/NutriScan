@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AddCircleButton: View {
+    let accessibilityLabel: String
+    var accessibilityHint: String? = nil
     var size: CGFloat = 36
     var action: () -> Void = {}
     
@@ -44,17 +46,19 @@ struct AddCircleButton: View {
                 .scaleEffect(isTapped ? 1.2 : 1.0)
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityHint(accessibilityHint ?? "")
     }
 }
 
 #Preview("Small") {
-    AddCircleButton(size: 36) {}
+    AddCircleButton(accessibilityLabel: "Add", size: 36) {}
         .padding()
         .background(Color.CaloriesSemantic.background)
 }
 
 #Preview("Large") {
-    AddCircleButton(size: 60) {}
+    AddCircleButton(accessibilityLabel: "Add", size: 60) {}
         .padding()
         .background(Color.CaloriesSemantic.background)
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct ExerciseCardView: View {
     let exerciseKcal: Int
     let exerciseMinutes: Double
+    var isLoading = false
     var onAddTap: () -> Void = {}
     
     @State private var showContent = false
@@ -26,28 +27,38 @@ struct ExerciseCardView: View {
                         }
                         .scaleEffect(showContent ? 1 : 0)
                         .rotationEffect(.degrees(showContent ? 0 : -45))
-                    Text("Your\nExercise")
+                    Text(LocalizationKeys.ProfileSetup.yourExercise.localized)
                         .font(Font.AppFont.textCaption)
                         .foregroundStyle(Color.CaloriesSemantic.exerciseTitle)
                         .opacity(showContent ? 1 : 0)
                         .offset(x: showContent ? 0 : -10)
                     Spacer()
-                    AddCircleButton(action: onAddTap)
+                    AddCircleButton(
+                        accessibilityLabel: "Add exercise",
+                        accessibilityHint: "Opens the exercise list",
+                        action: onAddTap
+                    )
                 }
                 Spacer()
                 VStack(alignment: .leading, spacing: 0) {
-                    HStack(spacing: 4) {
-                        Text("\(exerciseKcal)")
-                            .font(Font.AppFont.numbers)
-                            .foregroundStyle(Color.CaloriesSemantic.exerciseKcalValue)
-                            .contentTransition(.numericText())
-                        Text("Kcal")
+                    if isLoading {
+                        CaloriesTextShimmer(width: 78, height: 20, cornerRadius: 6)
+                        CaloriesTextShimmer(width: 94, height: 9, cornerRadius: 4)
+                            .padding(.top, 4)
+                    } else {
+                        HStack(spacing: 4) {
+                            Text("\(exerciseKcal)")
+                                .font(Font.AppFont.numbers)
+                                .foregroundStyle(Color.CaloriesSemantic.exerciseKcalValue)
+                                .contentTransition(.numericText())
+                            Text(LocalizationKeys.Favorites.kcal.localized)
+                                .font(Font.AppFont.textSecondary)
+                                .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
+                        }
+                        Text("\(exerciseMinutes.formatted(.number.precision(.fractionLength(1)))) \(LocalizationKeys.Calories.minToday.localized)")
                             .font(Font.AppFont.textSecondary)
                             .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
                     }
-                    Text("\(exerciseMinutes.formatted(.number.precision(.fractionLength(1)))) min today")
-                        .font(Font.AppFont.textSecondary)
-                        .foregroundStyle(Color.CaloriesSemantic.exerciseSubtitle)
                 }
                 .opacity(showContent ? 1 : 0)
                 .offset(y: showContent ? 0 : 10)
@@ -60,6 +71,7 @@ struct ExerciseCardView: View {
                 .foregroundStyle(Color.CaloriesSemantic.cardBackground)
         }
         .customLightShadow()
+        .allowsHitTesting(!isLoading)
         .onAppear {
             withAnimation(.spring(response: 0.5, dampingFraction: 0.7).delay(0.2)) {
                 showContent = true

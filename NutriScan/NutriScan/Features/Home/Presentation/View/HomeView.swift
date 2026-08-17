@@ -6,13 +6,19 @@
 import SwiftUI
 
 struct HomeView: View {
+    private enum AlertDestination: String, Identifiable {
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
     @State private var viewModel = HomeViewModel()
     @State private var recentHistoryNotifier = HomeRecentHistoryNotifier.shared
     @State private var showRAGChat = false
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var recentScanPendingDeletion: UiStateHistoryItem?
 
     var body: some View {
@@ -46,12 +52,12 @@ struct HomeView: View {
                 ExploreSectionHeader()
 
                 VStack {
-                    MenuRowView(icon: "newspaper.fill", title: "Health News") {
+                    MenuRowView(icon: "newspaper.fill", title: LocalizationKeys.Home.healthNews.localized) {
                         router.push(HomeRoute.news)
                     }
                     MenuRowView(
                         icon: "bubble.left.and.bubble.right.fill",
-                        title: "Chat with AI"
+                        title: LocalizationKeys.Home.chatWithAI.localized
                     ) {
                         showRAGChat = true
                     }
@@ -72,7 +78,7 @@ struct HomeView: View {
                         },
                         onRequestDelete: { item in
                             recentScanPendingDeletion = item
-                            activeAlert = .delete
+                            alert = .delete
                         }
                     )
                 }
@@ -92,7 +98,7 @@ struct HomeView: View {
         }
         .onChange(of: viewModel.deleteErrorMessage) { _, message in
             if message != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
         .fullScreenCover(isPresented: $showRAGChat) {
@@ -104,28 +110,24 @@ struct HomeView: View {
             )
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Scan?",
-                        description: "This scan will be removed from your history.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
+                        title: LocalizationKeys.Home.deleteScanTitle.localized,
+                        message: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Delete Failed",
-                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
-                        primaryButtonTitle: "OK",
-                        primaryButtonColor: Color.Red.red500
+                        title: LocalizationKeys.Home.deleteFailedTitle.localized,
+                        message: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
-                default:
-                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
                 }
             },
             primaryAction: { alert in
@@ -138,8 +140,6 @@ struct HomeView: View {
                     }
                 case .error:
                     viewModel.deleteErrorMessage = nil
-                default:
-                    break
                 }
             },
             secondaryAction: { alert in

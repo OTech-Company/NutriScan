@@ -12,13 +12,13 @@ struct HelpContactSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: HelperSemantics.Spacing.itemSpacing) {
-            Text("Contact Us")
+            Text(LocalizationKeys.Settings.contactUs.localized)
                 .font(Font.AppFont.subtitle1)
                 .foregroundColor(Color.HelperSemantic.sectionTitle)
             
             MenuRowView(
                 icon: "envelope.fill",
-                title: "Contact Support",
+                title: LocalizationKeys.Settings.contactSupport.localized,
                 action: onContactSupportClick
             )
         }

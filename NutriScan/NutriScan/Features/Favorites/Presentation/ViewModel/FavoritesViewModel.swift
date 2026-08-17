@@ -7,6 +7,18 @@
 
 import Foundation
 
+enum FavoritesAddMealFailure: Equatable {
+    case offline
+    case other(String)
+
+    var message: String {
+        switch self {
+        case .offline: return "No internet connection"
+        case .other(let message): return message
+        }
+    }
+}
+
 @Observable
 class FavoritesViewModel {
     var favorites: [FavoritesScanEntity] = []
@@ -26,8 +38,8 @@ class FavoritesViewModel {
     var addingMealIds: Set<String> = []
     /// Non-nil when an add-meal call succeeds, holding the scanId that was just added.
     var lastAddedMealScanId: String? = nil
-    /// Non-nil when an add-meal call fails.
-    var addMealError: String? = nil
+    /// Non-nil when an add-meal call fails, preserving offline as a semantic state.
+    private(set) var addMealFailure: FavoritesAddMealFailure?
     
     private var currentPage: Int = 0
     private var hasMorePages: Bool = true
@@ -239,13 +251,13 @@ class FavoritesViewModel {
         
         // Fast-fail if there is no active internet connection
         guard NetworkMonitor.shared.isConnected else {
-            addMealError = "No internet connection"
+            addMealFailure = .offline
             completion(false)
             return
         }
         
         addingMealIds.insert(scanId)
-        addMealError = nil
+        addMealFailure = nil
         lastAddedMealScanId = nil
 
         Task {
@@ -275,9 +287,9 @@ class FavoritesViewModel {
                 
                 await MainActor.run {
                     if isOffline {
-                        self.addMealError = "No internet connection"
+                        self.addMealFailure = .offline
                     } else {
-                        self.addMealError = error.localizedDescription
+                        self.addMealFailure = .other(error.localizedDescription)
                     }
                     self.addingMealIds.remove(scanId)
                     completion(false)

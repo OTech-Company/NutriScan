@@ -18,25 +18,24 @@ struct SettingsView: View {
 
     var body: some View {
 
-        ScrollView(showsIndicators: false) {
-            VStack(spacing: 0) {
+        VStack(spacing: 0) {
+            SettingsHeaderSection {
+                router.pop()
+            }
 
-                SettingsHeaderSection {
-                    router.pop()
-                }
-
+            ScrollView(showsIndicators: false) {
                 VStack(spacing: 12) {
                     MenuRowView(
                         icon: "person.badge.shield.checkmark.fill",
-                        title: "Profile Settings",
+                        title: LocalizationKeys.Settings.profileSettings.localized,
                         action: {
                             router.push(SettingsRoute.profileSettings)
                         }
                     )
-                    
+
                     MenuRowView(
                         icon: "bell.badge.fill",
-                        title: "Notification Settings",
+                        title: LocalizationKeys.Settings.notificationSettings.localized,
                         action: {
                             router.push(SettingsRoute.notificationSettings)
                         }
@@ -44,21 +43,21 @@ struct SettingsView: View {
 
                     SettingsSegmentRow(
                         icon: "circle.lefthalf.filled",
-                        title: "Appearance",
+                        title: LocalizationKeys.Settings.appearance.localized,
                         options: AppAppearance.allCases,
                         selected: $viewModel.selectedAppearance
                     )
 
                     SettingsSegmentRow(
                         icon: "globe",
-                        title: "Language",
+                        title: LocalizationKeys.Settings.language.localized,
                         options: AppLanguage.allCases,
                         selected: $viewModel.selectedLanguage
                     )
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Terms and Conditions",
+                        title: LocalizationKeys.Settings.terms.localized,
                         action: {
                             router.push(SettingsRoute.termsAndConditions)
                         }
@@ -66,7 +65,7 @@ struct SettingsView: View {
 
                     MenuRowView(
                         icon: "questionmark.circle",
-                        title: "Help",
+                        title: LocalizationKeys.Settings.help.localized,
                         action: {
                             router.push(SettingsRoute.help)
                         }
@@ -91,35 +90,42 @@ struct SettingsView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(edges: .top)
         .customAlert(
-            isPresented: $viewModel.showLogoutAlert,
-            type: .warning,
-            title: "Logout",
-            description: "Are you sure you want to log out of NutriScan?",
-            primaryButtonTitle: "Logout",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                viewModel.confirmLogout(flowCoordinator: flowCoordinator)
-            },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                viewModel.cancelLogout()
-            }
-        )
-        .customAlert(
-            isPresented: $viewModel.showDeleteAccountAlert,
-            type: .warning,
-            title: "Delete Account",
-            description: "Are you sure you want to delete your account? You will have a 15-day grace period to restore it before permanent deletion.",
-            primaryButtonTitle: "Delete Account",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                Task {
-                    await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+            item: $viewModel.alert,
+            config: { alert in
+                switch alert {
+                case .logout:
+                    return CustomAlertConfig(
+                        type: .warning,
+                        title: LocalizationKeys.Settings.logoutAlertTitle.localized,
+                        message: LocalizationKeys.Settings.logoutAlertDescription.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Settings.logoutAlertConfirm.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                    )
+                case .deleteAccount:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: LocalizationKeys.Settings.deleteAlertTitle.localized,
+                        message: LocalizationKeys.Settings.deleteAlertDescription.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Settings.deleteAlertConfirm.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                    )
                 }
             },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                viewModel.cancelDeleteAccount()
+            primaryAction: { alert in
+                switch alert {
+                case .logout:
+                    viewModel.confirmLogout(flowCoordinator: flowCoordinator)
+                case .deleteAccount:
+                    Task {
+                        await viewModel.confirmDeleteAccount(flowCoordinator: flowCoordinator)
+                    }
+                }
+            },
+            secondaryAction: { alert in
+                switch alert {
+                case .logout: viewModel.cancelLogout()
+                case .deleteAccount: viewModel.cancelDeleteAccount()
+                }
             }
         )
     }

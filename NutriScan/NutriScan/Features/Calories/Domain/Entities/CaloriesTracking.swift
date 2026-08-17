@@ -75,7 +75,7 @@ extension CaloriesTracking {
 
     static func dateString(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.calendar = Calendar.current
+        formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = Calendar.current.timeZone
         formatter.dateFormat = "yyyy-MM-dd"
@@ -84,7 +84,7 @@ extension CaloriesTracking {
 
     static func date(from string: String) -> Date? {
         let formatter = DateFormatter()
-        formatter.calendar = Calendar.current
+        formatter.calendar = Calendar(identifier: .gregorian)
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = Calendar.current.timeZone
         formatter.dateFormat = "yyyy-MM-dd"
@@ -94,8 +94,12 @@ extension CaloriesTracking {
 
 extension CaloriesTracking {
     init(from dto: CaloriesTrackingDTO) {
+        self.init(from: dto, fallbackDate: Self.todayString)
+    }
+
+    init(from dto: CaloriesTrackingDTO, fallbackDate: String) {
         self.id = dto.id ?? 0
-        self.date = dto.date ?? Self.todayString
+        self.date = dto.date ?? fallbackDate
         self.targetWaterCnt = dto.targetWaterCnt ?? 0
         self.waterCnt = dto.waterCnt ?? 0
         self.stepsCnt = dto.stepsCnt ?? 0

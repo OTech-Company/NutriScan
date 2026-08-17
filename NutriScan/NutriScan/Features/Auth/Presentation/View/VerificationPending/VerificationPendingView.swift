@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct VerificationPendingView: View {
+    private enum AlertDestination: String, Identifiable {
+        case success
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: VerificationPendingViewModel
     
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     
     init(viewModel: VerificationPendingViewModel) {
         _viewModel = State(wrappedValue: viewModel)
@@ -49,34 +55,30 @@ struct VerificationPendingView: View {
         }
         .onChange(of: viewModel.resendSuccess) { _, success in
             if success {
-                activeAlert = .success
+                alert = .success
             }
         }
         .onChange(of: viewModel.generalError) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
+        .customAlert(item: $alert, config: { alert in
             switch alert {
             case .success:
                 return CustomAlertConfig(
                     type: .success,
-                    title: "Verification Email Sent",
-                    description: viewModel.resendMessage,
-                    primaryButtonTitle: "Continue",
-                    primaryButtonColor: Color.Teal.teal1000
+                    title: LocalizationKeys.Auth.VerificationPending.sentTitle.localized,
+                    message: viewModel.resendMessage,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.continueAction.localized)
                 )
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Action Failed",
-                    description: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButtonTitle: "Try Again",
-                    primaryButtonColor: Color.Red.red500
+                    title: LocalizationKeys.Common.actionFailed.localized,
+                    message: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .warning, title: "", description: "")
             }
         }, primaryAction: { alert in
             if alert == .success {
@@ -98,4 +100,3 @@ struct VerificationPendingView: View {
     AuthFactory.makeVerificationPendingView(email: "user@example.com")
         .environmentObject(AppRouter())
 }
-

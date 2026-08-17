@@ -22,7 +22,7 @@ struct SettingsDeleteAccountButton: View {
                     .background(Color.SettingsSemantic.logoutIconBackground)
                     .clipShape(Circle())
 
-                Text("Delete Account")
+                Text(LocalizationKeys.Settings.deleteAccount.localized)
                     .font(Font.AppFont.textPrimary)
                     .fontWeight(.semibold)
                     .foregroundColor(Color.SettingsSemantic.logoutTitle)

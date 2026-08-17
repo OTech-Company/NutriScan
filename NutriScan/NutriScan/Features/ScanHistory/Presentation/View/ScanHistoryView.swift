@@ -8,10 +8,18 @@
 import SwiftUI
 
 struct ScanHistoryView: View {
+    private enum AlertDestination: String, Identifiable {
+        case delete
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: ScanHistoryViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var scanPendingDeletion: ScanHistoryEntity?
+    @State private var searchText = ""
+    @State private var appliedSearchText = ""
     
     init(viewModel: ScanHistoryViewModel) {
         _viewModel = State(initialValue: viewModel)
@@ -22,7 +30,7 @@ struct ScanHistoryView: View {
             // Custom header with BackButton
             HStack(spacing: 16) {
                 BackButton { router.pop() }
-                Text("Scan History")
+                Text(LocalizationKeys.ScanHistory.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.CaloriesHistorySemantic.title)
                     .lineLimit(1)
@@ -31,20 +39,60 @@ struct ScanHistoryView: View {
             }
             .padding(.horizontal, 22)
             .padding(.top, 16)
+            .padding(.bottom, 8)
+
+            CustomSearchBar(
+                text: $searchText,
+                prompt: LocalizationKeys.ScanHistory.searchPlaceholder.localized,
+                onSearch: {
+                    appliedSearchText = searchText
+                    Task {
+                        if appliedSearchText.isEmpty {
+                            viewModel.clearSearch()
+                        } else {
+                            await viewModel.searchScans(query: appliedSearchText)
+                        }
+                    }
+                }
+            )
+            .padding(.horizontal, 20)
             .padding(.bottom, 16)
             
             // MARK: - State-driven content
-            if viewModel.isLoadingInitial && viewModel.scans.isEmpty {
+            if viewModel.isSearching {
+                // Shimmer placeholder while search is in-flight
+                shimmerList
+
+            } else if let searchEmpty = viewModel.searchEmptyState, viewModel.isInSearchMode {
+                // .noConnection / .serverProblem → retry; .noSearchResults → clear search
+                let isRetryable = searchEmpty == .noConnection || searchEmpty == .serverProblem
+                EmptyStateView(
+                    emptyState: searchEmpty,
+                    action: {
+                        if isRetryable {
+                            Task { await viewModel.searchScans(query: appliedSearchText) }
+                        } else {
+                            searchText = ""
+                            appliedSearchText = ""
+                            viewModel.clearSearch()
+                        }
+                    },
+                    actionLabel: isRetryable
+                        ? nil  // use the default "Try Again" label from EmptyState
+                        : LocalizationKeys.ScanHistory.clearSearch.localized
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            } else if viewModel.isLoadingInitial && viewModel.scans.isEmpty {
                 // Shimmer placeholder during initial load
                 shimmerList
                 
-            } else if let error = viewModel.initialLoadError, viewModel.scans.isEmpty {
+            } else if let loadEmptyState = viewModel.initialLoadEmptyState, viewModel.scans.isEmpty {
                 // Full-screen error when initial load fails with no data
-                ListErrorView(message: error) {
-                    Task {
-                        await viewModel.loadScanHistory()
-                    }
+                EmptyStateView(emptyState: loadEmptyState) {
+                    Task { await viewModel.loadScanHistory() }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 
             } else if viewModel.scans.isEmpty {
                 // Empty state
@@ -73,14 +121,16 @@ struct ScanHistoryView: View {
                             }
                             .onLongPressGesture {
                                 scanPendingDeletion = scan
-                                activeAlert = .delete
+                                alert = .delete
                             }
                             .transition(.asymmetric(
                                 insertion: .move(edge: .bottom).combined(with: .opacity),
                                 removal: .scale(scale: 0.96).combined(with: .opacity)
                             ))
                             .onAppear {
-                                viewModel.loadNextPageIfNeeded(currentItem: scan)
+                                if !viewModel.isInSearchMode {
+                                    viewModel.loadNextPageIfNeeded(currentItem: scan)
+                                }
                             }
                         }
                         
@@ -101,6 +151,9 @@ struct ScanHistoryView: View {
                     .animation(.spring(response: 0.28, dampingFraction: 0.85), value: viewModel.scans.map(\.id))
                 }
                 .refreshable {
+                    searchText = ""
+                    appliedSearchText = ""
+                    viewModel.clearSearch()
                     await viewModel.refreshScanHistory()
                 }
             }
@@ -112,32 +165,28 @@ struct ScanHistoryView: View {
         }
         .onChange(of: viewModel.deleteErrorMessage) { _, message in
             if message != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
         .customAlert(
-            activeAlert: $activeAlert,
+            item: $alert,
             config: { alert in
                 switch alert {
                 case .delete:
                     return CustomAlertConfig(
                         type: .delete,
-                        title: "Delete Scan?",
-                        description: "This scan will be removed from your history.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
+                        title: LocalizationKeys.Home.deleteScanTitle.localized,
+                        message: LocalizationKeys.Home.deleteScanDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
                     )
                 case .error:
                     return CustomAlertConfig(
                         type: .error,
-                        title: "Delete Failed",
-                        description: viewModel.deleteErrorMessage ?? "Could not delete this scan.",
-                        primaryButtonTitle: "OK",
-                        primaryButtonColor: Color.Red.red500
+                        title: LocalizationKeys.Home.deleteFailedTitle.localized,
+                        message: viewModel.deleteErrorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized, role: .destructive)
                     )
-                default:
-                    return CustomAlertConfig(type: .warning, title: "Warning", description: "")
                 }
             },
             primaryAction: { alert in
@@ -150,8 +199,6 @@ struct ScanHistoryView: View {
                     }
                 case .error:
                     viewModel.deleteErrorMessage = nil
-                default:
-                    break
                 }
             },
             secondaryAction: { alert in
@@ -177,36 +224,3 @@ struct ScanHistoryView: View {
     }
 }
 
-#Preview {
-    class MockScanHistoryUseCase: ScanHistoryUseCaseProtocol {
-        func getScanHistory(page: Int, size: Int) async throws -> (scans: [ScanHistoryEntity], totalPages: Int) {
-            let mockData = [
-                ScanHistoryEntity(
-                    id: "1",
-                    productName: "Almarai Fresh Milk",
-                    imageUrl: "",
-                    calories: 150,
-                    scannedAt: "2026-07-27T10:15:00Z",
-                    status: .safe,
-                    scanStatus: .completed
-                ),
-                ScanHistoryEntity(
-                    id: "2",
-                    productName: "Lays Classic Potato Chips",
-                    imageUrl: "",
-                    calories: 240,
-                    scannedAt: "2026-07-26T14:30:00Z",
-                    status: .caution,
-                    scanStatus: .completed
-                )
-            ]
-            return (scans: mockData, totalPages: 1)
-        }
-
-        func deleteScan(scanId: String) async throws {}
-    }
-
-    let viewModel = ScanHistoryViewModel(scanHistoryUseCase: MockScanHistoryUseCase())
-    return ScanHistoryView(viewModel: viewModel)
-        .environmentObject(AppRouter())
-}

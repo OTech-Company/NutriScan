@@ -32,32 +32,32 @@ enum DayStatusCard: CaseIterable, Hashable {
     var title: String {
         switch self {
         case .totalMeals:
-            "Total\nMeals"
+            LocalizationKeys.Calories.totalMeals.localized
 
         case .water:
-            "Water"
+            LocalizationKeys.Calories.water.localized
 
         case .steps:
-            "Steps"
+            LocalizationKeys.StepTracker.steps.localized
 
         case .exercise:
-            "Exercise"
+            LocalizationKeys.Exercise.title.localized
         }
     }
 
     var primaryUnit: String {
         switch self {
         case .totalMeals:
-            "kcal"
+            LocalizationKeys.Favorites.kcal.localized
 
         case .water:
-            "cups"
+            LocalizationKeys.Calories.cups.localized
 
         case .steps:
-            "steps"
+            LocalizationKeys.StepTracker.steps.localized
 
         case .exercise:
-            "min"
+            LocalizationKeys.StepTracker.min.localized
         }
     }
 
@@ -67,10 +67,10 @@ enum DayStatusCard: CaseIterable, Hashable {
             nil
 
         case .water:
-            "target"
+            LocalizationKeys.Calories.target.localized
 
         case .steps, .exercise:
-            "kcal"
+            LocalizationKeys.Favorites.kcal.localized
         }
     }
 

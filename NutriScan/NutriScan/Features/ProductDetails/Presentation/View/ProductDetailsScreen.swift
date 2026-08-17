@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct ProductDetailsScreen: View {
+    private enum AlertDestination: String, Identifiable {
+        case loadError
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var viewModel: ProductDetailsViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var isHeaderPresented = false
     @State private var isContentPresented = false
     @State private var isHoldingShimmer: Bool
@@ -60,30 +65,27 @@ struct ProductDetailsScreen: View {
         }
         .onChange(of: viewModel.failureMessage) { _, message in
             if message != nil && canPresentLoadError {
-                activeAlert = .error
+                alert = .loadError
             }
         }
         .onChange(of: canPresentLoadError) { _, canPresent in
             if canPresent && viewModel.failureMessage != nil {
-                activeAlert = .error
+                alert = .loadError
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(item: $alert, config: { _ in
+            CustomAlertConfig(
                     type: .error,
-                    title: "Error",
-                    description: viewModel.failureMessage ?? "An unknown error occurred",
-                    primaryButtonTitle: "Retry",
-                    primaryButtonColor: Color.Red.red500
+                    title: LocalizationKeys.Common.error.localized,
+                    message: viewModel.failureMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.retry.localized),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.back.localized, role: .cancel)
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: "Error", description: "")
-            }
         }, primaryAction: { _ in
             viewModel.failureMessage = nil
             loadGeneration += 1
+        }, secondaryAction: { _ in
+            router.pop()
         })
     }
 
@@ -91,7 +93,7 @@ struct ProductDetailsScreen: View {
         HStack {
             HStack(spacing: 16) {
                 BackButton(action: { router.pop() }, style: .onTeal)
-                Text("Product Details")
+                Text(LocalizationKeys.ProductDetails.title.localized)
                     .font(Font.AppFont.subtitle1)
                     .foregroundStyle(Color.white)
             }

@@ -12,16 +12,17 @@ struct RegisterSignUpButtonSection: View {
 
     var body: some View {
         VStack(spacing: 18) {
-            CustomPuffedButton(title: "Sign Up", action: onSignUp, isLoading: isLoading)                .padding(.horizontal, 20)
+            CustomPuffedButton(title: LocalizationKeys.Auth.Register.signUp.localized, action: onSignUp, isLoading: isLoading)
+                .padding(.horizontal, 20)
 
             // "Already have an account?" row
             HStack(spacing: 4) {
-                Text("Already have an account?")
+                Text(LocalizationKeys.Auth.Register.alreadyHaveAccount.localized)
                     .font(Font.AppFont.textSecondary)
                     .foregroundColor(Color.RegisterSemantic.footerText)
 
                 Button(action: onSignIn) {
-                    Text("Sign In.")
+                    Text(LocalizationKeys.Auth.Register.signIn.localized)
                         .font(Font.AppFont.textSecondary)
                         .fontWeight(.bold)
                         .foregroundColor(Color.RegisterSemantic.footerLink)

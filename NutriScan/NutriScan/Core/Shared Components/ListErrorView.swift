@@ -18,7 +18,7 @@ struct ListErrorView: View {
                     .foregroundColor(.orange)
             }
             
-            Text("Something Went Wrong")
+            Text(LocalizationKeys.Common.somethingWentWrong.localized)
                 .font(.AppFont.title3)
                 .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
             
@@ -29,7 +29,7 @@ struct ListErrorView: View {
                 .padding(.horizontal, 40)
             
             Button(action: onRetry) {
-                Text("Try Again")
+                Text(LocalizationKeys.Common.tryAgain.localized)
                     .font(.AppFont.textSecondary)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)

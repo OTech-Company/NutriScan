@@ -6,10 +6,16 @@
 import SwiftUI
 
 struct RegisterView: View {
+    private enum AlertDestination: String, Identifiable {
+        case success
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
     @EnvironmentObject private var router: AppRouter
     @State private var viewModel: RegisterViewModel
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
 
     init(viewModel: RegisterViewModel) {
         _viewModel = State(wrappedValue: viewModel)
@@ -45,29 +51,25 @@ struct RegisterView: View {
         }
         .onChange(of: viewModel.generalError) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
+        .customAlert(item: $alert, config: { alert in
             switch alert {
             case .success:
                 return CustomAlertConfig(
                     type: .success,
-                    title: "Registration Success",
-                    description: "Your account has been created successfully.",
-                    primaryButtonTitle: "Continue",
-                    primaryButtonColor: Color.Teal.teal1000
+                    title: LocalizationKeys.Auth.Register.successTitle.localized,
+                    message: LocalizationKeys.Auth.Register.successDescription.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.continueAction.localized)
                 )
             case .error:
                 return CustomAlertConfig(
                     type: .error,
-                    title: "Registration Failed",
-                    description: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButtonTitle: "Try Again",
-                    primaryButtonColor: Color.Red.red500
+                    title: LocalizationKeys.Auth.Register.failedTitle.localized,
+                    message: viewModel.generalError ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .warning, title: "", description: "")
             }
         }, primaryAction: { alert in
             if alert == .success {
@@ -83,7 +85,7 @@ struct RegisterView: View {
         Task {
             let success = await viewModel.signUp()
             if success {
-                activeAlert = .success
+                alert = .success
             }
         }
     }

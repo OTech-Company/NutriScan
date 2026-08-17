@@ -15,8 +15,8 @@ struct PersonalInformationView: View {
     }
     
     var body: some View {
-        Text("Personal Information")
-            .navigationTitle("Personal Information")
+        Text(LocalizationKeys.PersonalInformation.title.localized)
+            .navigationTitle(LocalizationKeys.PersonalInformation.title.localized)
     }
 }
 

@@ -1,11 +1,16 @@
-import SwiftUI
 import PhotosUI
+import SwiftUI
 
 struct ScanScreen: View {
+    private enum AlertDestination: String, Identifiable {
+        case scanError
+        var id: String { rawValue }
+    }
 
     @EnvironmentObject private var router: AppRouter
     @StateObject private var viewModel: ScanViewModel
     @State private var gallerySelection: PhotosPickerItem?
+    @State private var alert: AlertDestination?
 
     private let viewfinderHeight: CGFloat = 520
     private let viewfinderHorizontalPadding: CGFloat = 20
@@ -114,17 +119,20 @@ struct ScanScreen: View {
                 gallerySelection = nil
             }
         }
+        .onChange(of: viewModel.errorMessage) { _, message in
+            alert = message == nil ? nil : .scanError
+        }
         .customAlert(
-            isPresented: Binding(
-                get: { viewModel.errorMessage != nil },
-                set: { if !$0 { viewModel.dismissError() } }
-            ),
-            type: .error,
-            title: "Scan Failed",
-            description: viewModel.errorMessage ?? "Unknown error",
-            primaryButtonTitle: "OK",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: { viewModel.dismissError() }
+            item: $alert,
+            config: { _ in
+                CustomAlertConfig(
+                    type: .error,
+                    title: LocalizationKeys.Scan.scanFailed.localized,
+                    message: viewModel.errorMessage ?? LocalizationKeys.Common.unknownError.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
+                )
+            },
+            primaryAction: { _ in viewModel.dismissError() }
         )
     }
 }

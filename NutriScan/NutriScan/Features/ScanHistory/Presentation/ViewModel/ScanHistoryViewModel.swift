@@ -15,9 +15,15 @@ final class ScanHistoryViewModel {
     var isLoadingInitial: Bool = false
     var isLoadingNextPage: Bool = false
     var isRefreshing: Bool = false
+
+    // MARK: - Search State
+    var isSearching: Bool = false
+    var searchEmptyState: EmptyState? = nil
+    private var allScans: [ScanHistoryEntity] = []
+    private(set) var isInSearchMode: Bool = false
     
     /// Non-nil only when the very first fetch (page 0) fails and the list is empty.
-    var initialLoadError: String? = nil
+    var initialLoadEmptyState: EmptyState? = nil
     /// Non-nil when a subsequent page fetch fails — shown as an inline footer.
     var paginationError: String? = nil
     var deleteErrorMessage: String? = nil
@@ -36,7 +42,7 @@ final class ScanHistoryViewModel {
     
     /// Only fetches if data is empty and there's no previous error.
     func loadScanHistoryIfNeeded() async {
-        guard scans.isEmpty && initialLoadError == nil else { return }
+        guard scans.isEmpty && initialLoadEmptyState == nil else { return }
         await loadScanHistory()
     }
     
@@ -44,7 +50,7 @@ final class ScanHistoryViewModel {
     func loadScanHistory() async {
         currentPage = 0
         hasMorePages = true
-        initialLoadError = nil
+        initialLoadEmptyState = nil
         paginationError = nil
         isLoadingInitial = true
         scans.removeAll()
@@ -69,7 +75,7 @@ final class ScanHistoryViewModel {
             scans = result.scans
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialLoadError = nil
+            initialLoadEmptyState = nil
         } catch {
             // Failure — restore previous data
             scans = previousScans
@@ -99,6 +105,84 @@ final class ScanHistoryViewModel {
         }
     }
 
+    // MARK: - Search
+
+    /// Searches scan history using the suggestions endpoint, then filters the displayed list.
+    func searchScans(query: String) async {
+        let trimmed = query.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else {
+            clearSearch()
+            return
+        }
+
+        // Fast-fail if offline — never show stale cached results or a misleading
+        // "No results found" state when the real problem is no connectivity.
+        guard NetworkMonitor.shared.isConnected else {
+            isInSearchMode = true
+            isSearching = false
+            searchEmptyState = .noConnection
+            return
+        }
+
+        isInSearchMode = true
+        isSearching = true
+        searchEmptyState = nil
+
+        // Snapshot the full list so we can filter it (and restore it on clear)
+        if allScans.isEmpty {
+            allScans = scans
+        }
+
+        do {
+            let matchingNames = try await scanHistoryUseCase.getSuggestions(query: trimmed)
+            let nameSet = Set(matchingNames.map { $0.lowercased() })
+            let filtered = allScans.filter { nameSet.contains($0.productName.lowercased()) }
+            scans = filtered
+            searchEmptyState = filtered.isEmpty ? .noSearchResults : nil
+        } catch {
+            if isNetworkError(error) {
+                // Connection dropped mid-request — restore list and show no-connection
+                scans = allScans
+                searchEmptyState = .noConnection
+            } else {
+                // Non-network failure (e.g. decoding): surface as a server error
+                scans = allScans
+                searchEmptyState = .serverProblem
+            }
+        }
+
+        isSearching = false
+    }
+
+    // MARK: - Helpers
+
+    private func isNetworkError(_ error: Error) -> Bool {
+        if !NetworkMonitor.shared.isConnected { return true }
+        if let urlError = error as? URLError,
+           urlError.code == .notConnectedToInternet || urlError.code == .dataNotAllowed {
+            return true
+        }
+        if let networkError = error as? NetworkError, case .noInternet = networkError {
+            return true
+        }
+        return false
+    }
+
+    private func determineInitialEmptyState(for error: Error) -> EmptyState {
+        return isNetworkError(error) ? .noConnection : .serverProblem
+    }
+
+    /// Clears the active search and restores the full scan list.
+    func clearSearch() {
+        isInSearchMode = false
+        isSearching = false
+        searchEmptyState = nil
+        if !allScans.isEmpty {
+            scans = allScans
+            allScans = []
+        }
+    }
+
     func deleteScan(_ scan: ScanHistoryEntity) async {
         let previousScans = scans
         withAnimation(.spring(response: 0.28, dampingFraction: 0.85)) {
@@ -125,10 +209,10 @@ final class ScanHistoryViewModel {
             scans = result.scans
             currentPage = 1
             hasMorePages = currentPage < result.totalPages
-            initialLoadError = nil
+            initialLoadEmptyState = nil
         } catch {
             if scans.isEmpty {
-                initialLoadError = error.localizedDescription
+                initialLoadEmptyState = determineInitialEmptyState(for: error)
             }
         }
         
@@ -176,9 +260,9 @@ final class ScanHistoryViewModel {
         let timeString = timeFormatter.string(from: parsedDate)
         
         if let days = components.day, days == 0 {
-            return "Today, \(timeString)"
+            return "\(LocalizationKeys.ScanHistory.today.localized), \(timeString)"
         } else if let days = components.day, days == 1 {
-            return "Yesterday, \(timeString)"
+            return "\(LocalizationKeys.ScanHistory.yesterday.localized), \(timeString)"
         } else if let days = components.day, days > 1 {
             return "\(days) days ago, \(timeString)"
         } else {

@@ -15,7 +15,7 @@ struct CaloriesHistoryHeader: View {
         HStack(spacing: 16) {
             BackButton(action: onBackTap)
 
-            Text("Calories History")
+            Text(LocalizationKeys.Calories.historyTitle.localized)
                 .font(Font.AppFont.subtitle1)
                 .foregroundStyle(Color.CaloriesHistorySemantic.title)
                 .lineLimit(1)
@@ -32,7 +32,7 @@ struct CaloriesHistoryHeader: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .buttonStyle(.plain)
-            .accessibilityLabel("Choose history date")
+            .accessibilityLabel(LocalizationKeys.Accessibility.chooseHistoryDate.localized)
         }
         .padding(.top, 16)
     }

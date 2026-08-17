@@ -8,20 +8,16 @@
 import SwiftUI
 
 struct CustomAlertCard: View {
-    let type: CustomAlertType
-    let title: String
-    let description: String
-    let primaryButtonTitle: String
-    let primaryButtonColor: Color
+    let config: CustomAlertConfig
     let primaryAction: () -> Void
-    let secondaryButtonTitle: String?
     let secondaryAction: (() -> Void)?
+    let actionsDisabled: Bool
     
     var showCard: Bool
     var showIcon: Bool
     var showButtons: Bool
     var reduceMotion: Bool
-    
+
     var body: some View {
         ZStack(alignment: .top) {
             
@@ -29,14 +25,14 @@ struct CustomAlertCard: View {
                 Spacer().frame(height: CustomAlertMetrics.topSpacerHeight)
                 
                 VStack(spacing: CustomAlertMetrics.titleBottomPadding) {
-                    Text(title)
+                    Text(config.title)
                         .font(Font.AppFont.subtitle2)
                         .foregroundColor(Color.CustomAlertSemantic.title)
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .accessibilityAddTraits(.isHeader)
                         
-                    Text(description)
+                    Text(config.message)
                         .font(Font.AppFont.textCaption)
                         .foregroundColor(Color.CustomAlertSemantic.description)
                         .lineLimit(2)
@@ -45,36 +41,13 @@ struct CustomAlertCard: View {
                 }
                 .padding(.horizontal, CustomAlertMetrics.horizontalPadding)
                 .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(config.title). \(config.message)")
                 
                 Spacer()
                 
                 HStack(spacing: CustomAlertMetrics.buttonSpacing) {
-                    if let secondaryTitle = secondaryButtonTitle {
-                        Button(action: secondaryAction ?? {}) {
-                            Text(secondaryTitle)
-                                .font(Font.AppFont.textCaption)
-                                .foregroundColor(Color.CustomAlertSemantic.secondaryButtonText)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        }
-                        .frame(height: CustomAlertMetrics.buttonHeight)
-                        .background(Color.CustomAlertSemantic.secondaryButtonBackground)
-                        .cornerRadius(CustomAlertMetrics.buttonCornerRadius)
-                        .accessibilityLabel(secondaryTitle)
-                        .accessibilityAddTraits(.isButton)
-                    }
-                    
-                    Button(action: primaryAction) {
-                        Text(primaryButtonTitle)
-                            .font(Font.AppFont.textCaption)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }
-                    .frame(height: CustomAlertMetrics.buttonHeight)
-                    .background(primaryButtonColor)
-                    .cornerRadius(CustomAlertMetrics.buttonCornerRadius)
-                    .accessibilityLabel(primaryButtonTitle)
-                    .accessibilityAddTraits(.isButton)
-                    .accessibilityHint(type == .delete ? "Destructive action" : "")
+                    secondaryButton
+                    primaryButton
                 }
                 .padding(.horizontal, CustomAlertMetrics.horizontalPadding)
                 .padding(.bottom, CustomAlertMetrics.bottomPadding)
@@ -91,10 +64,10 @@ struct CustomAlertCard: View {
             
             ZStack {
                 RoundedRectangle(cornerRadius: CustomAlertMetrics.iconBadgeCornerRadius)
-                    .fill(type.iconColor)
+                    .fill(config.type.iconColor)
                     .frame(width: CustomAlertMetrics.iconBadgeSize, height: CustomAlertMetrics.iconBadgeSize)
                 
-                Image(type.iconName)
+                Image(config.type.iconName)
                     .resizable()
                     .scaledToFit()
                     .frame(width: CustomAlertMetrics.iconSize, height: CustomAlertMetrics.iconSize)
@@ -107,5 +80,31 @@ struct CustomAlertCard: View {
             .opacity(reduceMotion || showIcon ? 1 : 0)
         }
         .padding(.top, CustomAlertMetrics.outerTopPadding)
+    }
+
+    private var primaryButton: some View {
+        alertButton(config.primaryButton, action: primaryAction)
+            .accessibilityHint(config.primaryButton.role == .destructive ? "Destructive action" : "")
+    }
+
+    @ViewBuilder
+    private var secondaryButton: some View {
+        if let button = config.secondaryButton, let secondaryAction {
+            alertButton(button, action: secondaryAction)
+        }
+    }
+
+    private func alertButton(_ button: CustomAlertButton, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(button.title)
+                .font(Font.AppFont.textCaption)
+                .foregroundColor(button.role.foregroundColor)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(height: CustomAlertMetrics.buttonHeight)
+        .background(button.role.backgroundColor)
+        .cornerRadius(CustomAlertMetrics.buttonCornerRadius)
+        .disabled(actionsDisabled)
+        .accessibilityLabel(button.title)
     }
 }

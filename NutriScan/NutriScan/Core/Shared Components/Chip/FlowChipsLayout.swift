@@ -35,16 +35,22 @@ struct FlowChipsLayout: Layout {
         cache: inout ()
     ) {
         let rows = computeRows(maxWidth: bounds.width, subviews: subviews)
+        let isRTL = AppLanguage.current.layoutDirection == .rightToLeft
 
         var y = bounds.minY
         for row in rows {
-            var x = bounds.minX
+            var x = isRTL ? bounds.maxX : bounds.minX
             for item in row.items {
+                let itemX = isRTL ? (x - item.size.width) : x
                 item.subview.place(
-                    at: CGPoint(x: x, y: y),
+                    at: CGPoint(x: itemX, y: y),
                     proposal: ProposedViewSize(item.size)
                 )
-                x += item.size.width + horizontalSpacing
+                if isRTL {
+                    x -= (item.size.width + horizontalSpacing)
+                } else {
+                    x += item.size.width + horizontalSpacing
+                }
             }
             y += row.maxHeight + verticalSpacing
         }

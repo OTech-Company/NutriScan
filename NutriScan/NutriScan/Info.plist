@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>We need Access this premision to understand you well</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>We need Access to the microphone in order to talk to you</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>PlusJakartaSans-Bold.ttf</string>
@@ -14,11 +10,16 @@
 		<string>LexendDeca-Light.ttf</string>
 		<string>LexendDeca-Regular.ttf</string>
 		<string>LexendDeca-Medium.ttf</string>
+		<string>KOSans-Thin.otf</string>
+		<string>KOSans-ExtraLight.otf</string>
+		<string>KOSans-Light.otf</string>
+		<string>KOSans-Regular.otf</string>
+		<string>KOSans-Medium.otf</string>
+		<string>KOSans-SemiBold.otf</string>
+		<string>KOSans-Bold.otf</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to scan product barcodes.</string>
-	<key>NSMotionUsageDescription</key>
-	<string>We need access to your motion data to track your daily steps.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>We need access to your health data to read your step history.</string>
 	<key>NSHealthUpdateUsageDescription</key>

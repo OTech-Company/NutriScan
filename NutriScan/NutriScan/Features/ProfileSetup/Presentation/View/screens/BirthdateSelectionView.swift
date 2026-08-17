@@ -27,7 +27,7 @@ struct BirthdateSelectionView: View {
                             .fill(Color.Teal.teal700)
                     )
 
-                Text("Years")
+                Text(LocalizationKeys.ProfileSetup.years.localized)
                     .font(Font.AppFont.title2)
                     .foregroundStyle(Color.Teal.teal1600)
             }

@@ -16,43 +16,43 @@ final class TermsLocalDataSourceImpl: TermsLocalDataSourceProtocol {
         return [
             TermsItem(
                 id: 1,
-                title: "Acceptance of Terms",
-                body: "By creating an account and using NutriScan, you agree to these Terms and Conditions. If you don't agree, please don't use the app."
+                title: LocalizationKeys.Settings.terms1Title.localized,
+                body: LocalizationKeys.Settings.terms1Body.localized
             ),
             TermsItem(
                 id: 2,
-                title: "Use of the App",
-                body: "NutriScan is provided for personal nutrition tracking. You agree to use it only for lawful purposes and to keep your account credentials secure."
+                title: LocalizationKeys.Settings.terms2Title.localized,
+                body: LocalizationKeys.Settings.terms2Body.localized
             ),
             TermsItem(
                 id: 3,
-                title: "Not Medical Advice",
-                body: "Nutrition information, calorie estimates, and NutriGPT responses are for informational purposes only and are not a substitute for professional medical or dietary advice. Consult a qualified professional for medical decisions."
+                title: LocalizationKeys.Settings.terms3Title.localized,
+                body: LocalizationKeys.Settings.terms3Body.localized
             ),
             TermsItem(
                 id: 4,
-                title: "Scanning and Camera Data",
-                body: "Photos taken for barcode or receipt scanning are processed to extract nutrition data and are not shared with third parties beyond what's required to provide this feature."
+                title: LocalizationKeys.Settings.terms4Title.localized,
+                body: LocalizationKeys.Settings.terms4Body.localized
             ),
             TermsItem(
                 id: 5,
-                title: "AI Assistant (NutriGPT)",
-                body: "Responses from NutriGPT are generated automatically and may occasionally be inaccurate. Use your judgment before acting on AI-provided suggestions."
+                title: LocalizationKeys.Settings.terms5Title.localized,
+                body: LocalizationKeys.Settings.terms5Body.localized
             ),
             TermsItem(
                 id: 6,
-                title: "Account and Family Profiles",
-                body: "You're responsible for the accuracy of information entered for yourself and any family profiles you manage under your account."
+                title: LocalizationKeys.Settings.terms6Title.localized,
+                body: LocalizationKeys.Settings.terms6Body.localized
             ),
             TermsItem(
                 id: 7,
-                title: "Changes to These Terms",
-                body: "We may update these Terms from time to time. Continued use of the app after changes means you accept the updated Terms."
+                title: LocalizationKeys.Settings.terms7Title.localized,
+                body: LocalizationKeys.Settings.terms7Body.localized
             ),
             TermsItem(
                 id: 8,
-                title: "Contact",
-                body: "Questions about these Terms? Reach us from the Help screen's Contact Support option."
+                title: LocalizationKeys.Settings.terms8Title.localized,
+                body: LocalizationKeys.Settings.terms8Body.localized
             )
         ]
     }

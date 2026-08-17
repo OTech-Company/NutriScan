@@ -11,7 +11,9 @@ import Foundation
 @MainActor
 final class CaloriesViewModel {
 
-    private(set) var isLoading = false
+    private(set) var isInitialLoading = true
+    private(set) var isRefreshing = false
+    private(set) var hasCompletedInitialLoad = false
     private(set) var errorMessage: String?
 
     private(set) var caloriesTracking: CaloriesTracking?
@@ -27,7 +29,7 @@ final class CaloriesViewModel {
     var calorieGoal: Double? { profileStore.currentProfile?.tdee }
     var exerciseKcal: Double { todayDraft?.exerciseKcal ?? caloriesTracking?.exerciseKcal ?? 0 }
     var exerciseMinutes: Double { todayDraft?.exerciseMin ?? caloriesTracking?.exerciseMin ?? 0 }
-    var stepsKcal: Double { todayDraft?.stepsKcal ?? caloriesTracking?.stepsKcal ?? 0 }
+    var stepsKcal: Double { todayDraft?.stepsKcal ?? 0 }
     var totalBurnedKcal: Double { stepsKcal + exerciseKcal }
     var netCalories: Double { max(Double(dailyKcal) - totalBurnedKcal, 0) }
 
@@ -52,6 +54,8 @@ final class CaloriesViewModel {
     private let notificationScheduler: SmartNotificationSchedulerProtocol
     private let dateProvider: () -> Date
     private var loadGeneration = 0
+    private var waterMutationID: UUID?
+    private var contentMutationGeneration = 0
 
     init(
         getCaloriesTrackingByDateUseCase: GetCaloriesTrackingByDateUseCaseProtocol,
@@ -84,24 +88,37 @@ final class CaloriesViewModel {
 
     func activate() async {
         let requestedDate = currentDateString
+        if let profileID {
+            caloriesActivityStore.registerActiveDate(profileID: profileID, date: requestedDate)
+        }
         if loadedDate != requestedDate {
             loadGeneration += 1
             loadedDate = requestedDate
             caloriesTracking = emptyTracking(for: requestedDate)
             mutatingMealIDs.removeAll()
+            waterMutationID = nil
+            isUpdatingWater = false
         }
 
-        await caloriesActivitySyncCoordinator.synchronizePendingDates(before: requestedDate)
+        async let synchronization: Void = caloriesActivitySyncCoordinator.synchronizePendingDates(
+            before: requestedDate
+        )
         await fetchTracking(for: requestedDate)
+        await synchronization
     }
 
     func fetchTodayTracking() async {
         let requestedDate = currentDateString
+        if let profileID {
+            caloriesActivityStore.registerActiveDate(profileID: profileID, date: requestedDate)
+        }
         if loadedDate != requestedDate {
             loadGeneration += 1
             loadedDate = requestedDate
             caloriesTracking = emptyTracking(for: requestedDate)
             mutatingMealIDs.removeAll()
+            waterMutationID = nil
+            isUpdatingWater = false
         }
         await fetchTracking(for: requestedDate)
     }
@@ -109,54 +126,47 @@ final class CaloriesViewModel {
     private func fetchTracking(for requestedDate: String) async {
         loadGeneration += 1
         let generation = loadGeneration
-        isLoading = true
-        errorMessage = nil
-        defer {
-            if generation == loadGeneration {
-                isLoading = false
-            }
+        let mutationGeneration = contentMutationGeneration
+        let initialLoad = !hasCompletedInitialLoad
+        let minimumShimmerTask = initialLoad
+            ? Task { try? await Task.sleep(for: .milliseconds(500)) }
+            : nil
+        if initialLoad {
+            isInitialLoading = true
+        } else {
+            isRefreshing = true
         }
+        var pendingErrorMessage: String?
+        errorMessage = nil
         do {
-            var tracking = try await getCaloriesTrackingByDateUseCase.execute(date: requestedDate)
+            var tracking = sanitizeServerSteps(
+                try await getCaloriesTrackingByDateUseCase.execute(date: requestedDate)
+            )
             guard generation == loadGeneration,
+                  mutationGeneration == contentMutationGeneration,
+                  !isUpdatingWater,
+                  mutatingMealIDs.isEmpty,
                   loadedDate == requestedDate,
                   currentDateString == requestedDate,
-                  tracking.date == requestedDate else { return }
+                  tracking.date == requestedDate else {
+                await finishLoading(
+                    generation: generation,
+                    minimumShimmerTask: minimumShimmerTask
+                )
+                return
+            }
 
-            if tracking.targetWaterCnt <= 0 {
-                // A newly created tracking day may not have a water target yet.
-                // Show the daily default immediately, then persist that default
-                // without including steps or exercise in the request.
+            let needsDefaultWaterTarget = tracking.targetWaterCnt <= 0
+            if needsDefaultWaterTarget {
                 tracking = copy(
                     tracking,
                     targetWaterCnt: 8,
                     waterCnt: tracking.waterCnt
                 )
-                caloriesTracking = tracking
-
-                let initializedTracking = try await updateWaterUseCase.execute(
-                    date: requestedDate,
-                    targetWaterCnt: 8,
-                    waterCnt: nil,
-                    stepsCnt: nil,
-                    stepsKcal: nil,
-                    exerciseKcal: nil,
-                    exerciseMin: nil
-                )
-                guard generation == loadGeneration,
-                      loadedDate == requestedDate,
-                      currentDateString == requestedDate,
-                      initializedTracking.date == requestedDate else { return }
-                tracking = initializedTracking.targetWaterCnt > 0
-                    ? initializedTracking
-                    : copy(
-                        initializedTracking,
-                        targetWaterCnt: 8,
-                        waterCnt: initializedTracking.waterCnt
-                    )
             }
 
             caloriesTracking = tracking
+            hasCompletedInitialLoad = true
             await evaluateSmartNotificationCancellations(for: tracking)
             if let profileID {
                 caloriesActivityStore.seedIfNeeded(profileID: profileID, tracking: tracking)
@@ -166,10 +176,52 @@ final class CaloriesViewModel {
                     calories: tracking.mealCalories
                 )
             }
+
+            if needsDefaultWaterTarget {
+                do {
+                    try await updateWaterUseCase.execute(
+                        date: requestedDate,
+                        targetWaterCnt: 8,
+                        waterCnt: nil,
+                        stepsCnt: nil,
+                        stepsKcal: nil,
+                        exerciseKcal: nil,
+                        exerciseMin: nil
+                    )
+                } catch {
+                    if generation == loadGeneration,
+                       loadedDate == requestedDate,
+                       currentDateString == requestedDate,
+                       !isCancellation(error) {
+                        pendingErrorMessage = error.localizedDescription
+                    }
+                }
+            }
         } catch {
-            guard generation == loadGeneration, loadedDate == requestedDate else { return }
-            guard !isCancellation(error) else { return }
-            errorMessage = error.localizedDescription
+            if generation == loadGeneration,
+               loadedDate == requestedDate,
+               !isCancellation(error) {
+                pendingErrorMessage = error.localizedDescription
+            }
+        }
+
+        await finishLoading(
+            generation: generation,
+            minimumShimmerTask: minimumShimmerTask
+        )
+        if generation == loadGeneration, let pendingErrorMessage {
+            errorMessage = pendingErrorMessage
+        }
+    }
+
+    private func finishLoading(
+        generation: Int,
+        minimumShimmerTask: Task<Void?, Never>?
+    ) async {
+        if let minimumShimmerTask { _ = await minimumShimmerTask.value }
+        if generation == loadGeneration {
+            isInitialLoading = false
+            isRefreshing = false
         }
     }
 
@@ -271,6 +323,9 @@ final class CaloriesViewModel {
 
         do {
             try await deleteMealUseCase.execute(date: requestDate, scanId: scanId)
+            if caloriesTracking?.date == requestDate {
+                contentMutationGeneration += 1
+            }
         } catch {
             guard caloriesTracking?.date == requestDate else { return }
             restoreMeal(originalMeal, originalIndex: originalIndex, in: requestDate)
@@ -289,15 +344,27 @@ final class CaloriesViewModel {
 
     private func mutateWater(target: Int?, water: Int) async {
         guard let current = caloriesTracking, !isUpdatingWater else { return }
+        let requestDate = current.date
+        let requestGeneration = loadGeneration
+        let mutationID = UUID()
+        waterMutationID = mutationID
+        contentMutationGeneration += 1
         isUpdatingWater = true
-        caloriesTracking = copy(
+        let optimisticTracking = copy(
             current,
             targetWaterCnt: target ?? current.targetWaterCnt,
             waterCnt: water
         )
+        caloriesTracking = optimisticTracking
+        defer {
+            if waterMutationID == mutationID {
+                waterMutationID = nil
+                isUpdatingWater = false
+            }
+        }
         do {
-            let updated = try await updateWaterUseCase.execute(
-                date: current.date,
+            try await updateWaterUseCase.execute(
+                date: requestDate,
                 targetWaterCnt: target,
                 waterCnt: water,
                 stepsCnt: nil,
@@ -305,18 +372,25 @@ final class CaloriesViewModel {
                 exerciseKcal: nil,
                 exerciseMin: nil
             )
-            caloriesTracking = updated
-            await evaluateSmartNotificationCancellations(for: updated)
+            guard waterMutationID == mutationID,
+                  requestGeneration == loadGeneration,
+                  loadedDate == requestDate,
+                  currentDateString == requestDate,
+                  caloriesTracking?.date == requestDate else { return }
+            contentMutationGeneration += 1
+            await evaluateSmartNotificationCancellations(for: optimisticTracking)
         } catch {
-            guard !isCancellation(error) else {
-                caloriesTracking = current
-                isUpdatingWater = false
-                return
-            }
+            guard waterMutationID == mutationID,
+                  requestGeneration == loadGeneration,
+                  loadedDate == requestDate,
+                  currentDateString == requestDate,
+                  caloriesTracking?.date == requestDate else { return }
             caloriesTracking = current
-            errorMessage = error.localizedDescription
+            contentMutationGeneration += 1
+            if !isCancellation(error) {
+                errorMessage = error.localizedDescription
+            }
         }
-        isUpdatingWater = false
     }
 
     private func evaluateSmartNotificationCancellations(for tracking: CaloriesTracking) async {
@@ -445,6 +519,7 @@ final class CaloriesViewModel {
             totalMealKcal: meals.reduce(0) { $0 + $1.nutritionFacts.calories * $1.mealCnt },
             meals: meals
         )
+        contentMutationGeneration += 1
         caloriesTracking = updated
         if let profileID {
             caloriesActivityStore.updateMealCalories(
@@ -463,6 +538,21 @@ final class CaloriesViewModel {
             waterCnt: waterCnt,
             stepsCnt: tracking.stepsCnt,
             stepsKcal: tracking.stepsKcal,
+            exerciseKcal: tracking.exerciseKcal,
+            exerciseMin: tracking.exerciseMin,
+            totalMealKcal: tracking.totalMealKcal,
+            meals: tracking.meals
+        )
+    }
+
+    private func sanitizeServerSteps(_ tracking: CaloriesTracking) -> CaloriesTracking {
+        CaloriesTracking(
+            id: tracking.id,
+            date: tracking.date,
+            targetWaterCnt: tracking.targetWaterCnt,
+            waterCnt: tracking.waterCnt,
+            stepsCnt: 0,
+            stepsKcal: 0,
             exerciseKcal: tracking.exerciseKcal,
             exerciseMin: tracking.exerciseMin,
             totalMealKcal: tracking.totalMealKcal,
@@ -504,6 +594,10 @@ final class CaloriesActivitySyncCoordinator {
 
     func synchronizePendingDates(before currentDate: String = CaloriesTracking.todayString) async {
         lastError = nil
+        if let profileID = profileStore.currentProfile?.id {
+            caloriesActivityStore.registerActiveDate(profileID: profileID, date: currentDate)
+            caloriesActivityStore.cleanupReceiptBackedDrafts(profileID: profileID)
+        }
         await synchronizePendingExercises(through: currentDate)
         await synchronizeCompletedSteps(before: currentDate)
         if let profileID = profileStore.currentProfile?.id {
@@ -526,8 +620,9 @@ final class CaloriesActivitySyncCoordinator {
 
         do {
             let tracking = try await getCaloriesTrackingByDateUseCase.execute(date: date)
+            guard tracking.date == date else { throw NetworkError.decodingFailed }
             let normalizedDraft = caloriesActivityStore.seedIfNeeded(profileID: profile.id, tracking: tracking)
-            _ = try await updateWaterUseCase.execute(
+            try await updateWaterUseCase.execute(
                 date: date,
                 targetWaterCnt: nil,
                 waterCnt: nil,
@@ -566,57 +661,67 @@ final class CaloriesActivitySyncCoordinator {
     private func synchronizeCompletedSteps(before currentDate: String) async {
         guard let profile = profileStore.currentProfile else { return }
 
-        let pending = caloriesActivityStore.pendingStepDrafts(
+        let pendingDates = caloriesActivityStore.pendingFinalSyncDates(
             profileID: profile.id,
             before: currentDate
         )
 
-        for draft in pending {
-            guard !syncingStepDates.contains(draft.date) else { continue }
-            syncingStepDates.insert(draft.date)
-            defer { syncingStepDates.remove(draft.date) }
+        for date in pendingDates {
+            guard !syncingStepDates.contains(date) else { continue }
+            guard !caloriesActivityStore.hasSyncedSteps(profileID: profile.id, date: date) else {
+                caloriesActivityStore.markStepSynced(profileID: profile.id, date: date)
+                caloriesActivityStore.removeIfFullySynced(profileID: profile.id, date: date)
+                continue
+            }
+            syncingStepDates.insert(date)
             do {
-                let tracking = try await getCaloriesTrackingByDateUseCase.execute(date: draft.date)
-                let normalizedDraft = caloriesActivityStore.seedIfNeeded(profileID: profile.id, tracking: tracking)
-                let steps = await refreshedSteps(for: normalizedDraft) ?? normalizedDraft.stepsCnt
-                let stepCalories = Double(StepAnalyticsCalculator(
+                guard let steps = try await refreshedSteps(for: date) else {
+                    syncingStepDates.remove(date)
+                    continue
+                }
+                let tracking = try await getCaloriesTrackingByDateUseCase.execute(date: date)
+                guard tracking.date == date else { throw NetworkError.decodingFailed }
+                let normalizedDraft = caloriesActivityStore.seedIfNeeded(
+                    profileID: profile.id,
+                    tracking: tracking
+                )
+                let stepCalories = StepAnalyticsCalculator(
                     weightKg: profile.weightKg ?? 70,
                     heightCm: profile.heightCm ?? 170
-                ).caloriesBurned(steps: steps))
+                ).caloriesBurned(steps: steps)
 
-                _ = try await updateWaterUseCase.execute(
-                    date: normalizedDraft.date,
-                    targetWaterCnt: nil,
-                    waterCnt: nil,
+                try await updateWaterUseCase.execute(
+                    date: date,
+                    targetWaterCnt: tracking.targetWaterCnt > 0 ? tracking.targetWaterCnt : 8,
+                    waterCnt: tracking.waterCnt,
                     stepsCnt: steps,
-                    stepsKcal: stepCalories,
-                    exerciseKcal: nil,
-                    exerciseMin: nil
+                    stepsKcal: Double(stepCalories),
+                    exerciseKcal: normalizedDraft.exerciseKcal,
+                    exerciseMin: normalizedDraft.exerciseMin
                 )
-                caloriesActivityStore.markStepSynced(
+                caloriesActivityStore.markStepSynced(profileID: profile.id, date: date)
+                caloriesActivityStore.markExerciseSynced(
                     profileID: profile.id,
-                    date: normalizedDraft.date,
-                    expectedSteps: normalizedDraft.stepsCnt,
-                    expectedStepCalories: normalizedDraft.stepsKcal
+                    date: date,
+                    expectedCalories: normalizedDraft.exerciseKcal,
+                    expectedSeconds: normalizedDraft.exerciseSeconds
                 )
                 caloriesActivityStore.removeIfFullySynced(
                     profileID: profile.id,
-                    date: normalizedDraft.date
+                    date: date
                 )
             } catch {
                 lastError = error.localizedDescription
             }
+            syncingStepDates.remove(date)
         }
     }
 
-    private func refreshedSteps(for draft: CaloriesActivityDraft) async -> Int? {
-        guard let date = CaloriesTracking.date(from: draft.date) else { return nil }
+    private func refreshedSteps(for dateString: String) async throws -> Int? {
+        guard let date = CaloriesTracking.date(from: dateString) else { return nil }
         let calendar = Calendar.current
         let start = calendar.startOfDay(for: date)
         let end = calendar.date(byAdding: .day, value: 1, to: start) ?? start
-        guard let history = try? await fetchHistoryUseCase.execute(from: start, to: end) else {
-            return nil
-        }
-        return history.first(where: { calendar.isDate($0.date, inSameDayAs: start) })?.stepCount
+        return try await fetchHistoryUseCase.executeCount(from: start, to: end)
     }
 }

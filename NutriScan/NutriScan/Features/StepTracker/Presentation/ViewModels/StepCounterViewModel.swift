@@ -6,6 +6,7 @@ import Combine
 final class StepCounterViewModel {
     private(set) var todaySteps: Int = 0
     private(set) var isAuthorized: Bool = false
+    private(set) var hasHealthKitReading: Bool = false
     private(set) var errorMessage: String?
     private(set) var history: [DailySteps] = []
     private(set) var isLoadingHistory: Bool = false
@@ -65,6 +66,7 @@ final class StepCounterViewModel {
 
     func rolloverToCurrentDay() {
         todaySteps = 0
+        hasHealthKitReading = false
         if isAuthorized {
             startObserving()
         }
@@ -118,7 +120,7 @@ final class StepCounterViewModel {
             isAuthorized = granted
             errorMessage = nil
             guard granted else {
-                errorMessage = "Motion & Fitness access is required to count your steps."
+                errorMessage = LocalizationKeys.Calories.permissionRequired.localized
                 return
             }
             startObserving()
@@ -134,6 +136,7 @@ final class StepCounterViewModel {
         observationTask = Task { [weak self] in
             guard let self else { return }
             for await steps in self.observeStepsUseCase.execute() {
+                self.hasHealthKitReading = true
                 self.todaySteps = steps
             }
         }

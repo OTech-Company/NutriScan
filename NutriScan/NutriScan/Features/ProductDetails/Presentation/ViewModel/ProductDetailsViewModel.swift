@@ -59,7 +59,7 @@ final class ProductDetailsViewModel {
         } catch let error as NetworkError {
             failureMessage = error.localizedDescription
         } catch {
-            failureMessage = "An unexpected error occurred."
+            failureMessage = LocalizationKeys.Common.unknownError.localized
         }
     }
 
@@ -78,7 +78,7 @@ final class ProductDetailsViewModel {
                 var revertedState = self.uiState
                 revertedState?.isFavorite = !newFavoriteStatus
                 self.uiState = revertedState
-                self.failureMessage = "Failed to update favorite status."
+                self.failureMessage = LocalizationKeys.ProductDetails.failedUpdateFavorite.localized
             }
         }
     }

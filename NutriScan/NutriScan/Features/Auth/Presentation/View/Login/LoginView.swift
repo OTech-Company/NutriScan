@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct LoginView: View {
+    private enum AlertDestination: String, Identifiable {
+        case error
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     @EnvironmentObject private var flowCoordinator: AppFlowCoordinator
 
-    @State private var activeAlert: ActiveAlert = .none
+    @State private var alert: AlertDestination?
     @State private var viewModel: LoginViewModel
 
     init(viewModel: LoginViewModel) {
@@ -33,7 +38,7 @@ struct LoginView: View {
                             Button(action: {
                                 router.push(AuthRoute.forgotPassword)
                             }) {
-                                Text("Forgot Password?")
+                                Text(LocalizationKeys.Auth.Login.forgotPassword.localized)
                                     .font(Font.AppFont.textSecondary)
                                     .fontWeight(.medium)
                                     .foregroundColor(Color.LoginSemantic.forgotPasswordText)
@@ -41,9 +46,14 @@ struct LoginView: View {
                         }
                         .padding(.top, 12)
                         
-                        CustomPuffedButton(title: "Sign in", action: handleSignIn, isLoading: viewModel.isLoading)
+                        CustomPuffedButton(
+                            title: LocalizationKeys.Auth.Login.signIn.localized,
+                            action: handleSignIn,
+                            isLoading: viewModel.isLoading
+                        )
                             .padding(.top, 24)
                         
+                        /*
                         AuthDivider()
                             .padding(.top, 32)
                         
@@ -53,17 +63,18 @@ struct LoginView: View {
                             SocialLoginButton(iconName: "instagram", action: {})
                         }
                         .padding(.top, 24)
+                        */
                         
                         Spacer(minLength: 40)
                         HStack(spacing: 4) {
-                            Text("Don't have an account?")
+                            Text(LocalizationKeys.Auth.Login.noAccount.localized)
                                 .font(Font.AppFont.textSecondary)
                                 .foregroundColor(Color.LoginSemantic.footerText)
                             
                             Button(action: {
                                 router.push(AuthRoute.register)
                             }) {
-                                Text("Sign Up.")
+                                Text(LocalizationKeys.Auth.Login.signUp.localized)
                                     .font(Font.AppFont.textSecondary)
                                     .fontWeight(.bold)
                                     .foregroundColor(Color.LoginSemantic.footerLink)
@@ -83,25 +94,21 @@ struct LoginView: View {
         }
         .onChange(of: viewModel.generalError) { _, error in
             if error != nil {
-                activeAlert = .error
+                alert = .error
             }
         }
-        .customAlert(activeAlert: $activeAlert, config: { alert in
-            switch alert {
-            case .error:
-                return CustomAlertConfig(
+        .customAlert(
+            item: $alert,
+            config: { _ in
+                CustomAlertConfig(
                     type: .error,
-                    title: "Login Failed",
-                    description: viewModel.generalError ?? "An unknown error occurred",
-                    primaryButtonTitle: "Try Again",
-                    primaryButtonColor: Color.Red.red500
+                    title: LocalizationKeys.Auth.Login.failedTitle.localized,
+                    message: viewModel.generalError ?? LocalizationKeys.Auth.Login.failedUnknown.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Auth.Login.tryAgain.localized)
                 )
-            default:
-                return CustomAlertConfig(type: .error, title: "Error", description: viewModel.generalError ?? "")
-            }
-        }, primaryAction: { _ in
-            viewModel.generalError = nil
-        })
+            },
+            primaryAction: { _ in viewModel.generalError = nil }
+        )
     }
 
     private func handleSignIn() {

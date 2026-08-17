@@ -16,7 +16,7 @@ struct NotificationSettingsView: View {
             
         VStack(spacing: 0) {
                 
-            SettingsHeaderSection(title: "Notification Settings", subtitle: nil) {
+            SettingsHeaderSection(title: LocalizationKeys.Notifications.notificationSettings.localized, subtitle: nil) {
                 router.pop()
             }
 
@@ -29,7 +29,7 @@ struct NotificationSettingsView: View {
                         let categories = NotificationCategory.allCases.filter { $0.section == section }
 
                         // Section header
-                        SectionHeader(title: section.rawValue)
+                        SectionHeader(title: section.displayTitle)
 
                         // Rows for this section
                         ForEach(categories) { category in
@@ -44,7 +44,7 @@ struct NotificationSettingsView: View {
                     }
                     
                     // Quiet Hours Section
-                    SectionHeader(title: "Quiet Hours")
+                    SectionHeader(title: LocalizationKeys.Notifications.doNotDisturb.localized)
 
                     QuietHoursToggleRow(
                         timeRangeText: viewModel.quietHoursTimeString,

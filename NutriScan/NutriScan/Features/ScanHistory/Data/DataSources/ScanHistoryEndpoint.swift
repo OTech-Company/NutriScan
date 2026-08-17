@@ -8,6 +8,7 @@ import Foundation
 enum ScanHistoryEndpoint: APIEndpoint {
     case getScanHistory(page: Int, size: Int)
     case deleteScan(scanId: String)
+    case getSuggestions(query: String)
     
     var baseURL: String {
         return AppNetworkConfig.core.baseURL
@@ -19,6 +20,8 @@ enum ScanHistoryEndpoint: APIEndpoint {
             return "/api/v1/scans"
         case .deleteScan(let scanId):
             return "/api/v1/scans/\(scanId)"
+        case .getSuggestions:
+            return "/api/v1/scans/suggestions"
         }
     }
     
@@ -28,6 +31,8 @@ enum ScanHistoryEndpoint: APIEndpoint {
             return .get
         case .deleteScan:
             return .delete
+        case .getSuggestions:
+            return .get
         }
     }
     
@@ -40,6 +45,8 @@ enum ScanHistoryEndpoint: APIEndpoint {
             ]
         case .deleteScan:
             return nil
+        case .getSuggestions(let query):
+            return ["query": query]
         }
     }
     

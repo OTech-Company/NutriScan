@@ -13,6 +13,14 @@ enum NotificationSection: String, CaseIterable {
     case fitnessAndTracking = "Fitness & Tracking"
     case reminders          = "Reminders"
     case contentAndNews     = "Content & News"
+
+    var displayTitle: String {
+        switch self {
+        case .fitnessAndTracking: return LocalizationKeys.Notifications.sectionFitness.localized
+        case .reminders:          return LocalizationKeys.Notifications.sectionReminders.localized
+        case .contentAndNews:     return LocalizationKeys.Notifications.sectionContent.localized
+        }
+    }
 }
 
 // MARK: - Category
@@ -32,15 +40,15 @@ enum NotificationCategory: String, CaseIterable, Identifiable, Codable {
 
     var displayTitle: String {
         switch self {
-        case .steps:         return "Steps"
-        case .water:         return "Water"
-        case .workout:       return "Workout"
-        case .foodLog:       return "Food Log"
-        case .streak:        return "Streak"
-        case .breakTime:     return "Break Time"
-        case .scanReminders: return "Scan Reminders"
-        case .healthNews:    return "Health News"
-        case .healthQuotes:  return "Health Quotes"
+        case .steps:         return LocalizationKeys.Notifications.categorySteps.localized
+        case .water:         return LocalizationKeys.Notifications.categoryWater.localized
+        case .workout:       return LocalizationKeys.Notifications.categoryWorkout.localized
+        case .foodLog:       return LocalizationKeys.Notifications.categoryFoodLog.localized
+        case .streak:        return LocalizationKeys.Notifications.categoryStreak.localized
+        case .breakTime:     return LocalizationKeys.Notifications.categoryBreakTime.localized
+        case .scanReminders: return LocalizationKeys.Notifications.categoryScanReminders.localized
+        case .healthNews:    return LocalizationKeys.Notifications.categoryHealthNews.localized
+        case .healthQuotes:  return LocalizationKeys.Notifications.categoryHealthQuotes.localized
         }
     }
 

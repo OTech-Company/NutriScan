@@ -10,7 +10,7 @@ import Foundation
 struct CustomAlertMetrics {
     // Card metrics
     static let cardWidth: CGFloat = 284
-    static let cardHeight: CGFloat = 160
+    static let cardHeight: CGFloat = 170
     static let cardCornerRadius: CGFloat = 24
     
     // Icon badge metrics

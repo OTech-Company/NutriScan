@@ -15,11 +15,11 @@ struct FavoritesEmptyStateView: View {
                     .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray400))
             }
             
-            Text("No Saved Scans")
-                .font(.AppFont.title3)
+            Text(LocalizationKeys.Favorites.emptyTitle.localized)
+                .font(Font.AppFont.title3)
                 .foregroundColor(Color(light: .Gray.gray900, dark: .Gray.gray100))
             
-            Text("Scan and save your favorite products to see them here.")
+            Text(LocalizationKeys.Favorites.emptyDesc.localized)
                 .font(.AppFont.textSecondary)
                 .foregroundColor(Color(light: .Gray.gray600, dark: .Gray.gray300))
                 .multilineTextAlignment(.center)

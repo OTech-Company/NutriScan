@@ -9,7 +9,7 @@ extension ScanHistoryEntity {
     
     init(dto: ScanHistoryItemDTO) {
         self.id = dto.scanId ?? UUID().uuidString
-        self.productName = dto.productName ?? "Unknown Product"
+        self.productName = dto.productName ?? LocalizationKeys.Calories.unknownProduct.localized
         self.imageUrl = dto.imageUrl ?? ""
         self.calories = dto.calories ?? 0.0
         self.scannedAt = dto.scannedAt ?? ""

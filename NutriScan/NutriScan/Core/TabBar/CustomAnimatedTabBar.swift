@@ -52,8 +52,11 @@ struct CustomAnimatedTabBar: View {
                 )
 
                 // ── 2. Tab icons ────────────────────────────────────────────
+                let orderedTabs = AppLanguage.current.layoutDirection == .rightToLeft
+                    ? Array(AppTab.allCases.reversed())
+                    : AppTab.allCases
                 HStack(spacing: 0) {
-                    ForEach(AppTab.allCases, id: \.self) { tab in
+                    ForEach(orderedTabs, id: \.self) { tab in
                         TabIconButton(
                             tab: tab,
                             isSelected: selectedTab == tab
@@ -101,6 +104,7 @@ struct CustomAnimatedTabBar: View {
             }
         }
         .frame(height: Self.barHeight)
+        .environment(\.layoutDirection, .leftToRight)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("main.customTabBar")
     }

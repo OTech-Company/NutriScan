@@ -27,6 +27,7 @@ struct CalorieGoalsSection: View {
     let mealCalories: Int
     let targetCalories: Double?
     let caloriesBurned: Double
+    var isLoading = false
     var onCompleteProfileTap: () -> Void = {}
 
     @State private var animatedProgress: CGFloat = 0
@@ -62,27 +63,36 @@ struct CalorieGoalsSection: View {
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 4) {
                             Image("calories-fill")
-                            Text("Calorie Goals")
+                            Text(LocalizationKeys.Calories.calorieGoals.localized)
                                 .font(Font.AppFont.subtitle1)
                                 .foregroundStyle(Color.CaloriesSemantic.goalsTitle)
                         }
 
                         VStack(spacing: 8) {
-                            if let targetCalories {
-                                calorieRow(title: "Your TDEE", calories: Int(targetCalories.rounded()))
+                            if isLoading {
+                                calorieRow(title: LocalizationKeys.Calories.yourTDEE.localized, calories: nil)
+                            } else if let targetCalories {
+                                calorieRow(title: LocalizationKeys.Calories.yourTDEE.localized, calories: Int(targetCalories.rounded()))
                             } else {
                                 Button(action: onCompleteProfileTap) {
                                     HStack(spacing: 4) {
-                                        Text("Complete Personal Information")
+                                        Text(LocalizationKeys.Calories.completePersonalInfo.localized)
                                         Image(systemName: "chevron.right")
+                                            .flipsForRightToLeftLayoutDirection(true)
                                     }
                                     .font(Font.AppFont.textCaption)
                                     .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
                                 }
-                                .accessibilityHint("Opens Personal Information to set your calorie goal")
+                                .accessibilityHint(LocalizationKeys.Accessibility.opensPersonalInfo.localized)
                             }
-                            calorieRow(title: "Calories Gained", calories: mealCalories)
-                            calorieRow(title: "Calories Burned", calories: Int(caloriesBurned.rounded()))
+                            calorieRow(
+                                title: LocalizationKeys.Calories.caloriesGained.localized,
+                                calories: isLoading ? nil : mealCalories
+                            )
+                            calorieRow(
+                                title: LocalizationKeys.Calories.caloriesBurned.localized,
+                                calories: isLoading ? nil : Int(caloriesBurned.rounded())
+                            )
                         }
                     }
                     Spacer(minLength: 16)
@@ -159,22 +169,34 @@ struct CalorieGoalsSection: View {
         }
     }
 
-    private func calorieRow(title: String, calories: Int) -> some View {
+    private func calorieRow(title: String, calories: Int?) -> some View {
         HStack {
             Text(title)
                 .font(Font.AppFont.textSecondary)
                 .foregroundStyle(Color.CaloriesSemantic.goalsLabelText)
             Spacer()
-            Text("\(calories) Kcal")
-                .font(Font.AppFont.textSecondary)
-                .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
-                .contentTransition(.numericText())
-                .animation(.spring(response: 0.4, dampingFraction: 0.7), value: calories)
-                .padding(.horizontal, 4)
-                .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(Color.CaloriesSemantic.goalsValueBackground)
-                )
+            Group {
+                if let calories {
+                    Text("\(calories) Kcal")
+                        .font(Font.AppFont.textSecondary)
+                        .foregroundStyle(Color.CaloriesSemantic.goalsValueText)
+                        .contentTransition(.numericText())
+                        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: calories)
+                } else {
+                    CaloriesTextShimmer(
+                        width: 52,
+                        height: 9,
+                        cornerRadius: 4,
+                        color: Color.CaloriesSemantic.goalsValueText.opacity(0.5)
+                    )
+                    .padding(.vertical, 3)
+                }
+            }
+            .padding(.horizontal, 4)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .foregroundStyle(Color.CaloriesSemantic.goalsValueBackground)
+            )
         }
     }
 }

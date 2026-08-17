@@ -70,9 +70,9 @@ struct ScanStateCardView: View {
         ProductMatchCard(
             status: .unsafe,
             imageData: capturedImageData,
-            productName: "Scan Failed",
+            productName: LocalizationKeys.Scan.scanFailed.localized,
             brandName: nil,
-            scanSummary: "Could not analyze product",
+            scanSummary: LocalizationKeys.Scan.couldNotAnalyze.localized,
             onRetry: onRetry
         )
         .onTapGesture {

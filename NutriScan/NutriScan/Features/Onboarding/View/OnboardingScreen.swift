@@ -21,7 +21,7 @@ struct OnboardingScreen: View {
             VStack {
                 HStack {
                     if currentPage > 0 {
-                        Button("BACK") {
+                        Button(LocalizationKeys.Onboarding.back.localized) {
                             withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
                                 currentPage -= 1
                             }
@@ -33,7 +33,7 @@ struct OnboardingScreen: View {
                     Spacer()
 
                     if currentPage < OnboardingPage.allCases.count - 1 {
-                        Button("SKIP") {
+                        Button(LocalizationKeys.Onboarding.skip.localized) {
                             flowCoordinator.finishOnboarding()
                         }
                         .font(Font.AppFont.textPrimary)

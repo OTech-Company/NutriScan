@@ -67,21 +67,22 @@ struct NotificationHistoryView: View {
             viewModel.loadHistory()
         }
         .customAlert(
-            isPresented: $viewModel.showClearAllAlert,
-            type: .warning,
-            title: "Clear All Notifications",
-            description: "Are you sure you want to delete all notification history? This action cannot be undone.",
-            primaryButtonTitle: "Clear All",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
+            item: $viewModel.alert,
+            config: { _ in
+                CustomAlertConfig(
+                    type: .delete,
+                    title: LocalizationKeys.Notifications.clearAllTitle.localized,
+                    message: LocalizationKeys.Notifications.clearAllDesc.localized,
+                    primaryButton: CustomAlertButton(LocalizationKeys.Notifications.clearAll.localized, role: .destructive),
+                    secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                )
+            },
+            primaryAction: { _ in
                 withAnimation(.easeInOut) {
                     viewModel.confirmClearAll()
                 }
             },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: {
-                viewModel.showClearAllAlert = false
-            }
+            secondaryAction: { _ in viewModel.alert = nil }
         )
     }
 }

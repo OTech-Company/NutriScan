@@ -97,7 +97,7 @@ struct StepHistoryScreen: View {
         VStack(spacing: 0) {
             HStack(spacing: 16) {
                 BackButton { router.pop() }
-                Text("Step History")
+                Text(LocalizationKeys.StepTracker.stepHistory.localized)
                     .font(.custom("LexendDeca-SemiBold", size: 18))
                     .foregroundColor(Color.StepTrackerSemantic.chartTitle)
                 Spacer()
@@ -151,8 +151,8 @@ struct StepHistoryScreen: View {
 
     private var dateRangeCards: some View {
         HStack(spacing: 12) {
-            dateCard(label: "Start", date: startDateString)
-            dateCard(label: "End", date: endDateString)
+            dateCard(label: LocalizationKeys.StepTracker.start.localized, date: startDateString)
+            dateCard(label: LocalizationKeys.StepTracker.end.localized, date: endDateString)
         }
     }
 
@@ -183,7 +183,7 @@ struct StepHistoryScreen: View {
 
     private var stepHistoryChart: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Step History")
+            Text(LocalizationKeys.StepTracker.stepHistory.localized)
                 .font(.custom("PlusJakartaSans-SemiBold", size: 18))
                 .foregroundColor(Color.StepTrackerSemantic.chartTitle)
 
@@ -213,8 +213,8 @@ struct StepHistoryScreen: View {
             Chart {
                 ForEach(data) { point in
                     BarMark(
-                        x: .value("Period", point.label),
-                        y: .value("Steps", point.steps)
+                        x: .value(LocalizationKeys.StepTracker.period.localized, point.label),
+                        y: .value(LocalizationKeys.StepTracker.steps.localized, point.steps)
                     )
                     .foregroundStyle(
                         point.steps >= 10_000
@@ -229,7 +229,7 @@ struct StepHistoryScreen: View {
                     }
                 }
 
-                RuleMark(y: .value("Goal", 10_000))
+                RuleMark(y: .value(LocalizationKeys.StepTracker.goal.localized, 10_000))
                     .foregroundStyle(Color.Teal.teal1000.opacity(0.3))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
                     .annotation(position: .trailing, spacing: 4) {
@@ -274,7 +274,7 @@ struct StepHistoryScreen: View {
             Image(systemName: "chart.bar")
                 .font(.system(size: 28))
                 .foregroundColor(Color.Teal.teal400)
-            Text("No step history yet")
+            Text(LocalizationKeys.StepTracker.noHistory.localized)
                 .font(.custom("LexendDeca-Regular", size: 14))
                 .foregroundColor(Color.StepTrackerSemantic.axisText)
         }
@@ -289,25 +289,25 @@ struct StepHistoryScreen: View {
             StatCardView(
                 icon: "flame.fill",
                 iconColor: .orange,
-                title: "Calories\nBurned",
+                title: LocalizationKeys.StepTracker.caloriesBurned.localized,
                 value: "\(periodAnalytics.caloriesBurned)",
-                unit: "kcal"
+                unit: LocalizationKeys.Favorites.kcal.localized
             )
 
             StatCardView(
                 icon: "mappin.circle.fill",
                 iconColor: Color.Teal.teal1000,
-                title: "Distance\nCovered",
+                title: LocalizationKeys.StepTracker.distanceCovered.localized,
                 value: String(format: "%.1f", periodAnalytics.distanceKm),
-                unit: "km"
+                unit: LocalizationKeys.StepTracker.km.localized
             )
 
             StatCardView(
                 icon: "stopwatch.fill",
                 iconColor: Color.Teal.teal1000,
-                title: "Active\nMinutes",
+                title: LocalizationKeys.StepTracker.activeMinutes.localized,
                 value: "\(periodAnalytics.activeMinutes)",
-                unit: "min"
+                unit: LocalizationKeys.StepTracker.min.localized
             )
         }
     }

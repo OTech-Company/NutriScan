@@ -11,4 +11,12 @@ enum SafetyLevel: String, CaseIterable {
     case safe = "Safe"
     case caution = "Caution"
     case unsafe = "Unsafe"
+
+    var localizedTitle: String {
+        switch self {
+        case .safe: return LocalizationKeys.Scan.safe.localized
+        case .caution: return LocalizationKeys.Scan.caution.localized
+        case .unsafe: return LocalizationKeys.Scan.unsafe.localized
+        }
+    }
 }

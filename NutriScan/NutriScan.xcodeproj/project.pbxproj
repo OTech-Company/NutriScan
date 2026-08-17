@@ -154,6 +154,13 @@
 		2C85371430236CD40043831A /* Color+NotificationHistorySemantic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536F930236CD40043831A /* Color+NotificationHistorySemantic.swift */; };
 		2C85371530236CD40043831A /* NotificationHistoryLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536E830236CD40043831A /* NotificationHistoryLocalDataSource.swift */; };
 		2C85371630236CD40043831A /* NotificationHistoryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8536FE30236CD40043831A /* NotificationHistoryEmptyView.swift */; };
+		2C8B9CF23030E2850047E510 /* KOSans-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CF03030E2850047E510 /* KOSans-SemiBold.otf */; };
+		2C8B9CF33030E2850047E510 /* KOSans-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CED3030E2850047E510 /* KOSans-Light.otf */; };
+		2C8B9CF43030E2850047E510 /* KOSans-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CEB3030E2850047E510 /* KOSans-Bold.otf */; };
+		2C8B9CF53030E2850047E510 /* KOSans-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CF13030E2850047E510 /* KOSans-Thin.otf */; };
+		2C8B9CF63030E2850047E510 /* KOSans-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CEF3030E2850047E510 /* KOSans-Regular.otf */; };
+		2C8B9CF73030E2850047E510 /* KOSans-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CEC3030E2850047E510 /* KOSans-ExtraLight.otf */; };
+		2C8B9CF83030E2850047E510 /* KOSans-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 2C8B9CEE3030E2850047E510 /* KOSans-Medium.otf */; };
 		2CC033A23017BF9B009B42A1 /* AuthAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */; };
 		2CC033C53017BF9B009B42D3 /* AuthFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC033C33017BF9B009B42D3 /* AuthFactory.swift */; };
 		2CC428043013F0CD00099E64 /* CachedAnimatedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CC428033013F0CD00099E64 /* CachedAnimatedImage.swift */; };
@@ -373,7 +380,8 @@
 		A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6FE732F6276EEAAB784BF8 /* MealDetailView.swift */; };
 		A35257A4A76A3755EEE65E16 /* SettingsLogoutButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D4A4277A981858B216A6242 /* SettingsLogoutButton.swift */; };
 		A39BC4577AD209FF500E6E8F /* RecentHistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F3B21F93A5E048D139768D /* RecentHistoryListView.swift */; };
-		A5D7E326B2F6B7CEBDC67198 /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FCB95B1BB5CFB86039766 /* empty.swift */; };
+		A5D7E326B2F6B7CEBDC67198 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 8C9FCB95B1BB5CFB86039766 /* Localizable.xcstrings */; };
+		2C8B9CFB3030E4000047E510 /* LocalizationKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8B9CFC3030E4000047E510 /* LocalizationKeys.swift */; };
 		A6F120013026000100000002 /* TopSafeAreaScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F120003026000100000001 /* TopSafeAreaScrollView.swift */; };
 		AA78F155D98A2E3105D26DEA /* StatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E4ABB684FA06D6470E8FB5 /* StatusType.swift */; };
 		AACB8FDACC2DCC73FBFBF5AD /* ProductError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC068CD8F8A190A2BB0C62D9 /* ProductError.swift */; };
@@ -463,7 +471,6 @@
 		C50388A7301B55B00045358F /* ExerciseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503880F301B55B00045358F /* ExerciseService.swift */; };
 		C50388A8301B55B00045358F /* ExerciseRowCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503882C301B55B00045358F /* ExerciseRowCard.swift */; };
 		C50388AA301B55B00045358F /* CategoryResponseDTO+Domain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038809301B55B00045358F /* CategoryResponseDTO+Domain.swift */; };
-		C50388AB301B55B00045358F /* PedometerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503883D301B55B00045358F /* PedometerDataSource.swift */; };
 		C50388AC301B55B00045358F /* ExerciseFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038820301B55B00045358F /* ExerciseFactory.swift */; };
 		C50388AD301B55B00045358F /* StepAnalyticsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5038843301B55B00045358F /* StepAnalyticsCalculator.swift */; };
 		C50388AE301B55B00045358F /* ExerciseAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C503881F301B55B00045358F /* ExerciseAssembly.swift */; };
@@ -846,6 +853,13 @@
 		2C8536FF30236CD40043831A /* NotificationHistoryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryHeader.swift; sourceTree = "<group>"; };
 		2C85370130236CD40043831A /* NotificationHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryView.swift; sourceTree = "<group>"; };
 		2C85370330236CD40043831A /* NotificationHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHistoryViewModel.swift; sourceTree = "<group>"; };
+		2C8B9CEB3030E2850047E510 /* KOSans-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-Bold.otf"; sourceTree = "<group>"; };
+		2C8B9CEC3030E2850047E510 /* KOSans-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-ExtraLight.otf"; sourceTree = "<group>"; };
+		2C8B9CED3030E2850047E510 /* KOSans-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-Light.otf"; sourceTree = "<group>"; };
+		2C8B9CEE3030E2850047E510 /* KOSans-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-Medium.otf"; sourceTree = "<group>"; };
+		2C8B9CEF3030E2850047E510 /* KOSans-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-Regular.otf"; sourceTree = "<group>"; };
+		2C8B9CF03030E2850047E510 /* KOSans-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-SemiBold.otf"; sourceTree = "<group>"; };
+		2C8B9CF13030E2850047E510 /* KOSans-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KOSans-Thin.otf"; sourceTree = "<group>"; };
 		2CC033A13017BF9B009B42A1 /* AuthAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthAssembly.swift; sourceTree = "<group>"; };
 		2CC033C33017BF9B009B42D3 /* AuthFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthFactory.swift; sourceTree = "<group>"; };
 		2CC428033013F0CD00099E64 /* CachedAnimatedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAnimatedImage.swift; sourceTree = "<group>"; };
@@ -987,7 +1001,8 @@
 		8874E02FF790448D983BFF23 /* GetCaloriesTrackingUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetCaloriesTrackingUseCase.swift; sourceTree = "<group>"; };
 		8AF61EFB1E9B5737340EA4E8 /* RootCoordinatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinatorView.swift; sourceTree = "<group>"; };
 		8C8BF72F529571DA910FBB27 /* ScanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanFlowView.swift; sourceTree = "<group>"; };
-		8C9FCB95B1BB5CFB86039766 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
+		8C9FCB95B1BB5CFB86039766 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		2C8B9CFC3030E4000047E510 /* LocalizationKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizationKeys.swift; sourceTree = "<group>"; };
 		8E2478F7BB592188D447103B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8F119D3E301B81D000496267 /* DailyTrackingEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingEndpoint.swift; sourceTree = "<group>"; };
 		8F119D40301B81D700496267 /* DailyTrackingRemoteDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyTrackingRemoteDataSource.swift; sourceTree = "<group>"; };
@@ -1146,7 +1161,6 @@
 		C5038837301B55B00045358F /* ExerciseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListViewModel.swift; sourceTree = "<group>"; };
 		C5038838301B55B00045358F /* ExerciseWorkoutPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseWorkoutPlayerViewModel.swift; sourceTree = "<group>"; };
 		C503883C301B55B00045358F /* HealthKitStepDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitStepDataSource.swift; sourceTree = "<group>"; };
-		C503883D301B55B00045358F /* PedometerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PedometerDataSource.swift; sourceTree = "<group>"; };
 		C503883F301B55B00045358F /* StepRepositoryImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepRepositoryImpl.swift; sourceTree = "<group>"; };
 		C5038842301B55B00045358F /* DailySteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySteps.swift; sourceTree = "<group>"; };
 		C5038843301B55B00045358F /* StepAnalyticsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepAnalyticsCalculator.swift; sourceTree = "<group>"; };
@@ -1430,6 +1444,13 @@
 				AD902D05BF7786E2E116B445 /* PlusJakartaSans-Bold.ttf */,
 				C29B6E4A1E5F31C5C67384BF /* PlusJakartaSans-Medium.ttf */,
 				A262D6EDF1CC63162582A73E /* PlusJakartaSans-SemiBold.ttf */,
+				2C8B9CEB3030E2850047E510 /* KOSans-Bold.otf */,
+				2C8B9CEC3030E2850047E510 /* KOSans-ExtraLight.otf */,
+				2C8B9CED3030E2850047E510 /* KOSans-Light.otf */,
+				2C8B9CEE3030E2850047E510 /* KOSans-Medium.otf */,
+				2C8B9CEF3030E2850047E510 /* KOSans-Regular.otf */,
+				2C8B9CF03030E2850047E510 /* KOSans-SemiBold.otf */,
+				2C8B9CF13030E2850047E510 /* KOSans-Thin.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -3021,7 +3042,8 @@
 		8CC6291564ACBF03977EC5E0 /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				8C9FCB95B1BB5CFB86039766 /* empty.swift */,
+				8C9FCB95B1BB5CFB86039766 /* Localizable.xcstrings */,
+				2C8B9CFC3030E4000047E510 /* LocalizationKeys.swift */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -4035,7 +4057,6 @@
 			isa = PBXGroup;
 			children = (
 				C503883C301B55B00045358F /* HealthKitStepDataSource.swift */,
-				C503883D301B55B00045358F /* PedometerDataSource.swift */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -4369,7 +4390,6 @@
 		C546296A301239330032F885 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
-				C5462961301239330032F885 /* ActiveAlert.swift */,
 				C5462962301239330032F885 /* CustomAlert.swift */,
 				C5462963301239330032F885 /* CustomAlertCard.swift */,
 				C5462964301239330032F885 /* CustomAlertConfig.swift */,
@@ -5204,6 +5224,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ar,
 			);
 			mainGroup = 9F31ABFE3005B6AC008CB279;
 			packageReferences = (
@@ -5228,6 +5249,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				82B580183B6AD4DB04D65E4B /* Assets.xcassets in Resources */,
+				2C8B9CF23030E2850047E510 /* KOSans-SemiBold.otf in Resources */,
+				2C8B9CF33030E2850047E510 /* KOSans-Light.otf in Resources */,
+				2C8B9CF43030E2850047E510 /* KOSans-Bold.otf in Resources */,
+				2C8B9CF53030E2850047E510 /* KOSans-Thin.otf in Resources */,
+				2C8B9CF63030E2850047E510 /* KOSans-Regular.otf in Resources */,
+				2C8B9CF73030E2850047E510 /* KOSans-ExtraLight.otf in Resources */,
+				2C8B9CF83030E2850047E510 /* KOSans-Medium.otf in Resources */,
 				061C18E236BF762D7F25AC1D /* LexendDeca-Light.ttf in Resources */,
 				1FBCB739B0E1180069F00A72 /* LexendDeca-Medium.ttf in Resources */,
 				86F696F90C6E8D924E3BC4C5 /* LexendDeca-Regular.ttf in Resources */,
@@ -5235,6 +5263,7 @@
 				A291CBA272BE3AFF361A54AA /* PlusJakartaSans-Medium.ttf in Resources */,
 				40226321AB33DCB0DB192DDC /* PlusJakartaSans-SemiBold.ttf in Resources */,
 				HQ001F0130200002000000002 /* HealthQuotes.json in Resources */,
+				A5D7E326B2F6B7CEBDC67198 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5537,7 +5566,6 @@
 				A3524DC457852B57F036D107 /* MealDetailView.swift in Sources */,
 				D489D1B23018E1D000E7A1DF /* UserProfileResponseDTO.swift in Sources */,
 				E819F50A7311DC9A0B9515CB /* MealDetailViewModel.swift in Sources */,
-				C546296B301239330032F885 /* ActiveAlert.swift in Sources */,
 				E1A000013018000100000002 /* TermsItem.swift in Sources */,
 				E1A000023018000100000002 /* TermsLocalDataSourceProtocol.swift in Sources */,
 				E1A000033018000100000002 /* TermsLocalDataSourceImpl.swift in Sources */,
@@ -5733,7 +5761,8 @@
 				58AA67D9B4015E70DE6D16E1 /* View+Extensions.swift in Sources */,
 				8F72738A30192D82001A25C4 /* FavoriteCardShimmerView.swift in Sources */,
 				69F7CF833CED2D891AECC55E /* WeightSelectionView.swift in Sources */,
-				A5D7E326B2F6B7CEBDC67198 /* empty.swift in Sources */,
+				2C8B9CFB3030E4000047E510 /* LocalizationKeys.swift in Sources */,
+
 				F35D7F2D858B87C57D5B34AC /* empty1.swift in Sources */,
 				6F8FDCA030330C0100B36F1A /* ScanHistoryAssembly.swift in Sources */,
 				5E36605E0CF7D90883B4136D /* empty12.swift in Sources */,
@@ -5833,7 +5862,6 @@
 				C50388A7301B55B00045358F /* ExerciseService.swift in Sources */,
 				C50388A8301B55B00045358F /* ExerciseRowCard.swift in Sources */,
 				C50388AA301B55B00045358F /* CategoryResponseDTO+Domain.swift in Sources */,
-				C50388AB301B55B00045358F /* PedometerDataSource.swift in Sources */,
 				C50388AC301B55B00045358F /* ExerciseFactory.swift in Sources */,
 				C50388AD301B55B00045358F /* StepAnalyticsCalculator.swift in Sources */,
 				C596173B301FDEFB001DB715 /* CaloriesHistoryView.swift in Sources */,
@@ -6084,6 +6112,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NutriScan/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "\"\"";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan product barcodes.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to read your step history.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to your health data to update your step count.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need Access to the microphone in order to talk to you";
+				INFOPLIST_KEY_NSMotionUsageDescription = "We need access to your motion data to track your daily steps.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need Access this premision to understand you well";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -6115,6 +6149,12 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = NutriScan/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "\"\"";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need access to your camera to scan product barcodes.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "We need access to your health data to read your step history.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "We need access to your health data to update your step count.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need Access to the microphone in order to talk to you";
+				INFOPLIST_KEY_NSMotionUsageDescription = "We need access to your motion data to track your daily steps.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "We need Access this premision to understand you well";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

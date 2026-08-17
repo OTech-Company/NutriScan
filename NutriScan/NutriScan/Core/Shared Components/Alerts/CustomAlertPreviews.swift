@@ -7,235 +7,139 @@
 
 import SwiftUI
 
-#Preview("All Alerts Grid - Light Mode") {
-    ZStack {
-        Color.Teal.teal1600.opacity(0.5)
-            .ignoresSafeArea()
-            .background(.ultraThinMaterial)
-        
+private enum PreviewAlert: String, Identifiable {
+    case warning
+    case delete
+    case success
+    case error
+    case noInternet
+
+    var id: String { rawValue }
+}
+
+private struct CustomAlertGallery: View {
+    private let types = CustomAlertType.allCases
+
+    var body: some View {
         ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 20) {
-                CustomAlertCard(
-                    type: .delete,
-                    title: "Delete Warning",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "Delete",
-                    primaryButtonColor: Color.Red.red500,
-                    primaryAction: {},
-                    secondaryButtonTitle: "Cancel",
-                    secondaryAction: {},
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .success,
-                    title: "Success Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: "Cancel",
-                    secondaryAction: {},
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .error,
-                    title: "Error Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: nil,
-                    secondaryAction: nil,
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .warning,
-                    title: "Warning Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: nil,
-                    secondaryAction: nil,
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .internet,
-                    title: "Internet Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "Retry",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: nil,
-                    secondaryAction: nil,
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 284))], spacing: 20) {
+                ForEach(types, id: \.self) { type in
+                    previewCard(type: type, hasSecondaryButton: false)
+                    previewCard(type: type, hasSecondaryButton: true)
+                }
             }
             .padding()
         }
+        .background(Color.Teal.teal1600.opacity(0.5).ignoresSafeArea())
     }
-    .preferredColorScheme(.light)
-}
 
-#Preview("All Alerts Grid - Dark Mode") {
-    ZStack {
-        Color.Teal.teal1600.opacity(0.5)
-            .ignoresSafeArea()
-            .background(.ultraThinMaterial)
-        
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 300))], spacing: 20) {
-                CustomAlertCard(
-                    type: .delete,
-                    title: "Delete Warning",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "Delete",
-                    primaryButtonColor: Color.Red.red500,
-                    primaryAction: {},
-                    secondaryButtonTitle: "Cancel",
-                    secondaryAction: {},
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .success,
-                    title: "Success Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: "Cancel",
-                    secondaryAction: {},
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .error,
-                    title: "Error Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: nil,
-                    secondaryAction: nil,
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .warning,
-                    title: "Warning Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "OK",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: nil,
-                    secondaryAction: nil,
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-                
-                CustomAlertCard(
-                    type: .internet,
-                    title: "Internet Alert",
-                    description: "This is a test alert to verify that notifications are working correctly. No action is required.",
-                    primaryButtonTitle: "Retry",
-                    primaryButtonColor: Color.Teal.teal1000,
-                    primaryAction: {},
-                    secondaryButtonTitle: nil,
-                    secondaryAction: nil,
-                    showCard: true,
-                    showIcon: true,
-                    showButtons: true,
-                    reduceMotion: false
-                )
-            }
-            .padding()
+    private func previewCard(type: CustomAlertType, hasSecondaryButton: Bool) -> some View {
+        CustomAlertCard(
+            config: CustomAlertConfig(
+                type: type,
+                title: title(for: type),
+                message: "This message verifies the two-line alert treatment and its semantic icon.",
+                primaryButton: primaryButton(for: type),
+                secondaryButton: hasSecondaryButton ? CustomAlertButton("Cancel", role: .cancel) : nil
+            ),
+            primaryAction: {},
+            secondaryAction: hasSecondaryButton ? {} : nil,
+            actionsDisabled: false,
+            showCard: true,
+            showIcon: true,
+            showButtons: true,
+            reduceMotion: false
+        )
+    }
+
+    private func title(for type: CustomAlertType) -> String {
+        switch type {
+        case .warning: return "Warning Alert"
+        case .delete: return "Delete Warning"
+        case .success: return "Success Alert"
+        case .error: return "Error Alert"
+        case .noInternet: return "No Internet Connection"
         }
     }
-    .preferredColorScheme(.dark)
-}
 
-#Preview("Interactive Alert Demo") {
-    struct InteractivePreview: View {
-        @State private var activeAlert: ActiveAlert = .none
-        
-        var body: some View {
-            VStack(spacing: 20) {
-                Button("Show Error Alert") {
-                    activeAlert = .error
-                }
-                
-                Button("Show Delete Alert") {
-                    activeAlert = .delete
-                }
-                
-                Button("Show Success Alert") {
-                    activeAlert = .success
-                }
-            }
-            .customAlert(activeAlert: $activeAlert, config: { alert in
-                switch alert {
-                case .error:
-                    return CustomAlertConfig(
-                        type: .error,
-                        title: "Error",
-                        description: "Something went wrong while fetching data. Please try again later."
-                    )
-                case .delete:
-                    return CustomAlertConfig(
-                        type: .delete,
-                        title: "Delete Item?",
-                        description: "Are you sure you want to delete this? This action cannot be undone.",
-                        primaryButtonTitle: "Delete",
-                        primaryButtonColor: Color.Red.red500,
-                        secondaryButtonTitle: "Cancel"
-                    )
-                case .success:
-                    return CustomAlertConfig(
-                        type: .success,
-                        title: "Operation Successful",
-                        description: "The item was successfully processed."
-                    )
-                default:
-                    return CustomAlertConfig(type: .warning, title: "Warning", description: "Unknown alert type")
-                }
-            }, primaryAction: { _ in
-                // Handled
-            }, secondaryAction: { _ in
-                // Handled
-            })
+    private func primaryButton(for type: CustomAlertType) -> CustomAlertButton {
+        switch type {
+        case .delete:
+            return CustomAlertButton("Delete", role: .destructive)
+        case .noInternet:
+            return CustomAlertButton("Retry")
+        case .warning, .success, .error:
+            return CustomAlertButton("OK")
         }
     }
-    
-    return InteractivePreview()
+}
+
+private struct InteractiveAlertPreview: View {
+    @State private var alert: PreviewAlert?
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Button("Show Warning") { alert = .warning }
+            Button("Show Delete") { alert = .delete }
+            Button("Show Success") { alert = .success }
+            Button("Show Error") { alert = .error }
+            Button("Show No Internet") { alert = .noInternet }
+        }
+        .customAlert(
+            item: $alert,
+            config: config,
+            primaryAction: { _ in },
+            secondaryAction: { _ in }
+        )
+    }
+
+    private func config(for alert: PreviewAlert) -> CustomAlertConfig {
+        switch alert {
+        case .warning:
+            return CustomAlertConfig(type: .warning, title: "Warning", message: "Review this information before continuing.")
+        case .delete:
+            return CustomAlertConfig(
+                type: .delete,
+                title: "Delete Item?",
+                message: "This action cannot be undone.",
+                primaryButton: CustomAlertButton("Delete", role: .destructive),
+                secondaryButton: CustomAlertButton("Cancel", role: .cancel)
+            )
+        case .success:
+            return CustomAlertConfig(type: .success, title: "Success", message: "The operation completed successfully.")
+        case .error:
+            return CustomAlertConfig(type: .error, title: "Error", message: "Something went wrong. Please try again.")
+        case .noInternet:
+            return CustomAlertConfig(
+                type: .noInternet,
+                title: "No Internet Connection",
+                message: "Check your connection and try again.",
+                primaryButton: CustomAlertButton("Retry")
+            )
+        }
+    }
+}
+
+#Preview("All Alerts · Light") {
+    CustomAlertGallery()
+        .preferredColorScheme(.light)
+}
+
+#Preview("All Alerts · Dark") {
+    CustomAlertGallery()
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Accessibility Type") {
+    CustomAlertGallery()
+        .environment(\.dynamicTypeSize, .accessibility3)
+}
+
+#Preview("Right to Left") {
+    CustomAlertGallery()
+        .environment(\.layoutDirection, .rightToLeft)
+}
+
+#Preview("Interactive") {
+    InteractiveAlertPreview()
 }

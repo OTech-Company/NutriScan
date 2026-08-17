@@ -21,7 +21,7 @@ struct TermsScreen: View {
             Color.TermsSemantic.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                SettingsHeaderSection(title: "Terms and Conditions", subtitle: nil) {
+                SettingsHeaderSection(title: LocalizationKeys.Settings.terms.localized, subtitle: nil) {
                     router.pop()
                 }
 

@@ -11,6 +11,7 @@ struct SearchSelectionSheet: View {
     let title: String
     @Binding var searchQuery: String
     let results: [String]
+    var placeholder: String? = nil
     let onSelect: (String) -> Void
 
     var body: some View {
@@ -29,6 +30,7 @@ struct SearchSelectionSheet: View {
         }
         .background(Color.EditProfileSemantics.backgroundPrimary.ignoresSafeArea())
         .presentationDetents([.medium, .large])
+        .environment(\.layoutDirection, AppLanguage.current.layoutDirection)
     }
 
     // MARK: - Subviews
@@ -56,7 +58,7 @@ struct SearchSelectionSheet: View {
             TextField(
                 "",
                 text: $searchQuery,
-                prompt: Text("Search...")
+                prompt: Text(placeholder ?? LocalizationKeys.Common.searchOptionsPlaceholder.localized)
                     .foregroundColor(Color.EditProfileSemantics.textSecondary)
             )
             .font(Font.AppFont.textPrimary)
@@ -81,7 +83,7 @@ struct SearchSelectionSheet: View {
                 Image(systemName: "magnifyingglass.circle")
                     .font(.system(size: 48))
                     .foregroundColor(Color.EditProfileSemantics.textSecondary.opacity(0.6))
-                Text("No results found")
+                Text(LocalizationKeys.EmptyState.titleNoSearchResults.localized)
                     .font(Font.AppFont.textPrimary)
                     .foregroundColor(Color.EditProfileSemantics.textSecondary)
             }
@@ -114,6 +116,7 @@ struct SearchSelectionSheet: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(Color.EditProfileSemantics.textSecondary)
+                    .flipsForRightToLeftLayoutDirection(true)
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)

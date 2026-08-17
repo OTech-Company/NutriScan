@@ -23,26 +23,28 @@ struct FavoritesFlowView: View {
 }
 
 struct FavoritesView: View {
+    private enum AlertDestination: String, Identifiable {
+        case remove
+        case addMealError
+        case noInternet
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject private var router: AppRouter
     let viewModel: FavoritesViewModel
     @State private var searchText = ""
     @State private var appliedSearchText = ""
     
-    // MARK: - Alert States
-    @State private var showRemoveAlert = false
+    @State private var alert: AlertDestination?
     @State private var itemToRemove: FavoritesScanEntity? = nil
-    
-    @State private var showAddMealErrorAlert = false
     @State private var itemToRetryAddMeal: String? = nil
     @State private var addMealErrorMessage = ""
-    
-    @State private var showNoInternetAlert = false
     
     var body: some View {
         VStack(spacing: 16) {
             CustomSearchBar(
                 text: $searchText,
-                prompt: "Search favorites",
+                prompt: LocalizationKeys.Favorites.searchPlaceholder.localized,
                 onSearch: {
                     appliedSearchText = searchText
                     Task {
@@ -91,7 +93,7 @@ struct FavoritesView: View {
                     },
                     onRemoveRequest: { item in
                         itemToRemove = item
-                        showRemoveAlert = true
+                        alert = .remove
                     },
                     onProductTap: { item in
                         router.push(ProfileRoute.scanDetail(scanId: item.id))
@@ -103,12 +105,12 @@ struct FavoritesView: View {
                         viewModel.addMealToDaily(scanId: scanId) { success in
                             completion(success)
                             if !success {
-                                if viewModel.addMealError == "No internet connection" {
-                                    showNoInternetAlert = true
+                                if viewModel.addMealFailure == .offline {
+                                    alert = .noInternet
                                 } else {
-                                    addMealErrorMessage = viewModel.addMealError ?? "Something went wrong while adding this product to your daily meals. Please try again."
+                                    addMealErrorMessage = viewModel.addMealFailure?.message ?? "Something went wrong while adding this product to your daily meals. Please try again."
                                     itemToRetryAddMeal = scanId
-                                    showAddMealErrorAlert = true
+                                    alert = .addMealError
                                 }
                             }
                         }
@@ -126,58 +128,66 @@ struct FavoritesView: View {
                 await viewModel.loadIfNeeded()
             }
         }
-        // MARK: - Remove Confirmation Alert
         .customAlert(
-            isPresented: $showRemoveAlert,
-            type: .delete,
-            title: "Remove Product",
-            description: "Are you sure you want to remove \"\(itemToRemove?.productName ?? "")\" from your favorites?",
-            primaryButtonTitle: "Remove",
-            primaryButtonColor: Color.Red.red500,
-            primaryAction: {
-                if let scanId = itemToRemove?.id {
-                    let success = viewModel.removeFavorite(scanId: scanId)
-                    if !success {
-                        // Show the no internet alert after the current alert dismisses
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            showNoInternetAlert = true
-                        }
-                    }
+            item: $alert,
+            config: { alert in
+                switch alert {
+                case .remove:
+                    return CustomAlertConfig(
+                        type: .delete,
+                        title: LocalizationKeys.Favorites.removeProductTitle.localized,
+                        message: String(format: LocalizationKeys.Favorites.removeProductDesc.localized, itemToRemove?.productName ?? ""),
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.delete.localized, role: .destructive),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.cancel.localized, role: .cancel)
+                    )
+                case .addMealError:
+                    return CustomAlertConfig(
+                        type: .error,
+                        title: LocalizationKeys.Favorites.couldntAddMealTitle.localized,
+                        message: addMealErrorMessage,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.tryAgain.localized),
+                        secondaryButton: CustomAlertButton(LocalizationKeys.Common.dismiss.localized, role: .cancel)
+                    )
+                case .noInternet:
+                    return CustomAlertConfig(
+                        type: .noInternet,
+                        title: LocalizationKeys.Common.noInternetConnection.localized,
+                        message: LocalizationKeys.Favorites.noInternetDesc.localized,
+                        primaryButton: CustomAlertButton(LocalizationKeys.Common.ok.localized)
+                    )
                 }
             },
-            secondaryButtonTitle: "Cancel",
-            secondaryAction: { }
-        )
-        // MARK: - Add Meal Failure Alert
-        .customAlert(
-            isPresented: $showAddMealErrorAlert,
-            type: .error,
-            title: "Couldn't Add Meal",
-            description: addMealErrorMessage,
-            primaryButtonTitle: "Try Again",
-            primaryAction: {
-                if let scanId = itemToRetryAddMeal {
+            primaryAction: { alert in
+                switch alert {
+                case .remove:
+                    if let scanId = itemToRemove?.id,
+                       !viewModel.removeFavorite(scanId: scanId) {
+                        self.alert = .noInternet
+                    }
+                    itemToRemove = nil
+                case .addMealError:
+                    guard let scanId = itemToRetryAddMeal else { return }
                     viewModel.addMealToDaily(scanId: scanId) { success in
-                        if !success {
-                            addMealErrorMessage = viewModel.addMealError ?? "Something went wrong. Please try again."
-                            showAddMealErrorAlert = true
+                        guard !success else { return }
+                        if viewModel.addMealFailure == .offline {
+                            self.alert = .noInternet
+                        } else {
+                            addMealErrorMessage = viewModel.addMealFailure?.message ?? LocalizationKeys.Common.somethingWentWrong.localized
+                            self.alert = .addMealError
                         }
                     }
+                case .noInternet:
+                    break
                 }
             },
-            secondaryButtonTitle: "Dismiss",
-            secondaryAction: {
-                addMealErrorMessage = ""
+            secondaryAction: { alert in
+                if alert == .remove {
+                    itemToRemove = nil
+                } else if alert == .addMealError {
+                    addMealErrorMessage = ""
+                    itemToRetryAddMeal = nil
+                }
             }
-        )
-        // MARK: - No Internet Alert
-        .customAlert(
-            isPresented: $showNoInternetAlert,
-            type: .error,
-            title: "No Internet Connection",
-            description: "Please check your connection and try again.",
-            primaryButtonTitle: "OK",
-            primaryAction: { }
         )
     }
     
